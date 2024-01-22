@@ -1,4 +1,4 @@
-package com.ssfay.racing.openvidu;
+package com.ssfay.racing.openvidu.controller;
 
 import io.openvidu.java.client.OpenVidu;
 import jakarta.annotation.PostConstruct;
@@ -13,7 +13,6 @@ import java.util.Map;
 
 import io.openvidu.java.client.Connection;
 import io.openvidu.java.client.ConnectionProperties;
-import io.openvidu.java.client.OpenVidu;
 import io.openvidu.java.client.OpenViduHttpException;
 import io.openvidu.java.client.OpenViduJavaClientException;
 import io.openvidu.java.client.Session;
