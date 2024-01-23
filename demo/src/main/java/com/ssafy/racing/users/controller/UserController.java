@@ -1,7 +1,7 @@
 package com.ssafy.racing.users.controller;
 
-import com.ssfay.racing.users.domain.UserJoinRequest;
-import org.springframework.http.HttpStatus;
+
+import com.ssafy.racing.users.domain.UserJoinRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

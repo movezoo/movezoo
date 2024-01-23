@@ -1,6 +1,6 @@
 package com.ssafy.racing.friendship.domain;
 
-import com.ssfay.racing.users.domain.Users;
+import com.ssafy.racing.users.domain.Users;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 

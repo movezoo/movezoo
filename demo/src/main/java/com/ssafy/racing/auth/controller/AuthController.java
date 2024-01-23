@@ -36,8 +36,8 @@ public class AuthController {
     @PostMapping("/email")
     public ResponseEntity sendJoinMail(@RequestBody EmailPostDto emailPostDto) {
         EmailMessage emailMessage = EmailMessage.builder()
-                .to(emailPostDto.getEmail())
-                .subject("[SAVIEW] 이메일 인증을 위한 인증 코드 발송")
+                .target(emailPostDto.getEmail())
+                .title("[SAVIEW] 이메일 인증을 위한 인증 코드 발송")
                 .build();
 
         String code = emailService.sendMail(emailMessage, "email");
