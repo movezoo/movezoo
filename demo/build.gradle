@@ -31,7 +31,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
-
+	//gmail dependency
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 	// openvidu dependency
 	implementation 'io.openvidu:openvidu-java-client:2.29.0'
