@@ -46,13 +46,6 @@ public class UserRepository {
                 .getResultList();
     }
 
-    //벌크(bulk)성 수정 쿼리 : 모든 직원의 연봉을 10%올려라! (ex. 한명한명 하는게 아니라 한번에 모든 직원에 update수행)
-    public int bulkAge(int age){
-        return em.createQuery("update Member m set m.age = m.age+1 where m.age >= :age")
-                .setParameter("age", age)
-                .executeUpdate();
-    }
-
     //파라미터로 객체보다는 아이디만 넘기는것이 직관적이다.
     public int updatePassword(Users users, String password){
         return em.createQuery("update Users u set u.password = :password where u.usersId=:usersId")
