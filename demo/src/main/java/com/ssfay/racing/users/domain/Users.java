@@ -1,11 +1,14 @@
 package com.ssfay.racing.users.domain;
 
-import jakarta.persistence.Entity;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.ssfay.racing.friendship.domain.Friend;
+import com.ssfay.racing.friendship.domain.FriendRequest;
+import com.ssfay.racing.game.domain.LapTime;
+import com.ssfay.racing.game.domain.MyRacer;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Users {
@@ -32,4 +35,32 @@ public class Users {
     private int mic;
 
     private int cameraSensitivity;
+
+    private String authNumber;
+
+    private String tempPassword;
+
+    @OneToMany(mappedBy = "users")
+    private List<LapTime> lapTimes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users")
+    private List<MyRacer> myRacers = new ArrayList<>();
+
+    //내가 친구요청을 보낸 리스트
+    @OneToMany(mappedBy = "fromUsers")
+    private List<FriendRequest> sentFriendRequests = new ArrayList<>();
+
+    //내가 친구요청을 받은 리스트
+    @OneToMany(mappedBy = "toUsers")
+    private List<FriendRequest> receivedFriendRequests = new ArrayList<>();
+
+    //친구 관계인 사용자를 표시
+    @OneToMany(mappedBy = "users", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Friend> friends = new ArrayList<>();
+
+    // 친구 추가 메서드
+    public void addFriend(Users friend) {
+        Friend friendship = new Friend(this, friend);
+        friends.add(friendship);
+    }
 }
