@@ -12,11 +12,11 @@ public class Friend {
     @GeneratedValue
     private int friendId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private Users users;
 
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "friend_user_id")
     private Users friendUsers;
 

@@ -8,7 +8,6 @@ import jakarta.persistence.*;
         name = "LapTime",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = {"LapTimeUnique"},
                         columnNames = {"users_id", "track_id"}
                 )
         }

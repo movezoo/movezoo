@@ -14,11 +14,11 @@ public class FriendRequest {
     @Column(name = "friend_request_id")
     private int friendRequestId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_user_id")
     private Users fromUsers;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "to_user_id")
     private Users toUsers;
 
