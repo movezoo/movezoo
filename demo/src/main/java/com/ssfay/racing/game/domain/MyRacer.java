@@ -12,11 +12,11 @@ public class MyRacer {
     @Column(name = "myracer_id")
     private int myracerId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
     private Users users;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "racer_id")
     private Racer racer;
 }
