@@ -46,24 +46,28 @@ public class UserRepository {
                 .getResultList();
     }
 
-    //벌크(bulk)성 수정 쿼리 : 모든 직원의 연봉을 10%올려라! (ex. 한명한명 하는게 아니라 한번에 모든 직원에 update수행)
-    public int bulkAge(int age){
-        return em.createQuery("update Member m set m.age = m.age+1 where m.age >= :age")
-                .setParameter("age", age)
-                .executeUpdate();
-    }
-
     //파라미터로 객체보다는 아이디만 넘기는것이 직관적이다.
-    public int updatePassword(Users users, String password){
-        return em.createQuery("update Users u set u.password = :password where u.usersId=:usersId")
-                .setParameter("password",password)
-                .setParameter("userId",users.getUsersId())
+    public int updatePassword(String usersEmail, String password) {
+        return em.createQuery("update Users u set u.password = :password where u.usersEmail=:usersEmail")
+                .setParameter("password", password)
+                .setParameter("usersId", usersEmail)
                 .executeUpdate();
     }
 
+    public int updateNickname(Long usersId, String nickname) {
+        return em.createQuery("update Users u set u.nickname = :nickname where u.usersId = :usersId")
+                .setParameter("nickname", nickname)
+                .setParameter("usersId", usersId)
+                .executeUpdate();
+    }
 
-
-
+    public int updateVolumeAndMic(Long usersId, int volume, int mic) {
+        return em.createQuery("update Users u set u.volume=:volume, u.mic=:mic where u.usersId=:usersId")
+                .setParameter("volume", volume)
+                .setParameter("mic", mic)
+                .setParameter("usersId", usersId)
+                .executeUpdate();
+    }
 
 }
 
