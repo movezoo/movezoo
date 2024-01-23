@@ -40,23 +40,24 @@ public class Users {
 
     private String tempPassword;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<LapTime> lapTimes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users")
-    private List<MyRacer> myRacers = new ArrayList<>();
-
     //내가 친구요청을 보낸 리스트
-    @OneToMany(mappedBy = "fromUsers")
+    //cascade = CascadeType.ALL는 연관관계의 주인이 아닌쪽!(one)
+    @OneToMany(mappedBy = "fromUsers", cascade = CascadeType.ALL)
     private List<FriendRequest> sentFriendRequests = new ArrayList<>();
 
     //내가 친구요청을 받은 리스트
-    @OneToMany(mappedBy = "toUsers")
+    @OneToMany(mappedBy = "toUsers", cascade = CascadeType.ALL)
     private List<FriendRequest> receivedFriendRequests = new ArrayList<>();
 
     //친구 관계인 사용자를 표시
-    @OneToMany(mappedBy = "users", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<Friend> friends = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private List<MyRacer> myRacers = new ArrayList<>();
 
     // 친구 추가 메서드
     public void addFriend(Users friend) {
