@@ -1,6 +1,5 @@
 package com.ssafy.racing.game.domain;
 
-import com.ssfay.racing.users.domain.Users;
 import jakarta.persistence.*;
 
 @Entity

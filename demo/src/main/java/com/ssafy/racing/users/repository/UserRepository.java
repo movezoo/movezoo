@@ -1,6 +1,6 @@
 package com.ssafy.racing.users.repository;
 
-import com.ssfay.racing.users.domain.Users;
+import com.ssafy.racing.users.domain.Users;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
