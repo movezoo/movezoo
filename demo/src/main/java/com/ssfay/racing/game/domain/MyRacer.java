@@ -16,7 +16,7 @@ public class MyRacer {
     @JoinColumn(name = "users_id")
     private Users users;
 
-    @ManyToOne //??? ontoone아닌가요
+    @ManyToOne
     @JoinColumn(name = "racer_id")
     private Racer racer;
 }

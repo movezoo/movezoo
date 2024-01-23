@@ -17,8 +17,6 @@ public class Racer {
 
     @Column(name = "racer_price")
     private int racerPrice;
-
-
 }
 
 

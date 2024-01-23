@@ -13,7 +13,7 @@ public class Friend {
     private int friendId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", fetch = FetchType.LAZY)
     private Users users;
 
     @ManyToOne
