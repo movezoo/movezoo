@@ -5,12 +5,14 @@ import com.ssfay.racing.friendship.domain.FriendRequest;
 import com.ssfay.racing.game.domain.LapTime;
 import com.ssfay.racing.game.domain.MyRacer;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
 public class Users {
     @Id
     @GeneratedValue
