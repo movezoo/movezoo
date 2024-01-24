@@ -1,6 +1,6 @@
 package com.ssafy.racing.game.domain;
 
-import com.ssafy.racing.users.domain.Users;
+import com.ssafy.racing.user.domain.User;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,7 +8,7 @@ import jakarta.persistence.*;
         name = "LapTime",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        columnNames = {"users_id", "track_id"}
+                        columnNames = {"user_id", "track_id"}
                 )
         }
 )
@@ -20,8 +20,8 @@ public class LapTime {
     private int laptimeId;
 
     @ManyToOne
-    @JoinColumn(name = "users_id")
-    private Users users;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "track_id")
     private String trackId;

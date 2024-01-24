@@ -1,9 +1,8 @@
 package com.ssafy.racing.auth.sevice;
 
 import com.ssafy.racing.auth.dto.EmailMessage;
-import com.ssafy.racing.users.domain.Users;
-import com.ssafy.racing.users.repository.UserRepository;
-import com.ssafy.racing.users.sevice.UserService;
+import com.ssafy.racing.user.domain.User;
+import com.ssafy.racing.user.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -70,8 +69,8 @@ public class EmailService {
 
     //회원가입시 메일 인증 코드를 확인하는 함수
     public boolean checkAuthNumber(String usersEmail, String authNumber){
-        Users users = userRepository.findByEmail(usersEmail);
-        String usersAuthNumber = users.getAuthNumber();
+        User user = userRepository.findByEmail(usersEmail);
+        String usersAuthNumber = user.getAuthNumber();
         return usersAuthNumber!=null && usersAuthNumber.equals(authNumber);
     }
 }

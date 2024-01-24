@@ -1,9 +1,8 @@
 package com.ssafy.racing.global.init;
 
-import com.ssafy.racing.users.domain.Users;
-import com.ssafy.racing.users.sevice.UserService;
+import com.ssafy.racing.user.domain.User;
+import com.ssafy.racing.user.sevice.UserService;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,14 +20,14 @@ public class InitDB {
 
     public void UsersInit() {
 
-        Users usersA = new Users("rlackdgml97@naver.com","1234","창히");
-        userService.join(usersA);
+        User userA = new User("rlackdgml97@naver.com","1234","창히");
+        userService.join(userA);
 
-        Users usersB = new Users("jww5555@naver.com","1234","재원");
-        userService.join(usersB);
+        User userB = new User("jww5555@naver.com","1234","재원");
+        userService.join(userB);
 
-        Users usersC = new Users("goqdp@naver.com","1234","창히분신");
-        userService.join(usersC);
+        User userC = new User("goqdp@naver.com","1234","창히분신");
+        userService.join(userC);
     }
 
 }

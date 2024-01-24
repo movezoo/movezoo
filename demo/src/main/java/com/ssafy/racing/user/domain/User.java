@@ -1,32 +1,27 @@
-package com.ssafy.racing.users.domain;
+package com.ssafy.racing.user.domain;
 
 
 import com.ssafy.racing.friendship.domain.Friend;
 import com.ssafy.racing.friendship.domain.FriendRequest;
 import com.ssafy.racing.game.domain.LapTime;
 import com.ssafy.racing.game.domain.MyRacer;
-import com.ssafy.racing.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Users {
+public class User {
     @Id
     @GeneratedValue
-    private Long usersId;
+    private int userId;
 
-    private String usersEmail;
+    private String userEmail;
 
-    private String googleUsersEmail;
+    private String googleUserEmail;
 
     private String password;
 
@@ -46,31 +41,30 @@ public class Users {
 
     private String tempPassword;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<LapTime> lapTimes = new ArrayList<>();
 
     //내가 친구요청을 보낸 리스트
     //cascade = CascadeType.ALL는 연관관계의 주인이 아닌쪽!(one)
-    @OneToMany(mappedBy = "fromUsers", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
     private List<FriendRequest> sentFriendRequests = new ArrayList<>();
 
     //내가 친구요청을 받은 리스트
-    @OneToMany(mappedBy = "toUsers", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL)
     private List<FriendRequest> receivedFriendRequests = new ArrayList<>();
 
     //친구 관계인 사용자를 표시
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Friend> friends = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<MyRacer> myRacers = new ArrayList<>();
 
 
-
-    // Constructor
+    // 회원가입 용 Constructor
     @Builder
-    public Users(String usersEmail, String password, String nickname){
-        this.usersEmail = usersEmail;
+    public User(String userEmail, String password, String nickname){
+        this.userEmail = userEmail;
         this.password = password;
         this.nickname = nickname;
         this.coin=0;
@@ -81,7 +75,7 @@ public class Users {
 
 
     // 친구 추가 메서드
-    public void addFriend(Users friend) {
+    public void addFriend(User friend) {
         Friend friendship = new Friend(this, friend);
         friends.add(friendship);
     }
@@ -92,8 +86,8 @@ public class Users {
 //        child.setParent(this);
 //    }
 
-    public Users(String googleUsersEmail){
-        this.googleUsersEmail=googleUsersEmail;
+    public User(String googleUserEmail){
+        this.googleUserEmail=googleUserEmail;
         this.coin=0;
         this.volume=50;
         this.mic=50;

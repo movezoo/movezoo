@@ -1,6 +1,6 @@
 package com.ssafy.racing.game.domain;
 
-import com.ssafy.racing.users.domain.Users;
+import com.ssafy.racing.user.domain.User;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,7 +14,7 @@ public class MyRacer {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
-    private Users users;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "racer_id")
