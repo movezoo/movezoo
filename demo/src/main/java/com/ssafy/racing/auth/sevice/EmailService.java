@@ -1,6 +1,8 @@
 package com.ssafy.racing.auth.sevice;
 
 import com.ssafy.racing.auth.dto.EmailMessage;
+import com.ssafy.racing.users.domain.Users;
+import com.ssafy.racing.users.repository.UserRepository;
 import com.ssafy.racing.users.sevice.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -18,14 +20,14 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     public String sendMail(EmailMessage emailMessage, String type) {
         String authNum = createCode();
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
-        if (type.equals("password")) userService.changePassword(emailMessage.getTarget(), authNum);
+        if (type.equals("password")) userRepository.updatePassword(emailMessage.getTo(), authNum);
 
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
@@ -64,5 +66,12 @@ public class EmailService {
             }
         }
         return key.toString();
+    }
+
+    //회원가입시 메일 인증 코드를 확인하는 함수
+    public boolean checkAuthNumber(String usersEmail, String authNumber){
+        Users users = userRepository.findByEmail(usersEmail);
+        String usersAuthNumber = users.getAuthNumber();
+        return usersAuthNumber!=null && usersAuthNumber.equals(authNumber);
     }
 }
