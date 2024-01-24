@@ -7,10 +7,7 @@ import com.ssafy.racing.game.domain.LapTime;
 import com.ssafy.racing.game.domain.MyRacer;
 import com.ssafy.racing.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -76,6 +73,10 @@ public class Users {
         this.usersEmail = usersEmail;
         this.password = password;
         this.nickname = nickname;
+        this.coin=0;
+        this.volume=50;
+        this.mic=50;
+        this.cameraSensitivity=50;
     }
 
 
@@ -91,25 +92,11 @@ public class Users {
 //        child.setParent(this);
 //    }
 
-    public Users(String usersEmail, String password, String nickname){
-        this.usersEmail=usersEmail;
-        this.password=password;
-        this.nickname=nickname;
-        this.coin=0;
-        this.volume=50;
-        this.mic=50;
-        this.cameraSensitivity=50;
-    }
-
     public Users(String googleUsersEmail){
         this.googleUsersEmail=googleUsersEmail;
         this.coin=0;
         this.volume=50;
         this.mic=50;
         this.cameraSensitivity=50;
-    }
-
-    protected Users(){
-
     }
 }
