@@ -10,6 +10,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -92,5 +93,28 @@ public class User {
         this.volume=50;
         this.mic=50;
         this.cameraSensitivity=50;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return getUserId() == user.getUserId() && getCoin() == user.getCoin() && getVolume() == user.getVolume() && getMic() == user.getMic() && getCameraSensitivity() == user.getCameraSensitivity() && Objects.equals(getUserEmail(), user.getUserEmail()) && Objects.equals(getGoogleUserEmail(), user.getGoogleUserEmail()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getNickname(), user.getNickname()) && Objects.equals(getProfileImgUrl(), user.getProfileImgUrl()) && Objects.equals(getAuthNumber(), user.getAuthNumber()) && Objects.equals(getTempPassword(), user.getTempPassword());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserId(), getUserEmail(), getGoogleUserEmail(), getPassword(), getNickname(), getCoin(), getProfileImgUrl(), getVolume(), getMic(), getCameraSensitivity(), getAuthNumber(), getTempPassword());
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userEmail='" + userEmail + '\'' +
+                ", googleUserEmail='" + googleUserEmail + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                '}';
     }
 }

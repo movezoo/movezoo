@@ -4,6 +4,8 @@ import com.ssafy.racing.user.domain.User;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Entity
 @NoArgsConstructor
 @Table(name = "FriendRequest")
@@ -27,5 +29,16 @@ public class FriendRequest {
         this.toUser = toUser;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FriendRequest that)) return false;
+        return friendRequestId == that.friendRequestId && Objects.equals(fromUser, that.fromUser) && Objects.equals(toUser, that.toUser);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(friendRequestId, fromUser, toUser);
+    }
 }
 
