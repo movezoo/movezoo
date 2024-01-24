@@ -1,6 +1,6 @@
 package com.ssafy.racing.auth.sevice;
 
-import com.ssafy.racing.auth.domain.EmailMessage;
+import com.ssafy.racing.auth.dto.EmailMessage;
 import com.ssafy.racing.users.sevice.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -29,9 +29,9 @@ public class EmailService {
 
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
-            mimeMessageHelper.setTo(emailMessage.getTarget()); // 메일 수신자
-            mimeMessageHelper.setSubject(emailMessage.getTitle()); // 메일 제목
-            mimeMessageHelper.setText("TEST"); // 메일 본문 내용, HTML 여부
+            mimeMessageHelper.setTo(emailMessage.getTo()); // 수신자메일
+            mimeMessageHelper.setSubject(emailMessage.getSubject()); // 제목
+            mimeMessageHelper.setText(authNum); // 본문
             javaMailSender.send(mimeMessage);
 
             log.info("Success");
