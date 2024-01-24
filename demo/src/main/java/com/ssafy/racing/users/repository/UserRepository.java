@@ -46,6 +46,12 @@ public class UserRepository {
                 .getSingleResult();
     }
 
+    public List<Users> findByNickname(String nickname) {
+        return em.createQuery("select u from Users u where u.nickname = :nickname", Users.class)
+                .setParameter("nickname", nickname)
+                .getResultList();
+    }
+
     //파라미터로 객체보다는 아이디만 넘기는것이 직관적이다.
     public int updatePassword(String usersEmail, String password) {
         return em.createQuery("update Users u set u.password = :password where u.usersEmail=:usersEmail")

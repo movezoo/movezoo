@@ -21,8 +21,8 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
-public class Users extends BaseEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Users {
     @Id
     @GeneratedValue
     private Long usersId;
@@ -67,6 +67,17 @@ public class Users extends BaseEntity {
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<MyRacer> myRacers = new ArrayList<>();
+
+
+
+    // Constructor
+    @Builder
+    public Users(String usersEmail, String password, String nickname){
+        this.usersEmail = usersEmail;
+        this.password = password;
+        this.nickname = nickname;
+    }
+
 
     // 친구 추가 메서드
     public void addFriend(Users friend) {
