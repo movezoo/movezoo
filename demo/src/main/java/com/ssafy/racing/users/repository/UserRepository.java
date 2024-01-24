@@ -46,10 +46,10 @@ public class UserRepository {
                 .getSingleResult();
     }
 
-    public List<Users> findByNickname(String nickname) {
+    public Users findByNickname(String nickname) {
         return em.createQuery("select u from Users u where u.nickname = :nickname", Users.class)
                 .setParameter("nickname", nickname)
-                .getResultList();
+                .getSingleResult();
     }
 
     //파라미터로 객체보다는 아이디만 넘기는것이 직관적이다.
