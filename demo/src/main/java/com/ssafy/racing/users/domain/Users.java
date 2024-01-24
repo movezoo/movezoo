@@ -5,16 +5,24 @@ import com.ssafy.racing.friendship.domain.Friend;
 import com.ssafy.racing.friendship.domain.FriendRequest;
 import com.ssafy.racing.game.domain.LapTime;
 import com.ssafy.racing.game.domain.MyRacer;
+import com.ssafy.racing.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
-public class Users {
+@Getter
+@Setter
+public class Users extends BaseEntity {
     @Id
     @GeneratedValue
     private Long usersId;
@@ -26,8 +34,6 @@ public class Users {
     private String password;
 
     private String nickname;
-
-    private LocalDate enrollDate;
 
     private int coin;
 
@@ -66,5 +72,33 @@ public class Users {
     public void addFriend(Users friend) {
         Friend friendship = new Friend(this, friend);
         friends.add(friendship);
+    }
+
+    //===연관관계 편의 메서드 예시===//
+//    public void addChildCategory(Category child){
+//        this.child.add(child);
+//        child.setParent(this);
+//    }
+
+    public Users(String usersEmail, String password, String nickname){
+        this.usersEmail=usersEmail;
+        this.password=password;
+        this.nickname=nickname;
+        this.coin=0;
+        this.volume=50;
+        this.mic=50;
+        this.cameraSensitivity=50;
+    }
+
+    public Users(String googleUsersEmail){
+        this.googleUsersEmail=googleUsersEmail;
+        this.coin=0;
+        this.volume=50;
+        this.mic=50;
+        this.cameraSensitivity=50;
+    }
+
+    protected Users(){
+
     }
 }
