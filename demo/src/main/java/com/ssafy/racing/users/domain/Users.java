@@ -6,14 +6,15 @@ import com.ssafy.racing.friendship.domain.FriendRequest;
 import com.ssafy.racing.game.domain.LapTime;
 import com.ssafy.racing.game.domain.MyRacer;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Users {
     @Id
     @GeneratedValue
@@ -61,6 +62,17 @@ public class Users {
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<MyRacer> myRacers = new ArrayList<>();
+
+
+
+    // Constructor
+    @Builder
+    public Users(String usersEmail, String password, String nickname){
+        this.usersEmail = usersEmail;
+        this.password = password;
+        this.nickname = nickname;
+    }
+
 
     // 친구 추가 메서드
     public void addFriend(Users friend) {
