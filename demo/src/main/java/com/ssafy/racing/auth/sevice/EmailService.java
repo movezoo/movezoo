@@ -25,7 +25,7 @@ public class EmailService {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
-        if (type.equals("password")) userService.changPassword(emailMessage.getTo(), authNum);
+        if (type.equals("password")) userService.changePassword(emailMessage.getTarget(), authNum);
 
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
