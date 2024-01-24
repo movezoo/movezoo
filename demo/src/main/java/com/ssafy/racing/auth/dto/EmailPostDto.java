@@ -1,4 +1,4 @@
-package com.ssafy.racing.auth.domain;
+package com.ssafy.racing.auth.dto;
 
 import lombok.Getter;
 

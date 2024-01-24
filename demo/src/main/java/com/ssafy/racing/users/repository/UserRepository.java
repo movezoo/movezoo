@@ -40,17 +40,17 @@ public class UserRepository {
         return em.find(Users.class, id);
     }
 
-    public List<Users> findByEmail(String usersEmail) {
+    public Users findByEmail(String usersEmail) {
         return em.createQuery("select u from Users u where u.usersEmail = :usersEmail", Users.class)
                 .setParameter("usersEmail", usersEmail)
-                .getResultList();
+                .getSingleResult();
     }
 
     //파라미터로 객체보다는 아이디만 넘기는것이 직관적이다.
     public int updatePassword(String usersEmail, String password) {
         return em.createQuery("update Users u set u.password = :password where u.usersEmail=:usersEmail")
                 .setParameter("password", password)
-                .setParameter("usersId", usersEmail)
+                .setParameter("usersEmail", usersEmail)
                 .executeUpdate();
     }
 
