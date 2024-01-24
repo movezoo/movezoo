@@ -1,6 +1,6 @@
 package com.ssafy.racing.friendship.domain;
 
-import com.ssafy.racing.users.domain.Users;
+import com.ssafy.racing.user.domain.User;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
@@ -14,15 +14,15 @@ public class Friend {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Users users;
+    private User user;
 
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "friend_user_id")
-    private Users friendUsers;
+    private User friendUser;
 
-    public Friend(Users users, Users friendUsers) {
-        this.users = users;
-        this.friendUsers = friendUsers;
+    public Friend(User user, User friendUser) {
+        this.user = user;
+        this.friendUser = friendUser;
     }
 }
 

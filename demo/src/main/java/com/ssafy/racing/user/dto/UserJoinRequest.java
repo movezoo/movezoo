@@ -1,6 +1,6 @@
-package com.ssafy.racing.users.dto;
+package com.ssafy.racing.user.dto;
 
-import com.ssafy.racing.users.domain.Users;
+import com.ssafy.racing.user.domain.User;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -19,9 +19,9 @@ public class UserJoinRequest {
 
 
     // Dto -> Entity
-    public Users toEntity(String email, String password, String nickname){
-        return Users.builder()
-                .usersEmail(this.email)
+    public User toEntity(String email, String password, String nickname){
+        return User.builder()
+                .userEmail(this.email)
                 .password(this.password)
                 .nickname(this.nickname)
                 .build();
