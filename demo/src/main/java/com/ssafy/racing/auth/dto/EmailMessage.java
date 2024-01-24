@@ -1,4 +1,4 @@
-package com.ssafy.racing.auth.domain;
+package com.ssafy.racing.auth.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,9 @@ import lombok.Setter;
 @Builder
 public class EmailMessage {
 
-    private String target;
-    private String title;
+    private String to;
+
+    private String subject;
+
     private String message;
 }

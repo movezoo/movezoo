@@ -40,10 +40,10 @@ public class UserRepository {
         return em.find(Users.class, id);
     }
 
-    public List<Users> findByEmail(String usersEmail) {
+    public Users findByEmail(String usersEmail) {
         return em.createQuery("select u from Users u where u.usersEmail = :usersEmail", Users.class)
                 .setParameter("usersEmail", usersEmail)
-                .getResultList();
+                .getSingleResult();
     }
 
     public List<Users> findByNickname(String nickname) {

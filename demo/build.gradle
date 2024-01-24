@@ -42,6 +42,9 @@ dependencies {
 
 	// openvidu dependency
 	implementation 'io.openvidu:openvidu-java-client:2.29.0'
+
+	//변경사항시 자동 재시작
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.named('test') {
