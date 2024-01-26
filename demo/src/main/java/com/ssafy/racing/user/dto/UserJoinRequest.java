@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class UserJoinRequest {
     @NotBlank(message = "이메일이 비어있습니다.")
-    private String email;
+    private String userEmail;
 
     @NotBlank(message = "비밀번호가 비어있습니다.")
     private String password;
@@ -18,12 +18,12 @@ public class UserJoinRequest {
     private String nickname;
 
 
-    // Dto -> Entity
-    public User toEntity(String email, String password, String nickname){
-        return User.builder()
-                .userEmail(this.email)
-                .password(this.password)
-                .nickname(this.nickname)
-                .build();
-    }
+//    // Dto -> Entity
+//    public User toEntity(String userEmail, String password, String nickname){
+//        return User.builder()
+//                .userEmail(this.userEmail)
+//                .password(this.password)
+//                .nickname(this.nickname)
+//                .build();
+//    }
 }
