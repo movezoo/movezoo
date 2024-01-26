@@ -1,6 +1,8 @@
 package com.ssafy.racing.user.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.racing.friendship.domain.Friend;
 import com.ssafy.racing.friendship.domain.FriendRequest;
 import com.ssafy.racing.game.domain.LapTime;
@@ -18,7 +20,7 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue
-    private Integer userId;
+    private int userId;
 
     private String userEmail;
 
@@ -45,16 +47,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<LapTime> lapTimes = new ArrayList<>();
 
-    //내가 친구요청을 보낸 리스트
-    //cascade = CascadeType.ALL는 연관관계의 주인이 아닌쪽!(one)
-    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
-    private List<FriendRequest> sentFriendRequests = new ArrayList<>();
-
     //내가 친구요청을 받은 리스트
+    //cascade = CascadeType.ALL는 연관관계의 주인이 아닌쪽!(one)
     @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL)
     private List<FriendRequest> receivedFriendRequests = new ArrayList<>();
 
     //친구 관계인 사용자를 표시
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Friend> friends = new ArrayList<>();
 
@@ -77,8 +76,8 @@ public class User {
 
     // 친구 추가 메서드
     public void addFriend(User friend) {
-        Friend friendship = new Friend(this, friend);
-        friends.add(friendship);
+        this.friends.add(new Friend(this,friend));
+//        friend.friends.add(new Friend(friend,this));
     }
 
     //===연관관계 편의 메서드 예시===//
@@ -95,17 +94,6 @@ public class User {
         this.cameraSensitivity=50;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User user)) return false;
-        return getUserId() == user.getUserId() && getCoin() == user.getCoin() && getVolume() == user.getVolume() && getMic() == user.getMic() && getCameraSensitivity() == user.getCameraSensitivity() && Objects.equals(getUserEmail(), user.getUserEmail()) && Objects.equals(getGoogleUserEmail(), user.getGoogleUserEmail()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getNickname(), user.getNickname()) && Objects.equals(getProfileImgUrl(), user.getProfileImgUrl()) && Objects.equals(getAuthNumber(), user.getAuthNumber()) && Objects.equals(getTempPassword(), user.getTempPassword());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getUserId(), getUserEmail(), getGoogleUserEmail(), getPassword(), getNickname(), getCoin(), getProfileImgUrl(), getVolume(), getMic(), getCameraSensitivity(), getAuthNumber(), getTempPassword());
-    }
 
     @Override
     public String toString() {
@@ -115,6 +103,7 @@ public class User {
                 ", googleUserEmail='" + googleUserEmail + '\'' +
                 ", password='" + password + '\'' +
                 ", nickname='" + nickname + '\'' +
+                ", coin=" + coin +
                 '}';
     }
 }
