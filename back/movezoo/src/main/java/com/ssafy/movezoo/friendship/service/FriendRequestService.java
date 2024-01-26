@@ -44,7 +44,6 @@ public class FriendRequestService {
             return false;
         }
 
-        System.out.println(friendRequestRepository.findByUserIdAndFriendId(friendId, userId));
         //이미 친구 요청을 보냈을때
         if (friendRequestRepository.findByUserIdAndFriendId(friendId, userId).isPresent()) {
             return false;
