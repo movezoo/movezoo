@@ -1,6 +1,8 @@
 package com.ssafy.racing.user.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.racing.friendship.domain.Friend;
 import com.ssafy.racing.friendship.domain.FriendRequest;
 import com.ssafy.racing.game.domain.LapTime;
@@ -10,6 +12,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -17,7 +20,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue
-    private Integer userId;
+    private int userId;
 
     private String userEmail;
 
@@ -44,16 +47,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<LapTime> lapTimes = new ArrayList<>();
 
-    //내가 친구요청을 보낸 리스트
-    //cascade = CascadeType.ALL는 연관관계의 주인이 아닌쪽!(one)
-    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
-    private List<FriendRequest> sentFriendRequests = new ArrayList<>();
-
     //내가 친구요청을 받은 리스트
+    //cascade = CascadeType.ALL는 연관관계의 주인이 아닌쪽!(one)
     @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL)
     private List<FriendRequest> receivedFriendRequests = new ArrayList<>();
 
     //친구 관계인 사용자를 표시
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Friend> friends = new ArrayList<>();
 
@@ -76,8 +76,8 @@ public class User {
 
     // 친구 추가 메서드
     public void addFriend(User friend) {
-        Friend friendship = new Friend(this, friend);
-        friends.add(friendship);
+        this.friends.add(new Friend(this,friend));
+//        friend.friends.add(new Friend(friend,this));
     }
 
     //===연관관계 편의 메서드 예시===//
@@ -92,5 +92,18 @@ public class User {
         this.volume=50;
         this.mic=50;
         this.cameraSensitivity=50;
+    }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userEmail='" + userEmail + '\'' +
+                ", googleUserEmail='" + googleUserEmail + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", coin=" + coin +
+                '}';
     }
 }

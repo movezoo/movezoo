@@ -2,15 +2,21 @@ package com.ssafy.racing.friendship.domain;
 
 import com.ssafy.racing.user.domain.User;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.Objects;
+
+
 
 @Entity
-@NoArgsConstructor
-@Table(name = "FriendRequest")
+@Getter
+@Setter
 public class FriendRequest {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "friend_request_id")
     private int friendRequestId;
 
@@ -27,5 +33,7 @@ public class FriendRequest {
         this.toUser = toUser;
     }
 
-}
+    public FriendRequest() {
 
+    }
+}
