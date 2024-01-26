@@ -3,6 +3,7 @@ package com.ssafy.racing.user.sevice;
 import com.ssafy.racing.user.domain.User;
 import com.ssafy.racing.user.dto.UserJoinRequest;
 import com.ssafy.racing.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,12 +11,13 @@ import java.sql.PreparedStatement;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
 
     // 사용자 정보 조회
-    public User getUserInfo(int userId){
+    public User findById(int userId){
         return userRepository.findById(userId);
     }
 
@@ -30,8 +32,8 @@ public class UserService {
     }
 
     // 설정 변경
-    public int changeSetting(int userId, int volume, int mic, int cameraSensitivity){
-        return userRepository.updateSetting(userId, volume, mic, cameraSensitivity);
+    public int changeSettings(int userId, int volume, int mic){
+        return userRepository.updateVolumeAndMic(userId, volume, mic);
     }
 
     // 회원가입
@@ -48,15 +50,17 @@ public class UserService {
         return !user.getNickname().equals(nickname);
     }
 
-    // 회원가입
-    public boolean join(User user){
-        // 아이디 또는 이메일이 중복일 경우
-        // 여기서 자꾸 initDB랑 충돌나서 문제 생기는 것 같음 => 몰루겟음
-//        if (userRepository.findByEmail(user.getUserEmail()) != null || userRepository.findByNickname(user.getNickname()) != null)
-//            return false;
+    public int join(User user){
+        int result = 1;
+        if (userRepository.findByEmail(user.getUserEmail()) != null)
+            result = 2;
+        else if (userRepository.findByNickname(user.getNickname()) != null)
+            result = 3;
+        else {
+            userRepository.save(user);
+        }
 
-        userRepository.save(user);
-        return true;
+        return result;
     }
 
 
