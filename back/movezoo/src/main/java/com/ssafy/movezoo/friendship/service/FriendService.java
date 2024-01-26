@@ -55,6 +55,7 @@ public class FriendService {
 
         //친구요청에 있어야 추가할수있다.
 
+
         if ((int) userId == (int) friendId || friendRepository.findByUserIdAndFriendUserId(userId, friendId).isPresent())
             return false;
 
