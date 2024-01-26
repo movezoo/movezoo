@@ -54,8 +54,8 @@ public class FriendRequestController {
             //친구 추가후 요청삭제
             friendService.addFriend(user.getUserId(),requestDto.getFriendId());
         }
-        System.out.println(user.getUserId()+" "+ requestDto.getFriendId());
-        friendRequestService.deleteFriendRequest(user.getUserId(),requestDto.getFriendId());
+
+        friendRequestService.deleteFriendRequest(requestDto.getFriendId(),user.getUserId());
         
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
         simpleResponseDto.setSuccess(true);
