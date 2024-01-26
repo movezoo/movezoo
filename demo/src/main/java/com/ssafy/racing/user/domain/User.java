@@ -18,7 +18,7 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue
-    private int userId;
+    private Integer userId;
 
     private String userEmail;
 
