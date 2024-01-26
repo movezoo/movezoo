@@ -30,7 +30,7 @@ public class UserRepository {
     }
 
     public int totalCount() {
-        return em.createQuery("select count(u) from User u", int.class)
+        return em.createQuery("select count(u) from User u", Integer.class)
                 .getSingleResult();
     }
 
@@ -66,10 +66,11 @@ public class UserRepository {
                 .executeUpdate();
     }
 
-    public int updateVolumeAndMic(int userId, int volume, int mic) {
-        return em.createQuery("update User u set u.volume=:volume, u.mic=:mic where u.userId=:userId")
+    public int updateSetting(int userId, int volume, int mic, int cameraSensitivity) {
+        return em.createQuery("update User u set u.volume=:volume, u.mic=:mic, u.cameraSensitivity=:cameraSensitivity where u.userId=:userId")
                 .setParameter("volume", volume)
                 .setParameter("mic", mic)
+                .setParameter("cameraSensitivity", cameraSensitivity)
                 .setParameter("userId", userId)
                 .executeUpdate();
     }
