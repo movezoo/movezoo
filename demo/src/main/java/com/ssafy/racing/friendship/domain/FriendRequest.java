@@ -2,17 +2,21 @@ package com.ssafy.racing.friendship.domain;
 
 import com.ssafy.racing.user.domain.User;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 
+
+
 @Entity
-@NoArgsConstructor
-@Table(name = "FriendRequest")
+@Getter
+@Setter
 public class FriendRequest {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "friend_request_id")
     private int friendRequestId;
 
@@ -29,16 +33,7 @@ public class FriendRequest {
         this.toUser = toUser;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FriendRequest that)) return false;
-        return friendRequestId == that.friendRequestId && Objects.equals(fromUser, that.fromUser) && Objects.equals(toUser, that.toUser);
-    }
+    public FriendRequest() {
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(friendRequestId, fromUser, toUser);
     }
 }
-

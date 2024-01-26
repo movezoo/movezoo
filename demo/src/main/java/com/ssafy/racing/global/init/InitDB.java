@@ -1,9 +1,13 @@
 package com.ssafy.racing.global.init;
 
+import com.ssafy.racing.friendship.domain.Friend;
+import com.ssafy.racing.friendship.service.FriendService;
 import com.ssafy.racing.user.domain.User;
 import com.ssafy.racing.user.repository.UserRepository;
 import com.ssafy.racing.user.sevice.UserService;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class InitDB {
     private final UserService userService;
     private final UserRepository userRepository;
+    private final FriendService friendService;
 //    @Autowired
 //    public InitDB(UserService userService) {
 //        this.userService=userService;
@@ -33,14 +38,15 @@ public class InitDB {
         User userC = new User("goqdp@naver.com","1234","창히분신");
         userRepository.save(userC);
 
+        friendService.addFriend(2,1);
+        friendService.addFriend(2,3);
 
-        User a = userRepository.findById(1);
-        User b = userRepository.findById(1);
 
-        System.out.println(a.toString());
-        System.out.println(b.toString());
-        System.out.println(a.equals(b));
+    }
 
+    public void makeSession(HttpSession session){
+        User user = userService.findById(1);
+        session.setAttribute("user",user);
     }
 
 }
