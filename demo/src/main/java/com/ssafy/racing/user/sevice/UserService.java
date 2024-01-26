@@ -15,7 +15,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     // 사용자 정보 조회
-    public User findById(int userId){
+    public User getUserInfo(int userId){
         return userRepository.findById(userId);
     }
 
@@ -30,8 +30,8 @@ public class UserService {
     }
 
     // 설정 변경
-    public int changeSettings(int userId, int volume, int mic){
-        return userRepository.updateVolumeAndMic(userId, volume, mic);
+    public int changeSetting(int userId, int volume, int mic, int cameraSensitivity){
+        return userRepository.updateSetting(userId, volume, mic, cameraSensitivity);
     }
 
     // 회원가입
@@ -48,17 +48,15 @@ public class UserService {
         return !user.getNickname().equals(nickname);
     }
 
-    public int join(User user){
-        int result = 1;
-        if (userRepository.findByEmail(user.getUserEmail()) != null)
-            result = 2;
-        else if (userRepository.findByNickname(user.getNickname()) != null)
-            result = 3;
-        else {
-            userRepository.save(user);
-        }
+    // 회원가입
+    public boolean join(User user){
+        // 아이디 또는 이메일이 중복일 경우
+        // 여기서 자꾸 initDB랑 충돌나서 문제 생기는 것 같음 => 몰루겟음
+//        if (userRepository.findByEmail(user.getUserEmail()) != null || userRepository.findByNickname(user.getNickname()) != null)
+//            return false;
 
-        return result;
+        userRepository.save(user);
+        return true;
     }
 
 
