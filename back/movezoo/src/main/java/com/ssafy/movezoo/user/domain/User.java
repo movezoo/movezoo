@@ -7,16 +7,14 @@ import com.ssafy.movezoo.friendship.domain.FriendRequest;
 import com.ssafy.movezoo.game.domain.LapTime;
 import com.ssafy.movezoo.game.domain.MyRacer;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
     @Id
@@ -79,6 +77,12 @@ public class User {
     public void addFriend(User friend) {
         this.friends.add(new Friend(this,friend));
 //        friend.friends.add(new Friend(friend,this));
+    }
+
+    public void addMyRacer(MyRacer myRacer) {
+        myRacer.setUser(this);
+        this.myRacers.add(myRacer);
+
     }
 
     //===연관관계 편의 메서드 예시===//

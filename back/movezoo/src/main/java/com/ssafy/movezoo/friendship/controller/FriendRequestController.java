@@ -1,6 +1,6 @@
 package com.ssafy.movezoo.friendship.controller;
 
-import com.ssafy.movezoo.friendship.dto.FriendInfoDto;
+import com.ssafy.movezoo.user.dto.UserInfoDto;
 import com.ssafy.movezoo.friendship.dto.FriendRequestDto;
 import com.ssafy.movezoo.friendship.dto.FriendResponseDto;
 import com.ssafy.movezoo.friendship.service.FriendRequestService;
@@ -25,12 +25,12 @@ public class FriendRequestController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<List<FriendResponseDto>> friendRequestList(@PathVariable Integer userId){
-        List<FriendResponseDto> result = friendRequestService.findFriendRequestList(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        List<FriendResponseDto> friendList = friendRequestService.findFriendRequestList(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(friendList);
     }
 
     @PostMapping
-    public ResponseEntity<SimpleResponseDto> requestFriend(@RequestBody FriendInfoDto friendInfoDto){
+    public ResponseEntity<SimpleResponseDto> requestFriend(@RequestBody UserInfoDto friendInfoDto){
         User user =userService.findById(1);
 
         boolean result = friendRequestService.addFriendRequest(user.getUserId(), friendInfoDto.getFriendId());

@@ -59,5 +59,15 @@ public class UserService {
         return true;
     }
 
+    public void addUserCoin(int userId, int coin){
+        User user = userRepository.findById(userId);
+        user.setCoin(user.getCoin()+coin);
+    }
+
+    public void useUserCoin(int userId, int coin){
+        User user = userRepository.findById(userId);
+        user.setCoin(user.getCoin()-coin);
+    }
+
 
 }
