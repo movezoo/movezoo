@@ -10,7 +10,7 @@ function Main() {
           <Link to="/">홈</Link>
         </li>
         <li>
-          <Link to="/">싱글</Link>
+          <Link to="/Single">싱글</Link>
         </li>
         <li>
           <Link to="/">멀티</Link>
