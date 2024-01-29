@@ -11,7 +11,7 @@ public class MessageDto {
     private Object data;
 
 //    @Builder
-//    public Message(){
+//    public MessageDto(){
 //        this.status = StatusEnum.BAD_REQUEST;
 //        this.message = null;
 //        this.data = null;
