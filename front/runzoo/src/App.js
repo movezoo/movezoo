@@ -3,7 +3,7 @@ import Home from "./pages/home/Home";
 import Main from "./pages/main/Main";
 import Single from "./pages/single/Single";
 import Game from "./pages/game/Game.js";
-import Single from "./pages/result/Result";
+import Result from "./pages/result/Result";
 
 function App() {
   return (
