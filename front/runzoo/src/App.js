@@ -10,10 +10,11 @@ function App() {
     <Router>
       <Routes>
         <Route path="/hello" element={<h1>Hello</h1>} />
-        <Route path="/Result" element={<Result />} />
-        <Route path="/Game" element={<Game />} />
-        <Route path="/Single" element={<Single />} />
+        <Route path="/Home" element={<Home />} />
         <Route path="/Main" element={<Main />} />
+        <Route path="/Single" element={<Single />} />
+        <Route path="/Game" element={<Game />} />
+        <Route path="/Result" element={<Result />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </Router>
