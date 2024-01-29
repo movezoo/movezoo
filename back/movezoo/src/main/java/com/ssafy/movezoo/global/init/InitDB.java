@@ -3,6 +3,8 @@ package com.ssafy.movezoo.global.init;
 import com.ssafy.movezoo.friendship.service.FriendService;
 import com.ssafy.movezoo.game.domain.MyRacer;
 import com.ssafy.movezoo.game.domain.Racer;
+import com.ssafy.movezoo.game.dto.LapTimeRequestDto;
+import com.ssafy.movezoo.game.serivce.LapTimeService;
 import com.ssafy.movezoo.game.serivce.RacerService;
 import com.ssafy.movezoo.user.domain.User;
 import com.ssafy.movezoo.user.repository.UserRepository;
@@ -19,6 +21,7 @@ public class InitDB {
     private final UserRepository userRepository;
     private final FriendService friendService;
     private final RacerService racerService;
+    private final LapTimeService lapTimeService;
 //    @Autowired
 //    public InitDB(UserService userService) {
 //        this.userService=userService;
@@ -33,13 +36,16 @@ public class InitDB {
 
         User userA = new User("rlackdgml97@naver.com","1234","창히");
         userA.setCoin(5000);
+        userA.setProfileImgUrl("userA.jpg");
         userRepository.save(userA);
 
         User userB = new User("jww5555@naver.com","1234","재원");
         userB.setCoin(1000);
+        userB.setProfileImgUrl("userB.jpg");
         userRepository.save(userB);
 
         User userC = new User("goqdp@naver.com","1234","창히분신");
+        userC.setProfileImgUrl("userC.jpg");
         userRepository.save(userC);
 
         friendService.addFriend(2,1);
@@ -59,6 +65,41 @@ public class InitDB {
 
         racerService.addMyRacer(userB.getUserId(),dao.getRacerId());
         racerService.addMyRacer(userB.getUserId(),bazzi.getRacerId());
+
+        LapTimeRequestDto lapTimeRequestDto =new LapTimeRequestDto();
+        lapTimeRequestDto.setUserId(1);
+        lapTimeRequestDto.setRecord(1.100);
+        lapTimeRequestDto.setTrackId(1);
+
+        lapTimeService.addLapTime(lapTimeRequestDto);
+
+        lapTimeRequestDto.setTrackId(2);
+
+        lapTimeService.addLapTime(lapTimeRequestDto);
+
+        lapTimeRequestDto.setTrackId(1);
+        lapTimeRequestDto.setRecord(2.222);
+        lapTimeRequestDto.setUserId(2);
+
+        lapTimeService.addLapTime(lapTimeRequestDto);
+
+        lapTimeRequestDto.setTrackId(1);
+        lapTimeRequestDto.setRecord(5.528);
+        lapTimeRequestDto.setUserId(3);
+
+        lapTimeService.addLapTime(lapTimeRequestDto);
+
+        lapTimeRequestDto.setTrackId(2);
+        lapTimeRequestDto.setRecord(8.272);
+        lapTimeRequestDto.setUserId(3);
+
+        lapTimeService.addLapTime(lapTimeRequestDto);
+
+        lapTimeRequestDto.setTrackId(3);
+        lapTimeRequestDto.setRecord(8.272);
+        lapTimeRequestDto.setUserId(3);
+
+        lapTimeService.addLapTime(lapTimeRequestDto);
     }
 
     public void makeSession(HttpSession session){
