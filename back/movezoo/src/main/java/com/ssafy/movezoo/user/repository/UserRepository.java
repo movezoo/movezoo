@@ -61,10 +61,10 @@ public class UserRepository {
                 .executeUpdate();
     }
 
-    public int updateNickname(int userId, String nickname) {
-        return em.createQuery("update User u set u.nickname = :nickname where u.userId = :userId")
+    public int updateNickname(String userEmail, String nickname) {
+        return em.createQuery("update User u set u.nickname = :nickname where u.userEmail = :userEmail")
                 .setParameter("nickname", nickname)
-                .setParameter("userId", userId)
+                .setParameter("userEmail", userEmail)
                 .executeUpdate();
     }
 
