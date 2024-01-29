@@ -8,16 +8,14 @@ import com.ssafy.movezoo.game.domain.LapTime;
 import com.ssafy.movezoo.game.domain.MyRacer;
 import com.ssafy.movezoo.user.dto.UserRole;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
     @Id
@@ -51,6 +49,7 @@ public class User {
     @Column(nullable = false)
     private UserRole role;
 
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<LapTime> lapTimes = new ArrayList<>();
 
@@ -70,22 +69,32 @@ public class User {
 
     // 회원가입 용 Constructor
     @Builder
-    public User(String userEmail, String password, String nickname){
+    public User(String userEmail, String password, String nickname) {
         this.userEmail = userEmail;
-        this.password = password;   // 암호화 해서 넣기 (PasswordEncoder 사용)
+        this.password = password;
         this.nickname = nickname;
-        this.coin=0;
-        this.volume=50;
-        this.mic=50;
-        this.cameraSensitivity=50;
+        this.coin = 0;
+        this.volume = 50;
+        this.mic = 50;
+        this.cameraSensitivity = 50;
         this.role=UserRole.USER;
     }
 
 
     // 친구 추가 메서드
     public void addFriend(User friend) {
-        this.friends.add(new Friend(this,friend));
+        this.friends.add(new Friend(this, friend));
 //        friend.friends.add(new Friend(friend,this));
+    }
+
+    public void addMyRacer(MyRacer myRacer) {
+        myRacer.setUser(this);
+        this.myRacers.add(myRacer);
+    }
+
+    public void addLapTime(LapTime lapTime) {
+        this.lapTimes.add(lapTime);
+        lapTime.setUser(this);
     }
 
     //===연관관계 편의 메서드 예시===//
@@ -94,12 +103,12 @@ public class User {
 //        child.setParent(this);
 //    }
 
-    public User(String googleUserEmail){
-        this.googleUserEmail=googleUserEmail;
-        this.coin=0;
-        this.volume=50;
-        this.mic=50;
-        this.cameraSensitivity=50;
+    public User(String googleUserEmail) {
+        this.googleUserEmail = googleUserEmail;
+        this.coin = 0;
+        this.volume = 50;
+        this.mic = 50;
+        this.cameraSensitivity = 50;
     }
 
 
@@ -114,5 +123,4 @@ public class User {
                 ", coin=" + coin +
                 '}';
     }
-
 }

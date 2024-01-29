@@ -4,8 +4,6 @@ import com.ssafy.movezoo.user.domain.User;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,6 +15,7 @@ import java.util.Optional;
 public class UserRepository {
 
     private final EntityManager em;
+
     public User save(User user) {
         em.persist(user);
         return user;
@@ -46,6 +45,7 @@ public class UserRepository {
                 .setParameter("userEmail", userEmail)
                 .getResultList().stream().findAny();
     }
+
 
     public Optional<User> findByNickname(String nickname) {
         return em.createQuery("select u from User u where u.nickname = :nickname", User.class)
