@@ -1,38 +1,22 @@
-import React, { useState } from 'react';
-import Login from './component/main/Login';
-import Signup from './component/main/Signup';
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/home/Home";
+import Main from "./pages/main/Main";
+import Single from "./pages/single/Single";
+import Game from "./pages/game/Game.js";
+import Single from "./pages/result/Result";
 
 function App() {
-  const [showSignup, setShowSignup] = useState(false);
-
-  const handleShowSignup = () => {
-    setShowSignup(true);
-  };
-  const handleShowLogin = () => {
-    setShowSignup(false);
-  };
-
-
   return (
-    <div className="App">
-      <div className='Main'>
-        <h1>Main Page</h1>
-      </div>
-
-      <div className='Login'>
-        {/* 회원가입 버튼 */}
-        <button type="button" onClick={handleShowSignup}>
-          회원가입
-        </button>
-        <button type="button" onClick={handleShowLogin}>
-          로그인
-        </button>
-
-        {/* 회원가입 페이지 또는 로그인 페이지 표시 */}
-        {showSignup ? <Signup /> : <Login />}
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/hello" element={<h1>Hello</h1>} />
+        <Route path="/Result" element={<Result />} />
+        <Route path="/Game" element={<Game />} />
+        <Route path="/Single" element={<Single />} />
+        <Route path="/Main" element={<Main />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Router>
   );
 }
 
