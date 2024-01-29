@@ -4,9 +4,12 @@ import com.ssafy.movezoo.user.domain.User;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -14,7 +17,6 @@ import java.util.List;
 public class UserRepository {
 
     private final EntityManager em;
-
     public User save(User user) {
         em.persist(user);
         return user;
@@ -39,16 +41,16 @@ public class UserRepository {
         return em.find(User.class, userId);
     }
 
-    public User findByEmail(String userEmail) {
+    public Optional<User> findByEmail(String userEmail) {
         return em.createQuery("select u from User u where u.userEmail = :userEmail", User.class)
                 .setParameter("userEmail", userEmail)
-                .getSingleResult();
+                .getResultList().stream().findAny();
     }
 
-    public User findByNickname(String nickname) {
+    public Optional<User> findByNickname(String nickname) {
         return em.createQuery("select u from User u where u.nickname = :nickname", User.class)
                 .setParameter("nickname", nickname)
-                .getSingleResult();
+                .getResultList().stream().findAny();
     }
 
     //파라미터로 객체보다는 아이디만 넘기는것이 직관적이다.

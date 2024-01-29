@@ -2,17 +2,11 @@ package com.ssafy.movezoo.game.domain;
 
 import com.ssafy.movezoo.user.domain.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "MyRacer")
-@Getter
-@Setter
 public class MyRacer {
 
     @Id
@@ -21,7 +15,7 @@ public class MyRacer {
     private int myracerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,11 +23,14 @@ public class MyRacer {
     private Racer racer;
 
     @Override
-    public String toString() {
-        return "MyRacer{" +
-                "myracerId=" + myracerId +
-                ", user=" + user.getUserId() +
-                ", racer=" + racer.getRacerName() +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MyRacer myRacer)) return false;
+        return myracerId == myRacer.myracerId && Objects.equals(user, myRacer.user) && Objects.equals(racer, myRacer.racer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(myracerId, user, racer);
     }
 }

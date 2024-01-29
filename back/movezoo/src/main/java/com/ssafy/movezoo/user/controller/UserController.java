@@ -3,44 +3,57 @@ package com.ssafy.movezoo.user.controller;
 import com.ssafy.movezoo.user.domain.User;
 import com.ssafy.movezoo.user.dto.MessageDto;
 import com.ssafy.movezoo.user.dto.StatusEnum;
-import com.ssafy.movezoo.user.dto.UserJoinRequest;
+import com.ssafy.movezoo.user.dto.UserJoinRequestDto;
 import com.ssafy.movezoo.user.sevice.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
-    private UserService userService;
-    @PostMapping
-    public ResponseEntity<MessageDto> registUser(UserJoinRequest dto){
-        boolean result = userService.join(new User(dto.getUserEmail(), dto.getPassword(), dto.getNickname()));
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-        if (result){
-            MessageDto msg = MessageDto.builder()
+    @PostMapping
+    public ResponseEntity<MessageDto> registUser(UserJoinRequestDto dto){
+        String msg = "회원가입 성공";
+        // 이메일, 닉네임 중복체크
+        if (userService.checkUsersEmailDuplicate(dto.getUserEmail())){
+            msg = "중복된 이메일입니다.";
+        } else if (userService.checkNicknameDuplicate(dto.getNickname())){
+            msg = "중복된 닉네임입니다.";
+        } else {
+            // 회원가입 성공
+            userService.join(new User(dto.getUserEmail(), passwordEncoder.encode(dto.getPassword()), dto.getNickname()));
+            System.out.println(passwordEncoder.encode(dto.getPassword()));
+            MessageDto message = MessageDto.builder()
                     .status(StatusEnum.OK)
-                    .message("회원가입 성공")
+                    .message(msg)
                     .data(dto)
                     .build();
 
-            return ResponseEntity.ok().body(msg);
-        } else {
-            MessageDto msg = MessageDto.builder()
-                    .status(StatusEnum.BAD_REQUEST)
-                    .message("회원가입 실패")
-                    .build();
-
-            return ResponseEntity.badRequest().body(msg);
+            return ResponseEntity.ok().body(message);
         }
+        
+        MessageDto message = MessageDto.builder()
+                .status(StatusEnum.BAD_REQUEST)
+                .message(msg)
+                .build();
+
+        return ResponseEntity.badRequest().body(message);
     }
 
     // 비밀번호 변경
     @PatchMapping("/password")
     public ResponseEntity<MessageDto> changePassword(String userEmail, String password){
-        userService.changePassword(userEmail, password);
+        userService.changePassword(userEmail, passwordEncoder.encode(password));
 
         MessageDto msg = MessageDto.builder()
                 .status(StatusEnum.OK)
@@ -54,23 +67,23 @@ public class UserController {
     @PatchMapping("/nickname")
     public ResponseEntity<MessageDto> changeNickname(int userId, String nickname){
         // 닉네임 중복체크
-//        if (userService.checkNicknameDuplicate(nickname)) {
-//            Message msg = Message.builder()
-//                    .status(StatusEnum.BAD_REQUEST)
-//                    .message("닉네임 중복")
-//                    .build();
-//
-//            return ResponseEntity.badRequest().body(msg);
-//        } else {
+        if (userService.checkNicknameDuplicate(nickname)) {
+            MessageDto message = MessageDto.builder()
+                    .status(StatusEnum.BAD_REQUEST)
+                    .message("중복된 닉네임입니다.")
+                    .build();
+
+            return ResponseEntity.badRequest().body(message);
+        } else {
         userService.changeNickname(userId, nickname);
 
-        MessageDto msg = MessageDto.builder()
+        MessageDto message = MessageDto.builder()
                 .status(StatusEnum.OK)
                 .message("닉네임 변경 성공")
                 .build();
 
-        return ResponseEntity.ok().body(msg);
-//        }
+        return ResponseEntity.ok().body(message);
+        }
     }
 
     // 설정 변경
@@ -89,14 +102,24 @@ public class UserController {
     // 사용자 정보 조회
     @GetMapping("/{userId}")
     public ResponseEntity<MessageDto> getUserInfo(@PathVariable int userId){
-        MessageDto msg = MessageDto.builder()
+        MessageDto message = MessageDto.builder()
                 .status(StatusEnum.OK)
                 .message("조회 성공")
                 .data(userService.findById(userId))
                 .build();
 
-        return ResponseEntity.ok().body(msg);
+        return ResponseEntity.ok().body(message);
     }
 
 
+    @GetMapping("/session-test")
+    public void sessionTest(HttpSession session){
+        User user = new User("rlackdgml97@naver.com");
+
+        session.setAttribute("test",user);
+
+        User test = (User) session.getAttribute("test");
+
+        session.invalidate();
+    }
 }
