@@ -43,7 +43,7 @@
                     // 접근 관리
                     .authorizeHttpRequests((authorizeRequests) ->
                             authorizeRequests
-                                    .requestMatchers("/","/login/**", "/login").permitAll()  // login 인증 절차없이 허용
+                                    .requestMatchers("/**","/login/**", "/login").permitAll()  // login 인증 절차없이 허용
                                     .requestMatchers("/users").anonymous() // 인증되지 않은 사용자만 접근
                                     .requestMatchers("/users/**").hasRole(UserRole.USER.name())    // 권한을 가진 사람만 접근 가능, hasAnyRole("","")
                                     .anyRequest().authenticated()   // authenticated(): 인증(로그인)한 사용자만 접근
