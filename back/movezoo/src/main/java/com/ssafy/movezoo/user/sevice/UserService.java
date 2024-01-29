@@ -24,8 +24,8 @@ public class UserService {
     }
 
     // 닉네임 변경
-    public int changeNickname(int userId, String nickname){
-        return userRepository.updateNickname(userId, nickname);
+    public int changeNickname(String userEmail, String nickname){
+        return userRepository.updateNickname(userEmail, nickname);
     }
 
     // 설정 변경
@@ -36,26 +36,32 @@ public class UserService {
     // 회원가입
     // 아이디 중복 체크 (중복일 경우 true, 중복이 아닐 경우 false)
     public boolean checkUsersEmailDuplicate(String usersEmail){
+        System.out.println("이메일 중복체크: "+usersEmail);
         Optional<User> userOptional = userRepository.findByEmail(usersEmail);
 
+        if (userOptional.isPresent())
+            System.out.println(userOptional.get().toString());
+
         // Optional이 비어있으면 false를 반환하도록 기본값을 설정
-        User user = userOptional.orElse(null);
+        if (userOptional.isPresent())
+            return true;
 
-        if (user == null)
-            return false;
-
-        return !user.getUserEmail().equals(usersEmail);
+        return false;
     }
 
     // 닉네임 중복체크 (중복일 경우 true, 중복이 아닐 경우 false)
     public boolean checkNicknameDuplicate(String nickname){
+        System.out.println("닉네임 중복체크: "+nickname);
         Optional<User> userOptional = userRepository.findByNickname(nickname);
-        User user = userOptional.orElse(null);
 
-        if (user == null)
-            return false;
+        if (userOptional.isPresent())
+            System.out.println(userOptional.get().toString());
 
-        return !user.getNickname().equals(nickname);
+        // Optional이 비어있으면 false를 반환하도록 기본값을 설정
+        if (userOptional.isPresent())
+            return true;
+
+        return false;
     }
 
     // 회원가입
