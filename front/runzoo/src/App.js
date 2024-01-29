@@ -4,6 +4,11 @@ import Main from "./pages/main/Main";
 import Single from "./pages/single/Single";
 import Game from "./pages/game/Game.js";
 import Result from "./pages/result/Result";
+<<<<<<< HEAD
+=======
+import Signup from "./components/home/Signup.js"
+
+>>>>>>> c568d653c5ae5016bf6f86df63896fe54288140d
 
 function App() {
   return (
@@ -16,6 +21,10 @@ function App() {
         <Route path="/Game" element={<Game />} />
         <Route path="/Result" element={<Result />} />
         <Route path="/" element={<Home />} />
+<<<<<<< HEAD
+=======
+        <Route path="/SignUp" element={<Signup />} />
+>>>>>>> c568d653c5ae5016bf6f86df63896fe54288140d
       </Routes>
     </Router>
   );
