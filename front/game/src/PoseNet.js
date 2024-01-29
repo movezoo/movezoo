@@ -1,22 +1,19 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import "./App.css";
+
 import * as tf from "@tensorflow/tfjs";
 // import "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
-import Webcam from "react-webcam";
-import { drawKeypoints, drawSkeleton } from './utilities';
 import { data } from './data.js';
 
 function PoseNet() {
 
-  // 텐서플로우에서 사용중인 백엔드를 알 수 있는 코드
-  // setTimeout( ()=> {
-  //   console.log(tf.getBackend());
-  // }, 1000)
+
   // useRef로 웹캠, 캔버스, 게임 참조 변수 생성
   const webcamRef = useRef(null);
   const motionRef = useRef(null);
 
+  useEffect( ()=> {
   // PosNet을 실행하는 함수
   const runPosenet = async () => {
     // PosNet 모델 로드
@@ -26,9 +23,8 @@ function PoseNet() {
     });
 
     // 일정 간격으로 detect 함수 실행
-    setInterval(() => {
-      detect(net);
-    }, 500);
+    
+    detect(net);
   };
 
   // Pose를 감지하고 콘솔에 결과 출력하는 함수
@@ -36,57 +32,28 @@ function PoseNet() {
     // 웹캠이 정상적으로 로드되었는지 확인
     if (
       typeof webcamRef.current !== "undefined" &&
-      webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4
+      webcamRef.current !== null 
+      // && webcamRef.current.video.readyState === 4
     ) {
       // 웹캠 비디오 및 크기 정보 가져오기
-      const video = webcamRef.current.video;
-      const videoWidth = webcamRef.current.video.videoWidth;
-      const videoHeight = webcamRef.current.video.videoHeight;
+      const video = webcamRef.current;
+      // const video = webcamRef.current.video;
+      const videoWidth = webcamRef.current.videoWidth;
+      const videoHeight = webcamRef.current.videoHeight;
+      // const videoWidth = webcamRef.current.video.videoWidth;
+      // const videoHeight = webcamRef.current.video.videoHeight;
+      console.log(`videoWidth : ${videoWidth}`)
+      console.log(`videoHeight : ${videoHeight}`)
       
       /// 비디오 크기 설정
-      webcamRef.current.video.width = videoWidth;
-      webcamRef.current.video.height = videoHeight;
+      webcamRef.current.width = videoWidth;
+      webcamRef.current.height = videoHeight;
+      // webcamRef.current.video.width = videoWidth;
+      // webcamRef.current.video.height = videoHeight;
 
       // PoseNet을 사용하여 포즈 추정
       const pose = await net.estimateSinglePose(video);
       // console.log(pose)
-
-      // 사람 기준 - 양 어깨 사이의 한 점을 기준으로 눈, 코, 귀 들의 좌표의 위치에 따른 진행 방향 결정
-      /*
-      // 어깨의 중앙 좌표 계산
-      const center = (pose.keypoints[5].position.x + pose.keypoints[6].position.x) / 2;
-
-      // 각 포인트의 x 좌표 가져오기
-      const pose0 = pose.keypoints[0].position.x;
-      const pose1 = pose.keypoints[1].position.x;
-      const pose2 = pose.keypoints[2].position.x;
-      const pose3 = pose.keypoints[3].position.x;
-      const pose4 = pose.keypoints[4].position.x;
-
-      // 중앙을 기준으로 왼쪽, 오른쪽 판별
-      let count = 0;
-      const lst = [pose0, pose1, pose2, pose3, pose4];
-
-      for (let i = 0; i < lst.length; i++) {
-        const num = lst[i]
-        if (num > center) {
-          count++;
-        }
-      }
-
-      // 결과에 따라 콘솔에 출력
-      if (count < 2) {
-        console.log("Right");
-      } else if (count > 3) {
-        console.log("Left");
-      } else {
-        console.log("Forward");
-      }
-
-      // 캔버스에 Pose 그리기
-      drawCanvas(pose, video, videoWidth, videoHeight, motionRef);
-      */
 
       // 화면 기준 - 화면의 중앙을 기준으로 코의 좌표의 위치에 따른 진행 방향 결정, 민감도 설정 가능
       /**/
@@ -110,12 +77,14 @@ function PoseNet() {
       
       // 캔버스에 Pose 그리기
       drawCanvas(pose, video, videoWidth, videoHeight, motionRef, sensitivity);
-
+      requestAnimationFrame( () => {detect(net)} )
     }
   };
 
   // 캔버스에 Pose를 그리는 함수
   const drawCanvas = (pose, video, videoWidth, videoHeight, canvas, sensitivity=0) => {
+    console.log(`canvas.current`)
+    console.log(canvas)
     const ctx = canvas.current.getContext("2d");
     canvas.current.width = videoWidth;
     canvas.current.height = videoHeight;
@@ -131,9 +100,6 @@ function PoseNet() {
     // Pose의 키포인트와 스켈레톤 그리기
     drawKeypointsFlipped(pose["keypoints"], 0.5, ctx, centerX);
 
-    // Pose의 키포인트와 스켈레톤 그리기
-    // drawKeypoints(pose["keypoints"], 0.5, ctx);
-    // drawSkeleton(pose["keypoints"], 0.5, ctx);
   };
 
   // 좌우 반전된 키포인트 그리기
@@ -163,13 +129,15 @@ function PoseNet() {
   }
 
   // Posenet 실행
-  runPosenet();
 
+
+    runPosenet();
+  })
   return (
     <div className="PoseNet">
       <header className="App-header">
         {/* 웹캠 및 캔버스 요소 추가 */}
-        <Webcam
+        <video
           ref={webcamRef}
           style={{
             position: "absolute",
@@ -178,7 +146,7 @@ function PoseNet() {
             left: 1000,
             right: 0,
             textAlign: "center",
-            zindex: 9,
+            zIndex: 8,
             width: 640,
             height: 480,
           }}
@@ -194,7 +162,7 @@ function PoseNet() {
             left: 1000,
             right: 0,
             textAlign: "center",
-            zindex: 9,
+            zIndex: 9,
             width: 640,
             height: 480,
           }}
