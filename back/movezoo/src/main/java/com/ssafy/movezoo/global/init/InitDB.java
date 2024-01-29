@@ -1,9 +1,11 @@
 package com.ssafy.movezoo.global.init;
 
 import com.ssafy.movezoo.friendship.service.FriendService;
+import com.ssafy.movezoo.game.domain.Item;
 import com.ssafy.movezoo.game.domain.MyRacer;
 import com.ssafy.movezoo.game.domain.Racer;
 import com.ssafy.movezoo.game.dto.LapTimeRequestDto;
+import com.ssafy.movezoo.game.serivce.ItemService;
 import com.ssafy.movezoo.game.serivce.LapTimeService;
 import com.ssafy.movezoo.game.serivce.RacerService;
 import com.ssafy.movezoo.user.controller.UserController;
@@ -25,6 +27,7 @@ public class InitDB {
     private final FriendService friendService;
     private final RacerService racerService;
     private final LapTimeService lapTimeService;
+    private final ItemService itemService;
 //    @Autowired
 //    public InitDB(UserService userService) {
 //        this.userService=userService;
@@ -106,6 +109,30 @@ public class InitDB {
         lapTimeRequestDto.setUserId(3);
 
         lapTimeService.addLapTime(lapTimeRequestDto);
+
+
+        Item item1 = new Item();
+        item1.setItemName("마취총");
+        item1.setItemImgUrl("item1.jpg");
+        item1.setItemDescription("사용자 앞에 있는 플레이어를 3초간 멈춤");
+
+        itemService.save(item1);
+
+        Item item2 = new Item();
+        item2.setItemName("쉴드");
+        item2.setItemImgUrl("item2.jpg");
+        item2.setItemDescription("공격 아이템을 방어");
+
+        itemService.save(item2);
+
+        Item item3 = new Item();
+        item3.setItemName("바나나");
+        item3.setItemImgUrl("item3.jpg");
+        item3.setItemDescription("바나나를 밟은 사용자를 랜덤하게 좌 또는 우로 이동시킴");
+
+        itemService.save(item3);
+
+
     }
 
     public void makeSession(HttpSession session){
