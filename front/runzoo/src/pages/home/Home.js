@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function Main() {
+function Home() {
   return (
     <div>
       <h1>시작 페이지</h1>
@@ -9,11 +9,11 @@ function Main() {
       <ul>
         <h2>연결 페이지</h2>
         <li>
-          <Link to="/Lobby">로비</Link>
+          <Link to="/Main">메인으로</Link>
         </li>
       </ul>
     </div>
   );
 }
 
-export default Main;
+export default Home;
