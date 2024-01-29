@@ -1,6 +1,6 @@
-// src/Signup.js
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Home from '../../pages/home/Home';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -8,6 +8,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [nickname, setNickname] = useState('');
   const [signedUp, setSignedUp] = useState(false);
+  const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 얻음
 
   const handleSignup = () => {
     // 입력 필드 중 하나라도 비어있으면 회원가입을 막습니다.
@@ -23,9 +24,12 @@ const Signup = () => {
     }
 
     // 여기에서는 실제로 백엔드와 통신하여 회원가입을 처리해야 합니다.
-    // 이 예제에서는 간단히 가입 성공을 표시합니다.
+    // 이 예제에서는 간단히 가입 성공 시 로그인 페이지로 이동합니다.
     alert('회원가입 성공!');
     setSignedUp(true);
+
+    // 회원가입 성공 시 로그인 페이지로 이동
+    navigate(-1);
   };
 
   return (
@@ -35,7 +39,7 @@ const Signup = () => {
       ) : (
         <form>
           <label>
-            이메일:
+            이메일 : 
             <input
               type="email"
               value={email}
@@ -44,7 +48,7 @@ const Signup = () => {
           </label>
           <br />
           <label>
-            비밀번호:
+            비밀번호 : 
             <input
               type="password"
               value={password}
@@ -53,7 +57,7 @@ const Signup = () => {
           </label>
           <br />
           <label>
-            비밀번호 확인:
+            비밀번호 확인 : 
             <input
               type="password"
               value={confirmPassword}
@@ -62,7 +66,7 @@ const Signup = () => {
           </label>
           <br />
           <label>
-            닉네임:
+            닉네임 : 
             <input
               type="text"
               value={nickname}

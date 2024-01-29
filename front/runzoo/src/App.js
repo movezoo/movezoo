@@ -4,6 +4,8 @@ import Main from "./pages/main/Main";
 import Single from "./pages/single/Single";
 import Game from "./pages/game/Game.js";
 import Result from "./pages/result/Result";
+import Signup from "./components/home/Signup.js"
+
 
 function App() {
   return (
@@ -16,6 +18,7 @@ function App() {
         <Route path="/Game" element={<Game />} />
         <Route path="/Result" element={<Result />} />
         <Route path="/" element={<Home />} />
+        <Route path="/SignUp" element={<Signup />} />
       </Routes>
     </Router>
   );
