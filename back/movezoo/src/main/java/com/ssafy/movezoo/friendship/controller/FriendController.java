@@ -1,6 +1,6 @@
 package com.ssafy.movezoo.friendship.controller;
 
-import com.ssafy.movezoo.user.dto.UserInfoDto;
+import com.ssafy.movezoo.friendship.dto.FriendInfoDto;
 import com.ssafy.movezoo.friendship.dto.FriendResponseDto;
 import com.ssafy.movezoo.friendship.service.FriendService;
 import com.ssafy.movezoo.global.dto.SimpleResponseDto;
@@ -22,13 +22,13 @@ public class FriendController {
     private final UserService userService;
     @GetMapping("/{userId}")
     public ResponseEntity<List<FriendResponseDto>> friendList(@PathVariable("userId") Integer userId){
-        List<FriendResponseDto> friendList = friendService.findFriendList(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(friendList);
+        List<FriendResponseDto> result = friendService.findFriendList(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
 
     }
 
     @PostMapping
-    public ResponseEntity<SimpleResponseDto> registerFriend (@RequestBody UserInfoDto registerDto){
+    public ResponseEntity<SimpleResponseDto> registerFriend (@RequestBody FriendInfoDto registerDto){
         //친구관계로 설정하기 전에 한번더 인증하기, 편법으로 친구로 만들수있따
         //토큰이나 세션으로 대처
         User user = userService.findById(1);
@@ -47,7 +47,7 @@ public class FriendController {
     }
 
     @DeleteMapping
-    public ResponseEntity<SimpleResponseDto> unRegisterFriend(@RequestBody UserInfoDto deleteDto){
+    public ResponseEntity<SimpleResponseDto> unRegisterFriend(@RequestBody FriendInfoDto deleteDto){
         User user = userService.findById(1);
 
         boolean result = friendService.deleteFriend(user.getUserId(),deleteDto.getFriendId());
