@@ -9,7 +9,7 @@ function Main() {
       <ul>
         <h2>연결 페이지</h2>
         <li>
-          <Link to="/Lobby">로비</Link>
+          <Link to="/Main">메인</Link>
         </li>
       </ul>
     </div>

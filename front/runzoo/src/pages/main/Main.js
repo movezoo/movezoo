@@ -7,10 +7,10 @@ function Main() {
       <ul>
         <h2>연결 페이지</h2>
         <li>
-          <Link to="/">메인</Link>
+          <Link to="/">홈</Link>
         </li>
         <li>
-          <Link to="/">싱글</Link>
+          <Link to="/Single">싱글</Link>
         </li>
         <li>
           <Link to="/">멀티</Link>
