@@ -13,8 +13,14 @@ public class ItemRepository {
 
     private final EntityManager em;
 
+    public Item save(Item item){
+        em.persist(item);
+        return  item;
+    }
     public List<Item> findAll(){
         return em.createQuery("select i from Item i",Item.class)
                 .getResultList();
     }
+
+
 }
