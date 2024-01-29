@@ -5,20 +5,17 @@ import com.ssafy.movezoo.user.dto.MessageDto;
 import com.ssafy.movezoo.user.dto.StatusEnum;
 import com.ssafy.movezoo.user.dto.UserJoinRequestDto;
 import com.ssafy.movezoo.user.sevice.UserService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
+    private UserService userService;
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping
@@ -41,7 +38,7 @@ public class UserController {
 
             return ResponseEntity.ok().body(message);
         }
-        
+
         MessageDto message = MessageDto.builder()
                 .status(StatusEnum.BAD_REQUEST)
                 .message(msg)
@@ -53,7 +50,7 @@ public class UserController {
     // 비밀번호 변경
     @PatchMapping("/password")
     public ResponseEntity<MessageDto> changePassword(String userEmail, String password){
-        userService.changePassword(userEmail, passwordEncoder.encode(password));
+        userService.changePassword(userEmail, password);
 
         MessageDto msg = MessageDto.builder()
                 .status(StatusEnum.OK)
@@ -75,14 +72,14 @@ public class UserController {
 
             return ResponseEntity.badRequest().body(message);
         } else {
-        userService.changeNickname(userId, nickname);
+            userService.changeNickname(userId, nickname);
 
-        MessageDto message = MessageDto.builder()
-                .status(StatusEnum.OK)
-                .message("닉네임 변경 성공")
-                .build();
+            MessageDto message = MessageDto.builder()
+                    .status(StatusEnum.OK)
+                    .message("닉네임 변경 성공")
+                    .build();
 
-        return ResponseEntity.ok().body(message);
+            return ResponseEntity.ok().body(message);
         }
     }
 
@@ -102,24 +99,14 @@ public class UserController {
     // 사용자 정보 조회
     @GetMapping("/{userId}")
     public ResponseEntity<MessageDto> getUserInfo(@PathVariable int userId){
-        MessageDto message = MessageDto.builder()
+        MessageDto msg = MessageDto.builder()
                 .status(StatusEnum.OK)
                 .message("조회 성공")
                 .data(userService.findById(userId))
                 .build();
 
-        return ResponseEntity.ok().body(message);
+        return ResponseEntity.ok().body(msg);
     }
 
 
-    @GetMapping("/session-test")
-    public void sessionTest(HttpSession session){
-        User user = new User("rlackdgml97@naver.com");
-
-        session.setAttribute("test",user);
-
-        User test = (User) session.getAttribute("test");
-
-        session.invalidate();
-    }
 }
