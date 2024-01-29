@@ -1,9 +1,13 @@
 package com.ssafy.movezoo.game.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Item")
+@Setter
+@Getter
 public class Item {
 
     @Id
