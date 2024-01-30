@@ -4,7 +4,6 @@
   height: 540px;
 }
 
-
 .leftSection {
   position: relative;
   color: white;
@@ -24,35 +23,13 @@
   background-color: tomato;
 }
 
-
-.goBack {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 160px;
-  height: 80px;
+.resultReward {
+  display: flex;
+  justify-content: space-between;
   margin: 10px;
-  background-color: grey;
 }
 
-.btnBack {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 320px;
-  height: 240px;
-  margin: 10px;
-  background-color: grey;
-}
-
-.mapSelect {
-  width: 200px;
-  height: 150px;
-  margin: 10px;
-  background-color: white;
-}
-
-.btnStart {
+.btnReturn {
   text-align: center;
   width: 160px;
   height: 80px;
