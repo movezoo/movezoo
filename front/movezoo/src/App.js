@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/home/Home";
+import Home from "./pages/home/Home.jsx";
 import Main from "./pages/main/Main";
 import Single from "./pages/single/Single";
 import Game from "./pages/game/Game.js";
 import Result from "./pages/result/Result";
-import Signup from "./components/home/Signup.js"
+import Signup from "./components/home/Signup.jsx"
 
 
 function App() {

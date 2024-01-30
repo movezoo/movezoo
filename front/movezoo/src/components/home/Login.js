@@ -1,20 +1,33 @@
-// src/Login.js
-
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const handleLogin = () => {
-    // 실제로는 여기에서 백엔드와 통신하여 로그인을 처리해야 합니다.
-    // 예를 들어, axios나 fetch를 사용하여 API 호출을 할 수 있습니다.
-    // 이 예제에서는 간단히 username과 password가 일치하는지만 확인합니다.
-    if (username === 'user' && password === 'password') {
-      setLoggedIn(true);
-    } else {
-      alert('로그인 실패');
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      // 백엔드 API로 로그인 요청을 보냅니다.
+      const response = await axios.post('http://i10e204.p.ssafy.io:5000/login', {
+        userEmail : username,
+        password : password
+      });
+
+      // API 응답에 따라 로그인 상태를 처리합니다.
+      if (response.data.success) {
+        setLoggedIn(true);
+        navigate('/Main')
+      } else {
+        alert('로그인 실패');
+      }
+    } catch (error) {
+      console.error('로그인 요청 중 에러 발생:', error);
+      alert('Id 또는 비밀번호가 틀렸습니다.');
     }
   };
 
