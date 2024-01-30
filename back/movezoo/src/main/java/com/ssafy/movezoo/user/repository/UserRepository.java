@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -39,16 +40,17 @@ public class UserRepository {
         return em.find(User.class, userId);
     }
 
-    public User findByEmail(String userEmail) {
+    public Optional<User> findByEmail(String userEmail) {
         return em.createQuery("select u from User u where u.userEmail = :userEmail", User.class)
                 .setParameter("userEmail", userEmail)
-                .getSingleResult();
+                .getResultList().stream().findAny();
     }
 
-    public User findByNickname(String nickname) {
+
+    public Optional<User> findByNickname(String nickname) {
         return em.createQuery("select u from User u where u.nickname = :nickname", User.class)
                 .setParameter("nickname", nickname)
-                .getSingleResult();
+                .getResultList().stream().findAny();
     }
 
     //파라미터로 객체보다는 아이디만 넘기는것이 직관적이다.
@@ -59,10 +61,10 @@ public class UserRepository {
                 .executeUpdate();
     }
 
-    public int updateNickname(int userId, String nickname) {
-        return em.createQuery("update User u set u.nickname = :nickname where u.userId = :userId")
+    public int updateNickname(String userEmail, String nickname) {
+        return em.createQuery("update User u set u.nickname = :nickname where u.userEmail = :userEmail")
                 .setParameter("nickname", nickname)
-                .setParameter("userId", userId)
+                .setParameter("userEmail", userEmail)
                 .executeUpdate();
     }
 

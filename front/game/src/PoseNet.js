@@ -23,7 +23,7 @@
 //     });
 
 //     // 일정 간격으로 detect 함수 실행
-    
+
 //     detect(net);
 //   };
 
@@ -32,7 +32,7 @@
 //     // 웹캠이 정상적으로 로드되었는지 확인
 //     if (
 //       typeof webcamRef.current !== "undefined" &&
-//       webcamRef.current !== null 
+//       webcamRef.current !== null
 //       // && webcamRef.current.video.readyState === 4
 //     ) {
 //       // 웹캠 비디오 및 크기 정보 가져오기
@@ -44,7 +44,7 @@
 //       // const videoHeight = webcamRef.current.video.videoHeight;
 //       console.log(`videoWidth : ${videoWidth}`)
 //       console.log(`videoHeight : ${videoHeight}`)
-      
+
 //       /// 비디오 크기 설정
 //       webcamRef.current.width = videoWidth;
 //       webcamRef.current.height = videoHeight;
@@ -60,7 +60,7 @@
 //       const centerX = videoWidth / 2;
 //       let sensitivity = 50
 //       const poseNose = pose.keypoints[0].position.x;
-      
+
 //       // 결과에 따라 콘솔에 출력
 //       if (poseNose < centerX - sensitivity) {
 //         data.isLeftKeyPressed = false;
@@ -74,7 +74,7 @@
 //         data.isRightKeyPressed = false;
 //         data.isLeftKeyPressed = false;
 //       }
-      
+
 //       // 캔버스에 Pose 그리기
 //       drawCanvas(pose, video, videoWidth, videoHeight, motionRef, sensitivity);
 //       requestAnimationFrame( () => {detect(net)} )

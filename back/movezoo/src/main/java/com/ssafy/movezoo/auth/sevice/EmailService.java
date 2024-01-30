@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Random;
 
 @Slf4j
@@ -71,8 +72,13 @@ public class EmailService {
 
     //회원가입시 메일 인증 코드를 확인하는 함수
     public boolean checkAuthNumber(String usersEmail, String authNumber){
-        User user = userRepository.findByEmail(usersEmail);
+        Optional<User> userOptional = userRepository.findByEmail(usersEmail);
+
+        // Optional이 비어있으면 false를 반환하도록 기본값을 설정
+        User user = userOptional.orElse(null);
+
         String usersAuthNumber = user.getAuthNumber();
+
         return usersAuthNumber!=null && usersAuthNumber.equals(authNumber);
     }
 }
