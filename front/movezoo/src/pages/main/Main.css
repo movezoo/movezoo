@@ -1,0 +1,34 @@
+.main-container {
+  
+}
+
+/* 메인 헤더 */
+.main-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-home {
+  flex: 1;
+  display: flex;
+  justify-content: left;
+}
+
+.main-profile {
+  flex: 1;
+  display: flex;
+  justify-content: right;
+}
+
+
+/* 메인 캐러셀 */
+.main-carousel {
+
+}
+
+/* 메인 네브바 */
+.main-navbar {
+  
+}
