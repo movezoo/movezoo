@@ -32,6 +32,7 @@ public class FriendService {
         List<FriendResponseDto> result = new ArrayList<>();
         for(User user : byUserId){
             FriendResponseDto frd = new FriendResponseDto(user.getUserId(),user.getNickname(),user.getProfileImgUrl());
+            result.add(frd);
         }
 
         return result;

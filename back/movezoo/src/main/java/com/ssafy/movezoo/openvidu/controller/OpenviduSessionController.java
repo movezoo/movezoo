@@ -1,4 +1,4 @@
-package com.ssafy.movezoo.controller;
+package com.ssafy.movezoo.openvidu.controller;
 
 import io.openvidu.java.client.*;
 import jakarta.annotation.PostConstruct;
