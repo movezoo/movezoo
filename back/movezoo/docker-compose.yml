@@ -1,0 +1,11 @@
+version: "3"
+services:
+  container_name: backend
+  build:
+    context: ./
+    dockerfile: Dockerfile
+  volumes:
+    - ./src/main/resources:/src/main/resources
+  ports:
+    - "8080:8080"
+  restart: always
