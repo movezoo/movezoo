@@ -34,6 +34,7 @@ public class CoinController {
         return ResponseEntity.status(HttpStatus.OK).body(coinResponseDto);
     }
 
+    @PostMapping
     public ResponseEntity<SimpleResponseDto> gameReward(@RequestBody RoomSessionDto roomSessionDto){
         int roomId = roomSessionDto.getSessionId();
 
