@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  width: 960px;
+  height: 540px;
+}
+
+.leftsection {
+  position: relative;
+  color: white;
+  text-align: center;
+  width: 720px;
+  height: 540px;
+  background-color: black;
+}
+
+.rightsection {
+  display: "flex";
+  flex-direction: "column";
+  align-items: "center";
+  justify-content: "space-between";
+  width: 240;
+  height: 540;
+  background-color: "tomato";
+}
