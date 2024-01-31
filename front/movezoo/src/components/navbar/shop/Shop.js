@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import Character from './Character';
 
-const Friend = () => {
+const Shop = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -14,7 +15,7 @@ const Friend = () => {
 
   return (
     <div>
-      <button onClick={openModal}>친구</button>
+      <button onClick={openModal}>상점</button>
 
       <Modal 
       isOpen={isOpen} 
@@ -27,14 +28,19 @@ const Friend = () => {
         }
       }}
       >
-        <h1>친구</h1>
-        <h3>친구목록</h3>
-        <hr/>
-        <h1>친구 기능 미완</h1>
+
+        <div>
         <button onClick={closeModal}>닫기</button>
+        <h1>상점</h1>
+        </div>
+
+        <div>
+          <Character/>
+        </div>
+        
       </Modal>
     </div>
   );
 };
 
-export default Friend;
+export default Shop;
