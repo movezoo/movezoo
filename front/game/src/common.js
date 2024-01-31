@@ -188,6 +188,8 @@ const Game = {
     // 로드할 이미지의 총 개수
     let count = names.length - 1 + 3;
     count += 3 // background
+    
+
     // count += PLAYER_SPRITE.NAMES.length * PLAYER_SPRITE.ACTIONS.length * PLAYER_SPRITE.DIRECTIONS.length;       
     // SPRITES["pug"]["run"]["straight"].push({x,y,w,h});
 
