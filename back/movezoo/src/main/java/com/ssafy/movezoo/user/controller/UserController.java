@@ -2,8 +2,6 @@ package com.ssafy.movezoo.user.controller;
 
 import com.ssafy.movezoo.global.dto.SimpleResponseDto;
 import com.ssafy.movezoo.user.domain.User;
-import com.ssafy.movezoo.user.dto.MessageDto;
-import com.ssafy.movezoo.user.dto.StatusEnum;
 import com.ssafy.movezoo.user.dto.UserJoinRequestDto;
 import com.ssafy.movezoo.user.dto.UserResponseDto;
 import com.ssafy.movezoo.user.repository.UserRepository;
@@ -14,19 +12,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // 회원가입
     @PostMapping
     public ResponseEntity<SimpleResponseDto> registUser(UserJoinRequestDto dto){
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
+
         String msg = "회원가입 성공";
         // 이메일, 닉네임 중복체크
         if (userService.checkUsersEmailDuplicate(dto.getUserEmail())){
@@ -36,7 +37,7 @@ public class UserController {
         } else {
             // 회원가입 성공
             userService.join(new User(dto.getUserEmail(), passwordEncoder.encode(dto.getPassword()), dto.getNickname()));
-            System.out.println(passwordEncoder.encode(dto.getPassword()));
+
             simpleResponseDto.setSuccess(true);
             simpleResponseDto.setMsg(msg);
 
