@@ -53,7 +53,7 @@ const Main = (props) => {
     // let stats          = Game.stats('fps');       // mr.doobs FPS 카운터
     // let canvas         = Dom.get('canvas');       // 우리의 캔버스...
     // let ctx            = canvas.getContext('2d'); // ...그리고 그림 컨텍스트
-    let background     = null;                    // 배경 이미지 (아래에서 로드됨)
+    let background     = {};                  // 배경 이미지 (아래에서 로드됨)
     let sprites        = null;                    // 스프라이트 시트 (아래에서 로드됨)
     let playerSprites = {};
 
@@ -84,7 +84,7 @@ const Main = (props) => {
     
     let keyLeft        = data.isLeftKeyPressed;
     let keyRight       = data.isRightKeyPressed;
-    let keyFaster      = false;
+    let keyFaster      = true;
     let keySlower      = false;
     
     const hud = {
@@ -334,9 +334,9 @@ const Main = (props) => {
       ctx.clearRect(0, 0, width, height);
     
       // 배경 렌더링
-      Render.background(ctx, background, width, height, BACKGROUND.SKY,   skyOffset,  resolution * skySpeed  * playerY);
-      Render.background(ctx, background, width, height, BACKGROUND.HILLS, hillOffset, resolution * hillSpeed * playerY);
-      Render.background(ctx, background, width, height, BACKGROUND.TREES, treeOffset, resolution * treeSpeed * playerY);
+      Render.background(ctx, background.sky, width, height, BACKGROUND.SKY,   skyOffset,  resolution * skySpeed  * playerY);
+      Render.background(ctx, background.hills, width, height, BACKGROUND.HILLS, hillOffset, resolution * hillSpeed * playerY);
+      Render.background(ctx, background.faraway, width, height, BACKGROUND.FARAWAY, treeOffset, resolution * treeSpeed * playerY);
     
       let segment, car, sprite, spriteScale, spriteX, spriteY;
     
@@ -656,18 +656,25 @@ const Main = (props) => {
       keys: [
         // { keys: [KEY.LEFT,  KEY.A], mode: 'down', action: function() { keyLeft   = true;  } },
         // { keys: [KEY.RIGHT, KEY.D], mode: 'down', action: function() { keyRight  = true;  } },
-        { keys: [KEY.UP,    KEY.W], mode: 'down', action: function() { keyFaster = true;  } },
-        { keys: [KEY.DOWN,  KEY.S], mode: 'down', action: function() { keySlower = true;  } },
+        // { keys: [KEY.UP,    KEY.W], mode: 'down', action: function() { keyFaster = true;  } },
+        // { keys: [KEY.DOWN,  KEY.S], mode: 'down', action: function() { keySlower = true;  } },
+        { keys: [KEY.SPACEBAR],     mode: 'down', action: () => { keyFaster = false; keySlower = true }},
         // { keys: [KEY.LEFT,  KEY.A], mode: 'up',   action: function() { keyLeft   = false; } },
         // { keys: [KEY.RIGHT, KEY.D], mode: 'up',   action: function() { keyRight  = false; } },
-        { keys: [KEY.UP,    KEY.W], mode: 'up',   action: function() { keyFaster = false; } },
-        { keys: [KEY.DOWN,  KEY.S], mode: 'up',   action: function() { keySlower = false; } }
+        // { keys: [KEY.UP,    KEY.W], mode: 'up',   action: function() { keyFaster = false; } },
+        // { keys: [KEY.DOWN,  KEY.S], mode: 'up',   action: function() { keySlower = false; } },
+        { keys: [KEY.SPACEBAR],     mode: 'up',   action: () => { keyFaster = true; keySlower = false }}
       ],
       ready: images => { // images === loadImages의 result
         // ==> images[spriteName][action.name][direction] === <img>
-        background = images.background;
+
+        background.hills = images.hills;
+        background.sky = images.sky;
+        background.faraway = images.faraway;
+        // console.log(`Game.ready() -> background : ${background}`)
+        // console.log(background.sky.src)
         sprites    = images.sprites;
-        PLAYER_SPRITE.NAMES.forEach( (name) => {
+        PLAYER_SPRITE.NAMES.forEach(name => {
           playerSprites[name] = images[name];
         })
         reset();
