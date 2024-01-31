@@ -21,7 +21,7 @@ import java.util.SimpleTimeZone;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/laptime")
+@RequestMapping("/api/laptime")
 public class LapTimeController {
 
     private final LapTimeService lapTimeService;
