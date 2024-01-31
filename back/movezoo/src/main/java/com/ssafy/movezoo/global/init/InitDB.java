@@ -46,7 +46,7 @@ public class InitDB {
         User userA = new User("rlackdgml97@naver.com","1234","창히");
         userA.setCoin(5000);
         userA.setProfileImgUrl("userA.jpg");
-        userA.setGoogleUserEmail("123@123321.com");
+        userA.setGoogleUserEmail("123@123.com");
         userRepository.save(userA);
 
         User userB = new User("jww5555@naver.com","1234","재원");

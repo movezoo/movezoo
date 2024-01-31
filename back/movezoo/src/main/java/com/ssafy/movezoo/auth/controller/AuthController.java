@@ -19,6 +19,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 import static com.ssafy.movezoo.auth.util.JWTDecoderUtil.decodeJWTTokenPayload;
 
@@ -139,6 +141,15 @@ public class AuthController {
         if (userRepository.findByGoogleEmail(googleEmail).isPresent()){
             simpleResponseDto.setMsg("소셜 로그인 성공");
         } else {
+            while (userService.checkNicknameDuplicate(googleName)){
+                Random random = new Random(System.currentTimeMillis());
+                int randVal = random.nextInt(999);
+
+                googleName = googleName.concat(String.valueOf(randVal));
+
+                System.out.println("randVal : "+randVal);
+            }
+
             userService.join(new User(googleEmail, googleName));
 
             simpleResponseDto.setMsg("소셜 로그인 회원가입 성공");
