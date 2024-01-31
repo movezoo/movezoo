@@ -5,15 +5,14 @@ import Webcam from "react-webcam";
 function Result() {
   return (
     <div>
-      <h1>결과 페이지</h1>
       {/*일단 축소 화면*/}
       <div className={styles.container}>
         {/*왼쪽 화면, 웹캠 화면*/}
         <div className={styles.leftSection}>
           <Webcam
             style={{
-              width: 720,
-              height: 540,
+              width: "100%",
+              height: "100%",
             }}
             mirrored={true}
           />
