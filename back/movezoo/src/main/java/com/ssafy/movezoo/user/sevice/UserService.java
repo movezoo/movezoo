@@ -2,6 +2,7 @@ package com.ssafy.movezoo.user.sevice;
 
 import com.ssafy.movezoo.user.domain.User;
 import com.ssafy.movezoo.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
