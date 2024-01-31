@@ -66,11 +66,6 @@ public class UserService {
 
     // 회원가입
     public boolean join(User user){
-        // 아이디 또는 이메일이 중복일 경우
-        // 여기서 자꾸 initDB랑 충돌나서 문제 생기는 것 같음 => 몰루겟음
-//        if (userRepository.findByEmail(user.getUserEmail()) != null || userRepository.findByNickname(user.getNickname()) != null)
-//            return false;
-
         userRepository.save(user);
         return true;
     }

@@ -3,24 +3,34 @@ package com.ssafy.movezoo.auth.controller;
 import com.ssafy.movezoo.auth.dto.EmailMessage;
 import com.ssafy.movezoo.auth.dto.EmailPostDto;
 import com.ssafy.movezoo.auth.dto.EmailResponseDto;
+import com.ssafy.movezoo.auth.dto.GoogleLoginRequestDto;
 import com.ssafy.movezoo.auth.sevice.EmailService;
+import com.ssafy.movezoo.global.dto.SimpleResponseDto;
+import com.ssafy.movezoo.user.controller.UserController;
+import com.ssafy.movezoo.user.domain.User;
+import com.ssafy.movezoo.user.dto.UserJoinRequestDto;
+import com.ssafy.movezoo.user.repository.UserRepository;
+import com.ssafy.movezoo.user.sevice.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-//@RequestMapping("/email-auth")
+import java.util.Map;
+
+import static com.ssafy.movezoo.auth.util.JWTDecoderUtil.decodeJWTTokenPayload;
+
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 @Slf4j
 public class AuthController {
 
     private final EmailService emailService;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     // 비밀번호 찾기 시 비밀번호 변경 후 메일로 전송
     @PostMapping("/email-auth/reset-password")
@@ -50,7 +60,6 @@ public class AuthController {
         emailResponseDto.setCode(code);
 
         return ResponseEntity.ok().body(emailMessage);
-//        return new ResponseEntity<>(emailPostDto, HttpStatus.OK);
     }
 
     // 로그인
@@ -114,4 +123,28 @@ public class AuthController {
 //
 //        return ResponseEntity.ok().body(msg);
 //    }
+
+    // 구글 로그인 (JWT 전달 받아서 로그인)
+    @PostMapping("/google")
+    public ResponseEntity<SimpleResponseDto> googleLogin(GoogleLoginRequestDto dto) throws Exception {
+        String token = dto.getGoogleJwt();
+
+        SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
+
+        Map<String, Object> payloadResult = decodeJWTTokenPayload(token);
+        String googleEmail = (String) payloadResult.get("email");
+        String googleName = (String) payloadResult.get("name");
+
+
+        if (userRepository.findByGoogleEmail(googleEmail).isPresent()){
+            simpleResponseDto.setMsg("소셜 로그인 성공");
+        } else {
+            userService.join(new User(googleEmail, googleName));
+
+            simpleResponseDto.setMsg("소셜 로그인 회원가입 성공");
+        }
+
+        simpleResponseDto.setSuccess(true);
+        return ResponseEntity.ok().body(simpleResponseDto);
+    }
 }

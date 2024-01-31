@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/racer")
+@RequestMapping("/api/racer")
 public class RacerController {
 
     private final RacerService racerService;
