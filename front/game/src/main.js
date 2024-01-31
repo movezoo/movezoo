@@ -440,22 +440,25 @@ const Main = (props) => {
     
     // 도로 추가
     const addRoad = (enter, hold, leave, curve, y) => {
-      let startY   = lastY();
-      let endY     = startY + (Util.toInt(y, 0) * segmentLength);
-      let total = enter + hold + leave;
+      let startY   = lastY(); // 현재 위치
+      let endY     = startY + (Util.toInt(y, 0) * segmentLength); // segmentLength를 기반으로 입력 'y'와 종료 Y 위치를 계산합니다.
+      let total = enter + hold + leave; // 세그먼트의 총 개수를 계산합니다 (enter + hold + leave).
+      // 'enter' 단계를 위한 세그먼트를 추가하고, 곡선 및 Y 위치에 이징을 적용합니다.
       for(let n = 0 ; n < enter ; n++)
         addSegment(Util.easeIn(0, curve, n/enter), Util.easeInOut(startY, endY, n/total));
+      // 'hold' 단계를 위한 세그먼트를 추가하고, 고정된 곡선과 Y 위치에 이징을 적용합니다.
       for(let n = 0 ; n < hold  ; n++)
         addSegment(curve, Util.easeInOut(startY, endY, (enter+n)/total));
+      // 'leave' 단계를 위한 세그먼트를 추가하고, 곡선을 이용하여 Y 위치에 이징을 적용합니다.
       for(let n = 0 ; n < leave ; n++)
         addSegment(Util.easeInOut(curve, 0, n/leave), Util.easeInOut(startY, endY, (enter+hold+n)/total));
     }
     
     // 도로의 다양한 측면을 정의하는 상수, 길이, 언덕 높이 및 커브 강도 등
     const ROAD = {
-      LENGTH: { NONE: 0, SHORT:  25, MEDIUM:   50, LONG:  100 },
-      HILL:   { NONE: 0, LOW:    20, MEDIUM:   40, HIGH:   60 },
-      CURVE:  { NONE: 0, EASY:    2, MEDIUM:    4, HARD:    6 }
+      LENGTH: { NONE: 0, SHORT:  25, MEDIUM:   50, LONG:  100 },  // 길이 0~100
+      HILL:   { NONE: 0, LOW:    20, MEDIUM:   40, HIGH:   60 },  // 언덕높이 0~60
+      CURVE:  { NONE: 0, EASY:    2, MEDIUM:    4, HARD:    6 }   // 커브강도 0~6
     };
     
     /**
@@ -463,7 +466,7 @@ const Main = (props) => {
      * @param {number} num - 직선 도로 세그먼트의 길이.
      */
     const addStraight = num => {
-      num = num || ROAD.LENGTH.MEDIUM;
+      num = num || ROAD.LENGTH.MEDIUM; // default를 Medium으로 설정
       addRoad(num, num, num, 0, 0);
     }
     
@@ -473,7 +476,7 @@ const Main = (props) => {
      * @param {number} height - 언덕의 높이.
      */
     const addHill = (num, height) => {
-      num    = num    || ROAD.LENGTH.MEDIUM;
+      num    = num    || ROAD.LENGTH.MEDIUM; 
       height = height || ROAD.HILL.MEDIUM;
       addRoad(num, num, num, 0, height);
     }
@@ -544,7 +547,6 @@ const Main = (props) => {
     
     const resetRoad = () => {
       segments = [];
-    
       addStraight(ROAD.LENGTH.LONG);
       addLowRollingHills();
       addSCurves();
