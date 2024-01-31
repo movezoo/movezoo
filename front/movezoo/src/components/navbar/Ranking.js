@@ -76,7 +76,17 @@ const Ranking = () => {
     <div>
       <button onClick={openModal}>랭킹</button>
 
-      <Modal isOpen={isOpen} onRequestClose={closeModal}>
+      <Modal 
+      isOpen={isOpen} 
+      onRequestClose={closeModal}
+      style={{
+        content: {
+          width: '1000px',
+          height: '500px',
+          margin: 'auto',
+        }
+      }}
+      >
         <h1>랭킹</h1>
         <table>
           <thead>

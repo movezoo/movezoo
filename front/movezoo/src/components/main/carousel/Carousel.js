@@ -1,3 +1,6 @@
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import IconButton from '@mui/material/IconButton';
 import React, { useState } from 'react';
 import './Carousel.css';
 
@@ -25,6 +28,7 @@ function Carousel() {
 
       <div className='carousel-prev'>
       <button onClick={handlePrevious}>이전</button>
+      
       </div>
 
       <div className='carousel-image'>
