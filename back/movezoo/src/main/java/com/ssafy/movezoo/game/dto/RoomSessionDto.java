@@ -1,10 +1,10 @@
-package com.ssafy.movezoo.game.dto;
+    package com.ssafy.movezoo.game.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+    import lombok.Getter;
+    import lombok.Setter;
 
-@Getter
-@Setter
-public class RoomSessionDto {
-    private int sessionId;
-}
+    @Getter
+    @Setter
+    public class RoomSessionDto {
+        private int sessionId;
+    }
