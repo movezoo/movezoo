@@ -1,5 +1,7 @@
 .main-container {
   position: relative;
+  width: 100%;
+  height: 100vh;
 }
 
 .main-container::before {
