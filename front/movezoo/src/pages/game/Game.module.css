@@ -5,9 +5,8 @@
 }
 
 .leftSection {
-  position: flex;
+  position: relative;
   color: white;
-  text-align: center;
   width: 75%;
   height: 100vh;
   background-color: navy;
@@ -27,16 +26,12 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 10%;
-  height: 10%;
-  margin: 10px;
-  background-color: grey;
 }
 
 .webCam {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 25%;
-  height: 25%;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20%;
 }

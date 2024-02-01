@@ -7,7 +7,7 @@ function Game() {
   return (
     <div>
       {/*일단 축소 화면*/}
-      <div className={styles.container}>
+      <div class={styles.container}>
         {/*왼쪽 화면, 게임 화면*/}
         <div className={styles.leftSection}>
           <p style={{ textAlign: "center" }}>
@@ -18,7 +18,9 @@ function Game() {
             <Back />
           </div>
           {/*웹캠*/}
-          <Webcam className={styles.webCam} mirrored={true} />
+          <div className={styles.webCam} >
+            <Webcam mirrored={true} />
+          </div>
         </div>
 
         {/*오른쪽 화면*/}
