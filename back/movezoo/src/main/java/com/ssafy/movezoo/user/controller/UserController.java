@@ -2,8 +2,7 @@ package com.ssafy.movezoo.user.controller;
 
 import com.ssafy.movezoo.global.dto.SimpleResponseDto;
 import com.ssafy.movezoo.user.domain.User;
-import com.ssafy.movezoo.user.dto.UserJoinRequestDto;
-import com.ssafy.movezoo.user.dto.UserResponseDto;
+import com.ssafy.movezoo.user.dto.*;
 import com.ssafy.movezoo.user.repository.UserRepository;
 import com.ssafy.movezoo.user.sevice.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
@@ -25,7 +24,7 @@ public class UserController {
 
     // 회원가입
     @PostMapping
-    public ResponseEntity<SimpleResponseDto> registUser(UserJoinRequestDto dto){
+    public ResponseEntity<SimpleResponseDto> registUser(@RequestBody UserJoinRequestDto dto){
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
 
         String msg = "회원가입 성공";
@@ -52,25 +51,25 @@ public class UserController {
 
     // 비밀번호 변경
     @PatchMapping("/password")
-    public ResponseEntity<SimpleResponseDto> changePassword(String userEmail, String password){
+    public ResponseEntity<SimpleResponseDto> changePassword(@RequestBody UserPasswordRequestDto dto){
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto(true, "비밀번호 변경 성공");
 
-        userService.changePassword(userEmail, passwordEncoder.encode(password));
+        userService.changePassword(dto.getUserEmail(), passwordEncoder.encode(dto.getPassword()));
 
         return ResponseEntity.ok().body(simpleResponseDto);
     }
 
     // 닉네임 변경
     @PatchMapping("/nickname")
-    public ResponseEntity<SimpleResponseDto> changeNickname(String userEmail, String nickname){
+    public ResponseEntity<SimpleResponseDto> changeNickname(@RequestBody UserNicknameRequestDto dto){
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
 
         // 닉네임 중복체크
-        if (userService.checkNicknameDuplicate(nickname)) {
+        if (userService.checkNicknameDuplicate(dto.getNickname())) {
             // 바꾸려는 닉네임이 DB에 있는 경우
-            Optional<User> optionalUser = userRepository.findByEmail(userEmail);
+            Optional<User> optionalUser = userRepository.findByEmail(dto.getUserEmail());
             if (optionalUser.isPresent()) {
-                if (optionalUser.get().getNickname().equals(nickname))
+                if (optionalUser.get().getNickname().equals(dto.getNickname()))
                     // 이미 내 닉네임인 경우
                     simpleResponseDto.setMsg("현재 닉네임과 동일합니다.");
                 else {
@@ -83,7 +82,7 @@ public class UserController {
             }
         }
 
-        userService.changeNickname(userEmail, nickname);
+        userService.changeNickname(dto.getUserEmail(), dto.getNickname());
 
         simpleResponseDto.setSuccess(true);
         simpleResponseDto.setMsg("닉네임 변경 성공");
@@ -94,8 +93,8 @@ public class UserController {
 
     // 설정 변경
     @PatchMapping("/settings")
-    public ResponseEntity<SimpleResponseDto> changeSettings(int userId, int volume, int mic, int cameraSensitivity){
-        userService.changeSetting(userId, volume, mic, cameraSensitivity);
+    public ResponseEntity<SimpleResponseDto> changeSettings(@RequestBody UserSettingRequestDto dto){
+        userService.changeSetting(dto.getUserId(), dto.getVolume(), dto.getMic(), dto.getCameraSensitivity());
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto(true, "설정 변경 완료");
 
         return ResponseEntity.ok().body(simpleResponseDto);
