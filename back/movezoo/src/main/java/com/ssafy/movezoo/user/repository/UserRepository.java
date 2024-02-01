@@ -46,6 +46,11 @@ public class UserRepository {
                 .getResultList().stream().findAny();
     }
 
+    public Optional<User> findByGoogleEmail(String googleUserEmail) {
+        return em.createQuery("select u from User u where u.googleUserEmail = :googleUserEmail", User.class)
+                .setParameter("googleUserEmail", googleUserEmail)
+                .getResultList().stream().findAny();
+    }
 
     public Optional<User> findByNickname(String nickname) {
         return em.createQuery("select u from User u where u.nickname = :nickname", User.class)

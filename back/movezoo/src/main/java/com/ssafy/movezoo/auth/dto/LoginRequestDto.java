@@ -10,10 +10,4 @@ public class LoginRequestDto {
     private String userEmail;
     private String password;
 
-    public User toEntity(){
-        return User.builder()
-                .userEmail(userEmail)
-                .password(password)
-                .build();
-    }
 }
