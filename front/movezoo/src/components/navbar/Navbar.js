@@ -12,31 +12,31 @@ function Navbar() {
     <div className="navbar-container">
       
       <div className='navbar-shop'>
-      <Shop/>
+        <Shop/>
       </div>
 
       <div className='navbar-ranking'>
-      <Ranking/>
+        <Ranking/>
       </div>
 
       <div className='navbar-single'>
-      <button>
-      <Link to="/single">싱글</Link>
-      </button>
+        <button>
+          <Link to="/single">싱글</Link>
+        </button>
       </div>
 
       <div className='navbar-multi'>
-      <button>
-      <Link to="/multi">멀티</Link>
-      </button>
+        <button>
+          <Link to="/multi">멀티</Link>
+        </button>
       </div>
 
       <div className='navbar-friend'>
-      <Friend/>
+        <Friend/>
       </div>
 
       <div className='navbar-setting'>
-      <Setting/>
+        <Setting/>
       </div>
 
     </div>
