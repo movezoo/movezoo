@@ -65,7 +65,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
     }
 
     try {
-      const response = await axios.post('https://i10e204.p.ssafy.io:5000/users', {
+      const response = await axios.post('https://i10e204.p.ssafy.io/api/user', {
         userEmail: email,
         password: password,
         nickname: nickname
@@ -134,7 +134,11 @@ const Signup = ({ isOpen, onRequestClose }) => {
                 onChange={handlePasswordChange}
               />
               <span id="alertTxt" style={{ display: passwordError ? 'block' : 'none' }}>{passwordError || '사용불가'}</span>
-              <img src="/signup/m_icon_pass.png" id="pswd1_img1" className="pswdImg" alt="비밀번호 아이콘" />
+              <img src={
+                password === '' ? "/signup/m_icon_pass.png" :
+                  password.length < 8 ? "/signup/m_icon_not_use.png" :
+                    "/signup/m_icon_safe.png"
+              } id="pswd1_img1" className="pswdImg" alt="비밀번호 아이콘" />
             </span>
             <span className="error_next_box">{passwordError}</span>
           </div>
@@ -155,7 +159,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
                   setPasswordError('');
                 }}
               />
-              <img src="/signup/m_icon_check_disable.png" id="pswd2_img1" className="pswdImg" alt="비밀번호 확인 아이콘" />
+              <img src={!confirmPassword.trim() ? "/signup/m_icon_check_disable.png" : (password === confirmPassword ? "/signup/m_icon_check_enable.png" : "/signup/m_icon_check_disable.png")} id="pswd2_img1" className="pswdImg" alt="비밀번호 확인 아이콘" />
             </span>
             <span className="error_next_box">{password !== confirmPassword ? '비밀번호가 일치하지 않습니다.' : ''}</span>
           </div>
