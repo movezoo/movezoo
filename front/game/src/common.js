@@ -6,8 +6,9 @@ import background from './images/background.png';
 import mute from './images/mute.png';
 import sprites from './images/sprites.png';
 
-const selectPlayer = "pig";
+const selectPlayer = "pug";
 const selectAction = "run";
+const selectMap = "map1";
 const frameIndex = {
   run: 0
 }
@@ -186,15 +187,16 @@ const Game = {
     const result = {}; // 이미지 엘리먼트를 저장할 배열
     // 로드할 이미지의 총 개수
     let count = names.length - 1 + 3;
+    count += 3 // background
+    
+
     // count += PLAYER_SPRITE.NAMES.length * PLAYER_SPRITE.ACTIONS.length * PLAYER_SPRITE.DIRECTIONS.length;       
     // SPRITES["pug"]["run"]["straight"].push({x,y,w,h});
-
 
     // 각 이미지가 로드될 때 실행될 콜백 함수
     const onload = () => {
       if (--count === 0) {
         callback(result); // 이미지 로드 카운트를 감소시키고, 모든 이미지가 로드되었을 때 콜백 함수 호출
-        // console.log(count)
       }
     };
 
@@ -214,10 +216,11 @@ const Game = {
       })
 
       
+      // 이미지 객체 생성 및 저장
       PLAYER_SPRITE.NAMES.forEach( spriteName => {
         PLAYER_SPRITE.ACTIONS.forEach( action => {
           PLAYER_SPRITE.DIRECTIONS.forEach( direction => {
-            const frameSize = 300; // 300px X 300px 고정사이즈로 정함함
+            const frameSize = 300; // 300px X 300px 고정사이즈로 정함
             const totalFrames = action.frames;
             for(let frameIndex = 0; frameIndex < totalFrames; frameIndex++) {
               // SPRITES.동물이름.액션[이름].방향 : [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}]
@@ -232,14 +235,25 @@ const Game = {
               if (result[spriteName][action.name][direction] !== null) {
                 Dom.on(result[spriteName][action.name][direction], 'load', onload);
                 result[spriteName][action.name][direction].src =
-                  `/images/sheets/${spriteName}_${action.name}_${direction}.png`;
+                  `/images/sheets/character/${spriteName}/${spriteName}_${action.name}_${direction}.png`;
               }
             }
           })
         })
       })
+      // console.log(PLAYER_SPRITE);
     }
 
+    const setBackground = () => {
+      const spriteName = ['hills', 'sky', 'faraway'];
+      spriteName.forEach(name => {
+        result[name] = document.createElement('img');
+        if(result[name] !== null) {
+          Dom.on(result[name], 'load', onload);
+          result[name].src = `/images/sheets/${selectMap}/background/${name}.png`
+        }
+      })
+    }
     
 
 
@@ -250,9 +264,12 @@ const Game = {
       // 플레이어들에 대한 이미지 생성하기
       if (name === "playerSpriteNames") {
         setPlayerSprite();
+      } else if(name === "background") {
+        setBackground();
       } else {
         result[name] = document.createElement('img'); // 이미지 엘리먼트 생성 및 배열에 저장
         Dom.on(result[name], 'load', onload); // 이미지 로드 이벤트에 onload 콜백 등록
+        // Dom.on(result[name], 'onerror', console.log(`error`));
         // result[name].src = "/images/" + name + ".png"; // 이미지의 소스 경로 설정
         
         result[name].src = images[`${name}`]; // important!!!! : react는 빌드 후 src내의 경로가 변경된다!!! 이미지 같은거 import 해서 사용하면 빌드된 경로를 알 수 있다. (onerror 이벤트리스너로 찾았음)
@@ -382,7 +399,7 @@ const Render = {
 
   // 배경 그리기
   background: (ctx, background, width, height, layer, rotation, offset) => {
-
+    // console.log(ctx, background, width, height, layer, rotation, offset)
     rotation = rotation || 0;
     offset   = offset   || 0;
 
@@ -448,13 +465,13 @@ const Render = {
     
     // 조향에 따라 적절한 스프라이트 선택
     if (steer < 0) {          // 왼쪽
-      if(updown > 0) direction = "uphillLeft"
+      if(updown > 0) direction = "uphill_left"
       else direction = "left"
     } else if (steer > 0) {   // 오른쪽
-      if(updown > 0) direction = "uphillRight"
+      if(updown > 0) direction = "uphill_right"
       else direction = "right"
     } else {                  // 가운데
-      if(updown > 0) direction = "uphillStraight"
+      if(updown > 0) direction = "uphill_straight"
       else direction = "straight"
     }
     imageObj = playerSprites[selectPlayer][selectAction][direction]; // 이미지객체

@@ -1,0 +1,42 @@
+.navbar-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-shop {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-ranking {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-single {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-multi {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-friend {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-setting {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
