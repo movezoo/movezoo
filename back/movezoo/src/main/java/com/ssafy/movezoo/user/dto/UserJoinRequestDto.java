@@ -1,22 +1,27 @@
 package com.ssafy.movezoo.user.dto;
 
+import com.ssafy.movezoo.user.domain.User;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+
+import java.lang.reflect.Constructor;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserJoinRequestDto {
-    @NotBlank(message = "이메일이 비어있습니다.")
+
     private String userEmail;
 
-    @NotBlank(message = "비밀번호가 비어있습니다.")
     private String password;
 
-    @NotBlank(message = "닉네임이 비어있습니다.")
     private String nickname;
 
+    public UserJoinRequestDto(String userEmail, String password, String nickname){
+        this.userEmail = userEmail;
+        this.password = password;
+        this.nickname = nickname;
+    }
 
 //    // Dto -> Entity
 //    public User toEntity(String userEmail, String password, String nickname){
