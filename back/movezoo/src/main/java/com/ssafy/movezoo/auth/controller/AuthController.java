@@ -128,7 +128,7 @@ public class AuthController {
 
     // 구글 로그인 (JWT 전달 받아서 로그인)
     @PostMapping("/google")
-    public ResponseEntity<SimpleResponseDto> googleLogin(GoogleLoginRequestDto dto) throws Exception {
+    public ResponseEntity<SimpleResponseDto> googleLogin(@RequestBody GoogleLoginRequestDto dto) throws Exception {
         String token = dto.getGoogleJwt();
 
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
