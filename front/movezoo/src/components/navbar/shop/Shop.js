@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import Character from './Character';
+import Character from './character/Character.js';
 
 const Shop = () => {
   const [isOpen, setIsOpen] = useState(false);
