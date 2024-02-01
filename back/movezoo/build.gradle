@@ -54,6 +54,7 @@ dependencies {
 
 	//변경사항시 자동 재시작
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 }
 
 tasks.named('test') {
