@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class InitDB {
     private final UserController userController;
@@ -33,7 +33,7 @@ public class InitDB {
 //        this.userService=userService;
 //    }
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         UsersInit();
     }
