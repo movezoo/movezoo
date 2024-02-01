@@ -16,7 +16,17 @@ const Friend = () => {
     <div>
       <button onClick={openModal}>친구</button>
 
-      <Modal isOpen={isOpen} onRequestClose={closeModal}>
+      <Modal 
+      isOpen={isOpen} 
+      onRequestClose={closeModal}
+      style={{
+        content: {
+          width: '1000px',
+          height: '500px',
+          margin: 'auto',
+        }
+      }}
+      >
         <h1>친구</h1>
         <h3>친구목록</h3>
         <hr/>
