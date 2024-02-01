@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Single.module.css";
 import Webcam from "react-webcam";
-import { useEffect, useState } from "react";
+import Map2 from "../../components/single/Map2";
+import Back from "../../components/single/Back";
 
 function Single() {
   const [loading, setLoading] = useState(true);
@@ -12,35 +14,35 @@ function Single() {
   }, []);
   return (
     <div>
-      <h1>싱글 페이지</h1>
+      {/* <h1>싱글 페이지</h1> */}
       {/*일단 축소 화면*/}
       <div className={styles.container}>
         {/*왼쪽 영역*/}
         <div className={styles.leftSection}>
           {loading ? (
-            <strong>Loading...</strong>
+            <h1>Loading...</h1>
           ) : (
             <Webcam
               style={{
-                width: 720,
-                height: 540,
+                width: "100%",
+                height: "100%",
               }}
               mirrored={true}
             />
           )}
 
-          <Link to="/Main">
-            <button className={styles.goBack}>뒤로 가기</button>
-          </Link>
+          <div className={styles.goBack}>
+            <Back />
+          </div>
           <div>
-            <button className={styles.btnBack}>카트 고르기</button>
+            <button className={styles.btnSelect}>카트 고르기</button>
           </div>
         </div>
         {/*오른쪽 영역*/}
         <div className={styles.rightSection}>
           {/*맵 & 최고기록*/}
           <div>
-            <button className={styles.mapSelect}>맵</button>
+            <Map2 />
             <p style={{ textAlign: "center" }}>
               최고 기록 : <strong>00:00:00</strong>
             </p>
