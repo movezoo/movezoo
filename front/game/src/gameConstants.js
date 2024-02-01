@@ -4,7 +4,7 @@
 const PLAYER_SPRITE = {
   NAMES: [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra"],
   ACTIONS: [ {name: "run", frames: 21} ],
-  DIRECTIONS: [ "uphillLeft", "uphillStraight", "uphillRight", "left", "straight", "right" ]
+  DIRECTIONS: [ "uphill_left", "uphill_straight", "uphill_right", "left", "straight", "right" ]
 }
 
 // 키보드 입력 상수
@@ -16,7 +16,8 @@ const KEY = {
   A:     65,
   D:     68,
   S:     83,
-  W:     87
+  W:     87,
+  SPACEBAR: 32
 };
 
 // 게임에서 사용되는 색깔 상수
@@ -25,6 +26,7 @@ const COLORS = {
   TREE: '#005108',
   FOG:  '#005108',
   LIGHT:  { road: '#6B6B6B', grass: '#10AA10', rumble: '#555555', lane: '#CCCCCC'  },
+  // DARK:   { road: '#696969', grass: '#10AA10', rumble: '#BBBBBB'                   },
   DARK:   { road: '#696969', grass: '#009A00', rumble: '#BBBBBB'                   },
   START:  { road: 'white',   grass: 'white',   rumble: 'white'                     },
   FINISH: { road: 'black',   grass: 'black',   rumble: 'black'                     }
@@ -32,9 +34,9 @@ const COLORS = {
 
 // 게임 배경 이미지 위치 및 크기
 const BACKGROUND = {
-  HILLS: { x:   5, y:   5, w: 1280, h: 480 },
-  SKY:   { x:   5, y: 495, w: 1280, h: 480 },
-  TREES: { x:   5, y: 985, w: 1280, h: 480 }
+  HILLS: { x:   0, y:   0, w: 1280, h: 480 },
+  SKY:   { x:   0, y: 0, w: 1280, h: 420 },
+  FARAWAY: { x:   0, y: 0, w: 1280, h: 480 }
 };
 
 // 게임 스프라이트 정보
