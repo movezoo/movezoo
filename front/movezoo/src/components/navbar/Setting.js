@@ -28,7 +28,17 @@ const Setting = () => {
     <div>
       <button onClick={openModal}>설정</button>
 
-      <Modal isOpen={isOpen} onRequestClose={closeModal}>
+      <Modal 
+      isOpen={isOpen} 
+      onRequestClose={closeModal}
+      style={{
+        content: {
+          width: '1000px',
+          height: '500px',
+          margin: 'auto',
+        }
+      }}
+      >
         <h1>설정</h1>
 
         <h3>배경 음악 조절</h3>
