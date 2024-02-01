@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/coin")
+@RequestMapping("/api/coin")
 @RequiredArgsConstructor
 public class CoinController {
     private final UserService userService;
