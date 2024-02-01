@@ -13,10 +13,10 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       // 백엔드 API로 로그인 요청을 보냅니다.
-      const response = await axios.post('http://i10e204.p.ssafy.io:5000/login', {
+      const response = await axios.post('https://i10e204.p.ssafy.io/api/login/login-proc', {
         userEmail : username,
         password : password
-      });
+      }, { withCredentials: true });
 
       // API 응답에 따라 로그인 상태를 처리합니다.
       if (response.data.success) {
