@@ -27,7 +27,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
     }
 
     setEmail(newEmail);
-    if (newEmail) {
+    if (newEmail) {                                                           
       document.getElementById('stepUrl').style.display = 'none';
     } else {
       document.getElementById('stepUrl').style.display = 'block';
