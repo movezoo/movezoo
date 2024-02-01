@@ -40,16 +40,20 @@ dependencies {
 	//gmail dependency
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+	// jjwt
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.4'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.4'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.4'
+
+	// redis
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '3.2.0'
+	implementation 'io.lettuce:lettuce-core:6.3.1.RELEASE'
 
 	// openvidu dependency
 	implementation 'io.openvidu:openvidu-java-client:2.29.0'
 
 	//변경사항시 자동 재시작
-//	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.named('test') {
