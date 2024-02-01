@@ -12,7 +12,7 @@ function Main() {
   const [volume, setVolume] = React.useState(80);
 
   return (
-    <div className="main-container">
+    <div className="main-container" >
 
       {/* 홈으로, 프로필 */}
       <div className="main-header">

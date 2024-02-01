@@ -1,5 +1,5 @@
 import React from 'react';
-import Shop from './Shop';
+import Shop from './shop/Shop';
 import Ranking from './Ranking';
 import Friend from './Friend';
 import Setting from './Setting';

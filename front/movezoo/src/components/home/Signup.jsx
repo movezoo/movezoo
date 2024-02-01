@@ -11,11 +11,23 @@ const Signup = ({ isOpen, onRequestClose }) => {
   const [nickname, setNickname] = useState('');
   const [signedUp, setSignedUp] = useState(false);
   const [passwordError, setPasswordError] = useState('');
+  const [emailError, setEmailError] = useState('');
   const navigate = useNavigate();
 
+
   const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    if (e.target.value) {
+    const newEmail = e.target.value;
+
+    // 이메일 형식 체크
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailPattern.test(newEmail)) {
+      setEmailError('올바른 이메일 형식이 아닙니다.');
+    } else {
+      setEmailError('');
+    }
+
+    setEmail(newEmail);
+    if (newEmail) {
       document.getElementById('stepUrl').style.display = 'none';
     } else {
       document.getElementById('stepUrl').style.display = 'block';
@@ -38,7 +50,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
 
   const handleSignup = async () => {
     if (!email || !password || !confirmPassword || !nickname) {
-      alert('회원가입이 되지 않습니다.');
+      alert('빈칸이 있습니다.');
       return;
     }
 
@@ -47,8 +59,13 @@ const Signup = ({ isOpen, onRequestClose }) => {
       return;
     }
 
+    if (emailError) {
+      alert('올바른 이메일 형식이 아닙니다.');
+      return;
+    }
+
     try {
-      const response = await axios.post('http://i10e204.p.ssafy.io:5000/users', {
+      const response = await axios.post('https://i10e204.p.ssafy.io:5000/users', {
         userEmail: email,
         password: password,
         nickname: nickname
@@ -114,13 +131,10 @@ const Signup = ({ isOpen, onRequestClose }) => {
                 className="int"
                 maxLength="20"
                 value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-
-                }}
+                onChange={handlePasswordChange}
               />
               <span id="alertTxt" style={{ display: passwordError ? 'block' : 'none' }}>{passwordError || '사용불가'}</span>
-              <img src="m_icon_pass.png" id="pswd1_img1" className="pswdImg" alt="비밀번호 아이콘" />
+              <img src="/signup/m_icon_pass.png" id="pswd1_img1" className="pswdImg" alt="비밀번호 아이콘" />
             </span>
             <span className="error_next_box">{passwordError}</span>
           </div>
@@ -141,7 +155,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
                   setPasswordError('');
                 }}
               />
-              <img src="m_icon_check_disable.png" id="pswd2_img1" className="pswdImg" alt="비밀번호 확인 아이콘" />
+              <img src="/signup/m_icon_check_disable.png" id="pswd2_img1" className="pswdImg" alt="비밀번호 확인 아이콘" />
             </span>
             <span className="error_next_box">{password !== confirmPassword ? '비밀번호가 일치하지 않습니다.' : ''}</span>
           </div>
