@@ -29,9 +29,9 @@ function Carousel() {
     const fetchUserCharacters  = async () => {
       try {
         const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/3');
-        console.log(response.data[0].racerId);
+        // console.log(response.data[0].racerId);
         const userCharacterIds = response.data.map(character => character.racerId);
-        console.log(userCharacterIds);
+        // console.log(userCharacterIds);
         const userImages = initialImages.filter(image => userCharacterIds.includes(image.id));
         setImages(userImages);
       } catch (error) {
