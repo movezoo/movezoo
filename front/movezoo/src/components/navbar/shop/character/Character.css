@@ -1,11 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .Character-container {
-  display: flex;
+  @apply flex
 }
 
 .Character-list {
-  flex: 1;
-  display: flex;
-  flex-wrap: wrap;
+  @apply grid grid-cols-2 gap-3 max-w-60;
 }
 
 .Character-select {

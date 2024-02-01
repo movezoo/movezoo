@@ -32,7 +32,6 @@ function Main() {
       {/* 카트 미리보기 */}
       <div className="main-carousel">
         <Carousel/>
-        <hr/>
       </div>
 
       {/* 네브바 */}
