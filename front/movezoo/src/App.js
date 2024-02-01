@@ -5,6 +5,8 @@ import Single from "./pages/single/Single";
 import Game from "./pages/game/Game.js";
 import Result from "./pages/result/Result";
 import Signup from "./components/home/Signup.jsx"
+import Multi from "./pages/multi/Multi";
+import "./index.css"
 
 
 function App() {
@@ -19,6 +21,7 @@ function App() {
         <Route path="/Result" element={<Result />} />
         <Route path="/" element={<Home />} />
         <Route path="/SignUp" element={<Signup />} />
+        <Route path="/Multi" element={<Multi />} />
       </Routes>
     </Router>
   );
