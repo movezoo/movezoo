@@ -1,6 +1,6 @@
 import React from 'react';
 import Shop from './shop/Shop';
-import Ranking from './Ranking';
+import Ranking from './ranking/Ranking';
 import Friend from './Friend';
 import Setting from './Setting';
 import { Link } from 'react-router-dom';
