@@ -80,7 +80,6 @@ public class User {
         this.role=UserRole.USER;
     }
 
-
     // 친구 추가 메서드
     public void addFriend(User friend) {
         this.friends.add(new Friend(this, friend));
@@ -103,12 +102,15 @@ public class User {
 //        child.setParent(this);
 //    }
 
-    public User(String googleUserEmail) {
+    // 소셜 회원가입 용 Constructor
+    public User(String googleUserEmail, String googleUserName) {
         this.googleUserEmail = googleUserEmail;
+        this.nickname = googleUserName;
         this.coin = 0;
         this.volume = 50;
         this.mic = 50;
         this.cameraSensitivity = 50;
+        this.role=UserRole.USER;
     }
 
 

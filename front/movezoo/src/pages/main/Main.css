@@ -1,0 +1,49 @@
+.main-container {
+  position: relative;
+}
+
+.main-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('./forest.avif');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: blur(2px); /* 이미지를 흐려지게 출력 */
+  z-index: -1; /* 이미지를 배경으로 숨기기 */
+}
+
+/* 메인 헤더 */
+.main-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-home {
+  flex: 1;
+  display: flex;
+  justify-content: left;
+}
+
+.main-profile {
+  flex: 1;
+  display: flex;
+  justify-content: right;
+}
+
+
+/* 메인 캐러셀 */
+.main-carousel {
+
+}
+
+/* 메인 네브바 */
+.main-navbar {
+  
+}

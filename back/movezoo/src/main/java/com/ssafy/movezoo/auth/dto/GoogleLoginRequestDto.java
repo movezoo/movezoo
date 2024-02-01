@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LoginRequest {
-    private String userEmail;
-    private String password;
+public class GoogleLoginRequestDto {
+    private String googleJwt;
 }

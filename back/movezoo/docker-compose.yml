@@ -7,5 +7,5 @@ services:
   volumes:
     - ./src/main/resources:/src/main/resources
   ports:
-    - "8080:8080"
+    - "5000:5000"
   restart: always
