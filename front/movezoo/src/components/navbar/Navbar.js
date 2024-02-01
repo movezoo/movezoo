@@ -26,7 +26,9 @@ function Navbar() {
       </div>
 
       <div className='navbar-multi'>
-      <button>멀티</button>
+      <button>
+      <Link to="/multi">멀티</Link>
+      </button>
       </div>
 
       <div className='navbar-friend'>
