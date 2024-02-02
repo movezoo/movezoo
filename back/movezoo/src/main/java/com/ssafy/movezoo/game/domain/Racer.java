@@ -17,7 +17,7 @@ public class Racer {
     @Column(name = "racer_id")
     private int racerId;
 
-    @Column(name = "racer_name")
+    @Column(name = "racer_name", unique = true)
     private String racerName;
 
     @Column(name = "racer_price")
