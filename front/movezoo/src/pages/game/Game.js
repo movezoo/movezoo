@@ -10,7 +10,7 @@ function Game() {
   return (
     <div>
       {/*일단 축소 화면*/}
-      <div className={styles.container}>
+      <div class={styles.container}>
         {/*왼쪽 화면, 게임 화면*/}
         <div className={styles.leftSection}>
           {/* <p style={{ textAlign: "center" }}>
