@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -12,22 +11,28 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      // 백엔드 API로 로그인 요청을 보냅니다.
-      const response = await axios.post('https://i10e204.p.ssafy.io/api/login', {
-        userEmail : username,
-        password : password
+      // Use FormData to send data as form data
+      const formData = new FormData();
+      formData.append('useremail', username);
+      formData.append('password', password);
+
+      // Send the login request with form data
+      const response = await axios.post('http://localhost:5000/api/login/login-proc', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
-      // API 응답에 따라 로그인 상태를 처리합니다.
+      // API response handling
       if (response.data.success) {
         setLoggedIn(true);
-        navigate('/Main')
+        navigate('/Main');
       } else {
-        alert('로그인 실패');
+        alert('id 또는 비밀번호가 틀렸습니다.');
       }
     } catch (error) {
       console.error('로그인 요청 중 에러 발생:', error);
-      alert('Id 또는 비밀번호가 틀렸습니다.');
+      alert('로그인 요청 중 에러 발생.');
     }
   };
 
@@ -41,6 +46,7 @@ const Login = () => {
             아이디:
             <input
               type="text"
+              name="useremail"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
