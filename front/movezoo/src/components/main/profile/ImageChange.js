@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-const PasswordModal = ({ isOpen, onRequestClose, onSave }) => {
+const ImageModal = ({ isOpen, onRequestClose, onSave }) => {
   return (
     <Modal 
     isOpen={isOpen} 
@@ -13,13 +13,12 @@ const PasswordModal = ({ isOpen, onRequestClose, onSave }) => {
         margin: 'auto',
       }
     }}>
-      <h2>비밀번호 변경</h2>
-      <input></input>
-      <input></input>
+      <h2>프로필 사진 변경</h2>
+      
       <button onClick={onSave}>저장</button>
       <button onClick={onRequestClose}>뒤로가기</button>
     </Modal>
   );
 };
 
-export default PasswordModal;
+export default ImageModal;
