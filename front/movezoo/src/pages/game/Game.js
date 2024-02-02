@@ -16,6 +16,7 @@ function Game() {
           {/* <p style={{ textAlign: "center" }}>
             <strong>게임 화면</strong>
           </p> */}
+          <Cam />
           <Main />
 
           {/* 뒤로가면 메인 화면*/}
@@ -24,7 +25,6 @@ function Game() {
           </div>
 
           {/*웹캠*/}
-          <Cam />
 
           {/* <Webcam className={styles.webCam} mirrored={true} /> */}
         </div>
