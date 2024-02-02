@@ -22,12 +22,15 @@ public class User {
     @GeneratedValue
     private int userId;
 
+    @Column(unique = true)
     private String userEmail;
 
+    @Column(unique = true)
     private String googleUserEmail;
 
     private String password;
 
+    @Column(unique = true)
     private String nickname;
 
     private int coin;

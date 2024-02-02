@@ -1,7 +1,4 @@
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import IconButton from '@mui/material/IconButton';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './Carousel.css';
 import axios from 'axios';
 

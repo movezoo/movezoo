@@ -42,7 +42,7 @@
                     // 접근 관리
                     .authorizeHttpRequests((authorizeRequests) ->
                             authorizeRequests
-                                    .requestMatchers("/**","/login/**", "/login").permitAll()  // login 인증 절차없이 허용
+                                    .requestMatchers("/**","/api/login/**", "/api/login").permitAll()  // login 인증 절차없이 허용
                                     .requestMatchers("/users").anonymous() // 인증되지 않은 사용자만 접근
                                     .requestMatchers("/users/**").hasRole(UserRole.USER.name())    // 권한을 가진 사람만 접근 가능, hasAnyRole("","")
                                     .anyRequest().authenticated()   // authenticated(): 인증(로그인)한 사용자만 접근
@@ -50,17 +50,17 @@
                     //  form 기반 로그인
                     .formLogin((formLogin) ->
                             formLogin
-    //                                .loginPage("/login")  // GET, 사용자 정의 로그인 페이지   // 설정자체를 안해야지 default로 제공해주는 페이지로 연결됨
+                                    .loginPage("/api/login")  // GET, 사용자 정의 로그인 페이지   // 설정자체를 안해야지 default로 제공해주는 페이지로 연결됨
                                     .usernameParameter("useremail") // 로그인 폼에서 사용자 이름 및 비밀번호 매개변수를 지정
                                     .passwordParameter("password")
                                     .loginProcessingUrl("/api/login/login-proc")   // POST, 로그인 submit 처리 URL
                                     .defaultSuccessUrl("/success", true)    // 로그인 성공 시 홈 페이지로 리디렉션
-                                    .failureUrl("/login?error=true")
+                                    .failureUrl("/api/login?error=true")
                     )
                     .logout((logoutConfig) ->   // 로그아웃 처리 및 로그아웃 후 홈 페이지로 리디렉션
                             logoutConfig
 //                                    .logoutUrl("/logout")   // logout 처리 url
-                                    .logoutSuccessUrl("/login")
+                                    .logoutSuccessUrl("/api/login")
                                     .invalidateHttpSession(true)
                                     .deleteCookies("JSESSIONID")
                     )
