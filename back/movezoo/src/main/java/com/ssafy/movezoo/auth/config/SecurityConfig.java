@@ -54,7 +54,7 @@
                                     .usernameParameter("userEmail") // 로그인 폼에서 사용자 이름 및 비밀번호 매개변수를 지정
                                     .passwordParameter("password")
                                     .loginProcessingUrl("/api/login/login-proc")   // POST, 로그인 submit 처리 URL
-                                    .defaultSuccessUrl("/main", true)    // 로그인 성공 시 홈 페이지로 리디렉션
+//                                    .defaultSuccessUrl("/main", true)    // 로그인 성공 시 홈 페이지로 리디렉션
                                     .failureUrl("/api/login?error=true")
                     )
                     .logout((logoutConfig) ->   // 로그아웃 처리 및 로그아웃 후 홈 페이지로 리디렉션

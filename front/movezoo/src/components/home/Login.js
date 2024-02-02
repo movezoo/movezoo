@@ -41,7 +41,7 @@ const Login = () => {
       // API response handling
       if (response.status === 200) {
         setSessionId(response.data.sessionId); // 세션 식별자 저장
-        // navigate('/Main');
+        navigate('/main');
       } else {
         alert('id 또는 비밀번호가 틀렸습니다.');
       }
