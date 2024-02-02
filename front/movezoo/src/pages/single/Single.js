@@ -4,6 +4,7 @@ import styles from "./Single.module.css";
 import Webcam from "react-webcam";
 import Map2 from "../../components/single/Map2";
 import Back from "../../components/single/Back";
+import Start from "../../components/single/Start";
 
 function Single() {
   const [loading, setLoading] = useState(true);
@@ -19,15 +20,18 @@ function Single() {
       <div className={styles.container}>
         {/*왼쪽 영역*/}
         <div className={styles.leftSection}>
+          <div className={styles.infoSection}>
+            <div className={styles.goBack}>
+              <Back />
+            </div>
+            <h1>Single Play</h1>
+          </div>
           {loading ? (
             <h1>Loading...</h1>
           ) : (
             <Webcam className={styles.webCam} mirrored={true} />
           )}
 
-          <div className={styles.goBack}>
-            <Back />
-          </div>
           <div>
             <button className={styles.btnSelect}>카트 고르기</button>
           </div>
@@ -35,16 +39,13 @@ function Single() {
         {/*오른쪽 영역*/}
         <div className={styles.rightSection}>
           {/*맵 & 최고기록*/}
-          <div>
+          <div className={styles.btnSelectMap}>
             <Map2 />
-            <p style={{ textAlign: "center" }}>
-              최고 기록 : <strong>00:00:00</strong>
-            </p>
           </div>
           {/* 시작 버튼*/}
-          <Link to="/Game">
-            <button className={styles.btnStart}>시작</button>
-          </Link>
+          <div className={styles.btnStart}>
+            <Start />
+          </div>
         </div>
       </div>
     </div>
