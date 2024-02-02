@@ -1,4 +1,4 @@
-package com.ssafy.movezoo.auth.config.oauth;
+package com.ssafy.movezoo.auth.config.details;
 
 import com.ssafy.movezoo.user.domain.User;
 import lombok.Getter;
