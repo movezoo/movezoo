@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Login from '../../components/home/Login';
 import './Home.css';
 import GoogleLoginButton from '../../components/home/GoogleLoginButton';
 import Signup from '../../components/home/Signup';  // Signup 컴포넌트 import
 
 function Home() {
-  const navigate = useNavigate();
   const [isSignupModalOpen, setSignupModalOpen] = useState(false);
 
   // 회원가입 버튼을 누르면 모달 열기

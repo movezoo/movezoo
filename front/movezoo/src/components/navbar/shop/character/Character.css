@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.Character-container {
+  @apply flex
+}
+
+.Character-list {
+  @apply grid grid-cols-2 gap-3 max-w-60;
+}
+
+.Character-select {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,24 +1,32 @@
 import { Link } from "react-router-dom";
 import styles from "./Game.module.css";
-import Webcam from "react-webcam";
+// import Webcam from "react-webcam";
 import Back from "../../components/game/Back";
+
+import Main from "./Main";
+import Cam from "./Cam";
 
 function Game() {
   return (
     <div>
       {/*일단 축소 화면*/}
-      <div className={styles.container}>
+      <div class={styles.container}>
         {/*왼쪽 화면, 게임 화면*/}
         <div className={styles.leftSection}>
-          <p style={{ textAlign: "center" }}>
+          {/* <p style={{ textAlign: "center" }}>
             <strong>게임 화면</strong>
-          </p>
+          </p> */}
+          <Cam />
+          <Main />
+
           {/* 뒤로가면 메인 화면*/}
           <div className={styles.goBack}>
             <Back />
           </div>
+
           {/*웹캠*/}
-          <Webcam className={styles.webCam} mirrored={true} />
+
+          {/* <Webcam className={styles.webCam} mirrored={true} /> */}
         </div>
 
         {/*오른쪽 화면*/}

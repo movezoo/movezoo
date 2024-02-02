@@ -39,7 +39,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
 
     // 비밀번호 길이 체크
     if (newPassword.length < 8) {
-      setPasswordError('8자 이상 입력해 주세요.');
+      setPasswordError('8글자 이상 입력해주세요');
     } else {
       setPasswordError('');
     }
@@ -69,12 +69,16 @@ const Signup = ({ isOpen, onRequestClose }) => {
         userEmail: email,
         password: password,
         nickname: nickname
-      });
+      }, { withCredentials: true });
 
       if (response.data.success) {
         setSignedUp(true);
         onRequestClose();
         navigate('/');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setNickname('');
         alert('회원가입 성공!');
       } else {
         alert('회원가입 실패');
@@ -114,9 +118,10 @@ const Signup = ({ isOpen, onRequestClose }) => {
                 maxLength="20"
                 value={email}
                 onChange={handleEmailChange}
+                placeholder='ex)MoveZoo@gmail.com'
               />
-              <span id="stepUrl" className="step_url">ex)MoveZoo@gmail.com</span>
             </span>
+            <span id="stepUrl" className="step_url"></span>
             <span className="error_next_box"></span>
           </div>
 
