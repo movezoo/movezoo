@@ -22,13 +22,7 @@ function Single() {
           {loading ? (
             <h1>Loading...</h1>
           ) : (
-            <Webcam
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-              mirrored={true}
-            />
+            <Webcam className={styles.webCam} mirrored={true} />
           )}
 
           <div className={styles.goBack}>

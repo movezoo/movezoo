@@ -1,21 +1,26 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Result.module.css";
 import Webcam from "react-webcam";
 
 function Result() {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
+      setLoading(false);
+    });
+  }, []);
   return (
     <div>
       {/*일단 축소 화면*/}
       <div className={styles.container}>
         {/*왼쪽 화면, 웹캠 화면*/}
         <div className={styles.leftSection}>
-          <Webcam
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
-            mirrored={true}
-          />
+          {loading ? (
+            <h1>Loading...</h1>
+          ) : (
+            <Webcam className={styles.webCam} mirrored={true} />
+          )}
         </div>
 
         {/*오른쪽 화면*/}
