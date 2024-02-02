@@ -7,13 +7,14 @@
 
 
 .leftSection {
-  display: flex;
+  position: relative;
   color: white;
-  align-items: center;
-  justify-content: center;
   width: 75%;
   height: 100vh;
   background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .rightSection {
@@ -26,15 +27,15 @@
   background-color: tomato;
 }
 
+.webCam {
+  position: absolute;
+  height: 100%;
+}
 
 .goBack {
   position: absolute;
   top: 0;
   left: 0;
-  width: 10%;
-  height: 10%;
-  margin: 10px;
-  background-color: grey;
 }
 
 .btnSelect {
