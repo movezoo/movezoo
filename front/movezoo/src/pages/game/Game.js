@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import styles from "./Game.module.css";
+import "./Game.module.css";
 // import Webcam from "react-webcam";
 import Back from "../../components/game/Back";
 
-import Main from "./Main";
-import Cam from "./Cam";
+import Main from "../../components/play/Main";
+import Cam from "../../components/play/Cam";
 
 function Game() {
   return (
@@ -16,8 +17,7 @@ function Game() {
           {/* <p style={{ textAlign: "center" }}>
             <strong>게임 화면</strong>
           </p> */}
-          <Cam />
-          <Main />
+          <Main width={1150} height={700}/>
 
           {/* 뒤로가면 메인 화면*/}
           <div className={styles.goBack}>
@@ -25,6 +25,9 @@ function Game() {
           </div>
 
           {/*웹캠*/}
+          {/* <div className={styles.webCam}> */}
+            <Cam />
+          {/* </div> */}
 
           {/* <Webcam className={styles.webCam} mirrored={true} /> */}
         </div>
