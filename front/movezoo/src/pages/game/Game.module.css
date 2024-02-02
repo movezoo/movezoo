@@ -9,7 +9,7 @@
   color: white;
   width: 75%;
   height: 100vh;
-  background-color: navy;
+  background-color: cornflowerblue;
 }
 
 .rightSection {
@@ -19,7 +19,7 @@
   justify-content: space-between;
   width: 25%;
   height: 100vh;
-  background-color: tomato;
+  background-color: skyblue;
 }
 
 

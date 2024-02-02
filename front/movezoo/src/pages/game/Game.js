@@ -41,7 +41,8 @@ function Game() {
                 textAlign: "center",
                 width: 160,
                 height: 80,
-                backgroundColor: "skyblue",
+                color: "white",
+                backgroundColor: "tomato",
               }}
             >
               넘어가기
