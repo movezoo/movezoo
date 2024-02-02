@@ -6,7 +6,7 @@ import background from './images/background.png';
 import mute from './images/mute.png';
 import sprites from './images/sprites.png';
 
-const selectPlayer = "pug";
+const selectPlayer = "horse";
 const selectAction = "run";
 const selectMap = "map1";
 const frameIndex = {
@@ -475,7 +475,7 @@ const Render = {
       else direction = "straight"
     }
     imageObj = playerSprites[selectPlayer][selectAction][direction]; // 이미지객체
-    sprite       = SPRITES[selectPlayer][selectAction][direction][frameIndex[selectAction]] // 좌표 정보(잘라내기정보)
+    sprite   = SPRITES[selectPlayer][selectAction][direction][frameIndex[selectAction]] // 좌표 정보(잘라내기정보)
     // console.log(imageObj)
     // console.log(sprite)
     // 스프라이트 렌더링

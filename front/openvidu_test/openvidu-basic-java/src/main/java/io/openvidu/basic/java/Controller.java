@@ -47,7 +47,7 @@ public class Controller {
 	 * @throws OpenViduJavaClientException OpenVidu Java 클라이언트 예외
 	 * @throws OpenViduHttpException       OpenVidu HTTP 예외
 	 */
-	@PostMapping("/api/sessions")
+	@PostMapping("/api/openvidu/sessions")
 	public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
 			throws OpenViduJavaClientException, OpenViduHttpException {
 		// 전달된 JSON 매개변수를 사용하여 SessionProperties를 빌드하고, 해당 속성을 사용하여 새 세션을 생성합니다.
@@ -65,7 +65,7 @@ public class Controller {
 	 * @throws OpenViduJavaClientException OpenVidu Java 클라이언트 예외
 	 * @throws OpenViduHttpException       OpenVidu HTTP 예외
 	 */
-	@PostMapping("/api/sessions/{sessionId}/connections")
+	@PostMapping("/api/openvidu/sessions/{sessionId}/connections")
 	public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId,
 			@RequestBody(required = false) Map<String, Object> params)
 			throws OpenViduJavaClientException, OpenViduHttpException {
