@@ -475,7 +475,7 @@ const Render = {
       else direction = "straight"
     }
     imageObj = playerSprites[selectPlayer][selectAction][direction]; // 이미지객체
-    sprite       = SPRITES[selectPlayer][selectAction][direction][frameIndex[selectAction]] // 좌표 정보(잘라내기정보)
+    sprite   = SPRITES[selectPlayer][selectAction][direction][frameIndex[selectAction]] // 좌표 정보(잘라내기정보)
     // console.log(imageObj)
     // console.log(sprite)
     // 스프라이트 렌더링

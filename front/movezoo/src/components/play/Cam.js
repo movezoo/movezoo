@@ -7,9 +7,9 @@ import UserVideoComponent from "./UserVideoComponent";
 import MyVideoComponent from "./MyVideoComponent";
 
 const APPLICATION_SERVER_URL =
-  process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
+  // process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
   // process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
-  // process.env.NODE_ENV === "production" ? "" : "http://localhost:5000/";
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000/";
 
 class Cam extends Component {
   constructor(props) {
@@ -282,6 +282,7 @@ class Cam extends Component {
                 <p className="text-center">
                   <input
                     className="btn btn-lg btn-success"
+                    style={{color:'black'}}
                     name="commit"
                     type="submit"
                     value="JOIN"
