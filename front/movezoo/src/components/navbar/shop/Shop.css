@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.shop-container {
+  @apply flex flex-col
+}
+
+.shop-header {
+  @apply grid grid-cols-2
+}
+
+.shop-header-name {
+
+}
+
+.shop-header-exit {
+  @apply grid justify-items-end
+}
+
+.exit-button {
+  @apply bg-red-500 text-white py-2 px-4 rounded;
+}
+
+.shop-chracter {
+  
+}
