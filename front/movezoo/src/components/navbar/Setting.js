@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 
 const Setting = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [volume, setVolume] = React.useState(80);
+  const [volume, setVolume] = React.useState(20);
 
   const openModal = () => {
     setIsOpen(true);
