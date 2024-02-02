@@ -32,7 +32,7 @@ public class OpenviduSessionController {
      * @param params The Session properties
      * @return The Session ID
      */
-    @PostMapping("/api/sessions")
+    @PostMapping("/api/openvidu/sessions")
     public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
         System.out.println("/api/sessions");
@@ -50,7 +50,7 @@ public class OpenviduSessionController {
      * @param params    The Connection properties
      * @return The Token associated to the Connection
      */
-    @PostMapping("/api/sessions/{sessionId}/connections")
+    @PostMapping("/api/openvidu/sessions/{sessionId}/connections")
     public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId,
                                                    @RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
