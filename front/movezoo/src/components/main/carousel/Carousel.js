@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './Carousel.css';
 import axios from 'axios';
+import { AiFillCaretLeft } from "react-icons/ai";
+import { AiFillCaretRight } from "react-icons/ai";
 
 function Carousel() {
 
@@ -46,8 +48,7 @@ function Carousel() {
     <div className='carousel-container'>
 
       <div className='carousel-prev'>
-      <button onClick={handlePrevious}>이전</button>
-      
+        <AiFillCaretLeft onClick={handlePrevious}/>
       </div>
 
       <div className='carousel-image'>
@@ -55,7 +56,7 @@ function Carousel() {
       </div>
 
       <div className='carousel-next'>
-      <button onClick={handleNext}>다음</button>
+        <AiFillCaretRight onClick={handleNext}/>
       </div>
 
     </div>
