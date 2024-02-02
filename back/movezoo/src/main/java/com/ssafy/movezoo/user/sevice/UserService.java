@@ -20,6 +20,10 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
+    public Optional<User> findByEmail(String userEmail){
+        return userRepository.findByEmail(userEmail);
+    }
+
     // 비밀번호 변경
     public int changePassword(String userEmail, String password){
         return userRepository.updatePassword(userEmail, password);
