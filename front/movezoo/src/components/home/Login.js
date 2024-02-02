@@ -23,12 +23,12 @@ const Login = () => {
     try {
       // Use FormData to send data as form data
       const formData = new FormData();
-      formData.append('userEmail', username); // or 'useremail' depending on your backend
+      formData.append('useremail', username); // or 'useremail' depending on your backend
       formData.append('password', password);
 
       // Send the login request with form data
       const response = await axios.post('https://i10e204.p.ssafy.io/api/login/login-proc', formData, {
-        withCredentials: true,
+        withCredentials: true, 
       });
 
       // API response handling
