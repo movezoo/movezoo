@@ -1,24 +1,30 @@
 package com.ssafy.movezoo.auth.controller;
 
-import com.ssafy.movezoo.auth.dto.EmailMessage;
-import com.ssafy.movezoo.auth.dto.EmailPostDto;
-import com.ssafy.movezoo.auth.dto.EmailResponseDto;
-import com.ssafy.movezoo.auth.dto.GoogleLoginRequestDto;
+import com.ssafy.movezoo.auth.dto.*;
 import com.ssafy.movezoo.auth.sevice.EmailService;
 import com.ssafy.movezoo.global.dto.SimpleResponseDto;
 import com.ssafy.movezoo.user.controller.UserController;
 import com.ssafy.movezoo.user.domain.User;
 import com.ssafy.movezoo.user.dto.UserJoinRequestDto;
+import com.ssafy.movezoo.user.dto.UserResponseDto;
 import com.ssafy.movezoo.user.repository.UserRepository;
 import com.ssafy.movezoo.user.sevice.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -33,8 +39,9 @@ public class AuthController {
     private final EmailService emailService;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    // 비밀번호 찾기 시 비밀번호 변경 후 메일로 전송
+            // 비밀번호 찾기 시 비밀번호 변경 후 메일로 전송
     @PostMapping("/email-auth/reset-password")
     public ResponseEntity<EmailMessage> sendPasswordMail(@RequestBody EmailPostDto emailPostDto) {
         EmailMessage emailMessage = EmailMessage.builder()
@@ -66,24 +73,48 @@ public class AuthController {
 
     // 로그인
 //    @PostMapping("/login")
-//    public ResponseEntity<MessageDto> login(@RequestBody LoginRequestDto dto, HttpServletRequest httpServletRequest){
-//        User user = loginService.login(dto.getUserEmail(), dto.getPassword());
+//    public ResponseEntity<SimpleResponseDto> login(@RequestBody LoginRequestDto dto, HttpServletRequest httpServletRequest){
+//        Optional<User> findUser = userService.findByEmail(dto.getUserEmail());
 //
-//        // 로그인 성공 => 세션 생성
+//        SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
+//        simpleResponseDto.setSuccess(false);
+//        simpleResponseDto.setMsg("로그인 실패");
 //
-//        // 세션 생성 전 기존의 세션 파기    // 필요한가
-////        httpServletRequest.getSession().invalidate();
-//        HttpSession session = httpServletRequest.getSession(true);
-//        // 세션에 userId를 넣어줌
-//        session.setAttribute("userId", user.getUserId());
-//        session.setMaxInactiveInterval(1800);   // 30min
+//        if (!findUser.isPresent()) {
+//            simpleResponseDto.setMsg("존재하지 않는 이메일입니다.");
+//            return ResponseEntity.badRequest().body(simpleResponseDto);
+//        }
 //
-//        MessageDto msg = MessageDto.builder()
-//                .status(StatusEnum.OK)
-//                .message("로그인 성공")
-//                .build();
+//        System.out.println(findUser.get().toString());
 //
-//        return ResponseEntity.ok().body(msg);
+//        // 입력받은 비밀번호, 암호화된 비밀번호 매칭확인 => 로그인
+//        if (passwordEncoder.matches(dto.getPassword(), findUser.get().getPassword())) {
+//            UserResponseDto userResponseDto = new UserResponseDto(findUser.get());
+//
+//            // 로그인 성공 => 세션 생성
+//            // 세션 생성 전 기존의 세션 파기
+//            httpServletRequest.getSession().invalidate();
+//            HttpSession session = httpServletRequest.getSession(true);
+//
+//            // 세션에 userResponseDto를 넣어줌
+//            session.setAttribute("userResponseDto", userResponseDto);
+//            session.setMaxInactiveInterval(1800);   // 30min
+//
+//            simpleResponseDto.setSuccess(true);
+//            simpleResponseDto.setMsg("로그인 성공");
+//
+//            return ResponseEntity.ok().body(simpleResponseDto);
+//        }
+//
+//        return ResponseEntity.badRequest().body(simpleResponseDto);
+//    }
+
+//    @GetMapping("/login")
+//    public String redirect() {
+////        HttpHeaders headers = new HttpHeaders();
+////        headers.setLocation(URI.create("/Home"));
+////        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+//        return "redirect:/home";
 //    }
 
     // 사용자 인증 체크용
