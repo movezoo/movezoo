@@ -1,6 +1,6 @@
     package com.ssafy.movezoo.auth.config;
 
-    import com.ssafy.movezoo.auth.config.oauth.UserDetailsServiceImpl;
+    import com.ssafy.movezoo.auth.config.details.UserDetailsServiceImpl;
     import com.ssafy.movezoo.user.dto.UserRole;
     import lombok.RequiredArgsConstructor;
     import org.springframework.context.annotation.Bean;
@@ -11,6 +11,8 @@
     import org.springframework.security.web.AuthenticationEntryPoint;
     import org.springframework.security.web.SecurityFilterChain;
     import org.springframework.security.web.access.AccessDeniedHandler;
+    import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+    import org.springframework.web.service.invoker.HttpRequestValues;
 
     @Configuration
     @EnableWebSecurity  // security 활성화 후 기본 스프링 필터체인에 등록
@@ -30,6 +32,8 @@
 
         @Bean
         protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+            HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+            requestCache.setMatchingRequestParameterName(null);
 
             // 인증 관리
             http
@@ -39,6 +43,10 @@
     //                                frameOptionsConfig.disable()
     //                        )
     //                )
+                    // 로그인 후 ?continue 가 붙는 것에 대한 해결
+                    .requestCache((request) ->
+                            request.requestCache(requestCache))
+
                     // 접근 관리
                     .authorizeHttpRequests((authorizeRequests) ->
                             authorizeRequests
@@ -55,12 +63,11 @@
                                     .passwordParameter("password")
                                     .loginProcessingUrl("/api/login/login-proc")   // POST, 로그인 submit 처리 URL
 //                                    .defaultSuccessUrl("/main", true)    // 로그인 성공 시 홈 페이지로 리디렉션
-                                    .failureHandler(new CustomAuthenticationFailureHandler()) // 커스텀 핸들러 등록
-                                    .failureUrl("/api/login?error=true")
+//                                    .failureUrl("/api/login?error=true")
                     )
                     .logout((logoutConfig) ->   // 로그아웃 처리 및 로그아웃 후 홈 페이지로 리디렉션
                             logoutConfig
-//                                    .logoutUrl("/logout")   // logout 처리 url
+                                    .logoutUrl("/api/logout")   // logout 처리 url
                                     .logoutSuccessUrl("/api/login")
                                     .invalidateHttpSession(true)
                                     .deleteCookies("JSESSIONID")
