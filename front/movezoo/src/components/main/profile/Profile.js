@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
+import ImageChange from './ImageChange';
 import NicknameChange from './NicknameChange';
 import PasswordChange from './PasswordChange';
 import LogoutModal from './Logout';
@@ -8,10 +9,11 @@ import axios from 'axios';
 
 
 const Profile = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isChangeImageModalOpen, setIsChangeImageModalOpen] = useState(false);
   const [isEditNicknameOpen, setIsEditNicknameOpen] = useState(false);
   const [isEditPasswordOpen, setIsEditPasswordOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [user, setUserInfo] = useState(null);
 
   const openModal = () => {
@@ -38,6 +40,14 @@ const Profile = () => {
     setIsEditPasswordOpen(false);
   };
 
+  const openChangeImageModal = () => { 
+    setIsChangeImageModalOpen(true);
+  };
+
+  const closeChangeImageModal = () => { 
+    setIsChangeImageModalOpen(false);
+  };
+
   // 닉네임 변경 
   const saveNewNickname = () => {
     closeEditNicknameModal();
@@ -46,6 +56,10 @@ const Profile = () => {
   // 비밀번호 변경
   const saveNewPassword = () => {
     closeEditPasswordModal();
+  };
+
+  const saveNewImage = () => {
+    closeChangeImageModal();
   };
 
   const handleLogout = () => {
@@ -58,7 +72,7 @@ const Profile = () => {
     const fetchUserInfo = async (userId) => {
       try {
         const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${userId}`);
-        console.log(response.data);
+        // console.log(response.data);
         const userInfo = response.data;
         setUserInfo(userInfo)
       } catch (error) {
@@ -95,7 +109,12 @@ const Profile = () => {
 
           <div>
             <div>
-              {user && user.profileImgUrl}
+            <button  onClick={openChangeImageModal}>
+              {user && user.profileImgUrl ? (
+                <img src={user.profileImgUrl} alt="프로필 이미지" />) 
+                : (<img src="/path/to/default-profile-image.png" alt="기본 프로필 이미지" />
+                )}
+            </button>
             </div>
             <div>
               <h1>{user && user.nickname}</h1>
@@ -126,6 +145,12 @@ const Profile = () => {
         
         </div>
       </Modal>
+
+      <ImageChange
+        isOpen={isChangeImageModalOpen}
+        onRequestClose={closeChangeImageModal}
+        onSave={saveNewImage}
+      />
 
       <NicknameChange
         isOpen={isEditNicknameOpen}
