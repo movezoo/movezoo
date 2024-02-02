@@ -7,6 +7,7 @@ import UserVideoComponent from "./UserVideoComponent";
 import MyVideoComponent from "./MyVideoComponent";
 
 const APPLICATION_SERVER_URL =
+  // process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
   // process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
   process.env.NODE_ENV === "production" ? "" : "http://localhost:5000/";
 
@@ -281,6 +282,7 @@ class Cam extends Component {
                 <p className="text-center">
                   <input
                     className="btn btn-lg btn-success"
+                    style={{color:'black'}}
                     name="commit"
                     type="submit"
                     value="JOIN"
@@ -373,7 +375,7 @@ class Cam extends Component {
   async createSession(sessionId) {
     // 서버에 새로운 세션을 생성하기 위한 비동기 함수
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions",
+      APPLICATION_SERVER_URL + "api/openvidu/sessions",
       { customSessionId: sessionId },
       {
         headers: { "Content-Type": "application/json" },
@@ -385,7 +387,7 @@ class Cam extends Component {
   async createToken(sessionId) {
     // 서버에 특정 세션에 대한 연결에 대한 토큰을 생성하기 위한 비동기 함수
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+      APPLICATION_SERVER_URL + "api/openvidu/sessions/" + sessionId + "/connections",
       {},
       {
         headers: { "Content-Type": "application/json" },
