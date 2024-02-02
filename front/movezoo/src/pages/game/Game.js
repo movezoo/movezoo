@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./Game.module.css";
+import "./Game.module.css";
 // import Webcam from "react-webcam";
 import Back from "../../components/game/Back";
 
@@ -24,9 +25,9 @@ function Game() {
           </div>
 
           {/*웹캠*/}
-          <div className={styles.webCam}>
+          {/* <div className={styles.webCam}> */}
             <Cam />
-          </div>
+          {/* </div> */}
 
           {/* <Webcam className={styles.webCam} mirrored={true} /> */}
         </div>
