@@ -23,7 +23,7 @@ const Login = () => {
     try {
       // Use FormData to send data as form data
       const formData = new FormData();
-      formData.append('useremail', username); // or 'useremail' depending on your backend
+      formData.append('userEmail', username); // or 'useremail' depending on your backend
       formData.append('password', password);
 
       // Send the login request with form data
