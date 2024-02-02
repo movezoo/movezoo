@@ -17,7 +17,7 @@ const Login = () => {
       formData.append('password', password);
 
       // Send the login request with form data
-      const response = await axios.post('http://localhost:5000/api/login/login-proc', formData, {
+      const response = await axios.post('https://i10e204.p.ssafy.io/api/login/login-proc', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
