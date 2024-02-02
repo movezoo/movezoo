@@ -2,7 +2,7 @@
 import { useRef, useEffect } from 'react'
 import { Dom, Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
 import { PLAYER_SPRITE } from './gameConstants.js';
-import { data } from './data.js';
+import { data, playerData } from './data.js';
 
 const localStorage = window.localStorage || {};
 
@@ -18,24 +18,7 @@ const Main = (props) => {
     // });
     
     const playerNumber = 0; // 0 ~ 3
-    const playerData = [
-      {
-        userX:0,
-        userZ:0,
-      },
-      {
-        userX:0,
-        userZ:0,
-      },
-      {
-        userX:0,
-        userZ:0,
-      },
-      {
-        userX:0,
-        userZ:0,
-      }
-    ]
+
     let fps            = 60;                      // 초당 'update' 프레임 수
     let step           = 1/fps;                   // 각 프레임의 지속 시간 (초)
     let width          = props.width;                    // 논리적 캔버스 너비
@@ -213,7 +196,7 @@ const Main = (props) => {
     const updateCars = (dt, playerSegment, playerW) => {
       let car, oldSegment, newSegment;
       for(let n = 0 ; n < cars.length ; n++) {
-        if (n === playerNumber) continue;
+        if (n === playerNumber) continue; // 나의 플레이어 번호이면?
         car         = cars[n];
         oldSegment  = findSegment(car.z);
         // car.offset  = car.offset + updateCarOffset(car, oldSegment, playerSegment, playerW);
@@ -236,8 +219,7 @@ const Main = (props) => {
     
     }
     
-    // const updateCarOffset = (car, carSegment, playerSegment, playerW) {
-      
+    // const updateCarOffset = (car, carSegment, playerSegment, playerW) => {
     //   let dir, segment, otherCar, otherCarW, lookahead = 20, carW = car.sprite.w * SPRITES.SCALE;
     
     //   // 최적화, 플레이어가 '보이지 않을 때' 다른 차를 운전하는 데 신경 쓰지 마십시오
@@ -291,7 +273,7 @@ const Main = (props) => {
     //     return 0;
     // }
     
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     
     const updateHud = (key, value) => {
       // DOM 접근은 느릴 수 있으므로 값이 변경되었을 때만 수행합니다.
@@ -567,7 +549,7 @@ const Main = (props) => {
       // addDownhillToEnd();
     
       // resetSprites();
-      // resetCars();
+      resetCars();
     
       // 플레이어 현재 위치 다음 2개 세그먼트의 색을 START 색으로 설정
       segments[findSegment(playerZ).index + 2].color = COLORS.START;
@@ -637,6 +619,7 @@ const Main = (props) => {
         z      = Math.floor(Math.random() * segments.length) * segmentLength;
         // z      = 1300000;
         sprite = Util.randomChoice(SPRITES.CARS);
+        // sprite = Util.randomChoice(SPRITES.CARS);
         speed  = maxSpeed/4 + Math.random() * maxSpeed/(sprite === SPRITES.SEMI ? 4 : 2);
         // speed  = maxSpeed;
         car = { offset: offset, z: z, sprite: sprite, speed: speed };
@@ -669,16 +652,18 @@ const Main = (props) => {
       ],
       ready: images => { // images === loadImages의 result
         // ==> images[spriteName][action.name][direction] === <img>
+        // images 에 모든 이미지가 담겨있음
 
         background.hills = images.hills;
         background.sky = images.sky;
         background.faraway = images.faraway;
         // console.log(`Game.ready() -> background : ${background}`)
         // console.log(background.sky.src)
-        sprites    = images.sprites;
         PLAYER_SPRITE.NAMES.forEach(name => {
           playerSprites[name] = images[name];
         })
+        sprites    = images.sprites;
+        
         reset();
         localStorage.fast_lap_time = localStorage.fast_lap_time || 180;
         updateHud('fast_lap_time', formatTime(Util.toFloat(localStorage.fast_lap_time)));
