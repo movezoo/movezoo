@@ -1,8 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .navbar-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  @apply bg-blue-300; 
 }
 
 .navbar-shop {
