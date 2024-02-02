@@ -55,6 +55,7 @@
                                     .passwordParameter("password")
                                     .loginProcessingUrl("/api/login/login-proc")   // POST, 로그인 submit 처리 URL
 //                                    .defaultSuccessUrl("/main", true)    // 로그인 성공 시 홈 페이지로 리디렉션
+                                    .failureHandler(new CustomAuthenticationFailureHandler()) // 커스텀 핸들러 등록
                                     .failureUrl("/api/login?error=true")
                     )
                     .logout((logoutConfig) ->   // 로그아웃 처리 및 로그아웃 후 홈 페이지로 리디렉션
