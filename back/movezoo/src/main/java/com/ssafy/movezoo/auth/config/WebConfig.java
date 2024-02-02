@@ -21,8 +21,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/api/login","/home");
-        // home으로 redirect는 되는데, home을 어디서 찾아야할지 모르겠움,,,
+        registry.addRedirectViewController("/api/login","/");
+        registry.addRedirectViewController("/success","/Main");
     }
 
 }
