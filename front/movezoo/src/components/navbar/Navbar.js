@@ -12,11 +12,15 @@ function Navbar() {
     <div className="navbar-container">
       
       <div className='navbar-shop'>
-        <Shop/>
+        <button>
+          <Shop/>
+        </button>
       </div>
 
       <div className='navbar-ranking'>
-        <Ranking/>
+        <button>
+          <Ranking/>
+        </button>
       </div>
 
       <div className='navbar-single'>
@@ -32,11 +36,15 @@ function Navbar() {
       </div>
 
       <div className='navbar-friend'>
-        <Friend/>
+        <button>
+          <Friend/>
+        </button>
       </div>
 
       <div className='navbar-setting'>
-        <Setting/>
+        <button> 
+          <Setting/>
+        </button>
       </div>
 
     </div>
