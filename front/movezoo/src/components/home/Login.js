@@ -31,6 +31,11 @@ const Login = () => {
         withCredentials: true, 
       });
 
+      console.log(response);
+      console.log("------------------------");
+      console.log(response.data);
+      console.log("------------------------");
+      console.log(response.data.success);
       // API response handling
       if (response.data.success) {
         setSessionId(response.data.sessionId); // 세션 식별자 저장
