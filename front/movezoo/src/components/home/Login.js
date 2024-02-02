@@ -23,7 +23,7 @@ const Login = () => {
     try {
       // Use FormData to send data as form data
       const formData = new FormData();
-      formData.append('useremail', username); // or 'useremail' depending on your backend
+      formData.append('userEmail', username); // or 'useremail' depending on your backend
       formData.append('password', password);
 
       // Send the login request with form data
@@ -31,10 +31,17 @@ const Login = () => {
         withCredentials: true, 
       });
 
+      console.log(response);
+      console.log("------------------------");
+      console.log(response.data);
+      console.log("------------------------");
+      console.log(response.data.success);
+      console.log("------------------------");
+      console.log(response.status);
       // API response handling
-      if (response.data.success) {
+      if (response.status === 200) {
         setSessionId(response.data.sessionId); // 세션 식별자 저장
-        navigate('/Main');
+        navigate('/main');
       } else {
         alert('id 또는 비밀번호가 틀렸습니다.');
       }
