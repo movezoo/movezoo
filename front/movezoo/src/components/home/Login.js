@@ -36,8 +36,10 @@ const Login = () => {
       console.log(response.data);
       console.log("------------------------");
       console.log(response.data.success);
+      console.log("------------------------");
+      console.log(response.status);
       // API response handling
-      if (response.data.success) {
+      if (response.status === 200) {
         setSessionId(response.data.sessionId); // 세션 식별자 저장
         navigate('/Main');
       } else {
