@@ -125,6 +125,8 @@ public class AuthController {
     public void check() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        System.out.println(authentication.getPrincipal());
+
         if (authentication != null) {
             // 사용자가 인증되어 있을 때
             System.out.println("Authenticated user: " + authentication.getName());
