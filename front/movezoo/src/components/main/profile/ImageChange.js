@@ -14,7 +14,7 @@ const ImageModal = ({ isOpen, onRequestClose, onSave }) => {
       }
     }}>
       <h2>프로필 사진 변경</h2>
-      
+      <input type="file" />
       <button onClick={onSave}>저장</button>
       <button onClick={onRequestClose}>뒤로가기</button>
     </Modal>
