@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./Game.module.css";
+import "./Game.module.css";
 // import Webcam from "react-webcam";
 import Back from "../../components/game/Back";
 
@@ -16,8 +17,10 @@ function Game() {
           {/* <p style={{ textAlign: "center" }}>
             <strong>게임 화면</strong>
           </p> */}
-          <Cam />
-          <Main />
+          <div><Cam /></div>
+          {/* <div className={styles.cam}><Cam /></div> */}
+          <div><Main /></div>
+          {/* <div className={styles.main}><Main /></div> */}
 
           {/* 뒤로가면 메인 화면*/}
           <div className={styles.goBack}>

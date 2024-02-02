@@ -6,7 +6,7 @@ import background from './images/background.png';
 import mute from './images/mute.png';
 import sprites from './images/sprites.png';
 
-const selectPlayer = "pug";
+const selectPlayer = "horse";
 const selectAction = "run";
 const selectMap = "map1";
 const frameIndex = {

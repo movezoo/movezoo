@@ -211,7 +211,6 @@ const Main = (props) => {
     //-------------------------------------------------------------------------
     
     const updateCars = (dt, playerSegment, playerW) => {
-      
       let car, oldSegment, newSegment;
       for(let n = 0 ; n < cars.length ; n++) {
         if (n === playerNumber) continue;
@@ -549,26 +548,26 @@ const Main = (props) => {
     const resetRoad = () => {
       segments = [];
       addStraight(ROAD.LENGTH.LONG);
-      addLowRollingHills();
-      addSCurves();
-      addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
-      addBumps();
-      addLowRollingHills();
-      addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
-      addStraight();
-      addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
-      addSCurves();
-      addCurve(ROAD.LENGTH.LONG, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
-      addHill(ROAD.LENGTH.LONG, ROAD.HILL.HIGH);
-      addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
-      addBumps();
-      addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
-      addStraight();
-      addSCurves();
-      addDownhillToEnd();
+      // addLowRollingHills();
+      // addSCurves();
+      // addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
+      // addBumps();
+      // addLowRollingHills();
+      // addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
+      // addStraight();
+      // addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
+      // addSCurves();
+      // addCurve(ROAD.LENGTH.LONG, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
+      // addHill(ROAD.LENGTH.LONG, ROAD.HILL.HIGH);
+      // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
+      // addBumps();
+      // addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
+      // addStraight();
+      // addSCurves();
+      // addDownhillToEnd();
     
-      resetSprites();
-      resetCars();
+      // resetSprites();
+      // resetCars();
     
       // 플레이어 현재 위치 다음 2개 세그먼트의 색을 START 색으로 설정
       segments[findSegment(playerZ).index + 2].color = COLORS.START;
@@ -809,14 +808,14 @@ const Main = (props) => {
 
 
       <div id='instructions'>
-        <p>Use the <b>arrow keys</b> to drive the car.</p>
+        {/* <p>Use the <b>arrow keys</b> to drive the car.</p>
         내차 X 위치 : <span id="playerX">0</span><br/>
         내차 Z 위치 : <span id="position">0</span><br/>
 
         상대차 X 위치 : <span id="userX">0</span><br/>
         상대차 Z 위치 : <span id="userZ">0</span><br/>
 
-        trackLength : <span id="trackLength">0</span><br/>
+        trackLength : <span id="trackLength">0</span><br/> */}
       </div>
 
       <div id="racer">
