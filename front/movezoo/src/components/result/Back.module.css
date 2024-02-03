@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btnStart{
+  @apply py-6 px-16 text-white text-center;
+  background-color: tomato;
+  font-size: xx-large;
+  font-weight: bold;
+  border-radius: 8px;
+}
+

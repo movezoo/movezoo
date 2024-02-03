@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './Carousel.css';
 import axios from 'axios';
+import { AiFillCaretLeft } from "react-icons/ai";
+import { AiFillCaretRight } from "react-icons/ai";
+import Session from 'react-session-api';
 
 function Carousel() {
-
   const initialImages  = [
     { id: 1, name: '캐릭터 1', image: './shop/1.png' },
     { id: 2, name: '캐릭터 2', image: './shop/2.png' },
@@ -27,39 +29,55 @@ function Carousel() {
   };
 
   useEffect(() => {
-    const fetchUserCharacters  = async () => {
+    const fetchUserCharacters = async () => {
       try {
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/3');
-        // console.log(response.data[0].racerId);
+        // == 쿠키 사용해서 로그인한 유저 id 가져오기 ============
+
+        // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+        //   withCredentials: true, // 쿠키 허용
+        // });
+        // const UserId = loginUserId.data;
+
+        // ====================================================
+
+        // 임시 유저 데이터
+        const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/102', {
+        })
+
+        // 유저 캐릭터 데이터 가져오기
+        // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {
+        // })
+
+        console.log('===========')
+        console.log(response.data);
         const userCharacterIds = response.data.map(character => character.racerId);
-        // console.log(userCharacterIds);
         const userImages = initialImages.filter(image => userCharacterIds.includes(image.id));
         setImages(userImages);
       } catch (error) {
         console.error('캐릭터 정보 요청 실패:', error);
       }
-    }
-    fetchUserCharacters ();
-  },[]);
+    };
+
+    fetchUserCharacters();
+  }, []);
 
   return (
     <div className='carousel-container'>
-
       <div className='carousel-prev'>
-      <button onClick={handlePrevious}>이전</button>
-      
+        <AiFillCaretLeft onClick={handlePrevious}/>
       </div>
-
       <div className='carousel-image'>
-      {images.length > 0 && <img src={images[currentIndex].image} alt="carousel-image" />}
+        {images.length > 0 && <img src={images[currentIndex].image} alt="carousel-image" />}
       </div>
-
       <div className='carousel-next'>
-      <button onClick={handleNext}>다음</button>
+        <AiFillCaretRight onClick={handleNext}/>
       </div>
-
     </div>
   );
 }
 
 export default Carousel;
+
+
+
+

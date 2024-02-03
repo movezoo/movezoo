@@ -9,7 +9,7 @@
   color: white;
   width: 75%;
   height: 100vh;
-  background-color: black;
+  background-color: cornflowerblue;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,7 +22,9 @@
   justify-content: space-between;
   width: 25%;
   height: 100vh;
-  background-color: tomato;
+  padding: 10px;
+  background-color: skyblue;
+  border-left: black 3px solid;
 }
 
 .webCam {
@@ -30,16 +32,19 @@
   height: 100%;
 }
 
+.timeRecord {
+  position: relative;
+  margin-top: 50px;
+}
+
 .resultReward {
   display: flex;
   justify-content: space-between;
   margin: 10px;
+  font-size: x-large;
 }
 
 .btnReturn {
-  text-align: center;
-  width: 160px;
-  height: 80px;
-  margin: 10px;
-  background-color: skyblue;
+  position: relative;
+  bottom: 0;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable */
 // import io from "socket.io-client";
 import { useRef, useEffect } from 'react'
 import { Dom, Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
@@ -11,13 +12,22 @@ const Main = (props) => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-  
+    
     // const socketClient = io("http://192.168.30.204:3000");
     // socketClient.on("connect", () => {
     //   console.log(`connection server`);
     // });
     
     const playerNumber = 0; // 0 ~ 3
+    
+    // View 관련 설정 변수
+    let roadWidth      = 2000;                    // 사실상 도로의 반폭, 도로가 -roadWidth에서 +roadWidth로 이어지면 수학이 더 간단해짐
+    let cameraHeight   = 3000;                    // 카메라의 z 높이
+    let drawDistance   = 300;                     // 그릴 세그먼트 수
+    let fieldOfView    = 100;                     // 시야각 (도)
+    let fogDensity     = 5;                       // 지수적 안개 밀도
+
+
 
     let fps            = 60;                      // 초당 'update' 프레임 수
     let step           = 1/fps;                   // 각 프레임의 지속 시간 (초)
@@ -41,19 +51,19 @@ const Main = (props) => {
     let playerSprites = {};
 
     let resolution     = null;                    // 해상도 독립성을 제공하기 위한 스케일링 팩터 (계산됨)
-    let roadWidth      = 2000;                    // 사실상 도로의 반폭, 도로가 -roadWidth에서 +roadWidth로 이어지면 수학이 더 간단해짐
+    // let roadWidth      = 2000;                    // 사실상 도로의 반폭, 도로가 -roadWidth에서 +roadWidth로 이어지면 수학이 더 간단해짐
     let segmentLength  = 200;                     // 단일 세그먼트의 길이
     let rumbleLength   = 3;                       // 붉은색/흰색 럼블 스트립 당 세그먼트 수
     let trackLength    = null;                    // 전체 트랙의 z 길이 (계산됨)
     let lanes          = 3;                       // 차선 수
-    let fieldOfView    = 100;                     // 시야각 (도)
-    let cameraHeight   = 3000;                    // 카메라의 z 높이
+    // let fieldOfView    = 100;                     // 시야각 (도)
+    // let cameraHeight   = 3000;                    // 카메라의 z 높이
     // let cameraHeight   = 1000;                    // 카메라의 z 높이
     let cameraDepth    = null;                    // 화면으로부터 카메라까지의 z 거리 (계산됨)
-    let drawDistance   = 300;                     // 그릴 세그먼트 수
+    // let drawDistance   = 300;                     // 그릴 세그먼트 수
     let playerX        = 0;                       // 도로 중심에서 플레이어 x 오프셋 (-1에서 1까지로 설정하여 roadWidth에 독립적으로 유지)
     let playerZ        = null;                    // 카메라로부터 플레이어의 상대적인 z 거리 (계산됨)
-    let fogDensity     = 5;                       // 지수적 안개 밀도
+    // let fogDensity     = 5;                       // 지수적 안개 밀도
     let position       = 0;                       // 현재 카메라 Z 위치 (playerZ를 더하여 플레이어의 절대 Z 위치를 얻음)
     let speed          = 0;                       // 현재 속도
     let maxSpeed       = segmentLength/step;      // 최대 속도 (충돌 감지를 쉽게 하기 위해 한 번에 1 세그먼트 이상 이동하지 않도록 함)
@@ -531,7 +541,7 @@ const Main = (props) => {
       segments = [];
       addStraight(ROAD.LENGTH.LONG);
       // addLowRollingHills();
-      // addSCurves();
+      addSCurves();
       // addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
       // addBumps();
       // addLowRollingHills();

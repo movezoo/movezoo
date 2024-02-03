@@ -2,63 +2,83 @@
   display: flex;
   width: 100%;
   height: 100vh;
-  background-color: brown;
+  background-color: white;
 }
-
 
 .leftSection {
   position: relative;
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
   color: white;
   width: 75%;
   height: 100vh;
-  background-color: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: cornflowerblue;
 }
 
 .rightSection {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   width: 25%;
   height: 100vh;
-  background-color: tomato;
+  background-color: skyblue;
+  padding: 10px;
+  border-left: black 3px solid;
+}
+
+.infoSection {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: white;
+  width: 100%;
+  height: 10%;
+  font-size: xx-large;
+  font-weight: bold;
+  border-bottom: black 3px solid;
+}
+
+.goBack {
+  position: relative;
+  top: 0;
+  left: 0;
+  padding: 10px;
+}
+
+.txtLoading {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  color: white;
+  font-size: xx-large;
 }
 
 .webCam {
   position: absolute;
-  height: 100%;
-}
-
-.goBack {
-  position: absolute;
-  top: 0;
-  left: 0;
+  height: 90%;
 }
 
 .btnSelect {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 320px;
+  /* width: 320px;
   height: 240px;
-  margin: 10px;
+  margin: 10px; */
   background-color: grey;
 }
 
-.mapSelect {
-  width: 200px;
-  height: 150px;
-  margin: 10px;
-  background-color: white;
+.btnSelectMap {
+  position: relative;
+  top: 0;
+  background-color: gray;
+  border-radius: 8px;
 }
 
 .btnStart {
-  text-align: center;
-  width: 160px;
-  height: 80px;
-  margin: 10px;
-  background-color: skyblue;
+  position: relative;
+  bottom: 0;
 }

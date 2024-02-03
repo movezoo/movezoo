@@ -1,5 +1,6 @@
 package com.ssafy.movezoo.user.controller;
 
+import com.ssafy.movezoo.game.serivce.RacerService;
 import com.ssafy.movezoo.global.dto.SimpleResponseDto;
 import com.ssafy.movezoo.user.domain.User;
 import com.ssafy.movezoo.user.dto.*;
@@ -7,6 +8,7 @@ import com.ssafy.movezoo.user.repository.UserRepository;
 import com.ssafy.movezoo.user.sevice.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,7 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RacerService racerService;
 
     // 회원가입
     @PostMapping
@@ -36,6 +39,9 @@ public class UserController {
         } else {
             // 회원가입 성공
             userService.join(new User(dto.getUserEmail(), passwordEncoder.encode(dto.getPassword()), dto.getNickname()));
+
+            Optional<User> findUser = userService.findByEmail(dto.getUserEmail());
+            findUser.ifPresent(user -> racerService.addMyRacer(user.getUserId(), 1));
 
             simpleResponseDto.setSuccess(true);
             simpleResponseDto.setMsg(msg);
@@ -61,7 +67,7 @@ public class UserController {
 
     // 닉네임 변경
     @PatchMapping("/nickname")
-    public ResponseEntity<SimpleResponseDto> changeNickname(@RequestBody UserNicknameRequestDto dto){
+    public ResponseEntity<SimpleResponseDto> changeNickname(@RequestBody UserNicknameRequestDto dto, Authentication authentication){
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
 
         // 닉네임 중복체크
