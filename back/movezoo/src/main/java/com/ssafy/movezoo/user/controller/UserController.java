@@ -8,6 +8,7 @@ import com.ssafy.movezoo.user.repository.UserRepository;
 import com.ssafy.movezoo.user.sevice.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,7 +67,7 @@ public class UserController {
 
     // 닉네임 변경
     @PatchMapping("/nickname")
-    public ResponseEntity<SimpleResponseDto> changeNickname(@RequestBody UserNicknameRequestDto dto){
+    public ResponseEntity<SimpleResponseDto> changeNickname(@RequestBody UserNicknameRequestDto dto, Authentication authentication){
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
 
         // 닉네임 중복체크
