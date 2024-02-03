@@ -104,7 +104,7 @@
                     .logout((logoutConfig) ->   // 로그아웃 처리 및 로그아웃 후 홈 페이지로 리디렉션
                             logoutConfig
                                     .logoutUrl("/api/logout")   // logout 처리 url
-                                    .logoutSuccessUrl("/api/login")
+                                    .logoutSuccessUrl("/")
                                     .invalidateHttpSession(true)
                                     .deleteCookies("JSESSIONID")
                     )
