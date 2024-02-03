@@ -7,7 +7,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  @apply bg-blue-300 ; 
+  @apply bg-blue-300 w-full h-20; 
 }
 
 .navbar-shop {
