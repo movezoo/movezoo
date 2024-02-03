@@ -7,7 +7,7 @@ import UserVideoComponent from "./UserVideoComponent";
 
 const APPLICATION_SERVER_URL =
   // process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
-  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000/";
+  process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
 
 class Cam extends Component {
   constructor(props) {
@@ -21,6 +21,10 @@ class Cam extends Component {
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
       publisher: undefined,
       subscribers: [],
+      videoEnabled: false,
+      audioEnabled: false,
+      chatMessage: "", // 채팅 메시지를 저장할 변수
+      chatMessages: [], // 채팅 메시지를 저장할 배열
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -30,14 +34,25 @@ class Cam extends Component {
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+    this.toggleAudio = this.toggleAudio.bind(this); // 바인딩 추가
+    this.toggleVideo = this.toggleVideo.bind(this);
+    this.handleChangeChatMessage = this.handleChangeChatMessage.bind(this);
+    this.sendChatMessage = this.sendChatMessage.bind(this);
   }
 
   componentDidMount() {
-    window.addEventListener("beforeunload", this.onbeforeunload);
+    window.addEventListener("beforeunload", this.handleBeforeUnload);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("beforeunload", this.onbeforeunload);
+    window.removeEventListener("beforeunload", this.handleBeforeUnload);
+  }
+
+  handleBeforeUnload(event) {
+    // Prevent the default behavior (showing the confirmation dialog)
+    event.preventDefault();
+    // Chrome requires returnValue to be set
+    event.returnValue = '';
   }
 
   onbeforeunload(event) {
@@ -118,6 +133,19 @@ class Cam extends Component {
 
         // --- 4) Connect to the session with a valid user token ---
 
+
+        //채팅을 위한 setting
+        mySession.on('signal:my-chat', (event) => {
+          const { chatMessages } = this.state;
+          const newMessage = event.data; // 새로운 채팅 메시지
+
+          // 기존 채팅 메시지 배열에 새로운 메시지 추가
+          const updatedMessages = [...chatMessages, newMessage];
+
+          // 상태 업데이트
+          this.setState({ chatMessages: updatedMessages });
+        });
+
         // Get a token from the OpenVidu deployment
         this.getToken().then((token) => {
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
@@ -132,8 +160,8 @@ class Cam extends Component {
               let publisher = await this.OV.initPublisherAsync(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: undefined, // The source of video. If undefined default webcam
-                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-                publishVideo: true, // Whether you want to start publishing with your video enabled or not
+                publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
+                publishVideo: false, // Whether you want to start publishing with your video enabled or not
                 resolution: "640x480", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
@@ -175,6 +203,33 @@ class Cam extends Component {
       }
     );
   }
+
+
+  // 채팅 메시지 업데이트
+  handleChangeChatMessage(event) {
+    this.setState({ chatMessage: event.target.value });
+  }
+
+
+  // 채팅 메시지 함수
+  sendChatMessage() {
+    const { session, chatMessage } = this.state;
+    if (session && chatMessage.trim() !== "") {
+      session.signal({
+        data: chatMessage,
+        to: [],
+        type: "my-chat"
+      }).then(() => {
+        console.log("Message successfully sent");
+
+        // 채팅 메시지를 보낸 후 텍스트 상자 비우기
+        this.setState({ chatMessage: "" });
+      }).catch(error => {
+        console.error(error);
+      });
+    }
+  }
+
 
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
@@ -234,6 +289,27 @@ class Cam extends Component {
       console.error(e);
     }
   }
+
+  // 음소거기능
+  toggleAudio() {
+    const { publisher } = this.state;
+    if (publisher) {
+      const audioEnabled = !this.state.audioEnabled;
+      publisher.publishAudio(audioEnabled);
+      this.setState({ audioEnabled });
+    }
+  }
+
+  async toggleVideo() {
+    const { publisher } = this.state;
+    if (publisher) {
+      const videoEnabled = !this.state.videoEnabled;
+      publisher.publishVideo(videoEnabled);
+      this.setState({ videoEnabled });
+    }
+  }
+
+
 
   render() {
     const mySessionId = this.state.mySessionId;
@@ -312,10 +388,49 @@ class Cam extends Component {
                 <UserVideoComponent
                   streamManager={this.state.mainStreamManager}
                 />
+
+                {/* 음소거 버튼 추가 */}
+                <input
+                  className="btn btn-large btn-primary"
+                  type="button"
+                  id="buttonToggleAudio"
+                  onClick={this.toggleAudio}
+                  value={this.state.audioEnabled ? 'Mute Audio' : 'Unmute Audio'}
+                />
+                {/* 음소거 버튼 추가 */}
+
+                {/* 카메라 on off 추가 */}
+                <input
+                  className="btn btn-large btn-warning"
+                  type="button"
+                  id="buttonToggleVideo"
+                  onClick={this.toggleVideo}
+                  value={this.state.videoEnabled ? 'Turn Video Off' : 'Turn Video On'}
+                />
+                {/* 카메라 on off 추가 */}
+
+                {/* 채팅 메시지 입력 상자 */}
+                <input
+                  type="text"
+                  value={this.state.chatMessage}
+                  onChange={this.handleChangeChatMessage}
+                  placeholder="Type your message..."
+                />
+                {/* 채팅 보내기 버튼 */}
+                <button onClick={this.sendChatMessage}>Send</button>
+
+                {/* 공통 채팅 보여주는  */}
+                <ul>
+                  {this.state.chatMessages.map((message, index) => (
+                    <li key={index}>{message}</li>
+                  ))}
+                </ul>
+
               </div>
+
             ) : null}
             <div id="video-container" className="col-md-6">
-              {this.state.publisher !== undefined ? (
+              {/* {this.state.publisher !== undefined ? (
                 <div
                   className="stream-container col-md-6 col-xs-6"
                   onClick={() =>
@@ -324,7 +439,7 @@ class Cam extends Component {
                 >
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
-              ) : null}
+              ) : null} */}
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={sub.id}
@@ -364,7 +479,7 @@ class Cam extends Component {
 
   async createSession(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions",
+      APPLICATION_SERVER_URL + "api/openvidu/sessions",
       { customSessionId: sessionId },
       {
         headers: { "Content-Type": "application/json" },
@@ -375,7 +490,7 @@ class Cam extends Component {
 
   async createToken(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+      APPLICATION_SERVER_URL + "api/openvidu/sessions/" + sessionId + "/connections",
       {},
       {
         headers: { "Content-Type": "application/json" },
