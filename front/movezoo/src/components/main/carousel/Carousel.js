@@ -107,7 +107,9 @@ function Carousel() {
           withCredentials: true, // 쿠키 허용
         });
 
-        const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${loginUserId}`, {
+        const UserId = loginUserId.data;
+
+        const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {
         })
 
         console.log('===========')

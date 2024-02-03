@@ -37,7 +37,7 @@ function Character () {
   useEffect(() => {
     const fetchUserCharacters  = async () => {
       try {
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/3');
+        const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/102');
         // console.log(response.data);
 
         const userCharacterIds = response.data.map(character => character.racerId);
