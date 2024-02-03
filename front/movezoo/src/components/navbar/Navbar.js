@@ -12,39 +12,27 @@ function Navbar() {
     <div className="navbar-container">
       
       <div className='navbar-shop'>
-        <button>
-          <Shop/>
-        </button>
+        <Shop/>
       </div>
 
       <div className='navbar-ranking'>
-        <button>
-          <Ranking/>
-        </button>
+        <Ranking/>
       </div>
 
       <div className='navbar-single'>
-        <button>
-          <Link to="/single">싱글</Link>
-        </button>
+        <Link to="/single">싱글</Link>
       </div>
 
       <div className='navbar-multi'>
-        <button>
-          <Link to="/multi">멀티</Link>
-        </button>
+        <Link to="/multi">멀티</Link>
       </div>
 
       <div className='navbar-friend'>
-        <button>
-          <Friend/>
-        </button>
+        <Friend/>
       </div>
 
       <div className='navbar-setting'>
-        <button> 
-          <Setting/>
-        </button>
+        <Setting/>
       </div>
 
     </div>
