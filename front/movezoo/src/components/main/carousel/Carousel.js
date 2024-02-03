@@ -102,15 +102,14 @@ function Carousel() {
   useEffect(() => {
     const fetchUserCharacters = async () => {
       try {
-        const jsessionidRegex = /JSESSIONID=([^;]+)/;
-       
-        const match = document.cookie.match(jsessionidRegex);
-        console.log(match);
-        const jsessionid = match && match[1];
-
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+        // 쿠키 사용해서 로그인한 유저 id 가져오기
+        const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
           withCredentials: true, // 쿠키 허용
         });
+
+        const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${loginUserId}`, {
+        })
+
         console.log('===========')
         console.log(response.data);
         const userCharacterIds = response.data.map(character => character.racerId);
