@@ -1,11 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 
 const ChangeNicknameModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
   const [confirmModal, setConfirmModal] = useState(false);
+
+  const fetchUser = async () => {
+    try {
+      const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+          withCredentials: true, // 쿠키 허용
+        });
+
+      setEmail(loginUserId.data.userEmail);
+    } catch (error) {
+      console.error('유저 정보 가져오기 실패:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
   
   const openModal = () => {
     setIsOpen(true);
@@ -16,7 +33,7 @@ const ChangeNicknameModal = () => {
     setConfirmModal(false);
   };
 
-  const handleChange = (e) => {
+  const handleChangeNickname = (e) => {
     setNickname(e.target.value);
   };
 
@@ -26,13 +43,10 @@ const ChangeNicknameModal = () => {
 
   const handleNicknameChange = async () => {
     try {
-      await axios.patch('https://i10e204.p.ssafy.io/api/user/nickname', {nickname}, {
+      await axios.patch('https://i10e204.p.ssafy.io/api/user/nickname', {email, nickname}, {
         withCredentials: true,
       });
-      // 닉네임 변경 요청을 보내는 코드를 작성합니다.
-      // 이 부분은 서버의 API에 따라 달라집니다.
-      // 예시: await axios.put('/api/nickname', { nickname });
-
+      
       closeModal();
     } catch (error) {
       console.error('닉네임 변경 실패:', error);
@@ -56,7 +70,7 @@ const ChangeNicknameModal = () => {
         <div>
           <button className='exit-button' onClick={closeModal}>닫기</button>
           <h3>닉네임 변경</h3>
-          <input type="text" value={nickname} onChange={handleChange} />
+          <input type="text" value={nickname} onChange={handleChangeNickname} />
           <button onClick={handleConfirm}>닉네임 변경</button>
         </div>
       </Modal>
