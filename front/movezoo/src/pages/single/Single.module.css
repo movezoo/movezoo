@@ -5,7 +5,6 @@
   background-color: white;
 }
 
-
 .leftSection {
   position: relative;
   /* display: flex; */
@@ -27,25 +26,39 @@
   height: 100vh;
   background-color: skyblue;
   padding: 10px;
+  border-left: black 3px solid;
 }
 
 .infoSection {
   position: relative;
   display: flex;
+  align-items: center;
   color: white;
-  width: 75%;
+  width: 100%;
   height: 10%;
+  font-size: xx-large;
+  font-weight: bold;
+  border-bottom: black 3px solid;
 }
 
 .goBack {
   position: relative;
   top: 0;
   left: 0;
+  padding: 10px;
+}
+
+.txtLoading {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  color: white;
+  font-size: xx-large;
 }
 
 .webCam {
   position: absolute;
-  height: 100%;
+  height: 90%;
 }
 
 .btnSelect {
@@ -61,11 +74,11 @@
 .btnSelectMap {
   position: relative;
   top: 0;
-  background-color: white;
+  background-color: gray;
+  border-radius: 8px;
 }
 
 .btnStart {
   position: relative;
   bottom: 0;
-  background-color: tomato;
 }
