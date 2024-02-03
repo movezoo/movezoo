@@ -7,41 +7,47 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  @apply bg-blue-300; 
+  @apply bg-blue-300 ; 
 }
 
 .navbar-shop {
   flex: 1;
   display: flex;
   justify-content: center;
+  @apply hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-20;
 }
 
 .navbar-ranking {
   flex: 1;
   display: flex;
   justify-content: center;
+  @apply hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-20;
 }
 
 .navbar-single {
   flex: 1;
   display: flex;
   justify-content: center;
+  @apply hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-20;
 }
 
 .navbar-multi {
   flex: 1;
   display: flex;
   justify-content: center;
+  @apply hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-20;
 }
 
 .navbar-friend {
   flex: 1;
   display: flex;
   justify-content: center;
+  @apply hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-20;
 }
 
 .navbar-setting {
   flex: 1;
   display: flex;
   justify-content: center;
+  @apply hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-20;
 }

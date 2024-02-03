@@ -9,7 +9,7 @@
   color: white;
   width: 75%;
   height: 100vh;
-  background-color: black;
+  background-color: cornflowerblue;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,7 +22,7 @@
   justify-content: space-between;
   width: 25%;
   height: 100vh;
-  background-color: tomato;
+  background-color: skyblue;
 }
 
 .webCam {
@@ -41,5 +41,5 @@
   width: 160px;
   height: 80px;
   margin: 10px;
-  background-color: skyblue;
+  background-color: tomato;
 }
