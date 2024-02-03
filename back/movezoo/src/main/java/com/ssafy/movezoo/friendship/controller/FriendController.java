@@ -9,6 +9,7 @@ import com.ssafy.movezoo.user.sevice.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,14 +25,14 @@ public class FriendController {
     public ResponseEntity<List<FriendResponseDto>> friendList(@PathVariable("userId") Integer userId){
         List<FriendResponseDto> friendList = friendService.findFriendList(userId);
         return ResponseEntity.status(HttpStatus.OK).body(friendList);
-
     }
 
     @PostMapping
-    public ResponseEntity<SimpleResponseDto> registerFriend (@RequestBody UserInfoDto registerDto){
+    public ResponseEntity<SimpleResponseDto> registerFriend (Authentication authentication, @RequestBody UserInfoDto registerDto){
         //친구관계로 설정하기 전에 한번더 인증하기, 편법으로 친구로 만들수있따
         //토큰이나 세션으로 대처
-        User user = userService.findById(1);
+        int userId = Integer.parseInt(authentication.getName());
+        User user = userService.findById(userId);
 
         boolean result = friendService.addFriend(user.getUserId(),registerDto.getFriendId());
 
@@ -47,8 +48,9 @@ public class FriendController {
     }
 
     @DeleteMapping
-    public ResponseEntity<SimpleResponseDto> unRegisterFriend(@RequestBody UserInfoDto deleteDto){
-        User user = userService.findById(1);
+    public ResponseEntity<SimpleResponseDto> unRegisterFriend(Authentication authentication, @RequestBody UserInfoDto deleteDto){
+        int userId = Integer.parseInt(authentication.getName());
+        User user = userService.findById(userId);
 
         boolean result = friendService.deleteFriend(user.getUserId(),deleteDto.getFriendId());
 
