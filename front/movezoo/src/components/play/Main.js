@@ -3,7 +3,7 @@
 import { useRef, useEffect } from 'react'
 import { Dom, Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
 import { PLAYER_SPRITE } from './gameConstants.js';
-import { data, playerData } from './data.js';
+import { data, playerDataList } from './data.js';
 
 const localStorage = window.localStorage || {};
 
@@ -19,6 +19,7 @@ const Main = (props) => {
     // });
     
     const playerNumber = 0; // 0 ~ 3
+    console.log(`useEffect!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
     
     // View 관련 설정 변수
     let roadWidth      = 2000;                    // 사실상 도로의 반폭, 도로가 -roadWidth에서 +roadWidth로 이어지면 수학이 더 간단해짐
@@ -46,24 +47,18 @@ const Main = (props) => {
     // let stats          = Game.stats('fps');       // mr.doobs FPS 카운터
     // let canvas         = Dom.get('canvas');       // 우리의 캔버스...
     // let ctx            = canvas.getContext('2d'); // ...그리고 그림 컨텍스트
-    let background     = {};                  // 배경 이미지 (아래에서 로드됨)
+    let background     = {};                      // 배경 이미지 (아래에서 로드됨)
     let sprites        = null;                    // 스프라이트 시트 (아래에서 로드됨)
-    let playerSprites = {};
+    let playerSprites  = {};
 
     let resolution     = null;                    // 해상도 독립성을 제공하기 위한 스케일링 팩터 (계산됨)
-    // let roadWidth      = 2000;                    // 사실상 도로의 반폭, 도로가 -roadWidth에서 +roadWidth로 이어지면 수학이 더 간단해짐
     let segmentLength  = 200;                     // 단일 세그먼트의 길이
     let rumbleLength   = 3;                       // 붉은색/흰색 럼블 스트립 당 세그먼트 수
     let trackLength    = null;                    // 전체 트랙의 z 길이 (계산됨)
     let lanes          = 3;                       // 차선 수
-    // let fieldOfView    = 100;                     // 시야각 (도)
-    // let cameraHeight   = 3000;                    // 카메라의 z 높이
-    // let cameraHeight   = 1000;                    // 카메라의 z 높이
     let cameraDepth    = null;                    // 화면으로부터 카메라까지의 z 거리 (계산됨)
-    // let drawDistance   = 300;                     // 그릴 세그먼트 수
     let playerX        = 0;                       // 도로 중심에서 플레이어 x 오프셋 (-1에서 1까지로 설정하여 roadWidth에 독립적으로 유지)
     let playerZ        = null;                    // 카메라로부터 플레이어의 상대적인 z 거리 (계산됨)
-    // let fogDensity     = 5;                       // 지수적 안개 밀도
     let position       = 0;                       // 현재 카메라 Z 위치 (playerZ를 더하여 플레이어의 절대 Z 위치를 얻음)
     let speed          = 0;                       // 현재 속도
     let maxSpeed       = segmentLength/step;      // 최대 속도 (충돌 감지를 쉽게 하기 위해 한 번에 1 세그먼트 이상 이동하지 않도록 함)
@@ -72,7 +67,7 @@ const Main = (props) => {
     let decel          = -maxSpeed/5;             // 가속 및 감속하지 않을 때 '자연스러운' 감속률
     let offRoadDecel   = -maxSpeed/2;             // 도로를 벗어났을 때의 감속률은 중간 정도
     let offRoadLimit   =  maxSpeed/4;             // 도로를 벗어났을 때의 감속률이 더 이상 적용되지 않는 한계 (예: 도로를 벗어나도 항상 이 속도 이상으로 이동할 수 있음)
-    let totalCars      = 4;                     // 도로 상의 총 자동차 수
+    let totalCars      = 4;                       // 도로 상의 총 자동차 수
     let currentLapTime = 0;                       // 현재 랩 타임
     let lastLapTime    = null;                    // 마지막 랩 타임
     
@@ -88,6 +83,10 @@ const Main = (props) => {
       fast_lap_time:    { value: null, dom: Dom.get('fast_lap_time_value')    }
     }
     
+
+
+
+
     //=========================================================================
     // UPDATE THE GAME WORLD
     //=========================================================================
@@ -97,13 +96,13 @@ const Main = (props) => {
       keyRight       = data.isRightKeyPressed;
       // 데이터 보내기
       // console.log("데이터 보냄!!")
-      playerData[playerNumber].userX = playerX;
-      playerData[playerNumber].userZ = position + playerZ;
-      // socketClient.emit("playerData", playerData);
+      // data.playerDataList[playerNumber].userX = playerX;
+      // data.playerDataList[playerNumber].userZ = position + playerZ;
+      // socketClient.emit("playerDataList", playerDataList);
       // 데이터 받기
-      // socketClient.on("playerData", (data) => {
+      // socketClient.on("playerDataList", (data) => {
       // // console.log("데이터 받음!!")
-      //   playerData = data;
+      //   playerDataList = data;
       // })
     
       let car, carW, sprite, spriteW;
@@ -201,6 +200,14 @@ const Main = (props) => {
       updateHud('current_lap_time', formatTime(currentLapTime));
     }
     
+
+
+
+
+
+
+
+
     //-------------------------------------------------------------------------
     
     const updateCars = (dt, playerSegment, playerW) => {
@@ -210,9 +217,9 @@ const Main = (props) => {
         car         = cars[n];
         oldSegment  = findSegment(car.z);
         // car.offset  = car.offset + updateCarOffset(car, oldSegment, playerSegment, playerW);
-        car.offset  = playerData[n].userX; 
+        // car.offset  = data.playerDataList[n].userX; 
         // car.z       = Util.increase(car.z, dt * car.speed, trackLength);
-        car.z       = playerData[n].userZ;
+        // car.z       = data.playerDataList[n].userZ;
         car.percent = Util.percentRemaining(car.z, segmentLength); // 세그먼트 길이에 따른 자동차의 퍼센트 업데이트 (렌더링 단계에서 보간에 유용)
         newSegment  = findSegment(car.z);
         if (oldSegment !== newSegment) {
@@ -285,6 +292,10 @@ const Main = (props) => {
     
     // -------------------------------------------------------------------------
     
+
+
+
+
     const updateHud = (key, value) => {
       // DOM 접근은 느릴 수 있으므로 값이 변경되었을 때만 수행합니다.
       if (hud[key].value !== value) {
@@ -293,6 +304,10 @@ const Main = (props) => {
       }
     }
     
+
+
+
+
     const formatTime = (dt) => {
       let minutes = Math.floor(dt/60);
       let seconds = Math.floor(dt - (minutes * 60));
@@ -306,10 +321,17 @@ const Main = (props) => {
         return seconds + "." + tenths;
     }
     
+
+
+
+
+
+
+
+
     //=========================================================================
     // RENDER THE GAME WORLD
     //=========================================================================
-    
     const render = () => {
       // 초기화
       let baseSegment   = findSegment(position);
@@ -541,7 +563,7 @@ const Main = (props) => {
       segments = [];
       addStraight(ROAD.LENGTH.LONG);
       // addLowRollingHills();
-      addSCurves();
+      // addSCurves();
       // addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
       // addBumps();
       // addLowRollingHills();
@@ -556,7 +578,7 @@ const Main = (props) => {
       // addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
       // addStraight();
       // addSCurves();
-      // addDownhillToEnd();
+      addDownhillToEnd();
     
       // resetSprites();
       resetCars();
@@ -699,7 +721,7 @@ const Main = (props) => {
       cameraDepth            = 1 / Math.tan((fieldOfView/2) * Math.PI/180);
       playerZ                = (cameraHeight * cameraDepth);
       resolution             = height/480;
-      refreshTweakUI();
+      // refreshTweakUI();
     
       if ((segments.length === 0) || (options.segmentLength) || (options.rumbleLength))
         resetRoad(); // 필요할 때만 도로를 다시 만듭니다.
@@ -710,41 +732,41 @@ const Main = (props) => {
     //=========================================================================
     
     // 해상도 설정 변경 시 이벤트 핸들러
-    Dom.on('resolution', 'change', function(ev) {
-      let w, h;
-      switch(ev.target.options[ev.target.selectedIndex].value) {
-        case 'fine':   w = 1280; h = 960; break;
-        case 'high':   w = 1024; h = 768; break;
-        case 'medium': w = 640;  h = 480; break;
-        case 'low':    w = 480;  h = 360; break;
-        default :
-      }
-      reset({ width: w, height: h })
-      Dom.blur(ev);
-    });
+    // Dom.on('resolution', 'change', function(ev) {
+    //   let w, h;
+    //   switch(ev.target.options[ev.target.selectedIndex].value) {
+    //     case 'fine':   w = 1280; h = 960; break;
+    //     case 'high':   w = 1024; h = 768; break;
+    //     case 'medium': w = 640;  h = 480; break;
+    //     case 'low':    w = 480;  h = 360; break;
+    //     default :
+    //   }
+    //   reset({ width: w, height: h })
+    //   Dom.blur(ev);
+    // });
     
-    // 차선 수 변경 시 이벤트 핸들러
-    Dom.on('lanes',          'change', function(ev) { Dom.blur(ev); reset({ lanes:         ev.target.options[ev.target.selectedIndex].value }); });
-    // 도로 폭 변경 시 이벤트 핸들러
-    Dom.on('roadWidth',      'change', function(ev) { Dom.blur(ev); reset({ roadWidth:     Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
-    // 카메라 높이 변경 시 이벤트 핸들러
-    Dom.on('cameraHeight',   'change', function(ev) { Dom.blur(ev); reset({ cameraHeight:  Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
-    // 랜더링 거리 변경 시 이벤트 핸들러
-    Dom.on('drawDistance',   'change', function(ev) { Dom.blur(ev); reset({ drawDistance:  Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
-    // 시야각 변경 시 이벤트 핸들러
-    Dom.on('fieldOfView',    'change', function(ev) { Dom.blur(ev); reset({ fieldOfView:   Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
-    // 안개 밀도 변경 시 이벤트 핸들러
-    Dom.on('fogDensity',     'change', function(ev) { Dom.blur(ev); reset({ fogDensity:    Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+    // // 차선 수 변경 시 이벤트 핸들러
+    // Dom.on('lanes',          'change', function(ev) { Dom.blur(ev); reset({ lanes:         ev.target.options[ev.target.selectedIndex].value }); });
+    // // 도로 폭 변경 시 이벤트 핸들러
+    // Dom.on('roadWidth',      'change', function(ev) { Dom.blur(ev); reset({ roadWidth:     Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+    // // 카메라 높이 변경 시 이벤트 핸들러
+    // Dom.on('cameraHeight',   'change', function(ev) { Dom.blur(ev); reset({ cameraHeight:  Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+    // // 랜더링 거리 변경 시 이벤트 핸들러
+    // Dom.on('drawDistance',   'change', function(ev) { Dom.blur(ev); reset({ drawDistance:  Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+    // // 시야각 변경 시 이벤트 핸들러
+    // Dom.on('fieldOfView',    'change', function(ev) { Dom.blur(ev); reset({ fieldOfView:   Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+    // // 안개 밀도 변경 시 이벤트 핸들러
+    // Dom.on('fogDensity',     'change', function(ev) { Dom.blur(ev); reset({ fogDensity:    Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
     
     // UI 업데이트 함수
-    const refreshTweakUI = () => {
-      Dom.get('lanes').selectedIndex = lanes-1;
-      Dom.get('currentRoadWidth').innerHTML      = Dom.get('roadWidth').value      = roadWidth;
-      Dom.get('currentCameraHeight').innerHTML   = Dom.get('cameraHeight').value   = cameraHeight;
-      Dom.get('currentDrawDistance').innerHTML   = Dom.get('drawDistance').value   = drawDistance;
-      Dom.get('currentFieldOfView').innerHTML    = Dom.get('fieldOfView').value    = fieldOfView;
-      Dom.get('currentFogDensity').innerHTML     = Dom.get('fogDensity').value     = fogDensity;
-    }
+    // const refreshTweakUI = () => {
+    //   Dom.get('lanes').selectedIndex = lanes-1;
+    //   Dom.get('currentRoadWidth').innerHTML      = Dom.get('roadWidth').value      = roadWidth;
+    //   Dom.get('currentCameraHeight').innerHTML   = Dom.get('cameraHeight').value   = cameraHeight;
+    //   Dom.get('currentDrawDistance').innerHTML   = Dom.get('drawDistance').value   = drawDistance;
+    //   Dom.get('currentFieldOfView').innerHTML    = Dom.get('fieldOfView').value    = fieldOfView;
+    //   Dom.get('currentFogDensity').innerHTML     = Dom.get('fogDensity').value     = fogDensity;
+    // }
     
     //=========================================================================
     
@@ -753,7 +775,7 @@ const Main = (props) => {
   
   return (
     <div>
-      <table id="controls">
+      {/* <table id="controls">
         <tbody>
           <tr><td id="fps" colSpan="2" align="right"></td></tr>
           <tr>
@@ -799,7 +821,7 @@ const Main = (props) => {
             <td><input id="fogDensity" type='range' min='0' max='50' title="integer (0-50)"/></td>
           </tr>
         </tbody>
-      </table>
+      </table> */}
 
 
       <div id='instructions'>
