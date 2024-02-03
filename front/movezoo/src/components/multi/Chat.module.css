@@ -1,0 +1,30 @@
+.container {
+  height: 100%;
+  /* border: purple 1px solid; */
+}
+
+.chatLog {
+  position: relative;
+  height: 85%;
+  border: black 1px solid;
+}
+
+.chatInput {
+  position: relative;
+  display: flex;
+  height: 10%;
+  top: 5%;
+}
+
+.chatText {
+  position: relative;
+  width: 80%;
+  border: black 1px solid;
+}
+
+.chatBtn {
+  position: relative;
+  width: 15%;
+  left: 5%;
+  border: black 1px solid;
+}
