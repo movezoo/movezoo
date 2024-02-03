@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btnReady{
+  @apply py-6 px-16 text-white text-center;
+  background-color: tomato;
+  font-size: xx-large;
+  font-weight: bold;
+  border-radius: 8px;
+  border: black 2px solid;
+}
+

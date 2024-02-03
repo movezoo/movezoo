@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mapImage {
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.btnPrevious {
+  @apply bg-green-300 text-white py-4 px-1 rounded;
+  position: absolute;
+  top:50%;
+  left:0%;
+  transform: translateY(-50%);
+  color: black;
+}
+
+.btnNext {
+  @apply bg-green-300 text-white py-4 px-1 rounded;
+  position: absolute;
+  top:50%;
+  right:0%;
+  transform: translateY(-50%);
+  color: black;
+}
+
