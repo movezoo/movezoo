@@ -20,23 +20,26 @@ function Carousel() {
 
   return (
     <div>
-      <div>
+      <div className={styles.mapImage}>
         <img src={`/minimap/${images[currentIndex]}`} alt="mini-map" />
       </div>
 
-      <div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          backgroundColor: "gray",
+        }}
+      >
         <button onClick={handlePrevious} className={styles.btnMapSelect}>
           ←이전
         </button>
+        <p className={styles.timeRecord}>
+          최고 기록 <br/> <strong>00:00:00</strong>
+        </p>
         <button onClick={handleNext} className={styles.btnMapSelect}>
           다음→
         </button>
-      </div>
-
-      <div>
-        <p style={{ textAlign: "center" }}>
-          최고 기록 : <strong>00:00:00</strong>
-        </p>
       </div>
     </div>
   );
