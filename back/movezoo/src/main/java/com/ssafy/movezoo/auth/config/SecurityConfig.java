@@ -1,20 +1,35 @@
     package com.ssafy.movezoo.auth.config;
 
-    import com.ssafy.movezoo.auth.config.oauth.UserDetailsServiceImpl;
+    import com.ssafy.movezoo.auth.config.details.UserDetailsServiceImpl;
     import com.ssafy.movezoo.user.dto.UserRole;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.HttpSession;
     import lombok.RequiredArgsConstructor;
+    import lombok.extern.slf4j.Slf4j;
     import org.springframework.context.annotation.Bean;
     import org.springframework.context.annotation.Configuration;
     import org.springframework.security.config.annotation.web.builders.HttpSecurity;
     import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+    import org.springframework.security.core.Authentication;
+    import org.springframework.security.core.AuthenticationException;
+    import org.springframework.security.core.userdetails.UserDetails;
     import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
     import org.springframework.security.web.AuthenticationEntryPoint;
     import org.springframework.security.web.SecurityFilterChain;
     import org.springframework.security.web.access.AccessDeniedHandler;
+    import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+    import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+    import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+    import org.springframework.web.service.invoker.HttpRequestValues;
+
+    import java.io.IOException;
 
     @Configuration
     @EnableWebSecurity  // security 활성화 후 기본 스프링 필터체인에 등록
     @RequiredArgsConstructor
+    @Slf4j
     public class SecurityConfig {
 
         private final UserDetailsServiceImpl UserDetailsServcie;
@@ -30,6 +45,8 @@
 
         @Bean
         protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+            HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+            requestCache.setMatchingRequestParameterName(null);
 
             // 인증 관리
             http
@@ -39,6 +56,10 @@
     //                                frameOptionsConfig.disable()
     //                        )
     //                )
+                    // 로그인 후 ?continue 가 붙는 것에 대한 해결
+                    .requestCache((request) ->
+                            request.requestCache(requestCache))
+
                     // 접근 관리
                     .authorizeHttpRequests((authorizeRequests) ->
                             authorizeRequests
@@ -50,17 +71,39 @@
                     //  form 기반 로그인
                     .formLogin((formLogin) ->
                             formLogin
-                                    .loginPage("/api/login")  // GET, 사용자 정의 로그인 페이지   // 설정자체를 안해야지 default로 제공해주는 페이지로 연결됨
+                                    .loginPage("/")  // GET, 사용자 정의 로그인 페이지   // 설정자체를 안해야지 default로 제공해주는 페이지로 연결됨
                                     .usernameParameter("userEmail") // 로그인 폼에서 사용자 이름 및 비밀번호 매개변수를 지정
                                     .passwordParameter("password")
-                                    .loginProcessingUrl("/api/login/login-proc")   // POST, 로그인 submit 처리 URL
+                                    .loginProcessingUrl("/api/login")   // POST, 로그인 submit 처리 URL
 //                                    .defaultSuccessUrl("/main", true)    // 로그인 성공 시 홈 페이지로 리디렉션
-                                    .failureHandler(new CustomAuthenticationFailureHandler()) // 커스텀 핸들러 등록
-                                    .failureUrl("/api/login?error=true")
+//                                    .failureUrl("/main")
+                                    .successHandler(new AuthenticationSuccessHandler() {
+                                        @Override
+                                        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                                            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+                                            log.info("로그인 성공 - 사용자명: {}", userDetails.getUsername());
+
+                                            // 세션에 사용자 정보 저장
+                                            HttpSession session = request.getSession();
+                                            session.setAttribute("user", userDetails);
+
+                                            UserDetails userDetails2 = (UserDetails)session.getAttribute("user");
+                                            log.info("session get ", userDetails2.getUsername());
+
+                                            // 성공 응답을 생성하거나 추가 작업 수행
+                                            response.setStatus(HttpServletResponse.SC_OK);
+                                        }
+                                    })
+                                    .failureHandler(new AuthenticationFailureHandler() {
+                                        @Override
+                                        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+                                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                                        }
+                                    })
                     )
                     .logout((logoutConfig) ->   // 로그아웃 처리 및 로그아웃 후 홈 페이지로 리디렉션
                             logoutConfig
-//                                    .logoutUrl("/logout")   // logout 처리 url
+                                    .logoutUrl("/api/logout")   // logout 처리 url
                                     .logoutSuccessUrl("/api/login")
                                     .invalidateHttpSession(true)
                                     .deleteCookies("JSESSIONID")
