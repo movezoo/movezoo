@@ -20,15 +20,11 @@ function Navbar() {
       </div>
 
       <div className='navbar-single'>
-        <button>
-          <Link to="/single">싱글</Link>
-        </button>
+        <Link to="/single">싱글</Link>
       </div>
 
       <div className='navbar-multi'>
-        <button>
-          <Link to="/multi">멀티</Link>
-        </button>
+        <Link to="/multi">멀티</Link>
       </div>
 
       <div className='navbar-friend'>

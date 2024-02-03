@@ -9,7 +9,7 @@
   color: white;
   width: 75%;
   height: 100vh;
-  background-color: navy;
+  background-color: cornflowerblue;
 }
 
 .rightSection {
@@ -19,7 +19,8 @@
   justify-content: space-between;
   width: 25%;
   height: 100vh;
-  background-color: tomato;
+  background-color: skyblue;
+  border-left: black 3px solid;
 }
 
 
@@ -27,6 +28,7 @@
   position: absolute;
   top: 0;
   left: 0;
+  padding: 10px;
 }
 
 .webCam {

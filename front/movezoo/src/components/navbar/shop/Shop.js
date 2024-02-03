@@ -31,6 +31,7 @@ const Shop = () => {
       >
         
         <div className="shop-container">
+
           <div className="shop-header">
             <div className='shop-header-name'>
               <h1>상점</h1>

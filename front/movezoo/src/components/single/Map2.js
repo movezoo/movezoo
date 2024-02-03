@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "./Map2.module.css";
 
 function Carousel() {
   const images = ["n.png", "o.png"];
@@ -19,13 +20,26 @@ function Carousel() {
 
   return (
     <div>
-      <div>
+      <div className={styles.mapImage}>
         <img src={`/minimap/${images[currentIndex]}`} alt="mini-map" />
       </div>
 
-      <div>
-        <button onClick={handlePrevious}>이전</button>
-        <button onClick={handleNext}>다음</button>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          backgroundColor: "gray",
+        }}
+      >
+        <button onClick={handlePrevious} className={styles.btnMapSelect}>
+          ←이전
+        </button>
+        <p className={styles.timeRecord}>
+          최고 기록 <br/> <strong>00:00:00</strong>
+        </p>
+        <button onClick={handleNext} className={styles.btnMapSelect}>
+          다음→
+        </button>
       </div>
     </div>
   );

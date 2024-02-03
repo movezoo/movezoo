@@ -5,10 +5,10 @@ const data = {
 };
 
 const playerData = [
-  { userCharacter: 'pug', userX:0, userZ:0, },
-  { userCharacter: 'pug', userX:0, userZ:0, },
-  { userCharacter: 'pug', userX:0, userZ:0, },
-  { userCharacter: 'pug', userX:0, userZ:0, }
+  { spriteName: 'pug', userX:0, userZ:0, },
+  { spriteName: 'pug', userX:0, userZ:0, },
+  { spriteName: 'pug', userX:0, userZ:0, },
+  { spriteName: 'pug', userX:0, userZ:0, }
 ]
 
 export { data, playerData }
