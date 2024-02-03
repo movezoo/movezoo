@@ -15,8 +15,6 @@ function Single() {
   }, []);
   return (
     <div>
-      {/* <h1>싱글 페이지</h1> */}
-      {/*일단 축소 화면*/}
       <div className={styles.container}>
         {/*왼쪽 영역*/}
         <div className={styles.leftSection}>
