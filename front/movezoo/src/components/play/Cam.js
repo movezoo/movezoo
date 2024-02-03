@@ -7,9 +7,9 @@ import UserVideoComponent from "./UserVideoComponent";
 import MyVideoComponent from "./MyVideoComponent";
 
 const APPLICATION_SERVER_URL =
-  // process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
+  process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
   // process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
-  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000/";
+  // process.env.NODE_ENV === "production" ? "" : "http://localhost:5000/";
 
 class Cam extends Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class Cam extends Component {
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     // 이러한 속성은 값이 변경될 때마다 HTML을 다시 렌더링하기 위해 상태 구성 요소에 있습니다
     this.state = {
-      mySessionId: "SessionA", // 초기 세션 ID
+      mySessionId: "SessionB", // 초기 세션 ID
       myUserName: "Participant" + Math.floor(Math.random() * 100), // 무작위 숫자를 포함한 초기 사용자명
       session: undefined, // OpenVidu 세션 객체
       mainStreamManager: undefined, // 페이지의 주 비디오. 'publisher' 또는 'subscribers' 중 하나
