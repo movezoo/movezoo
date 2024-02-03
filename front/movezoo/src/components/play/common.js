@@ -6,7 +6,7 @@ import background from './images/background.png';
 import mute from './images/mute.png';
 import sprites from './images/sprites.png';
 
-const selectPlayer = "horse";
+const selectPlayer = "pug";
 const selectAction = "run";
 const selectMap = "map1";
 const frameIndex = {
@@ -100,25 +100,41 @@ const Util = {
     return result;
   },
 
-  // 3D 좌표를 2D 화면 좌표로 변환
+  // 3D 좌표를 2D 화면 좌표로 변환하는 함수
+  // Parameters:
+  //   p: 3D 좌표를 나타내는 객체
+  //   cameraX, cameraY, cameraZ: 카메라의 위치 좌표
+  //   cameraDepth: 카메라의 깊이(depth)
+  //   width, height: 화면의 너비와 높이
+  //   roadWidth: 도로의 너비
   project: (p, cameraX, cameraY, cameraZ, cameraDepth, width, height, roadWidth) => {
+    // 3D 좌표를 카메라 위치에서의 상대적인 좌표로 변환
     p.camera.x     = (p.world.x || 0) - cameraX;
     p.camera.y     = (p.world.y || 0) - cameraY;
     p.camera.z     = (p.world.z || 0) - cameraZ;
+    // 카메라 깊이에 대한 화면 스케일 계산
     p.screen.scale = cameraDepth/p.camera.z;
+    // 2D 화면 좌표 계산
     p.screen.x     = Math.round((width/2)  + (p.screen.scale * p.camera.x  * width/2));
     p.screen.y     = Math.round((height/2) - (p.screen.scale * p.camera.y  * height/2));
+    // 도로의 너비에 대한 2D 화면 너비 계산
     p.screen.w     = Math.round(             (p.screen.scale * roadWidth   * width/2));
   },
 
-  // 두 영역이 겹치는지 확인
+  // 두 영역이 겹치는지 확인하는 함수
+  // Parameters:
+  //   x1, w1: 첫 번째 영역의 중심 좌표(x1)와 너비(w1)
+  //   x2, w2: 두 번째 영역의 중심 좌표(x2)와 너비(w2)
+  //   percent: 겹침을 판단할 때 고려할 백분율 (기본값: 1)
   overlap: (x1, w1, x2, w2, percent) => {
+    // 백분율의 반을 계산하여 half 변수에 할당
     let half = (percent || 1)/2;
-    
+    // 각 영역의 최소 및 최대 좌표 계산
     let min1 = x1 - (w1*half);
     let max1 = x1 + (w1*half);
     let min2 = x2 - (w2*half);
     let max2 = x2 + (w2*half);
+    // 영역이 겹치지 않는 경우 true를 반환, 겹치면 false를 반환
     return ! ((max1 < min2) || (min1 > max2));
   }
 

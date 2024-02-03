@@ -27,7 +27,8 @@ const Login = () => {
       formData.append('password', password);
 
       // Send the login request with form data
-      const response = await axios.post('https://i10e204.p.ssafy.io/api/login/login-proc', formData, {
+      // 백엔드에서 로그인성공시 200코드를 내려준는데, 실패시 401코드를 내려준다. axios요청은 200번대가 아니면 error로 간주
+      const response = await axios.post('https://i10e204.p.ssafy.io/api/login', formData, {
         withCredentials: true, 
       });
 
