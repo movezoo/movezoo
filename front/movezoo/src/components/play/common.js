@@ -381,6 +381,10 @@ const Render = {
     // 도로 표시 영역 그리기
     Render.polygon(ctx, x1-w1,    y1, x1+w1, y1, x2+w2, y2, x2-w2,    y2, color.road);
     
+
+
+
+    
     // 차선 표시 그리기
     if (color.lane) {
       lanew1 = w1*2/lanes;

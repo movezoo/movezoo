@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "./Map2.module.css";
 
 function Carousel() {
   const images = ["n.png", "o.png"];
@@ -24,8 +25,18 @@ function Carousel() {
       </div>
 
       <div>
-        <button onClick={handlePrevious}>이전</button>
-        <button onClick={handleNext}>다음</button>
+        <button onClick={handlePrevious} className={styles.btnMapSelect}>
+          ←이전
+        </button>
+        <button onClick={handleNext} className={styles.btnMapSelect}>
+          다음→
+        </button>
+      </div>
+
+      <div>
+        <p style={{ textAlign: "center" }}>
+          최고 기록 : <strong>00:00:00</strong>
+        </p>
       </div>
     </div>
   );
