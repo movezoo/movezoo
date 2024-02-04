@@ -1,3 +1,20 @@
 .stream-container {
 	padding: 0;
 }
+
+
+/* 채팅 css */
+/* Cam.css */
+
+/* 추가한 스타일: 채팅 메시지 */
+/* 오른쪽 정렬 */
+.chat-message-right {
+	text-align: right;
+	margin-bottom: 5px;
+  }
+  
+  /* 왼쪽 정렬 */
+  .chat-message-left {
+	text-align: left;
+	margin-bottom: 5px;
+  }
