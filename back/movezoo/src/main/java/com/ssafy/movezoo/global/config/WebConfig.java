@@ -1,4 +1,4 @@
-package com.ssafy.movezoo.auth.config;
+package com.ssafy.movezoo.global.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
