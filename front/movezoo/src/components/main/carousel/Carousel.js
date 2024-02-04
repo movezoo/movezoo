@@ -3,7 +3,6 @@ import './Carousel.css';
 import axios from 'axios';
 import { AiFillCaretLeft } from "react-icons/ai";
 import { AiFillCaretRight } from "react-icons/ai";
-import Session from 'react-session-api';
 
 function Carousel() {
   const initialImages  = [
@@ -66,13 +65,13 @@ function Carousel() {
   return (
     <div className='carousel-container'>
       <div className='carousel-prev'>
-        <AiFillCaretLeft onClick={handlePrevious}/>
+        <AiFillCaretLeft className='prevButton' onClick={handlePrevious}/>
       </div>
       <div className='carousel-image'>
         {images.length > 0 && <img src={images[currentIndex].image} alt="carousel-image" />}
       </div>
       <div className='carousel-next'>
-        <AiFillCaretRight onClick={handleNext}/>
+        <AiFillCaretRight className='nextButton' onClick={handleNext}/>
       </div>
     </div>
   );

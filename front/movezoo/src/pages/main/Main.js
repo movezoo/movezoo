@@ -49,22 +49,24 @@ function Main() {
         {/* 홈으로, 프로필 */}
         <div className="main-header">
 
-          <div className="main-home">
-            <Link to="/">홈으로</Link>
+          <div className="main-header-name">
+            <h1>MoveZoo!</h1>
           </div>
 
-          <div>
-            <div>
-              <h1>{nickname} </h1>
+          <div className="main-header-info">
+            <div className="header-info-user">
+              <div>
+                <h1>{nickname} </h1>
+              </div>
+              <div className="info-user-coin">
+                <AiFillCopyrightCircle className="coinIcon" />
+                <h1> {coin} </h1>
+              </div>
             </div>
-            <div>
-              <AiFillCopyrightCircle />
-              <h1> {coin} </h1>
-            </div>
-          </div>
 
-          <div className="main-profile">
-            <Profile/>
+            <div className="header-info-profile">
+              <Profile />
+            </div>
           </div>
 
         </div>
