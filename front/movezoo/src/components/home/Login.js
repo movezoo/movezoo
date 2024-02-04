@@ -60,8 +60,10 @@ const Login = () => {
           <input
             type="text"
             name="userEmail"
+            placeholder='User-Email'
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+
           />
         </label>
         <br />
@@ -69,6 +71,7 @@ const Login = () => {
           비밀번호:
           <input
             type="password"
+            placeholder='Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
