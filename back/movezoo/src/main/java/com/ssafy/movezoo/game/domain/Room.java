@@ -58,4 +58,20 @@ public class Room {
         this.maxUserCount = maxUserCount;
     }
 
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", roomSessionId='" + roomSessionId + '\'' +
+                ", secretRoom=" + secretRoom +
+                ", secretRoomPassword='" + secretRoomPassword + '\'' +
+                ", roomStatus=" + roomStatus +
+                ", trackId=" + trackId +
+                ", roomMode=" + roomMode +
+                ", roomMasterId=" + roomMasterId +
+                ", roomTitle='" + roomTitle + '\'' +
+                ", currentUserCount=" + currentUserCount +
+                ", maxUserCount=" + maxUserCount +
+                '}';
+    }
 }
