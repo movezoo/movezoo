@@ -1,4 +1,4 @@
-package com.ssafy.movezoo.redis.dto;
+package com.ssafy.movezoo.game.dto;
 
 import lombok.Getter;
 import lombok.Setter;
