@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import './NicknameChange.css';
+import { IoCloseSharp } from "react-icons/io5";
 
 const ChangeNicknameModal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,35 +68,49 @@ const ChangeNicknameModal = () => {
       <Modal 
         isOpen={isOpen}
         onRequestClose={closeModal}
-        style={{
-          content: {
-            width: '500px',
-            height: '500px',
-            margin: 'auto',
-          }
-        }}>
-        <div>
-          <button className='exit-button' onClick={closeModal}>닫기</button>
-          <h3>닉네임 변경</h3>
-          <input type="text" value={nickname} onChange={handleChangeNickname} />
-          <button onClick={handleConfirm}>닉네임 변경</button>
+        className="NicknameChangeModal">
+
+        <div className='NicknameChange-container'>
+
+          <div className='nicknamechange-header'>
+            <div className='header-name'>
+              <h3>닉네임 변경</h3>
+            </div>
+            <div className='header-exit'>
+              <IoCloseSharp className='exit-button' onClick={closeModal} />
+            </div>
+          </div>
+
+          <div className='nicknamechange-body'>
+            <div className='nickname-change'>
+              <input className='nickname-input' type="text" value={nickname} onChange={handleChangeNickname} />
+            </div>
+
+            <div className='nickname-change-button'>
+              <div className='change-button'>
+                <button onClick={handleConfirm}>닉네임 변경</button>
+              </div>
+            </div>
+          </div>
+
         </div>
+
       </Modal>
 
       <Modal 
         isOpen={confirmModal}
         onRequestClose={closeModal}
-        style={{
-          content: {
-            width: '500px',
-            height: '500px',
-            margin: 'auto',
-          }
-        }}>
-        <div>
-          <h3>정말 닉네임을 변경하시겠습니까?</h3>
-          <button onClick={handleNicknameChange}>예</button>
-          <button onClick={closeModal}>아니요</button>
+        className="NicknameChangeModal">
+        <div className='NicknameChange-container'>
+          <div className='nicknameconfirm-header'>
+            <div className='nicknameconfirm-header-name'>
+              <h3>정말 닉네임을 변경하시겠습니까?</h3>
+            </div>
+          </div>
+          <div className='nicknameconfirm-body'>
+            <button className='profile-button' onClick={handleNicknameChange}>예</button>
+            <button className='profile-button' onClick={closeModal}>아니요</button>
+          </div>
         </div>
       </Modal>
     </div>

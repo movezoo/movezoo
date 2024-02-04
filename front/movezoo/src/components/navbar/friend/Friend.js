@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import { FaUserFriends } from 'react-icons/fa';
+import './Friend.css';
 
 const Friend = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +16,7 @@ const Friend = () => {
 
   return (
     <div>
-      <button onClick={openModal}>친구</button>
+      <FaUserFriends className='friendButton' onClick={openModal}/>
 
       <Modal 
       isOpen={isOpen} 

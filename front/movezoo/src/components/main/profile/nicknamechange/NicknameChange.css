@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.NicknameChangeModal {
+  @apply fixed inset-0 flex items-center justify-center z-50 outline-none focus:outline-none bg-white;
+}
+
+.NicknameChange-container {
+  @apply w-[300px] h-[200px]  border-2 border-black max-w-lg mx-auto rounded-lg shadow-lg bg-white overflow-hidden;
+}
+
+.nicknamechange-header {
+  @apply flex flex-row p-4;
+}
+
+.nicknamechange-body {
+  @apply flex flex-col p-4;
+}
+
+.nickname-change {
+  @apply flex justify-center pb-2;
+}
+
+.nickname-input {
+  @apply w-56 border-2 border-gray-500 rounded-md;
+}
+
+.nickname-change-button {
+  @apply flex justify-end pr-5
+}
+
+.change-button {
+  @apply flex flex-col h-8 items-center justify-center p-2 text-white bg-blue-500 rounded-md
+  hover:bg-blue-700;
+}
+
+.nicknameconfirm-header{
+  @apply flex flex-1 justify-center pt-4 items-center text-lg font-semibold
+}
+
+.nicknameconfirm-body {
+  @apply flex flex-col items-center p-4;
+}

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import './PasswordChange.css';
+import { IoCloseSharp } from "react-icons/io5";
 
 const ChangePasswordModal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -81,36 +83,42 @@ const ChangePasswordModal = () => {
       <Modal 
         isOpen={isOpen}
         onRequestClose={closeModal}
-        style={{
-          content: {
-            width: '500px',
-            height: '500px',
-            margin: 'auto',
-          }
-        }}>
-        <div>
-          <button className='exit-button' onClick={closeModal}>닫기</button>
-          <h3>비밀번호 변경</h3>
-          <input type="password" value={password} onChange={handleChangePassword} placeholder="새 비밀번호" />
-          <input type="password" value={confirmPassword} onChange={handleChangeConfirmPassword} placeholder="비밀번호 확인" />
-          <button onClick={handleConfirm}>비밀번호 변경</button>
+        className="passwordchangemodal">
+        <div className='passwordchange-container'>
+          
+          <div className='passwordchange-header'>
+            <div className='header-name'>
+              <h3>비밀번호 변경</h3>
+            </div>
+            <div className='header-exit'>
+              <IoCloseSharp className='exit-button' onClick={closeModal} />
+            </div>
+          </div>
+
+          <div className='passwordchange-body'>
+            <div className='password-change'>
+              <input className='passwordchange-input' type="password" value={password} onChange={handleChangePassword} placeholder="새 비밀번호" />
+              <input className='passwordchange-input' type="password" value={confirmPassword} onChange={handleChangeConfirmPassword} placeholder="비밀번호 확인" />
+            </div>
+            <div className='password-change-button'>
+              <button className='change-button' onClick={handleConfirm}>비밀번호 변경</button>
+            </div>
+          </div>
         </div>
       </Modal>
 
       <Modal 
         isOpen={confirmModal}
         onRequestClose={closeModal}
-        style={{
-          content: {
-            width: '500px',
-            height: '500px',
-            margin: 'auto',
-          }
-        }}>
-        <div>
-          <h3>정말 비밀번호를 변경하시겠습니까?</h3>
-          <button onClick={handlePasswordChange}>예</button>
-          <button onClick={closeModal}>아니요</button>
+        className="passwordchangemodal">
+        <div className='passwordconfirm-container'>
+          <div className='passwordconfirm-header'>
+            <h3>정말 비밀번호를 변경하시겠습니까?</h3>
+          </div>
+          <div className='passwordconfirm-body'>
+            <button className='profile-button' onClick={handlePasswordChange}>예</button>
+            <button className='profile-button' onClick={closeModal}>아니요</button>
+          </div>
         </div>
       </Modal>
     </div>
