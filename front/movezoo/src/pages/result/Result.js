@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Result.module.css";
 import Webcam from "react-webcam";
+import Back from "../../components/result/Back";
+import Record from "../../components/result/Record";
 
 function Result() {
   const [loading, setLoading] = useState(true);
@@ -26,11 +28,8 @@ function Result() {
         {/*오른쪽 화면*/}
         <div className={styles.rightSection}>
           {/*기록들*/}
-          <div style={{ textAlign: "center" }}>
-            <h2>LAP TIME</h2>
-            <h3>00:00:00</h3>
-            <h2>BEST</h2>
-            <h3>00:00:00</h3>
+          <div className={styles.timeRecord}>
+            <Record />
           </div>
           {/*보상 및 돌아가기 버튼*/}
           <div>
@@ -40,9 +39,9 @@ function Result() {
               <span>획득!</span>
             </div>
             {/* 돌아가기 버튼*/}
-            <Link to="/Single">
-              <button className={styles.btnReturn}>돌아가기</button>
-            </Link>
+            <div className={styles.btnStart}>
+              <Back />
+            </div>
           </div>
         </div>
       </div>

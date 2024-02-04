@@ -7,7 +7,8 @@ const Ranking = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [rankings, setRankings] = useState([]);
   const [selectedMap, setSelectedMap] = useState(null);
-  // const [userLaptime, setUserLaptime] = useState(null);
+  const [userLaptime, setUserLaptime] = useState(null);
+  const [userRank, setUserRank] = useState(null);
 
   useEffect(() => {
     const fetchUserRankings = async (mapNumber) => {
@@ -16,6 +17,20 @@ const Ranking = () => {
         const sortedRankings = response.data.sort((a, b) => a.record - b.record);
         const topTenRankings = sortedRankings.slice(0, 10);
         setRankings(topTenRankings);
+
+        const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+        withCredentials: true });
+        const userId = loginUserId.data;
+
+        // 임시 데이터
+        // const userId = 3;
+
+        const userLaptime = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${userId}/${mapNumber}`);
+        setUserLaptime(userLaptime.data);
+        // console.log(userLaptime.data);
+
+        const userRank = sortedRankings.findIndex(ranking => ranking.nickName === userLaptime.data.nickName) + 1; // 사용자의 순위를 계산합니다.
+        setUserRank(userRank);
 
       } catch (error) {
         console.error('랭킹 정보 요청 실패:', error);
@@ -80,20 +95,21 @@ const Ranking = () => {
                     <hr />
                   </div>
                 ))}
+
               </div>
             )}
           </div>
 
-          {/* <div className='ranking-my'>
+          <div className='ranking-my'>
           {userLaptime && (
             <div className='ranking-user'>
-              <p>사용자 정보</p>
+              <p>내 순위: {userRank}</p>
               <p>{userLaptime.nickName}</p>
               <p>{userLaptime.record}</p>
               <hr />
             </div>
           )}
-          </div> */}
+          </div>
 
         </div>
       </Modal>

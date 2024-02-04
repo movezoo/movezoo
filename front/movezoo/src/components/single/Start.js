@@ -5,9 +5,7 @@ function Start() {
   return (
     <div>
       <Link to="/Game">
-        <button className={styles.btnStart}>
-          <h1>시작</h1>
-        </button>
+        <button className={styles.btnStart}>시작</button>
       </Link>
     </div>
   );

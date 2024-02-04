@@ -15,8 +15,6 @@ function Single() {
   }, []);
   return (
     <div>
-      {/* <h1>싱글 페이지</h1> */}
-      {/*일단 축소 화면*/}
       <div className={styles.container}>
         {/*왼쪽 영역*/}
         <div className={styles.leftSection}>
@@ -24,10 +22,10 @@ function Single() {
             <div className={styles.goBack}>
               <Back />
             </div>
-            <h1>Single Play</h1>
+            <h1 style={{ margin: 10 }}>Single Play</h1>
           </div>
           {loading ? (
-            <h1>Loading...</h1>
+            <h1 className={styles.txtLoading}>Loading...</h1>
           ) : (
             <Webcam className={styles.webCam} mirrored={true} />
           )}
