@@ -11,6 +11,7 @@ import com.ssafy.movezoo.user.sevice.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +31,9 @@ public class FriendRequestController {
     }
 
     @PostMapping
-    public ResponseEntity<SimpleResponseDto> requestFriend(@RequestBody UserInfoDto friendInfoDto){
-        User user =userService.findById(1);
+    public ResponseEntity<SimpleResponseDto> requestFriend(Authentication authentication, @RequestBody UserInfoDto friendInfoDto){
+        int userId = Integer.parseInt(authentication.getName());
+        User user = userService.findById(userId);
 
         boolean result = friendRequestService.addFriendRequest(user.getUserId(), friendInfoDto.getFriendId());
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
@@ -47,8 +49,9 @@ public class FriendRequestController {
     }
 
     @DeleteMapping
-    public ResponseEntity<SimpleResponseDto> changeRequestFriend(@RequestBody FriendRequestDto requestDto){
-        User user = userService.findById(1);
+    public ResponseEntity<SimpleResponseDto> changeRequestFriend(Authentication authentication, @RequestBody FriendRequestDto requestDto){
+        int userId = Integer.parseInt(authentication.getName());
+        User user = userService.findById(userId);
 
         if(requestDto.isAllow()){
             //친구 추가후 요청삭제

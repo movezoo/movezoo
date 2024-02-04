@@ -1,5 +1,6 @@
 package com.ssafy.movezoo.user.controller;
 
+import com.ssafy.movezoo.game.serivce.RacerService;
 import com.ssafy.movezoo.global.dto.SimpleResponseDto;
 import com.ssafy.movezoo.user.domain.User;
 import com.ssafy.movezoo.user.dto.*;
@@ -21,6 +22,7 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RacerService racerService;
 
     // 회원가입
     @PostMapping
@@ -36,6 +38,9 @@ public class UserController {
         } else {
             // 회원가입 성공
             userService.join(new User(dto.getUserEmail(), passwordEncoder.encode(dto.getPassword()), dto.getNickname()));
+
+            Optional<User> findUser = userService.findByEmail(dto.getUserEmail());
+            findUser.ifPresent(user -> racerService.addMyRacer(user.getUserId(), 1));
 
             simpleResponseDto.setSuccess(true);
             simpleResponseDto.setMsg(msg);
