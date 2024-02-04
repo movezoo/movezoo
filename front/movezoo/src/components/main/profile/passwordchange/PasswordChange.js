@@ -11,11 +11,16 @@ const ChangePasswordModal = () => {
 
   const fetchUser = async () => {
     try {
-      const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+      const responseLoginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
           withCredentials: true, // 쿠키 허용
         });
 
-      setEmail(loginUserId.data.userEmail);
+      const loginUserId = responseLoginUserId.data;
+
+      const loginUserEmail = await axios.get(`https://i10e204.p.ssafy.io/api/user/${loginUserId}`, {
+        });
+
+      setEmail(loginUserEmail.data.userEmail);
     } catch (error) {
       console.error('유저 정보 가져오기 실패:', error);
     }
