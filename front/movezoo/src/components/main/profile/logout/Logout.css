@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.logout-button {
+  @apply w-56 h-8 m-2 flex flex-1 items-center justify-center p-2 text-white bg-red-500 rounded-md
+  hover:bg-red-700;
+}
+
+.logoutModal {
+  @apply fixed inset-0 flex items-center justify-center z-50 outline-none focus:outline-none bg-white;
+}
+
+.logout-container {
+  @apply w-[300px] h-[220px]  border-2 border-black max-w-lg mx-auto rounded-lg shadow-lg bg-white overflow-hidden;
+}
+
+.logout-header {
+  @apply flex flex-row p-4;
+}
+
+.header-name {
+  @apply flex justify-center;
+}
+
+.logout-body {
+  @apply flex flex-col p-4 items-center justify-between;
+}

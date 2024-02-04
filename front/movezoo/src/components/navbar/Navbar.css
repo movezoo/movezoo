@@ -3,51 +3,10 @@
 @tailwind utilities;
 
 .navbar-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  @apply bg-blue-300 w-full h-20; 
+  @apply flex justify-around items-center bg-blue-500 text-white w-full h-20; 
 }
 
-.navbar-shop {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  @apply hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-20;
-}
-
-.navbar-ranking {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  @apply hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-20;
-}
-
-.navbar-single {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  @apply hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-20;
-}
-
-.navbar-multi {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  @apply hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-20;
-}
-
-.navbar-friend {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  @apply hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-20;
-}
-
-.navbar-setting {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  @apply hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-20;
+.navbar-shop, .navbar-ranking, .navbar-single, .navbar-multi, .navbar-friend, .navbar-setting {
+  @apply w-full h-full flex flex-1 justify-center items-center text-lg 
+  hover:text-blue-100 hover:bg-blue-700 active:text-blue-900
 }

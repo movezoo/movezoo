@@ -2,26 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.shopButton {
+  @apply w-7 h-7 hover:scale-125
+}
+
 .shop-container {
-  @apply flex flex-col
+  @apply flex flex-col 
 }
 
 .shop-header {
-  @apply grid grid-cols-2
+  @apply flex flex-row justify-between items-center;
 }
 
 .shop-header-name {
-
+  @apply flex text-2xl items-center font-semibold mx-auto
 }
 
 .shop-header-exit {
-  @apply grid justify-items-end
-}
-
-.exit-button {
-  @apply bg-red-500 text-white py-2 px-4 rounded;
-}
-
-.shop-chracter {
-  
+  @apply flex 
 }
