@@ -6,7 +6,7 @@ const ChangePasswordModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const [userEmail, setEmail] = useState('');
   const [confirmModal, setConfirmModal] = useState(false);
 
   const fetchUser = async () => {
@@ -52,7 +52,7 @@ const ChangePasswordModal = () => {
 
   const handlePasswordChange = async () => {
     try {
-      await axios.patch('https://i10e204.p.ssafy.io/api/user/password', {email, password}, {
+      await axios.patch('https://i10e204.p.ssafy.io/api/user/password', {userEmail, password}, {
         withCredentials: true,
       });
 
