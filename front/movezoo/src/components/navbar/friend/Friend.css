@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.exit-button {
-  @apply w-10 h-10 hover:text-gray-500;
+.friendButton {
+  @apply w-7 h-7 hover:scale-125;
 }

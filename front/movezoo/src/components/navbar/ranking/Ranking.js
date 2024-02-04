@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 import './Ranking.css';
+import { FaRankingStar } from "react-icons/fa6";
+import { IoCloseSharp } from "react-icons/io5";
 
 const Ranking = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,14 +58,14 @@ const Ranking = () => {
 
   return (
     <div>
-      <button onClick={openModal}>랭킹</button>
+      <FaRankingStar className='rankingButton' onClick={openModal} />
 
       <Modal 
         isOpen={isOpen} 
         onRequestClose={closeModal}
         style={{
           content: {
-            width: '1000px',
+            width: '500px',
             height: '500px',
             margin: 'auto',
           }
@@ -73,42 +75,44 @@ const Ranking = () => {
 
           <div className='ranking-header'>
             
+            <div className='ranking-header-exit'>
+              <IoCloseSharp className='exit-button' onClick={closeModal} />
+            </div>
+
             <div className='ranking-header-map'>
               <button className='map-button' onClick={() => handleMapButtonClick(1)}>1번 맵</button>
               <button className='map-button' onClick={() => handleMapButtonClick(2)}>2번 맵</button>
             </div>
 
-            <div className='ranking-header-exit'>
-              <button className='exit-button' onClick={closeModal}>닫기</button>
-            </div>
-
           </div>
 
-          <div className='ranking-topTen'>
-            {selectedMap !== null && (
-              <div>
-                {rankings.map((ranking, index) => (
-                  <div className='ranking-user' key={index}>
-                    <p>{index + 1}위</p>
-                    <p>{ranking.nickName}</p>
-                    <p>{ranking.record}</p>
-                    <hr />
-                  </div>
-                ))}
+          <div className='ranking-body'>
+            <div className='ranking-topTen'>
+              {selectedMap !== null && (
+                <div>
+                  {rankings.map((ranking, index) => (
+                    <div className='ranking-user' key={index}>
+                      <p>{index + 1}위</p>
+                      <p>{ranking.nickName}</p>
+                      <p>{ranking.record}</p>
+                      <hr />
+                    </div>
+                  ))}
 
+                </div>
+              )}
+            </div>
+
+            <div className='ranking-my'>
+            {userLaptime && (
+              <div className='ranking-user'>
+                <p>{userRank}위</p>
+                <p>{userLaptime.nickName}</p>
+                <p>{userLaptime.record}</p>
+                <hr />
               </div>
             )}
-          </div>
-
-          <div className='ranking-my'>
-          {userLaptime && (
-            <div className='ranking-user'>
-              <p>내 순위: {userRank}</p>
-              <p>{userLaptime.nickName}</p>
-              <p>{userLaptime.record}</p>
-              <hr />
             </div>
-          )}
           </div>
 
         </div>

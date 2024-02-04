@@ -1,14 +1,14 @@
 import React from 'react';
 import Shop from './shop/Shop';
 import Ranking from './ranking/Ranking';
-import Friend from './Friend';
-import Setting from './Setting';
+import Friend from './friend/Friend';
+import Setting from './setting/Setting';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 function Navbar() {
 
-  return (
+  return (  
     <div className="navbar-container">
       
       <div className='navbar-shop'>
