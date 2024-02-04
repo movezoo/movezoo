@@ -200,6 +200,11 @@ public class AuthController {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        User user = (User)authentication.getPrincipal();
 //        return user.getUserId();
+
+        if (customUserDetails == null){
+           return null;
+        }
+
         System.out.println("현재 로그인한 유저: " + customUserDetails.getUsername());
 
         return customUserDetails.getUsername();
