@@ -3,10 +3,7 @@
 @tailwind utilities;
 
 .main-container {
-  background-image: url('./forest.avif');
-  background-size: cover;
-  background-repeat: no-repeat;
-  @apply w-full min-h-screen flex flex-col justify-between;
+  @apply w-full min-h-screen flex flex-col justify-between ;
 }
 
 
@@ -15,17 +12,34 @@
   @apply h-20 flex flex-row;
 }
 
-.main-home {
+.main-header-name {
   flex: 1;
   display: flex;
   justify-content: left;
+  @apply font-mono text-4xl p-3
 }
 
-.main-profile {
-  flex: 1;
-  display: flex;
-  justify-content: right;
+.main-header-info {
+  @apply flex flex-1 justify-end
 }
+
+.header-info-user {
+  @apply flex flex-col justify-start p-3 pr-6;  
+}
+
+.info-user-coin {
+  @apply flex flex-row items-center;
+}
+
+.coinIcon {
+  @apply text-yellow-300 w-6 h-6 mr-2;
+}
+
+.header-info-profile {
+  @apply items-center p-3 flex justify-center
+}
+
+
 
 
 /* 메인 캐러셀 */
