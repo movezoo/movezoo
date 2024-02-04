@@ -6,16 +6,21 @@ const ChangePasswordModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const [userEmail, setEmail] = useState('');
   const [confirmModal, setConfirmModal] = useState(false);
 
   const fetchUser = async () => {
     try {
-      const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+      const responseLoginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
           withCredentials: true, // 쿠키 허용
         });
 
-      setEmail(loginUserId.data.userEmail);
+      const loginUserId = responseLoginUserId.data;
+
+      const loginUserEmail = await axios.get(`https://i10e204.p.ssafy.io/api/user/${loginUserId}`, {
+        });
+
+      setEmail(loginUserEmail.data.userEmail);
     } catch (error) {
       console.error('유저 정보 가져오기 실패:', error);
     }
@@ -47,15 +52,22 @@ const ChangePasswordModal = () => {
       alert('비밀번호가 일치하지 않습니다.');
       return;
     }
+
+    if (password.length < 8) {
+      alert('비밀번호는 8자리 이상이어야 합니다.');
+      return;
+    }
+    
     setConfirmModal(true);
   };
 
   const handlePasswordChange = async () => {
     try {
-      await axios.patch('https://i10e204.p.ssafy.io/api/user/password', {email, password}, {
+      await axios.patch('https://i10e204.p.ssafy.io/api/user/password', {userEmail, password}, {
         withCredentials: true,
       });
 
+      alert('비밀번호 변경에 성공했습니다.');
       closeModal();
     } catch (error) {
       console.error('비밀번호 변경 실패:', error);

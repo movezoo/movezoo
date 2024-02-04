@@ -73,7 +73,6 @@ public class UserController {
 
         simpleResponseDto.setMsg("미인증");
         simpleResponseDto.setSuccess(false);
-        //aut가 null, dto의 유저와 suth의 유저가 동일한지
 
         if (authentication == null || dto.getUserEmail()==null || dto.getNickname()==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(simpleResponseDto);
 
