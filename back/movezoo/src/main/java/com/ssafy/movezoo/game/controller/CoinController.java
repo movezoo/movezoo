@@ -1,7 +1,7 @@
 package com.ssafy.movezoo.game.controller;
 
 import com.ssafy.movezoo.game.dto.CoinResponseDto;
-import com.ssafy.movezoo.game.dto.RoomSessionDto;
+import com.ssafy.movezoo.game.dto.RoomSessionIdDto;
 import com.ssafy.movezoo.global.dto.SimpleResponseDto;
 import com.ssafy.movezoo.user.domain.User;
 import com.ssafy.movezoo.user.sevice.UserService;
@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,12 +32,12 @@ public class CoinController {
 
         return ResponseEntity.status(HttpStatus.OK).body(coinResponseDto);
     }
-
+    
     @PostMapping
-    public ResponseEntity<SimpleResponseDto> gameReward(@RequestBody RoomSessionDto roomSessionDto){
-        int roomId = roomSessionDto.getSessionId();
+    public ResponseEntity<SimpleResponseDto> gameReward(@RequestBody RoomSessionIdDto dto){
+        String roomSessionId = dto.getRoomSessionId();    // roomId: Long
 
-        List<SessionUserInfo> sessionUserList = findSessionUserList(roomId);
+        List<SessionUserInfo> sessionUserList = findSessionUserList(roomSessionId);
 
         for(int i = 0 ;i<sessionUserList.size(); i++){
             SessionUserInfo sessionUserInfo = sessionUserList.get(i);
@@ -51,7 +50,9 @@ public class CoinController {
         return ResponseEntity.status(HttpStatus.OK).body(simpleResponseDto);
     }
 
-    private List<SessionUserInfo> findSessionUserList(int roomId) {
+    private List<SessionUserInfo> findSessionUserList(String roomSessionId) {
+        // 해당 방에 들어있는 유저에 대해서 처리하는 코드 필요
+
         List<SessionUserInfo> result = new ArrayList<>();
 
         result.add(new SessionUserInfo(1,90.5));
