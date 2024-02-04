@@ -52,6 +52,7 @@ const ChangeNicknameModal = () => {
         withCredentials: true,
       });
       
+      alert('닉네임 변경에 성공했습니다.');
       closeModal();
     } catch (error) {
       console.error('닉네임 변경 실패:', error);

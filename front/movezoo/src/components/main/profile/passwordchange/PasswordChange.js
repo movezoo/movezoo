@@ -52,6 +52,12 @@ const ChangePasswordModal = () => {
       alert('비밀번호가 일치하지 않습니다.');
       return;
     }
+
+    if (password.length < 8) {
+      alert('비밀번호는 8자리 이상이어야 합니다.');
+      return;
+    }
+    
     setConfirmModal(true);
   };
 
@@ -61,6 +67,7 @@ const ChangePasswordModal = () => {
         withCredentials: true,
       });
 
+      alert('비밀번호 변경에 성공했습니다.');
       closeModal();
     } catch (error) {
       console.error('비밀번호 변경 실패:', error);
