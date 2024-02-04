@@ -5,6 +5,6 @@
 
     @Getter
     @Setter
-    public class RoomSessionDto {
-        private int sessionId;
+    public class RoomSessionIdDto {
+        private String roomSessionId;
     }
