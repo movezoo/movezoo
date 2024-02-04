@@ -5,7 +5,7 @@ import axios from 'axios';
 const ChangeNicknameModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [nickname, setNickname] = useState('');
-  const [email, setEmail] = useState('');
+  const [userEmail, setEmail] = useState('');
   const [confirmModal, setConfirmModal] = useState(false);
 
   const fetchUser = async () => {
@@ -43,7 +43,7 @@ const ChangeNicknameModal = () => {
 
   const handleNicknameChange = async () => {
     try {
-      await axios.patch('https://i10e204.p.ssafy.io/api/user/nickname', {email, nickname}, {
+      await axios.patch('https://i10e204.p.ssafy.io/api/user/nickname', {userEmail, nickname}, {
         withCredentials: true,
       });
       
