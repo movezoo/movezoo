@@ -96,12 +96,12 @@ public class RedisService {
 //    public List<Room> searchByRoomTitle(String roomTitle){
 //        return redisRepository.findAllByRoomTitle(roomTitle);
 //    }
-
-    // 방 모드 필터링 & 방 제목 검색
-    public List<Room> searchByRoomTitleAndRoomMode(String roomTitle, int roomMode){
-        System.out.println(roomTitle + " && "+ roomMode);
-
-        return redisRepository.findByRoomTitleAndRoomMode(roomTitle, roomMode);
-    }
+//
+//    // 방 모드 필터링 & 방 제목 검색
+//    public List<Room> searchByRoomTitleAndRoomMode(String roomTitle, int roomMode){
+//        System.out.println(roomTitle + " && "+ roomMode);
+//
+//        return redisRepository.findByRoomTitleAndRoomMode(roomTitle, roomMode);
+//    }
 
 }
