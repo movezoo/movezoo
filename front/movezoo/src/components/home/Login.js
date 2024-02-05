@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './Login.css'
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -29,7 +30,7 @@ const Login = () => {
       // Send the login request with form data
       // 백엔드에서 로그인성공시 200코드를 내려준는데, 실패시 401코드를 내려준다. axios요청은 200번대가 아니면 error로 간주
       const response = await axios.post('https://i10e204.p.ssafy.io/api/login', formData, {
-        withCredentials: true, 
+        withCredentials: true,
       });
 
       console.log(response);
@@ -54,8 +55,9 @@ const Login = () => {
 
   return (
     <div>
+      <h1 className='login'>Login</h1>
       <form>
-        <label>
+        <label className='id'>
           아이디:
           <input
             type="text"
@@ -67,7 +69,7 @@ const Login = () => {
           />
         </label>
         <br />
-        <label>
+        <label className='password'>
           비밀번호:
           <input
             type="password"
@@ -77,7 +79,7 @@ const Login = () => {
           />
         </label>
         <br />
-        <button type="button" onClick={handleLogin}>
+        <button className='loginbt' type="button" onClick={handleLogin}>
           로그인
         </button>
       </form>

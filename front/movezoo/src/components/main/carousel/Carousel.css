@@ -1,15 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .carousel-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  @apply flex flex-row justify-center items-center w-full
 }
 
 .carousel-prev {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @apply flex flex-1 items-center justify-start 
+}
+
+.prevButton {
+  @apply w-20 h-20 text-blue-500 hover:text-blue-700 active:scale-90 active:text-blue-900
 }
 
 .carousel-image {
@@ -20,8 +22,9 @@
 }
 
 .carousel-next {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @apply flex flex-1 items-center justify-end
+}
+
+.nextButton {
+  @apply w-20 h-20 text-blue-500 hover:text-blue-700 active:scale-90 active:text-blue-900
 }

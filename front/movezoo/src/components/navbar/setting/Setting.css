@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.settingButton {
+  @apply w-7 h-7 hover:scale-125;
+}
+
+.setting-container {
+  @apply flex flex-col
+}
+
+.setting-header {
+  @apply flex flex-row justify-between items-center;
+}
+
+.setting-header-name {
+  @apply flex text-2xl items-center font-semibold mx-auto
+}
+
+.setting-body {
+  @apply flex flex-col items-center
+}
+
+.setting-sound {
+  @apply flex flex-row items-center mt-10
+}
+
+.sound-image {
+  @apply mr-5
+}
