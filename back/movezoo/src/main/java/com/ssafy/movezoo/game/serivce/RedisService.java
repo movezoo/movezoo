@@ -85,4 +85,8 @@ public class RedisService {
         return redisRepository.existsByRoomSessionId(roomSessionId);
     }
 
+    public void deleteAllRoom(){
+        redisRepository.deleteAll();
+    }
+
 }

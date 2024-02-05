@@ -52,6 +52,12 @@ public class UserRepository {
                 .getResultList().stream().findAny();
     }
 
+    public Optional<User> findByAuthNumber(String authNumber) {
+        return em.createQuery("select u from User u where u.authNumber = :authNumber", User.class)
+                .setParameter("authNumber", authNumber)
+                .getResultList().stream().findAny();
+    }
+
     public Optional<User> findByNickname(String nickname) {
         return em.createQuery("select u from User u where u.nickname = :nickname", User.class)
                 .setParameter("nickname", nickname)
@@ -87,6 +93,13 @@ public class UserRepository {
                 .setParameter("profileImgUrl", profileImgUrl)
                 .setParameter("userEmail", userEmail)
                 .executeUpdate();
+    }
+
+    public boolean updateUserAuthCode(String userEmail, String authNumber) {
+        return em.createQuery("update User u set u.authNumber = :authNumber where u.userEmail = :userEmail")
+                .setParameter("userEmail", userEmail)
+                .setParameter("authNumber", authNumber)
+                .executeUpdate() > 0;
     }
 }
 

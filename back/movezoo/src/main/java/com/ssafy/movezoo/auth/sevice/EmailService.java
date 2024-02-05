@@ -3,8 +3,10 @@ package com.ssafy.movezoo.auth.sevice;
 import com.ssafy.movezoo.auth.dto.EmailMessage;
 import com.ssafy.movezoo.user.domain.User;
 import com.ssafy.movezoo.user.repository.UserRepository;
+import com.ssafy.movezoo.user.sevice.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,13 +18,13 @@ import java.util.Random;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class EmailService {
 
     private final JavaMailSender javaMailSender;
 
     private final UserRepository userRepository;
-    
 
     public String sendMail(EmailMessage emailMessage, String type) {
         String authNum = createCode();
@@ -30,7 +32,7 @@ public class EmailService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         if (type.equals("password")) userRepository.updatePassword(emailMessage.getTo(), authNum);
-
+        if (type.equals("email"))  userRepository.updateUserAuthCode(emailMessage.getTo() ,authNum);
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
             mimeMessageHelper.setTo(emailMessage.getTo()); // 수신자메일

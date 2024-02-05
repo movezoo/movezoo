@@ -28,4 +28,7 @@ public interface RedisRepository extends CrudRepository<Room, Long> {
 
     @Override
     void deleteById(Long roomId);
+
+    @Override
+    void deleteAll();
 }
