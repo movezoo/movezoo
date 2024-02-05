@@ -38,6 +38,8 @@ const Profile = () => {
         });
         const UserId = loginUserId.data;
 
+        console.log("UserId : ", UserId);
+
         const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {
         })
 
