@@ -7,7 +7,7 @@ const data = {
 
 const playerCount = { value: 1 };
 const myGameData = { playerId: '', playerCharacter: '', userX: 0, userZ: 0, speed: 0 }
-const playerGameDataList = [];
+const playerGameDataList = [];  // myGameData이 모인 리스트
 const playerGameResetDataList = { value: [] };
 
 // 1. 게임이 시작될 때, 먼저 나의 id와 캐릭터 정보를 myPlayerData를 저장한다.

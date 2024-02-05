@@ -262,6 +262,7 @@ const Game = {
         })
       })
       // console.log(PLAYER_SPRITE);
+      console.log(SPRITES);
     }
 
     const setBackground = () => {
@@ -444,7 +445,6 @@ const Render = {
   //---------------------------------------------------------------------------
   // 스프라이트 그리기
   sprite: (ctx, width, height, resolution, roadWidth, sprites, sprite, scale, destX, destY, offsetX, offsetY, clipY) => {
-   
     // 프로젝션에 상대적인 크기 및 roadWidth에 상대적인 크기 (토크 UI를 위해) 스케일 조정
     let destW  = (sprite.w * scale * width/2) * (SPRITES.SCALE * roadWidth);
     let destH  = (sprite.h * scale * width/2) * (SPRITES.SCALE * roadWidth);
