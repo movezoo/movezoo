@@ -41,19 +41,19 @@ function Character () {
     try {
       // == 쿠키 사용해서 로그인한 유저 id 가져오기 ============
 
-      // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-      //   withCredentials: true, // 쿠키 허용
-      // });
-      // const UserId = loginUserId.data;
+      const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+        withCredentials: true, // 쿠키 허용
+      });
+      const UserId = loginUserId.data;
 
       // ====================================================
 
       // 유저 캐릭터 데이터 가져오기
-      // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {
-      // })
+      const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {
+      })
 
       // 임시 유저 데이터
-      const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/102');
+      // const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/102');
       // // console.log(response.data);
 
       const userCharacterIds = response.data.map(character => character.racerId);
@@ -124,7 +124,10 @@ function Character () {
             <div className='select-body'>
               <img className='select-image' src={selectedCharacter.image} alt={selectedCharacter.name} />
               <h3 className='image-name'>{selectedCharacter.name}</h3>
-              <button className='character-buy-button' onClick={handleBuyClick}>구매하기</button>
+              
+              {noCharacterImages.some(image => image.id === selectedCharacter.id && image.image === selectedCharacter.image) && 
+              <button className='character-buy-button' onClick={handleBuyClick}>구매하기</button>}
+              
             </div>
         )}
       </div>
@@ -134,16 +137,19 @@ function Character () {
         onRequestClose={() => setBuyModalOpen(false)}
         style={{
           content: {
-            width: '300px',
-            height: '300px',
+            width: '350px',
+            height: '200px',
             margin: 'auto',
+            border: '2px solid black',
           }
         }}>
-        <div>
+
+        <div className=''>
           <h3>정말 이 캐릭터를 구매하시겠습니까?</h3>
-          <button onClick={handleBuyConfirm}>예</button>
-          <button onClick={() => setBuyModalOpen(false)}>아니요</button>
+          <button className='profile-button' onClick={handleBuyConfirm}>예</button>
+          <button className='profile-button' onClick={() => setBuyModalOpen(false)}>아니요</button>
         </div>
+
       </Modal>
 
     </div>
