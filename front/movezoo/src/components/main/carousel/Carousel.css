@@ -11,7 +11,8 @@
 }
 
 .prevButton {
-  @apply w-20 h-20 text-blue-500 hover:text-blue-700 active:scale-90 active:text-blue-900
+  @apply w-20 h-20 text-CelestialBlue hover:text-GreenBlue active:scale-90 active:text-blue-900
+  hover:cursor-pointer ml-5
 }
 
 .carousel-image {
@@ -26,5 +27,6 @@
 }
 
 .nextButton {
-  @apply w-20 h-20 text-blue-500 hover:text-blue-700 active:scale-90 active:text-blue-900
+  @apply w-20 h-20 text-CelestialBlue hover:text-GreenBlue active:scale-90 active:text-blue-900
+  hover:cursor-pointer mr-5
 }

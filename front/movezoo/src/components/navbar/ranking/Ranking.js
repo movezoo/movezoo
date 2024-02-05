@@ -57,8 +57,10 @@ const Ranking = () => {
   };
 
   return (
-    <div>
-      <FaRankingStar className='rankingButton' onClick={openModal} />
+    <div className='ranking'>
+      <div className='ranking-button-container'  onClick={openModal} >
+        <FaRankingStar className='rankingButton'/>
+      </div>
 
       <Modal 
         isOpen={isOpen} 
