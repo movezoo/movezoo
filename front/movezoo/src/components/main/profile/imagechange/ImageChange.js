@@ -113,7 +113,7 @@ const ImageChangeModal = () => {
       formData.append('profileImgUrl', selectedFile);
       formData.append('userEmail', loginUserEmail.data.userEmail);
 
-      const response = await axios.post(`https://i10e204.p.ssafy.io/api/user/profile`, 
+      const response = await axios.patch(`https://i10e204.p.ssafy.io/api/user/profile`, 
         formData, { withCredentials: true });
 
       } catch (error) {
