@@ -91,7 +91,6 @@ const Main = (props) => {
     //=========================================================================
     // UPDATE THE GAME WORLD
     //=========================================================================
-    
     const update = (dt) => {
       keyLeft        = data.isLeftKeyPressed;
       keyRight       = data.isRightKeyPressed;
