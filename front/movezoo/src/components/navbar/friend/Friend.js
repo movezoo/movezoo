@@ -15,8 +15,10 @@ const Friend = () => {
   };
 
   return (
-    <div>
-      <FaUserFriends className='friendButton' onClick={openModal}/>
+    <div className='friend'>
+      <div className='friend-button-container' onClick={openModal}>
+        <FaUserFriends className='friendButton'/>
+      </div>
 
       <Modal 
       isOpen={isOpen} 

@@ -18,9 +18,9 @@ function Shop () {
 
 
   return (
-    <div>
-      <div>
-        <AiFillShop className='shopButton' onClick={openModal}/>
+    <div className='shop'>
+      <div className='shop-button-container' onClick={openModal}>
+        <AiFillShop  className='shopButton'/>
       </div>
 
       <Modal 
