@@ -3,12 +3,14 @@
 @tailwind utilities;
 
 .navbar-container {
-  @apply flex justify-around items-center bg-CelestialBlue text-white w-full h-20; 
+  @apply flex justify-around items-center bg-white rounded-xl pt-3 pb-3 p-1 text-white w-full h-24; 
 }
 
 .navbar-shop, .navbar-ranking, .navbar-single, .navbar-multi, .navbar-friend, .navbar-setting {
-  @apply w-full h-full flex flex-1 justify-center items-center text-lg 
-  hover:text-blue-100 hover:bg-GreenBlue active:text-blue-900 hover:cursor-pointer
+  @apply w-full h-full flex flex-1 justify-center items-center text-lg bg-blue-400 rounded-xl
+   m-2
+  hover:text-blue-100 hover:bg-GreenBlue active:text-blue-900 hover:cursor-pointer 
+  
 }
 
 .navbar-single:hover .single {
