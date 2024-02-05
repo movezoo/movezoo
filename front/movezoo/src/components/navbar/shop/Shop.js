@@ -29,7 +29,7 @@ function Shop () {
       style={{
         content: {
           width: '1000px',
-          height: '500px',
+          height: '550px',
           margin: 'auto',
           border: '2px solid black',
         }
