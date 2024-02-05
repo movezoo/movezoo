@@ -38,7 +38,7 @@ function Game() {
 
           {/*웹캠*/}
           <Cam />
-          <Webcam className={styles.webCam} mirrored={true} />
+          {/* <Webcam className={styles.webCam} mirrored={true} /> */}
         </div>
 
         {/*오른쪽 화면*/}
