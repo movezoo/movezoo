@@ -119,6 +119,9 @@ const ImageChangeModal = () => {
 
 
       const profileImgUrl = selectedImage.image;
+      console.log('====================================')
+      console.log(profileImgUrl);
+      
       const response = await axios.patch(`https://i10e204.p.ssafy.io/api/user/profile`, 
         {userEmail, profileImgUrl}, { withCredentials: true });
 
