@@ -5,13 +5,12 @@ import '@mediapipe/face_detection';
 import '@tensorflow/tfjs-backend-webgl';
 import * as faceDetection from '@tensorflow-models/face-detection';
 
-import { data } from "./data.js";
+import { data, myGameData, playerGameDataList } from "./data.js";
 
 const MyOpenViduVideoComponent = (props) => {
-  const { streamManager } = props;
+  const { streamManager, mySession } = props;
   const videoRef = useRef(null);
   const detector = useRef(null);
-
 
 
   useEffect(() => {
@@ -19,8 +18,6 @@ const MyOpenViduVideoComponent = (props) => {
       // Add video element to StreamManager during initial rendering
       streamManager.addVideoElement(videoRef.current);
     }
-
-
 
 
     const initializeFaceDetector = async () => {
@@ -37,12 +34,7 @@ const MyOpenViduVideoComponent = (props) => {
     };
     initializeFaceDetector();
 
-
-
-
-
     const detectFaces = async () => {
-      // console.log(tf.getBackend());
       if (detector.current && videoRef.current) {
         const estimationConfig = { 
           flipHorizontal: false
@@ -82,10 +74,6 @@ const MyOpenViduVideoComponent = (props) => {
     };
 
 
-
-
-
-
     const runFaceDetection = () => {
       detectFaces();
       requestAnimationFrame(runFaceDetection)
@@ -95,10 +83,62 @@ const MyOpenViduVideoComponent = (props) => {
 
 
 
+    // 데이터 보내기 : 나의 데이터(객체)만 보낸다.
+    const sendData = () => {
+      const signalData = {
+        type: 'custom',
+        data: JSON.stringify(myGameData)
+      };
+  
+      // 전송!
+      mySession.signal(signalData)
+        .then(() => { console.log('Signal sent successfully'); })
+        .catch((error) => { console.error('Error sending signal:', error); });
+    }
+
+    // 데이터 받기 : 다른사람의 데이터(객체) 수신
+    const responseData = () => {
+      mySession.on('signal:custom', (res) => {
+        const newPlayerGameData = JSON.parse(res.data); // 수신한 다른사람의 객체 데이터
+
+        const playerCount = 2;
+        // console.log(`playerCount : ${playerCount}`);
+        // 데이터 리스트에 아무것도 없으면 받은 데이터를 push 한다.
+        // if (playerCount === 0) playerGameDataList.push(newPlayerGameData);
+
+        let needPush = true; // push가 필요한지 check
+        // 1. 수신한 데이터의 id가 내 id와 일치하면 필요없다.
+        if(myGameData.playerId !== newPlayerGameData.playerId) {
+          // 2. 수신한 데이터의 id가 내가 가지고 있는 데이터 리스트에 있다면 교체하고
+          for (let i = 0; i < playerGameDataList.length; i++) {
+            if(playerGameDataList[i].playerId === newPlayerGameData.playerId) {
+              // console.log(`교체`)
+              playerGameDataList[i] = newPlayerGameData;
+              needPush = false;
+              break;
+            }
+          }
+          // 3. 없다면 새로 push  한다.
+          if(needPush) {
+            // console.log(`삽입`)
+            playerGameDataList.push(newPlayerGameData);
+          }
+        }
+        
+      });
+    }
+
+
+    const connectData = () => {
+      // console.log(playerGameDataList);
+      sendData();
+      responseData();
+      requestAnimationFrame(connectData)
+    }
+    connectData();
 
   }, [streamManager]);
-
-
+  
 
 
 
