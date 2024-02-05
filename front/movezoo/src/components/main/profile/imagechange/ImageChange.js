@@ -194,12 +194,12 @@ const ImageChangeModal = ({ onImageChange }) => {
           <h3>이미지 변경</h3>
           <button className='exit-button' onClick={closeModal}>닫기</button>
           {profileImages.map((img) => (
-            <div key={img.id} onClick={() => {onImageSelect(img); onImageUpload(img);}}>
+            <div key={img.id} onClick={() => onImageSelect(img)}>
               <img  className={`selectImg ${selectedImage && selectedImage.id === img.id ? 'selected' : ''}`} src={img.image} alt={img.name} />
               <p>{img.name}</p>
             </div>
           ))}
-          <button onClick={() => onImageUpload(selectedImage)}>변경</button>
+          <button onClick={onImageUpload}>변경</button>
         </div>
       </Modal>
     </div>
