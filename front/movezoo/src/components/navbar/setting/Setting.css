@@ -2,8 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+.setting {
+  @apply w-full h-full
+}
+
+.setting-button-container {
+  @apply w-full h-full flex justify-center items-center
+}
+
+.setting-button-container:hover .settingButton {
+  @apply scale-150;
+}
+
 .settingButton {
-  @apply w-7 h-7 hover:scale-125;
+  @apply w-7 h-7 transition;
 }
 
 .setting-container {

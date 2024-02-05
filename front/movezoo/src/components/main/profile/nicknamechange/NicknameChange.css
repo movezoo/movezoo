@@ -31,8 +31,8 @@
 }
 
 .change-button {
-  @apply flex flex-col h-8 items-center justify-center p-2 text-white bg-blue-500 rounded-md
-  hover:bg-blue-700;
+  @apply flex flex-col h-8 items-center justify-center p-2 text-white bg-CelestialBlue rounded-md
+  hover:bg-GreenBlue;
 }
 
 .nicknameconfirm-header{

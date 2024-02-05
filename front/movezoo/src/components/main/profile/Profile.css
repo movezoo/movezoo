@@ -37,8 +37,8 @@
 }
 
 .profile-button {
-  @apply w-56 h-8 m-2 flex flex-1 items-center justify-center p-2 text-white bg-blue-500 rounded-md
-  hover:bg-blue-700;
+  @apply w-56 h-8 m-2 flex flex-1 items-center justify-center p-2 text-white bg-CelestialBlue rounded-md
+  hover:bg-GreenBlue;
 }
 
 
