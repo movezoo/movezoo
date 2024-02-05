@@ -91,5 +91,15 @@ public class UserService {
         user.setCoin(user.getCoin()-coin);
     }
 
+    public void updateUserAuthCode(String userEmail, String code){
+        Optional<User> findUser = userRepository.findByEmail(userEmail);
+        findUser.ifPresent(user -> user.setAuthNumber(code));
+    }
+
+    public boolean compareAthNumber(String userEmail, String authNumber){
+        Optional<User> findUser = userRepository.findByEmail(userEmail);
+        return findUser.isPresent() && findUser.get().getAuthNumber().equals(authNumber);
+
+    }
 
 }
