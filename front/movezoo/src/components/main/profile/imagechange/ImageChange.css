@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.ImageChangeModal {
+  @apply fixed inset-0 flex items-center justify-center z-50 outline-none focus:outline-none bg-white;
+}
+
+.imagechange-container {
+  @apply w-[300px] h-[350px]  border-2 border-black max-w-lg mx-auto rounded-lg shadow-lg bg-white
+  overflow-auto;
+}
+
 .selectImg {
   @apply p-2;
 }
