@@ -25,8 +25,10 @@ function Main() {
               });
         const UserId = loginUserId.data;
 
-        const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {
+        const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${UserId}`, {
         })
+        console.log('===========')
+        console.log(response.data);
 
         // 임시 데이터
         // const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102', {
