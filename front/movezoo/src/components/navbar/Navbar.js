@@ -23,7 +23,7 @@ function Navbar() {
         <h1 className='single'>싱글</h1>
       </Link>
       
-      <Link className='navbar-multi' to="/multi">
+      <Link className='navbar-multi' to="/room">
         <h1 className='multi'>멀티</h1>
       </Link>
       

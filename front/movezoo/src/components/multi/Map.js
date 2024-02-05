@@ -21,13 +21,21 @@ function Carousel() {
   return (
     <div>
       <div className={styles.mapImage}>
-        <button onClick={handlePrevious} className={styles.btnPrevious}>
-          &lt;
-        </button>
-        <img src={`/minimap/${images[currentIndex]}`} alt="mini-map" />
-        <button onClick={handleNext} className={styles.btnNext}>
-          &gt;
-        </button>
+        <div className={styles.image}>
+          <img
+            src={`/minimap/${images[currentIndex]}`}
+            alt="mini-map"
+            style={{ width: "100%", height: "100%" }}
+          />
+        </div>
+        <div className={styles.btnSelect}>
+          <button onClick={handlePrevious} className={styles.btnPrevious}>
+            &lt;
+          </button>
+          <button onClick={handleNext} className={styles.btnNext}>
+            &gt;
+          </button>
+        </div>
       </div>
     </div>
   );
