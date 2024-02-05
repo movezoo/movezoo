@@ -1,6 +1,6 @@
 import Stats from './stats.js';
 import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES } from './gameConstants.js';
-import { playerInitData } from './data.js';
+import { myGameData, playerGameDataList } from './data.js';
 
 
 // 이미지 불러오기
@@ -9,7 +9,7 @@ import mute from './images/mute.png';
 import sprites from './images/sprites.png';
 
 const selectPlayer = "pug";
-playerInitData.playerCharacter = selectPlayer;  // 오픈비두 통신을 위한 데이터 설정
+myGameData.playerCharacter = selectPlayer;  // 오픈비두 통신을 위한 데이터 설정
 const selectAction = "run";
 const selectMap = "map1";
 const frameIndex = {

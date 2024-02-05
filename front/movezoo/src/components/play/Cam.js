@@ -6,7 +6,7 @@ import "./Cam.css";
 import UserVideoComponent from "./UserVideoComponent";
 import MyVideoComponent from "./MyVideoComponent";
 
-import { data, playerInitData } from './data.js';
+import { myGameData, playerGameDataList } from './data.js';
 
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
@@ -86,7 +86,7 @@ class Cam extends Component {
       { session: this.OV.initSession() },
       () => {
         var mySession = this.state.session;
-  
+        this.OV.enableProdMode() // Logger disable하는 함수
         // --- 3) 세션에서 이벤트가 발생할 때 동작 지정 ---
         // 새로운 스트림을 받을 때마다...
         mySession.on("streamCreated", (event) => {
@@ -163,9 +163,19 @@ class Cam extends Component {
               });
 
 
-              // data에 내 openvidu id 저장하기
-              playerInitData.playerId = this.state.myUserName;
+              // data에 내 openvidu id 저장하기 (최초 1회)
+              myGameData.playerId = this.state.myUserName;
+              const count = playerGameDataList.length;
+              const existMyData = false;
+              for(let i = 0; i < count; i++) {
+                if (playerGameDataList[i] === myGameData.playerId) {
+                  existMyData = true;
+                  break;
+                }
+              }           
+              if(!existMyData) playerGameDataList.push(myGameData)
 
+              console.log(`joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`)
             })
             .catch((error) => {
               console.log(
@@ -260,7 +270,6 @@ class Cam extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
-    console.log(`render!!!!`)
     
     return (
       <div className="container">
