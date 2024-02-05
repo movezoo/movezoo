@@ -2,9 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+.shop {
+  @apply w-full h-full
+}
+
+.shop-button-container {
+  @apply w-full h-full flex justify-center items-center
+}
+
+.shop-button-container:hover .shopButton {
+  @apply scale-150;
+}
 
 .shopButton {
-  @apply w-7 h-7 hover:scale-125
+  @apply transition w-7 h-7
 }
 
 .shop-container {
