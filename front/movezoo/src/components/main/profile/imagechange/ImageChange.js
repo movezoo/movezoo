@@ -38,11 +38,13 @@ const ImageChangeModal = ({ onImageChange }) => {
       });
       const loginUserId = responseLoginUserId.data;
 
+      console.log('첫 번째 요청 완료:', loginUserId);
+
       const loginUserEmail = await axios.get(`https://i10e204.p.ssafy.io/api/user/${loginUserId}`, {
         });
       setEmail(loginUserEmail.data.userEmail);
 
-
+      console.log('두 번째 요청 완료:', loginUserEmail.data.userEmail);
 
       const profileImgUrl = selectedImage.image;
       console.log('====================================')
@@ -50,6 +52,8 @@ const ImageChangeModal = ({ onImageChange }) => {
       
       const response = await axios.patch(`https://i10e204.p.ssafy.io/api/user/profile`, 
         {userEmail, profileImgUrl}, { withCredentials: true });
+
+      console.log('세 번째 요청 완료:', response);
 
       onImageChange(profileImgUrl);
 
