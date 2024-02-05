@@ -5,7 +5,7 @@ import '@mediapipe/face_detection';
 import '@tensorflow/tfjs-backend-webgl';
 import * as faceDetection from '@tensorflow-models/face-detection';
 
-import { data, myGameData, playerGameDataList } from "./data.js";
+import { data, myGameData, playerGameDataList, playerCount } from "./data.js";
 
 const MyOpenViduVideoComponent = (props) => {
   const { streamManager, mySession } = props;
@@ -131,6 +131,8 @@ const MyOpenViduVideoComponent = (props) => {
 
     const connectData = () => {
       // console.log(playerGameDataList);
+
+      playerCount.value = playerGameDataList.length+1
       sendData();
       responseData();
       requestAnimationFrame(connectData)
