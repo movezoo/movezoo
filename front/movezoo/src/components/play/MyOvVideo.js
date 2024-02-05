@@ -100,6 +100,13 @@ const MyOpenViduVideoComponent = (props) => {
     const responseData = () => {
       mySession.on('signal:custom', (res) => {
         const newPlayerGameData = JSON.parse(res.data); // 수신한 다른사람의 객체 데이터
+        // res.data : { playerId: '', playerCharacter: '', userX: 0, userZ: 0, speed: 0 }
+        if(newPlayerGameData.playerCharacter === undefined) {
+          console.log(newPlayerGameData)
+        }
+
+
+
 
         let needPush = true; // push가 필요한지 check
         // 1. 수신한 데이터의 id가 내 id와 일치하면 필요없다.
