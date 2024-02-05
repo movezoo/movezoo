@@ -88,5 +88,6 @@ public class UserRepository {
                 .setParameter("userEmail", userEmail)
                 .executeUpdate();
     }
+
 }
 

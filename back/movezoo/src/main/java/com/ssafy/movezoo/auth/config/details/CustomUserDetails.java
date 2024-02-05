@@ -1,19 +1,29 @@
 package com.ssafy.movezoo.auth.config.details;
 
 import com.ssafy.movezoo.user.domain.User;
+import jakarta.annotation.Nullable;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 @Getter
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails, OAuth2User {
 
     private User user;
+    private Map<String, Object> attributes;
+
+//    public CustomUserDetails(User user) {
+//        this.user = user;
+//    }
+
+    public CustomUserDetails(User user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
+    }
 
     public CustomUserDetails(User user) {
         this.user = user;
@@ -29,7 +39,6 @@ public class CustomUserDetails implements UserDetails {
 
         return authorities;
     }
-
 
     // get Password 메서드
     @Override
@@ -67,10 +76,30 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
+    // OAuth2User
+    @Override
+    public String getName() {
+        return String.valueOf(user.getUserId());
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return Collections.unmodifiableMap(attributes);
+    }
+
+    @Override
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public <A> A getAttribute(String name) {
+        return OAuth2User.super.getAttribute(name);
+    }
+
+
     @Override
     public String toString() {
         return "CustomUserDetails{" +
                 "user=" + user +
                 '}';
     }
+
 }
