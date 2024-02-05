@@ -1,5 +1,7 @@
 import Stats from './stats.js';
 import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES } from './gameConstants.js';
+import { myGameData, playerGameDataList } from './data.js';
+
 
 // 이미지 불러오기
 import background from './images/background.png';
@@ -7,6 +9,7 @@ import mute from './images/mute.png';
 import sprites from './images/sprites.png';
 
 const selectPlayer = "pug";
+myGameData.playerCharacter = selectPlayer;  // 오픈비두 통신을 위한 데이터 설정
 const selectAction = "run";
 const selectMap = "map1";
 const frameIndex = {
@@ -396,10 +399,6 @@ const Render = {
     Render.polygon(ctx, x1+w1+r1, y1, x1+w1, y1, x2+w2, y2, x2+w2+r2, y2, color.rumble);
     // 도로 표시 영역 그리기
     Render.polygon(ctx, x1-w1,    y1, x1+w1, y1, x2+w2, y2, x2-w2,    y2, color.road);
-    
-
-
-
     
     // 차선 표시 그리기
     if (color.lane) {
