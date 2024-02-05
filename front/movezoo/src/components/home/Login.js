@@ -144,7 +144,7 @@ const Login = () => {
       // API response handling
       if (response.status === 200) {
         setSessionId(response.data.sessionId); // 세션 식별자 저장
-        
+
         const LoginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
         withCredentials: true, // 쿠키 허용
       });
@@ -159,7 +159,7 @@ const Login = () => {
       alert('로그인 요청 중 에러 발생.');
     } finally {
       setIsLoading(false);
-      // 로딩완료 ========================
+      // 로딩완료 ==========================
     }
   };
 
