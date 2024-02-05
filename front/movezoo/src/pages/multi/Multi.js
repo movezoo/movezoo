@@ -17,6 +17,12 @@ function Multi() {
             </div>
             <h1 style={{ margin: 10 }}>Multi Play</h1>
           </div>
+          <div className={styles.userSection}>
+            <div className={styles.userBox}>유저 1</div>
+            <div className={styles.userBox}>유저 2</div>
+            <div className={styles.userBox}>유저 3</div>
+            <div className={styles.userBox}>유저 4</div>
+          </div>
           {/* {loading ? (
             <h1 className={styles.txtLoading}>Loading...</h1>
           ) : (
