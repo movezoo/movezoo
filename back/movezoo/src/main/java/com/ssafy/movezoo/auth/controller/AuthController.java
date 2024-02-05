@@ -112,14 +112,6 @@ public class AuthController {
 //        return ResponseEntity.badRequest().body(simpleResponseDto);
 //    }
 
-//    @GetMapping("/login")
-//    public String redirect() {
-////        HttpHeaders headers = new HttpHeaders();
-////        headers.setLocation(URI.create("/Home"));
-////        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
-//        return "redirect:/home";
-//    }
-
     // 사용자 인증 체크용
     @GetMapping("/check-auth")
     public void check() {
@@ -127,7 +119,7 @@ public class AuthController {
 
         System.out.println(authentication.getPrincipal());
 
-        if (authentication != null) {
+        if (authentication.getPrincipal() != null) {
             // 사용자가 인증되어 있을 때
             System.out.println("Authenticated user: " + authentication.getName());
 
@@ -194,6 +186,7 @@ public class AuthController {
         simpleResponseDto.setSuccess(true);
         return ResponseEntity.ok().body(simpleResponseDto);
     }
+
 
     @GetMapping("/currentUser")
     public String currentUserId(@AuthenticationPrincipal CustomUserDetails customUserDetails){
