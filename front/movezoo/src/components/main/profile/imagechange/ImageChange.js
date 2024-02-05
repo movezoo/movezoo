@@ -77,11 +77,21 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
+const profileImages = [
+  { id: 1, name: '프로필 1', image: './profileImg/profile1.png' },
+  { id: 2, name: '프로필 2', image: './profileImg/profile2.png' },
+  { id: 3, name: '프로필 3', image: './profileImg/profile3.png' },
+  { id: 4, name: '프로필 4', image: './profileImg/profile4.png' },
+  { id: 5, name: '프로필 5', image: './profileImg/profile5.png' },
+  { id: 6, name: '프로필 6', image: './profileImg/profile6.png' },
+  { id: 7, name: '프로필 7', image: './profileImg/profile7.png' },
+  { id: 8, name: '프로필 8', image: './profileImg/profile8.png' },
+]
+
 const ImageChangeModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [userEmail, setEmail] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
 
   const openModal = () => {
     setIsOpen(true);
@@ -91,11 +101,8 @@ const ImageChangeModal = () => {
     setIsOpen(false);
   };
 
-  const onImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      setSelectedImage(URL.createObjectURL(event.target.files[0]));
-      setSelectedFile(event.target.files[0]);
-    }
+  const onImageSelect = (image) => {
+    setSelectedImage(image);
   };
 
   const onImageUpload = async () => {
@@ -109,12 +116,11 @@ const ImageChangeModal = () => {
         });
       setEmail(loginUserEmail.data.userEmail);
 
-      const formData = new FormData();
-      formData.append('profileImgUrl', selectedFile);
-      formData.append('userEmail', loginUserEmail.data.userEmail);
 
+
+      const profileImgUrl = selectedImage.image;
       const response = await axios.patch(`https://i10e204.p.ssafy.io/api/user/profile`, 
-        formData, { withCredentials: true });
+        {userEmail, profileImgUrl}, { withCredentials: true });
 
       } catch (error) {
         console.error('이미지 변경 실패:', error);
@@ -137,10 +143,14 @@ const ImageChangeModal = () => {
         }}
       >
         <div>
-          <button className='exit-button' onClick={closeModal}>닫기</button>
           <h3>이미지 변경</h3>
-          <input type="file" onChange={onImageChange} />
-          {selectedImage && <img src={selectedImage} alt="Selected" style={{ width: '100px' }} />}
+          <button className='exit-button' onClick={closeModal}>닫기</button>
+          {profileImages.map((img) => (
+            <div key={img.id} onClick={() => onImageSelect(img)}>
+              <img src={img.image} alt={img.name} />
+              <p>{img.name}</p>
+            </div>
+          ))}
           <button onClick={onImageUpload}>변경</button>
         </div>
       </Modal>
