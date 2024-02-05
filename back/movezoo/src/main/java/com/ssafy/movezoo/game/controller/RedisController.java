@@ -30,10 +30,14 @@ public class RedisController {
         // roomSessionId 중복 체크 필요
         if (redisService.isDuplicateRoomSessionId(dto.getRoomSessionId())){  // 세션 아이디가 중복이라면
             System.out.println("세션 아이디가 중복입니다.");
+            simpleResponseDto.setMsg("세션 아이디가 중복입니다.");
+            simpleResponseDto.setSuccess(false);
+
+            return ResponseEntity.badRequest().body(simpleResponseDto);
         }
 
         try {
-            if (dto.getRoomPassword() != null){     // 비밀방일 경우
+            if (dto.getRoomPassword() != null || dto.getRoomPassword().equals("")){     // 비밀방일 경우
                 redisService.createSecretRoom(userId, dto);
                 simpleResponseDto.setMsg("비밀방 생성 성공");
             } else {
@@ -98,6 +102,20 @@ public class RedisController {
         return ResponseEntity.ok().body(simpleResponseDto);
     }
 
+    // 방 삭제
+    @GetMapping("/room/remove")
+    public ResponseEntity<SimpleResponseDto> removeRoom(@RequestParam("sessionId") String roomSessionId){
+        Room room = redisService.getRoomInfoBySessionId(roomSessionId).get();
+
+        if (room != null){
+            redisService.deleteRoom(room.getId());
+        }
+
+        SimpleResponseDto simpleResponseDto = new SimpleResponseDto(true, "방 삭제 성공");
+        return ResponseEntity.ok().body(simpleResponseDto);
+    }
+
+
     // 방 제목 및 모드로 검색
     @GetMapping("/room-filter")
     public List<Room> searchByTitleAndMode(
@@ -107,9 +125,6 @@ public class RedisController {
         System.out.println("roomMode: " + roomMode+ " , roomTitle: "+roomTitle);
 
         List<Room> roomList = getRoomList();
-        for (Room room : roomList){
-            System.out.println(room.toString()+ "    ");
-        }
 
         // mode 필터링
         if (roomMode != null){
@@ -122,10 +137,10 @@ public class RedisController {
             }
         }
 
-        System.out.println("--------------------------Mode Filter--------------------------");
-        for (Room room : roomList){
-            System.out.println(room.toString()+ "    ");
-        }
+//        System.out.println("--------------------------Mode Filter--------------------------");
+//        for (Room room : roomList){
+//            System.out.println(room.toString()+ "    ");
+//        }
 
         // title 필터링
         if (roomTitle != null){
@@ -137,10 +152,10 @@ public class RedisController {
                     roomList.remove(currRoom);
             }
         }
-        System.out.println("--------------------------Title Filter--------------------------");
-        for (Room room : roomList){
-            System.out.println(room.toString()+ "    ");
-        }
+//        System.out.println("--------------------------Title Filter--------------------------");
+//        for (Room room : roomList){
+//            System.out.println(room.toString()+ "    ");
+//        }
 
         return roomList;
     }
