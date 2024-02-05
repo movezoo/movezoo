@@ -1,81 +1,7 @@
-// import axios from 'axios';
-// import React, { useState } from 'react';
-// import Modal from 'react-modal';
-
-// const ImageChangeModal = () => {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const [userEmail, setEmail] = useState('');
-//   const [selectedImage, setSelectedImage] = useState(null);
-
-//   const openModal = () => {
-//     setIsOpen(true);
-//   };
-
-//   const closeModal = () => {
-//     setIsOpen(false);
-//   };
-
-//   const onImageChange = (event) => {
-//     if (event.target.files && event.target.files[0]) {
-//       setSelectedImage(URL.createObjectURL(event.target.files[0]));
-//     }
-//   };
-
-//   const onImageUpload = async () => {
-//     try {
-//       const responseLoginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-//         withCredentials: true, // 쿠키 허용
-//       });
-//       const loginUserId = responseLoginUserId.data;
-
-//       const loginUserEmail = await axios.get(`https://i10e204.p.ssafy.io/api/user/${loginUserId}`, {
-//         });
-//       setEmail(loginUserEmail.data.userEmail);
-
-//       const response = await axios.post(`https://i10e204.p.ssafy.io/api/user/profile`, 
-//         { userEmail, profileImgUrl }, { withCredentials: true });
-
-//       } catch (error) {
-//         console.error('이미지 변경 실패:', error);
-//         alert('이미지 변경에 실패하였습니다.');
-//       }
-//   };
-
-//   return (
-//     <div>
-//       <button className='profile-button' onClick={openModal}>이미지 변경</button>
-//       <Modal 
-//         isOpen={isOpen} 
-//         onRequestClose={closeModal}
-//         style={{
-//           content: {
-//             width: '500px',
-//             height: '500px',
-//             margin: 'auto',
-//           }
-//         }}
-//       >
-//         <div>
-//           <button className='exit-button' onClick={closeModal}>닫기</button>
-//           <h3>이미지 변경</h3>
-//           <input type="file" onChange={onImageChange} />
-//           {selectedImage && <img src={selectedImage} alt="Selected" style={{ width: '100px' }} />}
-//           <button onClick={onImageUpload}>변경</button>
-//         </div>
-//       </Modal>
-//     </div>
-//   );
-// };
-
-// export default ImageChangeModal;
-
-
-
-// test
-
 import axios from 'axios';
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import './ImageChange.css';
 
 const profileImages = [
   { id: 1, name: '프로필 1', image: './profileImg/profile1.png' },
@@ -88,7 +14,7 @@ const profileImages = [
   { id: 8, name: '프로필 8', image: './profileImg/profile8.png' },
 ]
 
-const ImageChangeModal = () => {
+const ImageChangeModal = ({ onImageChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [userEmail, setEmail] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
@@ -125,6 +51,11 @@ const ImageChangeModal = () => {
       const response = await axios.patch(`https://i10e204.p.ssafy.io/api/user/profile`, 
         {userEmail, profileImgUrl}, { withCredentials: true });
 
+      onImageChange(profileImgUrl);
+
+      alert('이미지가 변경되었습니다.');
+      closeModal();
+
       } catch (error) {
         console.error('이미지 변경 실패:', error);
         alert('이미지 변경에 실패하였습니다.');
@@ -150,7 +81,7 @@ const ImageChangeModal = () => {
           <button className='exit-button' onClick={closeModal}>닫기</button>
           {profileImages.map((img) => (
             <div key={img.id} onClick={() => onImageSelect(img)}>
-              <img src={img.image} alt={img.name} />
+              <img  className={`selectImg ${selectedImage && selectedImage.id === img.id ? 'selected' : ''}`} src={img.image} alt={img.name} />
               <p>{img.name}</p>
             </div>
           ))}

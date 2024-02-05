@@ -1,7 +1,10 @@
 package com.ssafy.movezoo.openvidu.controller;
 
+import com.ssafy.movezoo.game.serivce.RedisService;
 import io.openvidu.java.client.*;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,8 @@ import java.util.Map;
 
 //@CrossOrigin(origins = "*")
 @RestController
+@RequiredArgsConstructor
+@Slf4j
 public class OpenviduSessionController {
 
     @Value("${OPENVIDU_URL}")
@@ -22,6 +27,8 @@ public class OpenviduSessionController {
     private String OPENVIDU_SECRET;
 
     private OpenVidu openvidu;
+
+    private final RedisService redisService;
 
     @PostConstruct
     public void init() {
@@ -35,11 +42,13 @@ public class OpenviduSessionController {
     @PostMapping("/api/openvidu/sessions")
     public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
-        System.out.println("/api/sessions");
+        log.info("/api/sessions");
 
         //SessionProperties -> openvidu세션을 생성하기 위한 속성을 정의하는 클래스
         SessionProperties properties = SessionProperties.fromJson(params).build();
         Session session = openvidu.createSession(properties);
+
+        System.out.println(params);
 
         //생성된 세션아이디를 http로 반환, 상태코드 200 ok
         return new ResponseEntity<>(session.getSessionId(), HttpStatus.OK);
@@ -54,8 +63,8 @@ public class OpenviduSessionController {
     public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId,
                                                    @RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
-        System.out.println("/api/sessions/"+" "+sessionId);
 
+        log.info("/api/sessions/{} ",sessionId);
 
         //sessionId 사용하여 OpenVidu에서 해당 세션 get
         Session session = openvidu.getActiveSession(sessionId);
@@ -68,6 +77,8 @@ public class OpenviduSessionController {
         //프론트에서 넘어온 json데이터를 사용하여 ConnectionProperties객체생성, openvidu session에 연결할때 필요
         ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
 
+        log.info("{}",params);
+
         //openvidu session에 연결생성
         Connection connection = session.createConnection(properties);
         return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);
@@ -78,18 +89,30 @@ public class OpenviduSessionController {
     required = true -> 매개변수가 필수여야한다
      */
     @GetMapping("api/session/{sessionId}/connections")
-    public ResponseEntity<List<String>> getSessionUsers(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params){
+    public ResponseEntity<List<String>> getSessionUsers(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params) {
         List<String> connectionUsers = new ArrayList<>();
 
         Session session = openvidu.getActiveSession(sessionId);
         //getActiveConnections -> 활성상태만, getConnections -> 비활성상태도 포함(미디어스트림 제공하지 않는 connection, 음소거 등)
-        List<Connection> connections = session.getActiveConnections();
+        List<Connection> connections = session.getConnections();
 
-        for(Connection connection : connections){
+        for (Connection connection : connections) {
             connectionUsers.add(connection.getConnectionId());
         }
 
         return new ResponseEntity<>(connectionUsers, HttpStatus.OK);
+    }
+
+    @GetMapping("api/openvidu/roomList")
+    public ResponseEntity<List<String>> findAllSession(){
+        List<String> roomList = new ArrayList<>();
+
+        List<Session> sessions = openvidu.getActiveSessions();
+        for (Session session : sessions) {
+            roomList.add(session.getSessionId());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(roomList);
     }
 
 }

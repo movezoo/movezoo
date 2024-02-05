@@ -48,22 +48,24 @@ public class AuthController {
     @PostMapping("/email-auth/reset-password")
     public ResponseEntity<EmailMessage> sendPasswordMail(@RequestBody EmailPostDto emailPostDto) {
         EmailMessage emailMessage = EmailMessage.builder()
-                .to(emailPostDto.getEmail())
-                .subject("[천하제일자동차대회] 비밀번호 재발급 안내입니다.")
+                .to(emailPostDto.getUserEmail())
+                .subject("[움직여! zoo!] 비밀번호 재발급 안내입니다.")
                 .build();
 
-        emailService.sendMail(emailMessage, "password");
+        String password = emailService.sendMail(emailMessage, "password");
+
 
         return ResponseEntity.ok().body(emailMessage);
     }
+
 
     // 회원가입 시 이메일로 인증코드 발송 후 인증가능하도록 함
     @PostMapping("/email-auth/create-certification")
     public ResponseEntity<EmailMessage> sendJoinMail(@RequestBody EmailPostDto emailPostDto) {
         log.info("/email-auth/create-certification");
         EmailMessage emailMessage = EmailMessage.builder()
-                .to(emailPostDto.getEmail())
-                .subject("[천하제일자동차대회] 이메일 인증 코드 발송")
+                .to(emailPostDto.getUserEmail())
+                .subject("[움직여! zoo!] 이메일 인증 코드 발송")
                 .build();
 
         String code = emailService.sendMail(emailMessage, "email");
@@ -72,6 +74,24 @@ public class AuthController {
         emailResponseDto.setCode(code);
 
         return ResponseEntity.ok().body(emailMessage);
+    }
+
+    @PatchMapping("email-auth/checking")
+    public ResponseEntity<SimpleResponseDto> compareAuthCode(@RequestBody(required = true) Map<String, Object> params){
+        String userEmail = (String)params.get("userEmail");
+        String authNumber = (String)params.get("authNumber");
+
+        SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
+        simpleResponseDto.setMsg("인증 성공");
+        simpleResponseDto.setSuccess(true);
+
+        if(userService.compareAthNumber(userEmail,authNumber)){
+            return ResponseEntity.status(HttpStatus.OK).body(simpleResponseDto);
+        }
+
+        simpleResponseDto.setMsg("인증 실패");
+        simpleResponseDto.setSuccess(false);
+        return ResponseEntity.status(HttpStatus.OK).body(simpleResponseDto);
     }
 
     // 로그인
@@ -200,6 +220,11 @@ public class AuthController {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        User user = (User)authentication.getPrincipal();
 //        return user.getUserId();
+
+        if (customUserDetails == null){
+           return null;
+        }
+
         System.out.println("현재 로그인한 유저: " + customUserDetails.getUsername());
 
         return customUserDetails.getUsername();
