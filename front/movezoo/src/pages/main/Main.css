@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .main-container {
-  @apply w-full min-h-screen flex flex-col justify-between ;
+  @apply w-full min-h-screen flex flex-col justify-between bg-white;
 }
 
 
@@ -16,11 +16,11 @@
   flex: 1;
   display: flex;
   justify-content: left;
-  @apply font-mono text-4xl p-3
+  @apply font-mono text-4xl p-3 ml-5
 }
 
 .main-header-info {
-  @apply flex flex-1 justify-end
+  @apply flex flex-1 justify-end mr-5
 }
 
 .header-info-user {
