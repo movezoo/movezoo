@@ -3,8 +3,18 @@
 //=============================================================================
 const PLAYER_SPRITE = {
   NAMES: [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra"],
-  ACTIONS: [ {name: "run", frames: 21} ],
+  ACTIONS: [ { name: "run" } ],
   DIRECTIONS: [ "uphill_left", "uphill_straight", "uphill_right", "left", "straight", "right" ]
+}
+
+const MAX_FRAME_COUNT = {
+  pug: { run: 21 },
+  sheep: { run: 21 },
+  pig: { run: 23 },
+  cow: { run: 35 },
+  llama: { run: 21 },
+  horse: { run: 21 },
+  zebra: { run: 21 }
 }
 
 // 키보드 입력 상수
@@ -40,6 +50,9 @@ const BACKGROUND = {
 };
 
 // 게임 스프라이트 정보
+
+// SPRITES.동물이름.액션[이름].방향 : [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}] // 프레임별로 있음
+// SPRITES.spriteName[action.name].direction: [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}]
 const SPRITES = {
   PALM_TREE:              { x:    5, y:    5, w:  215, h:  540 },
   BILLBOARD08:            { x:  230, y:    5, w:  385, h:  265 },
@@ -69,6 +82,7 @@ const SPRITES = {
   CAR02:                  { x: 1383, y:  825, w:   80, h:   59 },
   CAR04:                  { x: 1383, y:  894, w:   80, h:   57 },
   CAR01:                  { x: 1205, y: 1018, w:   80, h:   56 },
+
   PLAYER_UPHILL_LEFT:     { x: 0, y:  0, w:   80, h:   45 },
   PLAYER_UPHILL_STRAIGHT: { x: 0, y: 0, w:   80, h:   45 },
   PLAYER_UPHILL_RIGHT:    { x: 0, y: 0, w:   80, h:   45 },
@@ -116,4 +130,4 @@ SPRITES.CARS = [
 ];
 
 
-export { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES }
+export { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT}
