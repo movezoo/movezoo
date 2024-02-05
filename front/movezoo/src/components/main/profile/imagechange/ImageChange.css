@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.selectImg {
+  @apply p-2;
+}
+
+.selectImg.selected {
+  @apply border-2 border-blue-500;
+}
