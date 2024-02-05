@@ -6,7 +6,7 @@ import PasswordChange from './passwordchange/PasswordChange';
 import LogoutModal from './logout/Logout';
 import './Profile.css';
 import axios from 'axios';
-import profile from './profile.png';
+// import profile from './imagechange/profile1.png';
 import { IoCloseSharp } from "react-icons/io5";
 
 
@@ -60,7 +60,7 @@ const Profile = () => {
   return (
     <div className='profile'>
       <button className='profileButton'  onClick={openModal}>
-        <img src={userImage ? userImage : profile} alt="프로필 이미지" 
+        <img src={userImage} alt="프로필 이미지" 
         className='profileButton' onClick={openModal}/>             
       </button>
 
