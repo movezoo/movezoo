@@ -18,6 +18,7 @@ function Result() {
       <div className={styles.container}>
         {/*왼쪽 화면, 웹캠 화면*/}
         <div className={styles.leftSection}>
+          <div>1등</div>
           {loading ? (
             <h1>Loading...</h1>
           ) : (
@@ -31,8 +32,7 @@ function Result() {
           <div className={styles.camSection}>
             <div
               style={{
-                width: "100%",
-                height: "40%",
+                display: "relative",
                 border: "black 1px solid",
               }}
             >
@@ -40,8 +40,8 @@ function Result() {
               <div
                 style={{
                   display: "relative",
-                  width: "100%",
-                  height: "50%",
+                  width: "300px",
+                  height: "200px",
                   padding: "5px",
                 }}
               >
@@ -60,8 +60,8 @@ function Result() {
                 <div
                   style={{
                     display: "relative",
-                    width: "100%",
-                    height: "50%",
+                    width: "150px",
+                    height: "100px",
                     padding: "5px",
                   }}
                 >
@@ -70,8 +70,8 @@ function Result() {
                 <div
                   style={{
                     display: "relative",
-                    width: "100%",
-                    height: "50%",
+                    width: "150px",
+                    height: "100px",
                     padding: "5px",
                   }}
                 >
