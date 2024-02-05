@@ -117,6 +117,8 @@ const profileImages = [
   { id: 8, name: '프로필 8', image: './profileImg/profile8.png' },
 ]
 
+
+
 const ImageChangeModal = ({ onImageChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [userEmail, setEmail] = useState('');
@@ -137,7 +139,12 @@ const ImageChangeModal = ({ onImageChange }) => {
 
   
 
-  const onImageUpload = async () => {
+  const onImageUpload = async (selectedImage) => {
+    if (!selectedImage) {
+      alert('이미지를 선택해주세요.');
+      return;
+      }
+
     try {
       const responseLoginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
         withCredentials: true, // 쿠키 허용
@@ -187,12 +194,12 @@ const ImageChangeModal = ({ onImageChange }) => {
           <h3>이미지 변경</h3>
           <button className='exit-button' onClick={closeModal}>닫기</button>
           {profileImages.map((img) => (
-            <div key={img.id} onClick={() => onImageSelect(img)}>
+            <div key={img.id} onClick={() => {onImageSelect(img); onImageUpload(img);}}>
               <img  className={`selectImg ${selectedImage && selectedImage.id === img.id ? 'selected' : ''}`} src={img.image} alt={img.name} />
               <p>{img.name}</p>
             </div>
           ))}
-          <button onClick={onImageUpload}>변경</button>
+          <button onClick={() => onImageUpload(selectedImage)}>변경</button>
         </div>
       </Modal>
     </div>
