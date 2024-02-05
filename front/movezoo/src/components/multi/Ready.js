@@ -4,7 +4,7 @@ import styles from "./Ready.module.css";
 function Ready() {
   return (
     <div>
-      <Link to="/Game">
+      <Link to="/MultiGame">
         <button className={styles.btnReady}>준비</button>
       </Link>
     </div>
