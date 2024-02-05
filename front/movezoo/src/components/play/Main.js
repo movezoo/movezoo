@@ -66,7 +66,7 @@ const Main = (props) => {
     let decel          = -maxSpeed/5;             // 가속 및 감속하지 않을 때 '자연스러운' 감속률
     let offRoadDecel   = -maxSpeed/2;             // 도로를 벗어났을 때의 감속률은 중간 정도
     let offRoadLimit   =  maxSpeed/4;             // 도로를 벗어났을 때의 감속률이 더 이상 적용되지 않는 한계 (예: 도로를 벗어나도 항상 이 속도 이상으로 이동할 수 있음)
-    let totalCars      = 2;                       // 도로 상의 총 자동차 수, 플레이어의 수
+    let totalCars      = 4;                       // 도로 상의 총 자동차 수, 플레이어의 수
     let currentLapTime = 0;                       // 현재 랩 타임
     let lastLapTime    = null;                    // 마지막 랩 타임
     
