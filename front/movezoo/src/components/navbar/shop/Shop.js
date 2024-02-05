@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import Character from './character/Character.js';
 import './Shop.css';
+import { AiFillShop } from 'react-icons/ai';
+import { IoCloseSharp } from "react-icons/io5";
 
-const Shop = () => {
+function Shop () {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -14,9 +16,12 @@ const Shop = () => {
     setIsOpen(false);
   };
 
+
   return (
     <div>
-      <button onClick={openModal}>상점</button>
+      <div>
+        <AiFillShop className='shopButton' onClick={openModal}/>
+      </div>
 
       <Modal 
       isOpen={isOpen} 
@@ -24,8 +29,9 @@ const Shop = () => {
       style={{
         content: {
           width: '1000px',
-          height: '500px',
+          height: '550px',
           margin: 'auto',
+          border: '2px solid black',
         }
       }}
       >
@@ -37,7 +43,7 @@ const Shop = () => {
               <h1>상점</h1>
             </div>
             <div className='shop-header-exit'>
-              <button className='exit-button' onClick={closeModal}>닫기</button>
+              <IoCloseSharp className='exit-button' onClick={closeModal} />
             </div>
           </div>
 

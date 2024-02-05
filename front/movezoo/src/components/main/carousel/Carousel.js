@@ -3,7 +3,6 @@ import './Carousel.css';
 import axios from 'axios';
 import { AiFillCaretLeft } from "react-icons/ai";
 import { AiFillCaretRight } from "react-icons/ai";
-import Session from 'react-session-api';
 
 function Carousel() {
   const initialImages  = [
@@ -33,21 +32,21 @@ function Carousel() {
       try {
         // == 쿠키 사용해서 로그인한 유저 id 가져오기 ============
 
-        // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-        //   withCredentials: true, // 쿠키 허용
-        // });
-        // const UserId = loginUserId.data;
+        const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+          withCredentials: true, // 쿠키 허용
+        });
+        const UserId = loginUserId.data;
 
         // ====================================================
 
         // 유저 캐릭터 데이터 가져오기
-        // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {
-        // })
+        const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {
+        })
 
         
         // 임시 유저 데이터
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/102', {
-        })
+        // const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/102', {
+        // })
 
 
         console.log('===========')
@@ -66,13 +65,13 @@ function Carousel() {
   return (
     <div className='carousel-container'>
       <div className='carousel-prev'>
-        <AiFillCaretLeft onClick={handlePrevious}/>
+        <AiFillCaretLeft className='prevButton' onClick={handlePrevious}/>
       </div>
       <div className='carousel-image'>
         {images.length > 0 && <img src={images[currentIndex].image} alt="carousel-image" />}
       </div>
       <div className='carousel-next'>
-        <AiFillCaretRight onClick={handleNext}/>
+        <AiFillCaretRight className='nextButton' onClick={handleNext}/>
       </div>
     </div>
   );
