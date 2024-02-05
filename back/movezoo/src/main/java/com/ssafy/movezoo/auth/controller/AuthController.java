@@ -216,17 +216,17 @@ public class AuthController {
     }
 
     @GetMapping("/currentUser")
-    public String currentUserId(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public String currentUserId(Authentication authentication){
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        User user = (User)authentication.getPrincipal();
 //        return user.getUserId();
-
-        if (customUserDetails == null){
+        System.out.println("현재 로그인한 유저: " + authentication.getName());
+        if (authentication == null){
            return null;
         }
 
-        System.out.println("현재 로그인한 유저: " + customUserDetails.getUsername());
 
-        return customUserDetails.getUsername();
+
+        return authentication.getName();
     }
 }
