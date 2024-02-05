@@ -60,18 +60,19 @@ const Login = () => {
         <label className='id'>
           아이디:
           <input
+            className='logininput'
             type="text"
             name="userEmail"
             placeholder='User-Email'
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-
           />
         </label>
         <br />
         <label className='password'>
           비밀번호:
           <input
+            className='logininput'
             type="password"
             placeholder='Password'
             value={password}
