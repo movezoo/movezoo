@@ -3,16 +3,36 @@
 @tailwind utilities;
 
 .Character-container {
-  @apply flex
+  @apply flex flex-row justify-between items-center mt-4
 }
 
 .Character-list {
-  @apply grid grid-cols-2 gap-3 max-w-60;
+  @apply ml-10 w-[250px] flex flex-row flex-wrap justify-center;
+}
+
+.character-image {
+  @apply w-[90px] m-1 ml-5 object-cover rounded-lg transition duration-200 hover:opacity-60 
+  border-2 border-black;
+
 }
 
 .Character-select {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @apply w-[300px] flex items-center mx-auto flex-row justify-center;
+}
+
+.select-body {
+  @apply flex flex-col;
+}
+
+.select-image {
+  @apply object-cover rounded-lg transition duration-200 border-2 border-black
+}
+
+.image-name {
+  @apply flex justify-center items-center text-2xl font-semibold;
+}
+
+.character-buy-button {
+  @apply h-8 m-2 flex flex-1 items-center justify-center p-2 text-white bg-blue-500 rounded-md
+  hover:bg-blue-700;
 }

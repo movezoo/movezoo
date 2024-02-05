@@ -2,12 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-.map-button{
-  @apply bg-blue-500 text-white py-2 px-4 rounded;
+.rankingButton {
+  @apply w-7 h-7 hover:scale-125
 }
 
-.exit-button{
-  @apply bg-red-500 text-white py-2 px-4 rounded;
+.map-button{
+  @apply w-40 h-8 flex flex-1 items-center justify-center p-2 text-white bg-blue-500 rounded-md
+  hover:bg-blue-700 m-1;
 }
 
 .ranking-topTen {
@@ -16,4 +17,24 @@
 
 .ranking-user {
   @apply grid grid-cols-3;
+}
+
+.ranking-container {
+  @apply flex flex-col;
+}
+
+.ranking-header {
+  @apply flex flex-col;
+}
+
+.ranking-header-exit {
+  @apply flex justify-end
+}
+
+.ranking-header-map {
+  @apply flex justify-center mb-10;
+}
+
+.ranking-body {
+  @apply flex flex-col justify-center items-center;
 }
