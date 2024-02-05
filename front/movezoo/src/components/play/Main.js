@@ -3,7 +3,7 @@
 import { useRef, useEffect } from 'react'
 import { Dom, Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
 import { PLAYER_SPRITE } from './gameConstants.js';
-import { data, playerGameData, playerGameDataList } from './data.js';
+import { data, myGameData, playerGameDataList } from './data.js';
 
 const localStorage = window.localStorage || {};
 
@@ -66,7 +66,7 @@ const Main = (props) => {
     let decel          = -maxSpeed/5;             // 가속 및 감속하지 않을 때 '자연스러운' 감속률
     let offRoadDecel   = -maxSpeed/2;             // 도로를 벗어났을 때의 감속률은 중간 정도
     let offRoadLimit   =  maxSpeed/4;             // 도로를 벗어났을 때의 감속률이 더 이상 적용되지 않는 한계 (예: 도로를 벗어나도 항상 이 속도 이상으로 이동할 수 있음)
-    let totalCars      = 4;                       // 도로 상의 총 자동차 수
+    let totalCars      = 2;                       // 도로 상의 총 자동차 수, 플레이어의 수
     let currentLapTime = 0;                       // 현재 랩 타임
     let lastLapTime    = null;                    // 마지막 랩 타임
     
@@ -93,6 +93,10 @@ const Main = (props) => {
     const update = (dt) => {
       keyLeft        = data.isLeftKeyPressed;
       keyRight       = data.isRightKeyPressed;
+
+      myGameData.userX = playerX;
+      myGameData.userZ = position + playerZ;
+      
       // 데이터 보내기
       // console.log("데이터 보냄!!")
       // data.playerDataList[playerNumber].userX = playerX;
@@ -103,6 +107,17 @@ const Main = (props) => {
       // // console.log("데이터 받음!!")
       //   playerDataList = data;
       // })
+
+      
+      for (let i = 0; i < totalCars; i++) {
+        const playerGameData = playerGameDataList[i];
+        // 나의 데이터는 정확한 데이터가 아니므로 receive 할 필요 없다.
+        if(!playerGameData || myGameData.playerId === playerGameData.playerId) continue;
+        
+        // 갱신
+        playerGameDataList[i] = playerGameData;
+        // console.log(`${i}번의 데이터 갱신!!`)
+      }
     
       let car, carW, sprite, spriteW;
       let playerSegment = findSegment(position+playerZ);
@@ -212,15 +227,25 @@ const Main = (props) => {
     const updateCars = (dt, playerSegment, playerW) => {
       let car, oldSegment, newSegment;
       for(let n = 0 ; n < cars.length ; n++) {
-        if (n === playerNumber) continue; // 나의 플레이어 번호이면?
+        const playerGameData = playerGameDataList[n];
+        // console.log(`playerGameData`);
+        // console.log(playerGameData);
+        if (!playerGameData || myGameData.playerId === playerGameData.playerId) continue; // 나의 플레이어 번호이면?
+        
+
+
+
         car         = cars[n];
         oldSegment  = findSegment(car.z);
         // car.offset  = car.offset + updateCarOffset(car, oldSegment, playerSegment, playerW);
-        car.offset  = playerGameDataList[n].userX
+        car.offset  = playerGameData.userX
         // car.z       = Util.increase(car.z, dt * car.speed, trackLength);
-        // car.z       = data.playerDataList[n].userZ;
+        car.z       = playerGameData.userZ;
         car.percent = Util.percentRemaining(car.z, segmentLength); // 세그먼트 길이에 따른 자동차의 퍼센트 업데이트 (렌더링 단계에서 보간에 유용)
         newSegment  = findSegment(car.z);
+        
+        // console.log(car);
+        // console.log(`newSegment : ${newSegment}`)
         if (oldSegment !== newSegment) {
           // 이전 세그먼트에서 자동차 제거
           let index = oldSegment.cars.indexOf(car);
@@ -658,6 +683,9 @@ const Main = (props) => {
         segment.cars.push(car);
         cars.push(car);
       }
+      console.log(`resetCars!!!!`)
+      console.log(cars);
+
     }
     
     //=========================================================================
