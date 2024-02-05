@@ -7,7 +7,8 @@ import UserVideoComponent from "./UserVideoComponent";
 
 const APPLICATION_SERVER_URL =
   // process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
-  process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
+  // process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000/";
 
 class Cam extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class Cam extends Component {
     this.state = {
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
+      connectionId: '',
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
       publisher: undefined,
@@ -136,12 +138,21 @@ class Cam extends Component {
 
         //채팅을 위한 setting
         mySession.on('signal:my-chat', (event) => {
+
+          console.log();
+
           const { chatMessages } = this.state;
-          const newMessage = event.data; // 새로운 채팅 메시지
+          const userName = JSON.parse(event.from.data).clientData;
+          const newMessage = {
+            id: event.from.connectionId, // 보낸 사람의 아이디
+            name: userName,
+            message: event.data, // 채팅 메시지 내용
+          };
 
           // 기존 채팅 메시지 배열에 새로운 메시지 추가
           const updatedMessages = [...chatMessages, newMessage];
 
+          console.log(updatedMessages);
           // 상태 업데이트
           this.setState({ chatMessages: updatedMessages });
         });
@@ -154,6 +165,8 @@ class Cam extends Component {
             .connect(token, { clientData: this.state.myUserName })
             .then(async () => {
               // --- 5) Get your own camera stream ---
+
+              this.setState({ connectionId: mySession.connection.connectionId });
 
               // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
               // element: we will manage it on our own) and with the desired properties
@@ -218,7 +231,7 @@ class Cam extends Component {
       session.signal({
         data: chatMessage,
         to: [],
-        type: "my-chat"
+        type: "my-chat",
       }).then(() => {
         console.log("Message successfully sent");
 
@@ -409,28 +422,41 @@ class Cam extends Component {
                 />
                 {/* 카메라 on off 추가 */}
 
-                {/* 채팅 메시지 입력 상자 */}
-                <input
-                  type="text"
-                  value={this.state.chatMessage}
-                  onChange={this.handleChangeChatMessage}
-                  placeholder="Type your message..."
-                />
-                {/* 채팅 보내기 버튼 */}
-                <button onClick={this.sendChatMessage}>Send</button>
+                <div className="input-group mb-3">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Type your message..."
+                    value={this.state.chatMessage}
+                    onChange={this.handleChangeChatMessage}
+                  />
+                  <div className="input-group-append">
+                    <button
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      onClick={this.sendChatMessage}
+                    >
+                      Send
+                    </button>
+                  </div>
+                </div>
 
                 {/* 공통 채팅 보여주는  */}
-                <ul>
-                  {this.state.chatMessages.map((message, index) => (
-                    <li key={index}>{message}</li>
-                  ))}
-                </ul>
+                <div className="col-md-6">
+                  <ul className="chat-container">
+                    {this.state.chatMessages.map((message, index) => (
+                      <li key={index} className={message.id === this.state.connectionId ? "chat-message-right" : "chat-message-left"}>
+                        {message.name} : {message.message}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
               </div>
 
             ) : null}
             <div id="video-container" className="col-md-6">
-              {/* {this.state.publisher !== undefined ? (
+              {this.state.publisher !== undefined ? (
                 <div
                   className="stream-container col-md-6 col-xs-6"
                   onClick={() =>
@@ -439,7 +465,7 @@ class Cam extends Component {
                 >
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
-              ) : null} */}
+              ) : null}
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={sub.id}
@@ -491,11 +517,12 @@ class Cam extends Component {
   async createToken(sessionId) {
     const response = await axios.post(
       APPLICATION_SERVER_URL + "api/openvidu/sessions/" + sessionId + "/connections",
-      {},
+      {"nickname" : this.state.myUserName},
       {
         headers: { "Content-Type": "application/json" },
       }
     );
+    
     return response.data; // The token
   }
 }

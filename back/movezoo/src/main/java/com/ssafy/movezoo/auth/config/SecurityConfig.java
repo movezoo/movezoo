@@ -64,8 +64,8 @@
                     .authorizeHttpRequests((authorizeRequests) ->
                             authorizeRequests
                                     .requestMatchers("/**","/api/login/**", "/api/login").permitAll()  // login 인증 절차없이 허용
-                                    .requestMatchers("/users").anonymous() // 인증되지 않은 사용자만 접근
-                                    .requestMatchers("/users/**").hasRole(UserRole.USER.name())    // 권한을 가진 사람만 접근 가능, hasAnyRole("","")
+                                    .requestMatchers("/user").anonymous() // 인증되지 않은 사용자만 접근
+                                    .requestMatchers("/user/**").hasRole(UserRole.USER.name())    // 권한을 가진 사람만 접근 가능, hasAnyRole("","")
                                     .anyRequest().authenticated()   // authenticated(): 인증(로그인)한 사용자만 접근
                     )
                     //  form 기반 로그인
@@ -97,6 +97,7 @@
                                     .failureHandler(new AuthenticationFailureHandler() {
                                         @Override
                                         public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+                                            log.info("로그인 실패");
                                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                                         }
                                     })

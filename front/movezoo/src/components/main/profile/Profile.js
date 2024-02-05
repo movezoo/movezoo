@@ -23,6 +23,10 @@ const Profile = () => {
       setIsOpen(false);
     };
 
+    const handleImageChange = (newImage) => {
+      setUserImage(newImage);
+    };
+
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -54,7 +58,7 @@ const Profile = () => {
 
     }
 
-    fetchUserInfo(102);
+    fetchUserInfo();
   }, []);
 
   return (
@@ -82,7 +86,7 @@ const Profile = () => {
 
           <div className='profile-body'>
             <div className='body-change'>
-              <ImageChange/>
+              <ImageChange onImageChange={handleImageChange} />
               <NicknameChange/>
               <PasswordChange/>
               <LogoutModal/>
