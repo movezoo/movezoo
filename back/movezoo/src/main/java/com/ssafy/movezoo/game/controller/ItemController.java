@@ -26,7 +26,6 @@ public class ItemController {
     @GetMapping
     public ResponseEntity<List<ItemResponseDto>> findItemList(Authentication authentication){
 
-        log.info(authentication.getName());
 
         List<ItemResponseDto> itemList = itemService.findAll();
 
