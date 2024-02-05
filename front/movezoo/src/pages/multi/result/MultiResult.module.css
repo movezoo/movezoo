@@ -10,7 +10,7 @@
   width: 75%;
   height: 100vh;
   background-color: cornflowerblue;
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
 }
@@ -35,7 +35,7 @@
 .camSection {
   position: relative;
   /* margin-top: 50px; */
-  width: 100%;
+  width: 350px;
   height: 80%;
 }
 
