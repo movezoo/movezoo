@@ -24,6 +24,7 @@ function Main() {
                 withCredentials: true, // 쿠키 허용
               });
         const UserId = loginUserId.data;
+
         const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {
         })
 
@@ -32,6 +33,10 @@ function Main() {
         // })
         const userNickname = response.data.nickname;
         const userCoin = response.data.coin;
+        
+        console.log('===========')
+        console.log(userNickname, userCoin);
+
         setNickname(userNickname); 
         setCoin(userCoin);
       }catch (error) {
@@ -56,7 +61,7 @@ function Main() {
           <div className="main-header-info">
             <div className="header-info-user">
               <div>
-                <h1>{nickname} </h1>
+                <h1> {nickname} </h1>
               </div>
               <div className="info-user-coin">
                 <AiFillCopyrightCircle className="coinIcon" />
