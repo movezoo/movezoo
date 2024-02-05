@@ -2,8 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+.ranking {
+  @apply w-full h-full
+}
+
+.ranking-button-container {
+  @apply w-full h-full flex justify-center items-center
+}
+
+.ranking-button-container:hover .rankingButton {
+  @apply scale-150;
+}
+
 .rankingButton {
-  @apply w-7 h-7 hover:scale-125
+  @apply w-7 h-7 transition
 }
 
 .map-button{
