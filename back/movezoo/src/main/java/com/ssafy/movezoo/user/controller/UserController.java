@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -106,6 +105,17 @@ public class UserController {
         return ResponseEntity.ok().body(simpleResponseDto);
 
     }
+
+    // 프로필 이미지 변경
+    @PatchMapping("/profile")
+    public ResponseEntity<SimpleResponseDto> changeProfile(@RequestBody UserProfileRequestDto dto) {
+        SimpleResponseDto simpleResponseDto = new SimpleResponseDto(true, "프로필 변경 성공");
+
+        userService.changeProfileImg(dto.getUserEmail(), dto.getProfileImgUrl());
+
+        return ResponseEntity.ok().body(simpleResponseDto);
+    }
+
 
     // 설정 변경
     @PatchMapping("/settings")

@@ -82,5 +82,11 @@ public class UserRepository {
                 .executeUpdate();
     }
 
+    public int updateProfileImg(String userEmail, String profileImgUrl) {
+        return em.createQuery("update User u set u.profileImgUrl = :profileImgUrl where u.userEmail = :userEmail")
+                .setParameter("profileImgUrl", profileImgUrl)
+                .setParameter("userEmail", userEmail)
+                .executeUpdate();
+    }
 }
 
