@@ -8,10 +8,9 @@ import * as faceDetection from '@tensorflow-models/face-detection';
 import { data } from "./data.js";
 
 const MyOpenViduVideoComponent = (props) => {
-  const { streamManager } = props;
+  const { streamManager, mySession } = props;
   const videoRef = useRef(null);
   const detector = useRef(null);
-
 
 
   useEffect(() => {
@@ -19,8 +18,6 @@ const MyOpenViduVideoComponent = (props) => {
       // Add video element to StreamManager during initial rendering
       streamManager.addVideoElement(videoRef.current);
     }
-
-
 
 
     const initializeFaceDetector = async () => {
@@ -37,12 +34,7 @@ const MyOpenViduVideoComponent = (props) => {
     };
     initializeFaceDetector();
 
-
-
-
-
     const detectFaces = async () => {
-      // console.log(tf.getBackend());
       if (detector.current && videoRef.current) {
         const estimationConfig = { 
           flipHorizontal: false
@@ -82,23 +74,32 @@ const MyOpenViduVideoComponent = (props) => {
     };
 
 
-
-
-
-
     const runFaceDetection = () => {
       detectFaces();
       requestAnimationFrame(runFaceDetection)
     };
     runFaceDetection();
 
-
-
-
+    const sendData = () => {
+      // console.log(data)
+      const signalData = {
+        type: 'custom',
+        data: JSON.stringify(data)
+      };
+  
+      // 전송!
+      mySession.signal(signalData)
+        .then(() => { console.log('Signal sent successfully'); })
+        .catch((error) => { console.error('Error sending signal:', error); });
+    }
+    const connectData = () => {
+      sendData();
+      requestAnimationFrame(connectData)
+    }
+    connectData();
 
   }, [streamManager]);
-
-
+  
 
 
 
