@@ -34,6 +34,11 @@ public class UserService {
         return userRepository.updateNickname(userEmail, nickname);
     }
 
+    // 프로필 이미지 변경
+    public int changeProfileImg(String userEmail, String profileImgUrl) {
+        return userRepository.updateProfileImg(userEmail, profileImgUrl);
+    }
+
     // 설정 변경
     public int changeSetting(int userId, int volume, int mic, int cameraSensitivity){
         return userRepository.updateSetting(userId, volume, mic, cameraSensitivity);

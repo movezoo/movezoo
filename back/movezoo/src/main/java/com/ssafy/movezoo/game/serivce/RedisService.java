@@ -40,8 +40,6 @@ public class RedisService {
 
     // 방 입장 (현재 방 참가 인원 +1)
     public boolean enterRoom(String roomSessionId) {
-//        Optional<Room> optionalRoom = redisRepository.findById(roomId);
-//        Room room = optionalRoom.get();
         Room room = redisRepository.findByRoomSessionId(roomSessionId).get();
 
         try {
@@ -86,22 +84,5 @@ public class RedisService {
     public boolean isDuplicateRoomSessionId(String roomSessionId){
         return redisRepository.existsByRoomSessionId(roomSessionId);
     }
-
-//    // 방 모드로 검색
-//    public List<Room> searchByRoomMode(int roomMode){
-//        return redisRepository.findAllByRoomMode(roomMode);
-//    }
-//
-//    // 방 제목 검색
-//    public List<Room> searchByRoomTitle(String roomTitle){
-//        return redisRepository.findAllByRoomTitle(roomTitle);
-//    }
-//
-//    // 방 모드 필터링 & 방 제목 검색
-//    public List<Room> searchByRoomTitleAndRoomMode(String roomTitle, int roomMode){
-//        System.out.println(roomTitle + " && "+ roomMode);
-//
-//        return redisRepository.findByRoomTitleAndRoomMode(roomTitle, roomMode);
-//    }
 
 }
