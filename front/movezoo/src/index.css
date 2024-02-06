@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .exit-button {
   @apply w-10 h-10 hover:text-gray-500;
+}
+
+@font-face {
+  font-family: 'DNFBitBitv2';
+  src: url(./fonts/DNFBitBitv2.otf);
+}
+
+body {
+  font-family: 'DNFBitBitv2', sans-serif;
 }
