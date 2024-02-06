@@ -23,12 +23,4 @@ public class UserJoinRequestDto {
         this.nickname = nickname;
     }
 
-//    // Dto -> Entity
-//    public User toEntity(String userEmail, String password, String nickname){
-//        return User.builder()
-//                .userEmail(this.userEmail)
-//                .password(this.password)
-//                .nickname(this.nickname)
-//                .build();
-//    }
 }
