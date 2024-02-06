@@ -2,9 +2,12 @@ package com.ssafy.movezoo.game.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-public class CreateRoomRequestDto {
+@Setter
+public class
+CreateRoomRequestDto {
 
     private String roomSessionId;
 
