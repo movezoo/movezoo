@@ -36,8 +36,23 @@
 }
 
 .makeroom-people {
+  display: flex;
+  align-items: center;
   margin-top: 30px;
   margin-bottom: 30px;
+}
+
+.makeroom-people-btn {
+  display: flex;
+  margin-left: 25px;
+}
+
+.makeroom-people-minus,
+.makeroom-people-num,
+.makeroom-people-plus {
+  display: flex;
+  border: solid black 1px;
+  padding: 5px;
 }
 
 .makeroom-type {
