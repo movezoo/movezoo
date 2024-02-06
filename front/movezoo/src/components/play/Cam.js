@@ -417,7 +417,7 @@ class Cam extends Component {
     // 서버에 특정 세션에 대한 연결에 대한 토큰을 생성하기 위한 비동기 함수
     const response = await axios.post(
       APPLICATION_SERVER_URL + "api/openvidu/sessions/" + sessionId + "/connections",
-      {},
+      {"nickname" : this.state.myUserName},
       {
         headers: { "Content-Type": "application/json" },
       }

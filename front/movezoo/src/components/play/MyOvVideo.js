@@ -7,7 +7,7 @@ import * as faceDetection from '@tensorflow-models/face-detection';
 
 import { data, myGameData, playerGameDataList } from "./data.js";
 
-const MyOpenViduVideoComponent = (props) => {
+const MyOvVideo = (props) => {
   const { streamManager, mySession } = props;
   const videoRef = useRef(null);
   const detector = useRef(null);
@@ -132,9 +132,9 @@ const MyOpenViduVideoComponent = (props) => {
     const connectData = () => {
       // console.log(playerGameDataList);
       sendData();
-      responseData();
       requestAnimationFrame(connectData)
     }
+    responseData();
     connectData();
 
   }, [streamManager]);
@@ -183,4 +183,4 @@ const MyOpenViduVideoComponent = (props) => {
 
 
 
-export default MyOpenViduVideoComponent;
+export default MyOvVideo;
