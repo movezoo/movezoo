@@ -20,4 +20,5 @@ public class RoomResponseDto {
     private String roomTitle;
     private int roomMode;
     private int currentUserCount;
+    private int roomMasterId;
 }
