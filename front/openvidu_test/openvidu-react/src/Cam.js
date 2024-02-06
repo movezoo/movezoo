@@ -178,7 +178,7 @@ class Cam extends Component {
                 resolution: "640x480", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-                mirror: false, // Whether to mirror your local video or not
+                mirror: true, // Whether to mirror your local video or not
               });
 
               // --- 6) Publish your stream ---
@@ -421,6 +421,15 @@ class Cam extends Component {
                   value={this.state.videoEnabled ? 'Turn Video Off' : 'Turn Video On'}
                 />
                 {/* 카메라 on off 추가 */}
+                <div className="col-md-6">
+                  <ul className="chat-container">
+                    {this.state.chatMessages.map((message, index) => (
+                      <li key={index} className={message.id === this.state.connectionId ? "chat-message-right" : "chat-message-left"}>
+                        {message.name} : {message.message}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
                 <div className="input-group mb-3">
                   <input
@@ -442,15 +451,6 @@ class Cam extends Component {
                 </div>
 
                 {/* 공통 채팅 보여주는  */}
-                <div className="col-md-6">
-                  <ul className="chat-container">
-                    {this.state.chatMessages.map((message, index) => (
-                      <li key={index} className={message.id === this.state.connectionId ? "chat-message-right" : "chat-message-left"}>
-                        {message.name} : {message.message}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
 
               </div>
 

@@ -4,6 +4,7 @@
 
 
 .login {
+  font-family: "DNFBitBitv2";
   @apply 
   text-5xl 
   font-semibold 
@@ -30,4 +31,5 @@
   background-color: rgb(21, 21, 213);
   color: white;
   border-radius: 20px;
+  font-family: 'DNFBitBitv2';
 }
