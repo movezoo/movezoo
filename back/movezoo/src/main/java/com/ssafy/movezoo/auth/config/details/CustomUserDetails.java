@@ -1,14 +1,15 @@
 package com.ssafy.movezoo.auth.config.details;
 
 import com.ssafy.movezoo.user.domain.User;
-import jakarta.annotation.Nullable;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 
 @Getter
 public class CustomUserDetails implements UserDetails, OAuth2User {
