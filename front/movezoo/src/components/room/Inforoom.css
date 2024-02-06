@@ -4,6 +4,7 @@
   width: 100%;
   height: 100%;
   border-radius: 10px;
+  font-size: 20px;
 }
 
 .inforoom-head {
@@ -11,6 +12,7 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
+  height: 25%;
   background-color: greenyellow;
   border-radius: 10px;
 }
@@ -19,7 +21,19 @@
 }
 
 .inforoom-body {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
 }
 
-.inforoom-component {
+.inforoom-mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30%;
+}
+
+.inforoom-track img {
+  position: relative;
+  height: 100px;
 }
