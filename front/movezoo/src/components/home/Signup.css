@@ -29,7 +29,6 @@
   text-align: center;
 }
 
-
 h3 {
   margin: 19px 0 8px;
   font-size: 14px;
@@ -159,11 +158,16 @@ input {
   border: 0;
   cursor: pointer;
   color: #fff;
-  background-color: skyblue;
+  background-color: rgb(95, 214, 91);
   font-size: 20px;
   font-weight: 400;
   font-family: Dotum,'돋움',Helvetica,sans-serif;
   border-radius: 20px;
+}
+
+#btnJoin:hover {
+  background-color: green;
+  border: black solid 1.5px;
 }
 
 #btnClose {
@@ -172,10 +176,15 @@ input {
   border: 0;
   cursor: pointer;
   color: #fff;
-  background-color: rgb(142, 190, 45);
+  background-color: rgb(232, 88, 88, 0.7);
   font-size: 20px;
   font-weight: 400;
   font-family: Dotum,'돋움',Helvetica,sans-serif;
   align-content: end;
   border-radius: 20px;
+}
+
+#btnClose:hover {
+  background-color: crimson;
+  border: 1.5px solid red;
 }
