@@ -50,7 +50,7 @@ const Main = (props) => {
     let background     = {};                      // 배경 이미지 (아래에서 로드됨)
     let sprites        = null;                    // 스프라이트 시트 (아래에서 로드됨)
     let playerSprites  = {};
-    let playerGameData = [];
+    let playerEnterDataList = [];
 
     let resolution     = null;                    // 해상도 독립성을 제공하기 위한 스케일링 팩터 (계산됨)
     let segmentLength  = 200;                     // 단일 세그먼트의 길이
@@ -231,24 +231,26 @@ const Main = (props) => {
     const updateCars = (dt, playerSegment, playerW) => {
       let car, oldSegment, newSegment;
       for(let n = 0 ; n < cars.length ; n++) {
-        const playerGameData = playerGameDataList[n];
+        const playerData = playerGameDataList[n];
         // console.log(`playerGameData`);
         // console.log(playerGameData);
-        if (!playerGameData || myGameData.playerId === playerGameData.playerId) continue; // 나의 플레이어 번호이면?
+        if (!playerData || myGameData.playerId === playerData.playerId) continue; // 나의 플레이어 번호이면?
 
         
         // car = { offset, z, sprite, speed, playerId, character };
         car         = cars[n]; // 
         oldSegment  = findSegment(car.z);
-        // car.offset  = car.offset + updateCarOffset(car, oldSegment, playerSegment, playerW);
-        car.offset  = playerGameData.userX
+        // car.offset  = car.offset + updateCarOffset(car, oldSegment, playerSegment, playerW); // playerW를 피해서 가도록 offset
+        car.offset  = playerData.userX
         // car.z       = Util.increase(car.z, dt * car.speed, trackLength);
-        car.z       = playerGameData.userZ;
+        car.z       = playerData.userZ;
         car.percent = Util.percentRemaining(car.z, segmentLength); // 세그먼트 길이에 따른 자동차의 퍼센트 업데이트 (렌더링 단계에서 보간에 유용)
         newSegment  = findSegment(car.z);
         
-        car.playerId = playerGameData.playerId
-        car.playerCharacter = playerGameData.playerCharacter;
+
+        // if(playerGameData.playerId === undefined) console.log(`playerGameData.playerId : ${playerGameData.playerId}`)
+        car.playerId = playerEnterDataList[n].playerId
+        car.playerCharacter = playerEnterDataList[n].playerCharacter;
 
 
         // console.log(car);
@@ -354,7 +356,7 @@ const Main = (props) => {
 
 
     const updatePlayerFrame = () => {
-      playerGameData.forEach((data) => {
+      playerEnterDataList.forEach((data) => {
         // console.log(`${data.playerCharacter}'s frame : ${data.frameIndex}`)
         const maxFrame = MAX_FRAME_COUNT[data.playerCharacter]['run'] // 프레임 개수
         // index는 항상 프레임 개수보다 작아야 함(최대 maxFrame-1)
@@ -716,21 +718,21 @@ const Main = (props) => {
       // 대기방에서 게임으로 넘어올 때 객체 데이터를 받아온다.
 
       // 2. 각 플레이어의 ID와 캐릭터이름
-      playerGameData = [
+      playerEnterDataList = [
         { playerId: 'Participant86', playerCharacter: 'pug', frameIndex: 0, }, 
-        { playerId: 'Participant87', playerCharacter: 'horse', frameIndex: 0 }
+        { playerId: 'Participant87', playerCharacter: 'pug', frameIndex: 0 }
         // { playerId: 'Participant88', playerCharacter: 'zebra', frameIndex: 0 },
         // { playerId: 'Participant89', playerCharacter: 'pig', frameIndex: 0 }
       ]
       // 1. 플레이어의 수 setting
-      playerCount.value = playerGameData.length
+      playerCount.value = playerEnterDataList.length
 
-      console.log(playerGameData);
+      console.log(playerEnterDataList);
 
     }
 
     const getPlayerFrameIndex = (playerId) => {
-      for (let data of playerGameData) {
+      for (let data of playerEnterDataList) {
         // console.log(`playerId : ${playerId}`)
         // console.log(`data.playerId : ${data.playerId}`)
         if (data.playerId === playerId) {
@@ -755,11 +757,18 @@ const Main = (props) => {
         //   DIRECTIONS: [ "uphill_left", "uphill_straight", "uphill_right", "left", "straight", "right" ]
         // }
         
-        sprite = 1; // 스프라이트 X, Y, H, W 정보
+        sprite = {x: 0, y: 0, w: 300, h: 300}; // 스프라이트 X, Y, H, W 정보
         // sprite = Util.randomChoice(SPRITES.CARS); 
         speed  = maxSpeed/4 + Math.random() * maxSpeed/(sprite === SPRITES.SEMI ? 4 : 2);
         // speed  = maxSpeed;
-        car = { offset: offset, z: z, sprite: sprite, speed: speed, playerId: playerGameData.playerId, playerCharacter: playerGameData.playerCharacter };
+        // playerEnterDataList 배열인데 지금까지 playerEnterDataList.playerId, 이렇게 참조하고 있었다..
+        car = {
+          offset: offset, z: z, 
+          sprite: sprite, speed: speed, 
+          playerId: playerEnterDataList[n].playerId, 
+          playerCharacter: playerEnterDataList[n].playerCharacter
+        };
+        // if( playerEnterDataList.playerId === undefined ) console.log(playerEnterDataList); // 출력됨!! 
         segment = findSegment(car.z);
         segment.cars.push(car);
         cars.push(car); // cars 배열에 담기
