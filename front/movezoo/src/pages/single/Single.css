@@ -1,51 +1,36 @@
-.container {
-  display: flex;
-  width: 100%;
-  height: 100vh;
-  background-color: white;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.single-container {
+  @apply min-w-[1000px] min-h-screen flex flex-col justify-center 
+  items-center bg-green-400 cursor-default;
 }
 
-.leftSection {
-  position: relative;
-  /* display: flex; */
-  justify-content: center;
-  align-items: center;
-  color: white;
-  width: 75%;
-  height: 100vh;
-  background-color: cornflowerblue;
+.Back {
+  @apply absolute top-0 left-0
 }
 
-.rightSection {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  width: 25%;
-  height: 100vh;
-  background-color: skyblue;
-  padding: 10px;
-  border-left: black 3px solid;
+.single-header {
+  @apply  w-[1000px] flex flex-col mb-5
 }
 
-.infoSection {
-  position: relative;
-  display: flex;
-  align-items: center;
-  color: white;
-  width: 100%;
-  height: 10%;
-  font-size: xx-large;
-  font-weight: bold;
-  border-bottom: black 3px solid;
+.single-name {
+  @apply text-7xl text-white justify-center ml-36
 }
 
-.goBack {
-  position: relative;
-  top: 0;
-  left: 0;
-  padding: 10px;
+.single-body {
+  @apply flex flex-row items-center
+}
+
+.body-cam {
+  @apply w-[500px] h-[400px] flex items-center justify-center  bg-white 
+  rounded-3xl p-5
+}
+
+.mycam {
+  @apply w-[450px] h-[350px] flex items-center justify-center
+  rounded-3xl;
 }
 
 .txtLoading {
@@ -57,28 +42,24 @@
 }
 
 .webCam {
-  position: absolute;
-  height: 90%;
+  @apply rounded-2xl
 }
 
-.btnSelect {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  /* width: 320px;
-  height: 240px;
-  margin: 10px; */
-  background-color: grey;
+.body-selects {
+  @apply w-[250px] h-[400px] flex flex-col items-center justify-between
+  
 }
 
-.btnSelectMap {
-  position: relative;
-  top: 0;
-  background-color: gray;
-  border-radius: 8px;
+.map-select {
+  
 }
 
-.btnStart {
-  position: relative;
-  bottom: 0;
+.charact-select {
+  @apply w-[200px] h-[80px] flex justify-center items-center 
+  bg-white rounded-2xl 
 }
+
+.start-select {
+
+}
+

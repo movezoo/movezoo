@@ -14,45 +14,45 @@ function Single() {
     });
   }, []);
   return (
-    <div>
-      <div className="single-container">
-        
-        {/* header */}
+    <div className="single-container">
+      <div className="Back">
+        <Back />
+      </div>
+      
+      {/* header */}
+      <div className="single-header">
         <div>
-          <h1 style={{ margin: 10 }}>Single Play</h1>
-          <div className="goBack">
-            <Back />
-          </div>
+          <h1 className="single-name">Single Play</h1>
         </div>
+      </div>
 
-        {/*body*/}
-        <div>
+      {/*body*/}
+      <div className="single-body">
 
-          <div className={styles.leftSection}>
-            <div className={styles.infoSection}>
-            </div>
-            {loading ? (
-              <h1 className={styles.txtLoading}>Loading...</h1>
-            ) : (
-              <Webcam className={styles.webCam} mirrored={true} />
-            )}
-          </div>
+        <div className="body-cam">
           
-          <div className={styles.rightSection}>
-            {/*맵 & 최고기록*/}
-            <div className={styles.btnSelectMap}>
-              <Map2 />
-            </div>
-            <div className="charact-select">
-              <button className={styles.btnSelect}>카트 고르기</button>
-            </div>
-            {/* 시작 버튼*/}
-            <div className={styles.btnStart}>
-              <Start />
-            </div>
-          </div>
-
+            {loading ? (
+              <h1 className="txtLoading">Loading...</h1>
+            ) : (
+              <Webcam className="webCam" mirrored={true} />
+            )}
+         
         </div>
+        
+        <div className="body-selects">
+
+          <div className="map-select">
+            <Map2 />
+          </div>
+          <div className="charact-select">
+            <button className="btnSelect">카트 고르기</button>
+          </div>
+          {/* 시작 버튼*/}
+          <div className="start-select">
+            <Start />
+          </div>
+        </div>
+
       </div>
     </div>
   );
