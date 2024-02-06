@@ -4,7 +4,7 @@ import styles from "./Back.module.css";
 function Back() {
   return (
     <div>
-      <Link to="/Single">
+      <Link to="/main">
         <button className={styles.btnStart}>돌아가기</button>
       </Link>
     </div>

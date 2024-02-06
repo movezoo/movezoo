@@ -1,5 +1,7 @@
 import Stats from './stats.js';
-import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES } from './gameConstants.js';
+import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT } from './gameConstants.js';
+import { myGameData } from './data.js';
+
 
 // 이미지 불러오기
 import background from './images/background.png';
@@ -7,6 +9,7 @@ import mute from './images/mute.png';
 import sprites from './images/sprites.png';
 
 const selectPlayer = "pug";
+myGameData.playerCharacter = selectPlayer;  // 오픈비두 통신을 위한 데이터 설정
 const selectAction = "run";
 const selectMap = "map1";
 const frameIndex = {
@@ -219,13 +222,13 @@ const Game = {
     // 플레이어 스프라이트에 대한 정보를 가져와서 SPRITE객체에 이미지에 대한 정보를 저장하는 함수
     const setPlayerSprite = () => {
       // 모든 객체 in 객체 초기화 진행
-      PLAYER_SPRITE.NAMES.forEach( spriteName => {
+      PLAYER_SPRITE.NAMES.forEach(spriteName => {
         SPRITES[spriteName] = {}
         result[spriteName] = {}
-        PLAYER_SPRITE.ACTIONS.forEach( action => {
+        PLAYER_SPRITE.ACTIONS.forEach(action => {
           SPRITES[spriteName][action.name] = {}
           result[spriteName][action.name] = {}
-          PLAYER_SPRITE.DIRECTIONS.forEach( direction => {
+          PLAYER_SPRITE.DIRECTIONS.forEach(direction => {
             SPRITES[spriteName][action.name][direction] = []
           })
         })
@@ -237,8 +240,9 @@ const Game = {
         PLAYER_SPRITE.ACTIONS.forEach( action => {
           PLAYER_SPRITE.DIRECTIONS.forEach( direction => {
             const frameSize = 300; // 300px X 300px 고정사이즈로 정함
-            const totalFrames = action.frames;
-            for(let frameIndex = 0; frameIndex < totalFrames; frameIndex++) {
+            // const totalFrames = action.frames;
+            const maxFrameCount = MAX_FRAME_COUNT[spriteName][action.name];
+            for(let frameIndex = 0; frameIndex < maxFrameCount; frameIndex++) {
               // SPRITES.동물이름.액션[이름].방향 : [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}]
               // SPRITES.spriteName[action.name].direction: [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}]
               SPRITES[spriteName][action.name][direction].push({ 
@@ -258,6 +262,7 @@ const Game = {
         })
       })
       // console.log(PLAYER_SPRITE);
+      console.log(SPRITES);
     }
 
     const setBackground = () => {
@@ -397,10 +402,6 @@ const Render = {
     // 도로 표시 영역 그리기
     Render.polygon(ctx, x1-w1,    y1, x1+w1, y1, x2+w2, y2, x2-w2,    y2, color.road);
     
-
-
-
-    
     // 차선 표시 그리기
     if (color.lane) {
       lanew1 = w1*2/lanes;
@@ -444,7 +445,6 @@ const Render = {
   //---------------------------------------------------------------------------
   // 스프라이트 그리기
   sprite: (ctx, width, height, resolution, roadWidth, sprites, sprite, scale, destX, destY, offsetX, offsetY, clipY) => {
-    
     // 프로젝션에 상대적인 크기 및 roadWidth에 상대적인 크기 (토크 UI를 위해) 스케일 조정
     let destW  = (sprite.w * scale * width/2) * (SPRITES.SCALE * roadWidth);
     let destH  = (sprite.h * scale * width/2) * (SPRITES.SCALE * roadWidth);
@@ -457,7 +457,7 @@ const Render = {
     let clipH = clipY ? Math.max(0, destY+destH-clipY) : 0;
     if (clipH < destH)
       ctx.drawImage(
-        sprites,             // 이미지 소스
+        sprites,             // 이미지 객체<img>~~~s<img>
         sprite.x, sprite.y,  // 소스 이미지의 위치
         sprite.w, sprite.h - (sprite.h * clipH / destH),  // 잘라낼 영역 크기
         destX, destY,        // 대상 캔버스에서의 위치
@@ -468,6 +468,7 @@ const Render = {
   //---------------------------------------------------------------------------
   // 플레이어 차량 그리기 (단일 이미지 사용 가능하게 변경했음)
   player: (ctx, width, height, resolution, roadWidth, playerSprites, speedPercent, scale, destX, destY, steer, updown) => {
+    // playerSprites[selectPlayer][action.name][direction] === <img></img>
     // 플레이어 차량이 움직일 때 바운스 효과 추가
     // let bounce = (1.5 * Math.random() * speedPercent * resolution) * Util.randomChoice([-1,1]);
     let bounce = 0;

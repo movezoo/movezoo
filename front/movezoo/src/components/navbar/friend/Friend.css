@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+.friend {
+  @apply w-full h-full
+}
+
+.friend-button-container {
+  @apply w-full h-full flex justify-center items-center
+}
+
+.friend-button-container:hover .friendButton {
+  @apply scale-150;
+}
+
 .friendButton {
   @apply w-7 h-7 hover:scale-125;
 }
