@@ -15,16 +15,16 @@ function Room() {
   const [coin, setCoin] = React.useState("");
 
   return (
-    <div className="main-container">
+    <div className="room-container">
       {/* 홈으로, 프로필 */}
-      <div className="main-header">
-        <div className="main-header-name">
+      <div className="room-header">
+        <div className="room-header-name">
           <h1>MoveZoo!</h1>
         </div>
       </div>
 
       {/* 방목록 */}
-      <div className="main-rooms">
+      <div className="room-main">
         <div className="room-info">
           <div className="room-search">
             <input />
