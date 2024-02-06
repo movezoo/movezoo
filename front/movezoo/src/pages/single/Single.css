@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 .single-container {
+  background-image:url('./Summer6.png');
+  background-size: cover;
   @apply min-w-[1000px] min-h-screen flex flex-col justify-center 
   items-center bg-green-400 cursor-default;
 }
