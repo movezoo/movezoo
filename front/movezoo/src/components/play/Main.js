@@ -949,16 +949,16 @@ const Main = (props) => {
       </table> */}
 
 
-      <div id='instructions'>
-        {/* <p>Use the <b>arrow keys</b> to drive the car.</p>
+      {/* <div id='instructions'>
+        <p>Use the <b>arrow keys</b> to drive the car.</p>
         내차 X 위치 : <span id="playerX">0</span><br/>
         내차 Z 위치 : <span id="position">0</span><br/>
 
         상대차 X 위치 : <span id="userX">0</span><br/>
         상대차 Z 위치 : <span id="userZ">0</span><br/>
 
-        trackLength : <span id="trackLength">0</span><br/> */}
-      </div>
+        trackLength : <span id="trackLength">0</span><br/>
+      </div> */}
 
       <div id="racer">
         <div id="hud">
