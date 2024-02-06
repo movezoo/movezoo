@@ -1,5 +1,5 @@
 import { Component } from "react";
-import UserOpenViduVideoComponent from "./UserOvVideo";
+import UserOvVideo from "./UserOvVideo";
 import "./UserVideo.css";
 
 export default class UserVideoComponent extends Component {
@@ -14,7 +14,7 @@ export default class UserVideoComponent extends Component {
       <div>
         {this.props.streamManager !== undefined ? (
           <div className="streamcomponent">
-            <UserOpenViduVideoComponent streamManager={this.props.streamManager}/>
+            <UserOvVideo streamManager={this.props.streamManager}/>
             <div>
               <p>{this.getNicknameTag()}</p>
             </div>
