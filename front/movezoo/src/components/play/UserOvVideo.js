@@ -28,7 +28,7 @@ import { useEffect, useRef } from "react";
 //     return <video autoPlay={true} ref={this.videoRef} />;
 //   }
 // }
-const UserOpenViduVideoComponent = (props) => {
+const UserOvVideo = (props) => {
   // Create a ref to store the video element
   const { streamManager } = props;
   const videoRef = useRef();
@@ -47,4 +47,4 @@ const UserOpenViduVideoComponent = (props) => {
   return <video autoPlay={true} ref={videoRef} />;
 };
 
-export default UserOpenViduVideoComponent;
+export default UserOvVideo;
