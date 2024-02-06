@@ -2,4 +2,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 20px;
+}
+
+.googleLogo {
+  width: 30px;
+  height: 20px;
+  margin-right: 20px;
+}
+
+.googlelogin:hover {
+  border: 5px red double ;
 }

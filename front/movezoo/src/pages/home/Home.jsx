@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Login from '../../components/home/Login';
 import './Home.css';
 import GoogleLoginButton from '../../components/home/GoogleLoginButton';
@@ -17,9 +17,29 @@ function Home() {
     setSignupModalOpen(false);
   };
 
+  useEffect(() => {
+    // 1초 후에 동영상 재생
+    const timeout = setTimeout(() => {
+      const video = document.getElementById('videoElement');
+      if (video) {
+        video.play();
+      }
+    }, 1000);
+
+    return () => clearTimeout(timeout); // 컴포넌트가 언마운트되면 타임아웃을 클리어합니다.
+  }, []); // 빈 배열을 전달하여 한 번만 실행되도록 합니다.
+
   return (
     <div className='home-container'>
       <div className='left-section'>
+        <div className='home-title'>
+          <h1>MoveZoo</h1>
+        </div>
+        {/* 비디오 재생 */}
+        <video id="videoElement" className="video-element" autoPlay muted controls>
+          <source src="/homebg/bgracing.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
         <h1> 소개 </h1>
       </div>
       <div className='right-section'>
