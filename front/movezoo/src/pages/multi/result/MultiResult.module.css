@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.leftSection {
+  position: relative;
+  color: white;
+  width: 75%;
+  height: 100vh;
+  background-color: cornflowerblue;
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+}
+
+.rightSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 25%;
+  height: 100vh;
+  padding: 10px;
+  background-color: skyblue;
+  border-left: black 3px solid;
+}
+
+.webCam {
+  position: relative;
+  height: 100%;
+}
+
+.camSection {
+  position: relative;
+  /* margin-top: 50px; */
+  width: 350px;
+  height: 80%;
+}
+
+.resultReward {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+  font-size: x-large;
+}
+
+.btnReturn {
+  position: relative;
+  bottom: 0;
+}

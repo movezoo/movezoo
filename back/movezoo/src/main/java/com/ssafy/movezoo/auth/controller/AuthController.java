@@ -11,6 +11,7 @@ import com.ssafy.movezoo.user.repository.UserRepository;
 import com.ssafy.movezoo.user.sevice.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -214,6 +215,7 @@ public class AuthController {
     public String currentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        User user = (User) authentication.getPrincipal();
+
 
         if (authentication.getPrincipal() instanceof DefaultOAuth2User) {
             DefaultOAuth2User oauth2User = (DefaultOAuth2User) authentication.getPrincipal();

@@ -28,7 +28,7 @@
 
 
 
-import MyOpenViduVideoComponent from "./MyOvVideo";
+import MyOvVideo from "./MyOvVideo";
 import "./UserVideo.css";
 
 const UserVideoComponent = (props) => {
@@ -41,7 +41,9 @@ const UserVideoComponent = (props) => {
     <div>
       {props.streamManager !== undefined ? (
         <div className="streamcomponent">
-          <MyOpenViduVideoComponent streamManager={props.streamManager} />
+          <MyOvVideo streamManager={props.streamManager}
+          mySession={props.mySession}
+           />
           <div>
             <p>{getNicknameTag()}</p>
           </div>

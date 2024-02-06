@@ -2,10 +2,13 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home.jsx";
 import Main from "./pages/main/Main";
 import Single from "./pages/single/Single";
-import Game from "./pages/game/Game";
-import Result from "./pages/result/Result";
+import Game from "./pages/single/game/Game.js";
+import Result from "./pages/single/result/Result.js";
 import Signup from "./components/home/Signup.jsx";
+import Room from "./pages/room/Room";
 import Multi from "./pages/multi/Multi";
+import MultiGame from "./pages/multi/game/MultiGame.js";
+import MultiResult from "./pages/multi/result/MultiResult.js";
 import "./index.css";
 
 function App() {
@@ -20,7 +23,10 @@ function App() {
         <Route path="/result" element={<Result />} />
         <Route path="/" element={<Home />} />
         <Route path="/signUp" element={<Signup />} />
+        <Route path="/room" element={<Room />} />
         <Route path="/multi" element={<Multi />} />
+        <Route path="/multigame" element={<MultiGame />} />
+        <Route path="/multiresult" element={<MultiResult />} />
       </Routes>
     </Router>
   );
