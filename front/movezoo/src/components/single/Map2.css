@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.map-container {
+  @apply w-[200px] flex flex-col items-center bg-white rounded-2xl;
+}
+
+.map-header {
+  @apply  w-[200px] flex flex-row items-center justify-center mt-5
+  mb-6
+}
+
+.map-image {
+  @apply w-[100px] h-[100px] flex items-center border-4 rounded-3xl
+border-black;
+}
+
+.map-change-button {
+  @apply w-10 h-10 text-green-400 hover:text-green-700 active:scale-90 active:text-green-900
+  hover:cursor-pointer ml-1 mr-1
+}
+
+.map-body {
+  @apply flex flex-col items-center justify-center mb-5;
+}
+

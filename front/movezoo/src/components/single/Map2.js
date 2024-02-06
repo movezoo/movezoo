@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import styles from "./Map2.module.css";
+import "./Map2.css";
+import { AiFillCaretLeft } from "react-icons/ai";
+import { AiFillCaretRight } from "react-icons/ai";
 
 function Carousel() {
   const images = ["n.png", "o.png"];
@@ -19,27 +21,25 @@ function Carousel() {
   };
 
   return (
-    <div>
-      <div className={styles.mapImage}>
-        <img src={`/minimap/${images[currentIndex]}`} alt="mini-map" />
+    <div className="map-container">
+
+      <div className="map-header">
+        <div className="map-prev">
+          <AiFillCaretLeft className='map-change-button' onClick={handlePrevious}/>
+        </div>
+        <div className="map-image">
+          <img src={`/minimap/${images[currentIndex]}`} alt="mini-map" />
+        </div>
+        <div className="map-next">
+          <AiFillCaretRight className='map-change-button' onClick={handleNext}/>
+        </div>
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          backgroundColor: "gray",
-        }}
-      >
-        <button onClick={handlePrevious} className={styles.btnMapSelect}>
-          ←이전
-        </button>
-        <p className={styles.timeRecord}>
-          최고 기록 <br/> <strong>00:00:00</strong>
+      <div className="map-body">
+        <p className="map-record">
+          BEST LAP
         </p>
-        <button onClick={handleNext} className={styles.btnMapSelect}>
-          다음→
-        </button>
+        <strong>00:00:00</strong>
       </div>
     </div>
   );
