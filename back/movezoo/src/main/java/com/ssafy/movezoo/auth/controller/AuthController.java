@@ -21,6 +21,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import static com.ssafy.movezoo.auth.util.JWTDecoderUtil.decodeJWTTokenPayload;
@@ -216,11 +217,19 @@ public class AuthController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        User user = (User) authentication.getPrincipal();
 
-
         if (authentication.getPrincipal() instanceof DefaultOAuth2User) {
             DefaultOAuth2User oauth2User = (DefaultOAuth2User) authentication.getPrincipal();
-            System.out.println(oauth2User.getName());
-            return oauth2User.getName();
+            System.out.println("AuthController currentUser - oauth2User : " + oauth2User.getAttributes().get("email"));
+
+            String googleEmail = String.valueOf(oauth2User.getAttributes().get("email"));
+            Optional<User> optionalUser = userRepository.findByGoogleEmail(googleEmail);
+
+
+            System.out.println(optionalUser.get().toString());
+
+            String userId = String.valueOf(optionalUser.get().getUserId());
+
+            return userId;
         } else if (authentication.getPrincipal() instanceof UserDetails) {
             UserDetails user = (UserDetails) authentication.getPrincipal();
             System.out.println(user.getUsername());
