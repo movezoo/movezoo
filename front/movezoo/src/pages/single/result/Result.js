@@ -33,22 +33,20 @@ function Result() {
 
           {/*오른쪽 화면*/}
           <div className="result-select">
-            {/*기록들*/}
+            
             <div className="result-record">
               <Record />
             </div>
-            {/*보상 및 돌아가기 버튼*/}
-            <div>
-              <div className="result-reward">
-                <span>G</span>
-                <span>#획득 골드#</span>
-                <span>획득!</span>
-              </div>
-              {/* 돌아가기 버튼*/}
-              <div className="result-back-button">
-                <Back />
-              </div>
+            
+            <div className="result-reward">
+              <p className="reward-alarm">획득!</p>
+              <p className="reward-coin">10G</p>
             </div>
+            
+            <div className="result-back-button">
+              <Back />
+            </div>
+            
           </div>
 
         </div>
