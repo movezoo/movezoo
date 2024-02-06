@@ -18,14 +18,14 @@ public class RedisService {
 //    private final int LIMIT_TIME=3*60;  //3분
 
     // 방 만들기
-    public void createRoom(int userId, CreateRoomRequestDto dto) {
+    public Room createRoom(int userId, CreateRoomRequestDto dto) {
         Room room = new Room(userId, dto.getRoomSessionId(), dto.getRoomTitle(), dto.getRoomMode(), dto.getMaxRange());
-        redisRepository.save(room);
+        return redisRepository.save(room);
     }
 
-    public void createSecretRoom(int userId, CreateRoomRequestDto dto) {
+    public Room createSecretRoom(int userId, CreateRoomRequestDto dto) {
         Room room = new Room(userId, dto.getRoomSessionId(), dto.getRoomTitle(), dto.getRoomMode(), dto.getMaxRange(), dto.getRoomPassword());
-        redisRepository.save(room);
+        return redisRepository.save(room);
     }
 
     // 방 정보 가져오기
