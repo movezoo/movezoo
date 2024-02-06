@@ -13,12 +13,12 @@
 }
 
 .room-header-name {
-  @apply flex justify-start font-Pixel text-8xl text-white p-3 ml-2
+  @apply flex justify-start font-Pixel text-7xl text-white p-3 ml-2
 }
 
 .room-main {
   width: 1000px;
-  height: 500px;
+  height: 400px;
   border: solid black 1px;
   background-color: gray;
   @apply mx-auto;
@@ -67,6 +67,8 @@
 .room-list{
   display: flex;
   flex-wrap: wrap;
+  overflow-y: scroll;
+  max-height: 300px;
   margin: 10px;
 }
 
