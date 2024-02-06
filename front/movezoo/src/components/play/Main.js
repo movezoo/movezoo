@@ -633,25 +633,25 @@ const Main = (props) => {
     const resetRoad = () => {
       segments = [];
       addStraight(ROAD.LENGTH.LONG);
-      // addLowRollingHills();
-      // addSCurves();
-      // addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
-      // addBumps();
-      // addLowRollingHills();
-      // addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
-      // addStraight();
-      // addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
-      // addSCurves();
-      // addCurve(ROAD.LENGTH.LONG, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
-      // addHill(ROAD.LENGTH.LONG, ROAD.HILL.HIGH);
-      // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
-      // addBumps();
-      // addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
-      // addStraight();
-      // addSCurves();
+      addLowRollingHills();
+      addSCurves();
+      addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
+      addBumps();
+      addLowRollingHills();
+      addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
+      addStraight();
+      addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
+      addSCurves();
+      addCurve(ROAD.LENGTH.LONG, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
+      addHill(ROAD.LENGTH.LONG, ROAD.HILL.HIGH);
+      addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
+      addBumps();
+      addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
+      addStraight();
+      addSCurves();
       addDownhillToEnd();
     
-      // resetSprites();
+      resetSprites();
       resetCars();
     
       // 플레이어 현재 위치 다음 2개 세그먼트의 색을 START 색으로 설정
