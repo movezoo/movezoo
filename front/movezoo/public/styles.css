@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'DNFBiBitv2';
+  src: local('DNFBiBitv2') url(./fonts/DNFBitBitv2.otf) format('opentype');
+  font-size: normal;
+  font-weight: normal;
+}
+
+body {
+  font-family: 'DNFBiBitv2', sans-serif;
+}

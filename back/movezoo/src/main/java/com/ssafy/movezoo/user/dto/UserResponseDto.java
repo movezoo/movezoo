@@ -4,8 +4,10 @@ import com.ssafy.movezoo.user.domain.User;
 import com.ssafy.movezoo.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class UserResponseDto {
 
     private int userId;
@@ -27,10 +29,6 @@ public class UserResponseDto {
         this.nickname = user.getNickname();
         this.coin = user.getCoin();
         this.profileImgUrl = user.getProfileImgUrl();
-    }
-
-    public UserResponseDto(){
-
     }
 
 }

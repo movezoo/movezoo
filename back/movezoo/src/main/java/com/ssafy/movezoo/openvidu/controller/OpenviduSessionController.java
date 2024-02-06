@@ -45,6 +45,7 @@ public class OpenviduSessionController {
         log.info("/api/sessions");
 
         //SessionProperties -> openvidu세션을 생성하기 위한 속성을 정의하는 클래스
+        //세션값은 내가 읨의로 부여
         SessionProperties properties = SessionProperties.fromJson(params).build();
         Session session = openvidu.createSession(properties);
 

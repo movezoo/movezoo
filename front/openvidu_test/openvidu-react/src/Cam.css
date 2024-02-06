@@ -7,23 +7,27 @@
 	list-style: none;
 	padding: 0;
 	margin: 0;
-	overflow-y: auto; /* 수직 스크롤바 활성화 */
-	max-height: 300px; /* 채팅 영역의 최대 높이를 지정합니다. */
-  }
-  
-  .chat-message-left {
-	background-color: #f2f2f2;
+	overflow-y: auto;
+	/* 수직 스크롤바 활성화 */
+	max-height: 300px;
+	/* 채팅 영역의 최대 높이를 지정합니다. */
+}
+
+.chat-message-left {
+	border: solid 1px black;
+	border-radius: 30px;
+	background-color: white;
+	color: black;
 	padding: 10px;
 	border-radius: 5px;
 	margin-bottom: 5px;
-  }
-  
-  .chat-message-right {
-	background-color: #4caf50;
+}
+
+.chat-message-right {
+	background-color: blue;
 	color: white;
 	padding: 10px;
 	border-radius: 5px;
 	margin-bottom: 5px;
-  }
-  
-  
+	text-align: right;
+}
