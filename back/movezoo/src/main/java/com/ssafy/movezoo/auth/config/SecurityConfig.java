@@ -1,7 +1,7 @@
     package com.ssafy.movezoo.auth.config;
 
-    import com.ssafy.movezoo.auth.config.details.UserDetailsServiceImpl;
-    import com.ssafy.movezoo.user.dto.UserRole;
+    import com.ssafy.movezoo.auth.config.details.CustomOAuth2Service;
+    import com.ssafy.movezoo.auth.config.details.CustomUserDetailsService;
     import jakarta.servlet.ServletException;
     import jakarta.servlet.http.HttpServletRequest;
     import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +22,6 @@
     import org.springframework.security.web.authentication.AuthenticationFailureHandler;
     import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
     import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-    import org.springframework.web.service.invoker.HttpRequestValues;
 
     import java.io.IOException;
 
@@ -32,12 +31,11 @@
     @Slf4j
     public class SecurityConfig {
 
-        private final UserDetailsServiceImpl UserDetailsServcie;
+        private final CustomUserDetailsService UserDetailsServcie;
+        private final CustomOAuth2Service customOAuth2Service;
+
         AuthenticationEntryPoint authenticationEntryPoint;
         AccessDeniedHandler accessDeniedHandler;
-//        private final AuthenticationEntryPoint authenticationEntryPoint;
-//        private final AccessDeniedHandler accessDeniedHandler;
-
         @Bean
         public BCryptPasswordEncoder passwordEncoder() {
             return new BCryptPasswordEncoder();
@@ -56,18 +54,10 @@
     //                                frameOptionsConfig.disable()
     //                        )
     //                )
+
                     // 로그인 후 ?continue 가 붙는 것에 대한 해결
                     .requestCache((request) ->
                             request.requestCache(requestCache))
-
-                    // 접근 관리
-                    .authorizeHttpRequests((authorizeRequests) ->
-                            authorizeRequests
-                                    .requestMatchers("/**","/api/login/**", "/api/login").permitAll()  // login 인증 절차없이 허용
-                                    .requestMatchers("/user").anonymous() // 인증되지 않은 사용자만 접근
-                                    .requestMatchers("/user/**").hasRole(UserRole.USER.name())    // 권한을 가진 사람만 접근 가능, hasAnyRole("","")
-                                    .anyRequest().authenticated()   // authenticated(): 인증(로그인)한 사용자만 접근
-                    )
                     //  form 기반 로그인
                     .formLogin((formLogin) ->
                             formLogin
@@ -127,6 +117,26 @@
                         exception
                                 .authenticationEntryPoint(authenticationEntryPoint) // 인증되지 않은 사용자
                                 .accessDeniedHandler(accessDeniedHandler)  // 인증되었으나 권한이 없는 사용자
+                );
+
+            // 접근 관리
+            http
+                .authorizeHttpRequests((authorizeRequests) ->
+                            authorizeRequests
+                                    .requestMatchers("/**","/api/login/**", "/api/login").permitAll()  // login 인증 절차없이 허용
+//                                    .requestMatchers("/user").anonymous() // 인증되지 않은 사용자만 접근
+//                                    .requestMatchers("/user/**").hasRole(UserRole.USER.name())    // 권한을 가진 사람만 접근 가능, hasAnyRole("","")
+                                    .anyRequest().authenticated()   // authenticated(): 인증(로그인)한 사용자만 접근
+            );
+
+            // OAuth
+            http
+                .oauth2Login((oauth2Login) ->
+                        oauth2Login
+
+                                .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
+                                        .userService(customOAuth2Service)))
+                                .defaultSuccessUrl("/")
                 );
 
 
