@@ -9,7 +9,10 @@ module.exports = {
         GreenBlue: '#0B60B0',
         CelestialBlue: '#40A2D8',
         Beige: '#F0EDCF'
-      }
+      },
+      fontFamily:{
+        'Pixel':['DNFBitBitv2']
+      },
     },
   },
   plugins: [],
