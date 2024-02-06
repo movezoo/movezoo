@@ -27,7 +27,6 @@ const Main = (props) => {
     let fieldOfView    = 100;                     // 시야각 (도)
     let fogDensity     = 5;                       // 지수적 안개 밀도
 
- 
 
 
     let fps            = 60;                      // 초당 'update' 프레임 수

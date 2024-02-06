@@ -31,7 +31,7 @@
 import MyOvVideo from "./MyOvVideo";
 import "./UserVideo.css";
 
-const UserVideoComponent = (props) => {
+const MyVideoComponent = (props) => {
   const getNicknameTag = () => {
     // Gets the nickName of the user
     return JSON.parse(props.streamManager.stream.connection.data).clientData;
@@ -53,4 +53,4 @@ const UserVideoComponent = (props) => {
   );
 };
 
-export default UserVideoComponent;
+export default MyVideoComponent;
