@@ -1,35 +1,26 @@
 package com.ssafy.movezoo.auth.controller;
 
-import com.ssafy.movezoo.auth.config.details.CustomUserDetails;
-import com.ssafy.movezoo.auth.dto.*;
+import com.ssafy.movezoo.auth.dto.EmailMessage;
+import com.ssafy.movezoo.auth.dto.EmailPostDto;
+import com.ssafy.movezoo.auth.dto.EmailResponseDto;
+import com.ssafy.movezoo.auth.dto.GoogleLoginRequestDto;
 import com.ssafy.movezoo.auth.sevice.EmailService;
 import com.ssafy.movezoo.global.dto.SimpleResponseDto;
-import com.ssafy.movezoo.user.controller.UserController;
 import com.ssafy.movezoo.user.domain.User;
-import com.ssafy.movezoo.user.dto.UserJoinRequestDto;
-import com.ssafy.movezoo.user.dto.UserResponseDto;
 import com.ssafy.movezoo.user.repository.UserRepository;
 import com.ssafy.movezoo.user.sevice.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.security.Principal;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
-import java.util.UUID;
 
 import static com.ssafy.movezoo.auth.util.JWTDecoderUtil.decodeJWTTokenPayload;
 
@@ -132,14 +123,6 @@ public class AuthController {
 //        return ResponseEntity.badRequest().body(simpleResponseDto);
 //    }
 
-//    @GetMapping("/login")
-//    public String redirect() {
-////        HttpHeaders headers = new HttpHeaders();
-////        headers.setLocation(URI.create("/Home"));
-////        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
-//        return "redirect:/home";
-//    }
-
     // 사용자 인증 체크용
     @GetMapping("/check-auth")
     public void check() {
@@ -147,7 +130,7 @@ public class AuthController {
 
         System.out.println(authentication.getPrincipal());
 
-        if (authentication != null) {
+        if (authentication.getPrincipal() != null) {
             // 사용자가 인증되어 있을 때
             System.out.println("Authenticated user: " + authentication.getName());
 
@@ -215,18 +198,35 @@ public class AuthController {
         return ResponseEntity.ok().body(simpleResponseDto);
     }
 
+
+//    @GetMapping("/currentUser")
+//    public String currentUserId(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+//        if (customUserDetails == null){
+//           return null;
+//        }
+//
+//        System.out.println("현재 로그인한 유저: " + customUserDetails.getUsername());
+//
+//        return customUserDetails.getUsername();
+//    }
+
     @GetMapping("/currentUser")
-    public String currentUserId(@AuthenticationPrincipal CustomUserDetails customUserDetails){
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        User user = (User)authentication.getPrincipal();
-//        return user.getUserId();
+    public String currentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        User user = (User) authentication.getPrincipal();
 
-        if (customUserDetails == null){
-           return null;
+        if (authentication.getPrincipal() instanceof DefaultOAuth2User) {
+            DefaultOAuth2User oauth2User = (DefaultOAuth2User) authentication.getPrincipal();
+            System.out.println(oauth2User.getName());
+            return oauth2User.getName();
+        } else if (authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails user = (UserDetails) authentication.getPrincipal();
+            System.out.println(user.getUsername());
+            return user.getUsername();
+        } else {
+            System.out.println("authentication 없음");
+            
+            return null;
         }
-
-        System.out.println("현재 로그인한 유저: " + customUserDetails.getUsername());
-
-        return customUserDetails.getUsername();
     }
 }
