@@ -6,6 +6,8 @@ import com.ssafy.movezoo.game.dto.CreateRoomRequestDto;
 import com.ssafy.movezoo.game.dto.RoomSessionIdDto;
 import com.ssafy.movezoo.game.serivce.RedisService;
 import com.ssafy.movezoo.global.dto.SimpleResponseDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -158,5 +160,14 @@ public class RedisController {
 //        }
 
         return roomList;
+    }
+
+    public ResponseEntity<SimpleResponseDto> deleteAllRoom(){
+        redisService.deleteAllRoom();
+
+        SimpleResponseDto simpleResponseDto= new SimpleResponseDto();
+        simpleResponseDto.setSuccess(true);
+        simpleResponseDto.setMsg("all room delete");
+        return ResponseEntity.status(HttpStatus.OK).body(simpleResponseDto);
     }
 }

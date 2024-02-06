@@ -27,7 +27,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
     }
 
     setEmail(newEmail);
-    if (newEmail) {                                                           
+    if (newEmail) {
       document.getElementById('stepUrl').style.display = 'none';
     } else {
       document.getElementById('stepUrl').style.display = 'block';
@@ -74,11 +74,11 @@ const Signup = ({ isOpen, onRequestClose }) => {
       if (response.data.success) {
         setSignedUp(true);
         onRequestClose();
-        navigate('/');
         setEmail('');
         setPassword('');
         setConfirmPassword('');
         setNickname('');
+        navigate('/');
         alert('회원가입 성공!');
       } else {
         alert('회원가입 실패');
@@ -103,9 +103,20 @@ const Signup = ({ isOpen, onRequestClose }) => {
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       contentLabel="Signup Modal"
+      style={{
+        overlay: {
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
+        content: {
+          width: '750px', // 원하는 크기로 조절
+          height: '80%', // 원하는 크기로 조절
+          margin: 'auto',
+        },
+      }}
     >
       <div className="wrapper">
         <div id="content">
+          <h1 className='signup_title'> 회원 가입 </h1>
           <div>
             <h3 className="join_title">
               <label htmlFor="id">이메일</label>
@@ -187,12 +198,10 @@ const Signup = ({ isOpen, onRequestClose }) => {
           </div>
           <div className="btn_area">
             <button type="button" id="btnJoin" onClick={handleSignup}>
-              <span>가입하기</span>
+              <span> 가입하기 </span>
             </button>
-          </div>
-          <div className="btn_area">
-            <button type="button" onClick={onRequestClose}>
-              <span>닫기</span>
+            <button type="button" id='btnClose' onClick={onRequestClose}>
+              <span > 가입취소 </span>
             </button>
           </div>
         </div>

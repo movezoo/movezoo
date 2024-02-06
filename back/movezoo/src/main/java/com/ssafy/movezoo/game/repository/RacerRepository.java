@@ -16,7 +16,6 @@ public class RacerRepository {
     public Racer save(Racer racer){
         em.persist(racer);
         return racer;
-
     }
     public Racer findById(Integer racerId){
         return em.find(Racer.class, racerId);

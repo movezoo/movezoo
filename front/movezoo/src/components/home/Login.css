@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.login {
+  @apply 
+  text-5xl 
+  font-semibold 
+  italic
+  text-center
+  my-8
+}
+
+input {
+  @apply
+  w-full
+  border-black
+  border-solid
+  border-2
+  my-12
+}
+
+.loginbt {
+  border: 2px solid black;
+  margin-top: 5px;
+  width: 100%;
+  background-color: rgb(4, 4, 40);
+  color: beige;
+}
