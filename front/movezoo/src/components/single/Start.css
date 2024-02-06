@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btnStart{
+  @apply w-[200px] py-6 px-16 text-white text-center bg-red-500
+  rounded-2xl;
+}
+
