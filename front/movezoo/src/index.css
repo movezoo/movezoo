@@ -7,9 +7,10 @@
 }
 
 @font-face {
-  font-family:'DNFBitBitv2';
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Cafe24Shiningstar.woff")
-    format("woff");
-  font-weight: normal;
-  font-style:normal;font-weight:400;src:url('//cdn.df.nexon.com/img/common/font/DNFBitBitv2.otf')format('opentype')
+  font-family: 'DNFBitBitv2';
+  src: url(./fonts/DNFBitBitv2.otf);
+}
+
+body {
+  font-family: 'DNFBitBitv2', sans-serif;
 }

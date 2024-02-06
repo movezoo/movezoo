@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .shop {
-  @apply w-full h-full
+  @apply w-full h-full 
 }
 
 .shop-button-container {
@@ -27,7 +27,7 @@
 }
 
 .shop-header-name {
-  @apply flex text-2xl items-center font-semibold mx-auto
+  @apply flex text-4xl items-center mx-auto
 }
 
 .shop-header-exit {
