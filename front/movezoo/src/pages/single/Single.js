@@ -29,14 +29,14 @@ function Single() {
       {/*body*/}
       <div className="single-body">
 
-        <div className="body-cam">
+        <div className="single-body-cam">
           
             {loading ? (
               <h1 className="txtLoading">Loading...</h1>
             ) : (
-              <Webcam className="webCam" mirrored={true} />
+              <Webcam className="single-webCam" mirrored={true} />
             )}
-         
+          
         </div>
         
         <div className="body-selects">
