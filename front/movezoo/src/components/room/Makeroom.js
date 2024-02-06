@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import "./Makeroom.css";
 
 function Makeroom() {
@@ -13,6 +13,10 @@ function Makeroom() {
   const [isItem, setIsItem] = useState(false);
   const onClickItem = () => setIsItem(true);
   const onClickSpeed = () => setIsItem(false);
+
+  const onClickConfirm = () => {
+    console.log("asdf")
+  }
 
   return (
     <div>
@@ -81,7 +85,7 @@ function Makeroom() {
             </div>
           </div>
           <div className="makeroom-check">
-            <div className="makeroom-confirm">확인</div>
+            <div className="makeroom-confirm" onClick={onClickConfirm}>확인</div>
           </div>
         </div>
       </Modal>
