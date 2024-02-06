@@ -10,7 +10,7 @@ const GoogleLoginButton = () => {
 
     return (
 
-        <a href="http://localhost:5000/oauth2/authorization/google">Google Login</a>
+        <a href="https://i10e204.p.ssafy.io/oauth2/authorization/google">Google Login</a>
 
         // <div className="googlelogin">
         //     {/* GoogleOAuthProvider를 사용하여 OAuth Provider를 설정 */}
