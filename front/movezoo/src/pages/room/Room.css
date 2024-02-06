@@ -17,11 +17,8 @@
 }
 
 .room-main {
-  width: 1000px;
-  height: 400px;
-  border: solid black 1px;
-  background-color: gray;
-  @apply mx-auto;
+  @apply w-4/6 h-96 bg-white rounded-3xl;
+  padding: 5px;
 }
 
 .room-info {
@@ -32,12 +29,16 @@
 }
 
 .room-search{
-  display: flex;
+  display: inline-flex;
   position: relative;
   border: solid black 1px;
+  border-radius: 10px;
   background-color: white;
   width: 50%;
+  margin-right: 10px;
+  margin-left: 10px;
   text-align: center;
+  overflow: hidden;
 }
 
 .room-match{
@@ -45,7 +46,7 @@
   border-radius: 20px;
   background-color: black;
   color: white;
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 25px;
   text-align: center;
   width: 25%;
@@ -57,7 +58,7 @@
   border-radius: 20px;
   background-color: black;
   color: white;
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 25px;
   text-align: center;
   width: 25%;
