@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .map-container {
-  @apply w-[200px] flex flex-col items-center bg-white rounded-2xl;
+  @apply w-[250px] h-[250px] flex flex-col items-center justify-center bg-white rounded-2xl;
 }
 
 .map-header {

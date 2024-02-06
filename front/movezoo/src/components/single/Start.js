@@ -3,9 +3,9 @@ import "./Start.css";
 
 function Start() {
   return (
-    <div>
-      <Link to="/Game">
-        <button className="btnStart">시작</button>
+    <div className="start-button">
+      <Link className="start-link" to="/Game">
+        <h1 className="start-name">시작</h1>
       </Link>
     </div>
   );

@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import styles from "./Back.module.css";
+import "./Back.css";
 
 function Back() {
   return (
-    <div>
-      <Link to="/main">
-        <button className={styles.btnStart}>돌아가기</button>
+    <div className="back-button">
+      <Link className="back-link" to="/main">
+        <button className="back-name">돌아가기</button>
       </Link>
     </div>
   );

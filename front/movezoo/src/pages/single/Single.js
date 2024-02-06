@@ -22,7 +22,7 @@ function Single() {
       {/* header */}
       <div className="single-header">
         <div>
-          <h1 className="single-name">Single Play</h1>
+          <h1 className="single-name">Single Play!</h1>
         </div>
       </div>
 
@@ -45,7 +45,7 @@ function Single() {
             <Map2 />
           </div>
           <div className="charact-select">
-            <button className="btnSelect">카트 고르기</button>
+            <button className="charact-select-button">캐릭터 고르기</button>
           </div>
           {/* 시작 버튼*/}
           <div className="start-select">

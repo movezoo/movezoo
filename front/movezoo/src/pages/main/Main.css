@@ -52,5 +52,5 @@
 
 /* 메인 네브바 */
 .main-navbar {
-  @apply w-4/6 h-36 flex justify-center items-center mt-7;
+  @apply w-4/6 h-36 flex justify-center items-center mt-1;
 }
