@@ -23,6 +23,10 @@ const Profile = () => {
       setIsOpen(false);
     };
 
+    const handleImageChange = (newImage) => {
+      setUserImage(newImage);
+    };
+
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -34,8 +38,8 @@ const Profile = () => {
         // });
         // const UserId = loginUserId.data;
 
+        // console.log("UserId : ", UserId);
 
-        // 유저 캐릭터 데이터 가져오기
         // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {
         // })
 
@@ -54,7 +58,7 @@ const Profile = () => {
 
     }
 
-    fetchUserInfo(102);
+    fetchUserInfo();
   }, []);
 
   return (
@@ -73,7 +77,7 @@ const Profile = () => {
 
           <div className='profile-header'>
             <div className='header-name'>
-              <h1>프로필 수정</h1>
+              
             </div>
             <div className='header-exit'>
               <IoCloseSharp className='exit-button' onClick={closeModal} />
@@ -82,7 +86,7 @@ const Profile = () => {
 
           <div className='profile-body'>
             <div className='body-change'>
-              <ImageChange/>
+              <ImageChange onImageChange={handleImageChange} />
               <NicknameChange/>
               <PasswordChange/>
               <LogoutModal/>

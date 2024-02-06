@@ -9,11 +9,11 @@
 }
 
 .pofileModal {
-  @apply fixed inset-0 flex items-center justify-center z-50 outline-none focus:outline-none;
+  @apply fixed inset-0 flex items-center justify-center z-50 outline-none focus:outline-none bg-black bg-opacity-50;
 }
 
 .modal-container {
-  @apply w-[300px] h-[350px] border-2 border-gray-700 max-w-lg mx-auto rounded-lg shadow-lg bg-white overflow-hidden;
+  @apply w-[300px] h-[350px] max-w-lg mx-auto rounded-xl shadow-lg bg-white overflow-hidden;
 }
 
 .profile-header {

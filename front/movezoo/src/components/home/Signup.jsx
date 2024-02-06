@@ -111,6 +111,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
           width: '750px', // 원하는 크기로 조절
           height: '80%', // 원하는 크기로 조절
           margin: 'auto',
+          borderRadius: '30px'
         },
       }}
     >

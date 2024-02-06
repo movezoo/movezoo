@@ -1,7 +1,5 @@
 /* Signup.css */
-.Modal {
-  width: 900px;
-}
+
 
 .signup-container {
   display: flex;
@@ -65,15 +63,23 @@ input {
 }
 
 .box.int_id {
-  padding-right: 110px;
+  padding-right: 70px;
+  border-radius: 15px;
 }
 
 .box.int_pass {
   padding-right: 40px;
+  border-radius: 15px;
 }
 
 .box.int_pass_check {
   padding-right: 40px;
+  border-radius: 15px;
+}
+
+.box.int_name {
+  padding-right: 40px;
+  border-radius: 15px;
 }
 
 .step_url {
@@ -157,6 +163,7 @@ input {
   font-size: 20px;
   font-weight: 400;
   font-family: Dotum,'돋움',Helvetica,sans-serif;
+  border-radius: 20px;
 }
 
 #btnClose {
@@ -170,4 +177,5 @@ input {
   font-weight: 400;
   font-family: Dotum,'돋움',Helvetica,sans-serif;
   align-content: end;
+  border-radius: 20px;
 }

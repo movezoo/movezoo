@@ -5,7 +5,7 @@ import "./Game.module.css";
 import Webcam from "react-webcam";
 import Back from "../../../components/single/game/Back";
 import Main from "../../../components/play/Main";
-// import Cam from "../../../components/play/Cam";
+import Cam from "../../../components/play/Cam";
 
 function Game() {
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
@@ -37,8 +37,8 @@ function Game() {
           </div>
 
           {/*웹캠*/}
-          {/* <Cam /> */}
-          <Webcam className={styles.webCam} mirrored={true} />
+          <Cam />
+          {/* <Webcam className={styles.webCam} mirrored={true} /> */}
         </div>
 
         {/*오른쪽 화면*/}

@@ -95,6 +95,7 @@ public class UserRepository {
                 .executeUpdate();
     }
 
+
     public boolean updateUserAuthCode(String userEmail, String authNumber) {
         return em.createQuery("update User u set u.authNumber = :authNumber where u.userEmail = :userEmail")
                 .setParameter("userEmail", userEmail)
