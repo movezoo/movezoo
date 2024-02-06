@@ -28,8 +28,10 @@ const Setting = () => {
 
 
   return (
-    <div>
-      <AiFillSetting className='settingButton' onClick={openModal}/>
+    <div className='setting'>
+      <div className='setting-button-container' onClick={openModal}>
+        <AiFillSetting className='settingButton'/>
+      </div>
 
       <Modal 
       isOpen={isOpen} 

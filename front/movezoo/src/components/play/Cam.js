@@ -6,6 +6,8 @@ import "./Cam.css";
 import UserVideoComponent from "./UserVideoComponent";
 import MyVideoComponent from "./MyVideoComponent";
 
+import { myGameData, playerGameDataList } from './data.js';
+
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
   // process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
@@ -18,7 +20,7 @@ class Cam extends Component {
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     // 이러한 속성은 값이 변경될 때마다 HTML을 다시 렌더링하기 위해 상태 구성 요소에 있습니다
     this.state = {
-      mySessionId: "SessionB", // 초기 세션 ID
+      mySessionId: "SessionC", // 초기 세션 ID
       myUserName: "Participant" + Math.floor(Math.random() * 100), // 무작위 숫자를 포함한 초기 사용자명
       session: undefined, // OpenVidu 세션 객체
       mainStreamManager: undefined, // 페이지의 주 비디오. 'publisher' 또는 'subscribers' 중 하나
@@ -81,12 +83,10 @@ class Cam extends Component {
   
     // --- 2) 세션 초기화 ---
     this.setState(
-      {
-        session: this.OV.initSession(),
-      },
+      { session: this.OV.initSession() },
       () => {
         var mySession = this.state.session;
-  
+        this.OV.enableProdMode() // Logger disable하는 함수
         // --- 3) 세션에서 이벤트가 발생할 때 동작 지정 ---
         // 새로운 스트림을 받을 때마다...
         mySession.on("streamCreated", (event) => {
@@ -112,7 +112,7 @@ class Cam extends Component {
         mySession.on("exception", (exception) => {
           console.warn(exception);
         });
-  
+
         // --- 4) 유효한 사용자 토큰으로 세션에 연결 ---
   
         // OpenVidu 배포에서 토큰 가져오기
@@ -161,6 +161,21 @@ class Cam extends Component {
                 mainStreamManager: publisher,
                 publisher: publisher,
               });
+
+
+              // data에 내 openvidu id 저장하기 (최초 1회)
+              myGameData.playerId = this.state.myUserName;
+              const count = playerGameDataList.length;
+              const existMyData = false;
+              for(let i = 0; i < count; i++) {
+                if (playerGameDataList[i] === myGameData.playerId) {
+                  existMyData = true;
+                  break;
+                }
+              }           
+              if(!existMyData) playerGameDataList.push(myGameData)
+
+              console.log(`joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`)
             })
             .catch((error) => {
               console.log(
@@ -173,11 +188,24 @@ class Cam extends Component {
       }
     );
   }
+
+  // sendData() {
+  //   console.log(`sendData()`)
+  //   const signalData = {
+  //     type: 'custom',
+  //     data: JSON.stringify(data)
+  //   };
+
+  //   // 전송!
+  //   this.state.session.signal(signalData)
+  //     .then(() => { console.log('Signal sent successfully'); })
+  //     .catch((error) => { console.error('Error sending signal:', error); });
+  // }
+
   
 
   leaveSession() {
   // --- 7) 세션을 떠나기 위해 'disconnect' 메서드를 세션 객체에 호출 ---
-
   const mySession = this.state.session;
 
   if (mySession) {
@@ -242,7 +270,7 @@ class Cam extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
-
+    
     return (
       <div className="container">
         {/* 세션이 없을 때의 화면 */}
@@ -319,6 +347,7 @@ class Cam extends Component {
               <div id="main-video" className="col-md-6">
                 <MyVideoComponent
                   streamManager={this.state.mainStreamManager}
+                  mySession={this.state.session}
                 />
               </div>
             ) : null}

@@ -7,7 +7,8 @@ import UserVideoComponent from "./UserVideoComponent";
 
 const APPLICATION_SERVER_URL =
   // process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
-  process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
+  // process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000/";
 
 class Cam extends Component {
   constructor(props) {
@@ -455,7 +456,7 @@ class Cam extends Component {
 
             ) : null}
             <div id="video-container" className="col-md-6">
-              {/* {this.state.publisher !== undefined ? (
+              {this.state.publisher !== undefined ? (
                 <div
                   className="stream-container col-md-6 col-xs-6"
                   onClick={() =>
@@ -464,7 +465,7 @@ class Cam extends Component {
                 >
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
-              ) : null} */}
+              ) : null}
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={sub.id}
@@ -516,11 +517,12 @@ class Cam extends Component {
   async createToken(sessionId) {
     const response = await axios.post(
       APPLICATION_SERVER_URL + "api/openvidu/sessions/" + sessionId + "/connections",
-      {},
+      {"nickname" : this.state.myUserName},
       {
         headers: { "Content-Type": "application/json" },
       }
     );
+    
     return response.data; // The token
   }
 }

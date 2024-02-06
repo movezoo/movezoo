@@ -7,7 +7,7 @@ function Chat() {
         asdf
       </div>
       <div className={styles.chatInput}>
-        <div className={styles.chatText}>input</div>
+        <input placeholder="채팅 채팅" className={styles.chatText}/>
         <button className={styles.chatBtn}>enter</button>
       </div>
     </div>
