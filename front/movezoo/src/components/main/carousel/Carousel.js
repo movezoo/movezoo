@@ -37,9 +37,7 @@ function Carousel() {
         // });
         // const UserId = loginUserId.data;
 
-        // 유저 캐릭터 데이터 가져오기
-        // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {
-        // })
+        // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
 
         
         // 임시 유저 데이터

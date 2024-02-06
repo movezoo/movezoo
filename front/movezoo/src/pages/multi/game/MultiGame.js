@@ -23,7 +23,7 @@ function Game() {
           </div>
           {/*웹캠*/}
           {/* <div className={styles.webCam}> */}
-          {/* <Cam /> */}
+          <Cam />
           multigame
           {/* </div> */}
           {/* <Webcam className={styles.webCam} mirrored={true} /> */}

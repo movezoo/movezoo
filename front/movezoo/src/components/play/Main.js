@@ -2,8 +2,8 @@
 // import io from "socket.io-client";
 import { useRef, useEffect } from 'react'
 import { Dom, Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
-import { PLAYER_SPRITE } from './gameConstants.js';
-import { data, myGameData, playerGameDataList } from './data.js';
+import { MAX_FRAME_COUNT, PLAYER_SPRITE } from './gameConstants.js';
+import { data, myGameData, playerGameDataList, playerCount, playerGameResetDataList } from './data.js';
 
 const localStorage = window.localStorage || {};
 
@@ -18,7 +18,7 @@ const Main = (props) => {
     //   console.log(`connection server`);
     // });
     
-    const playerNumber = 0; // 0 ~ 3
+    // const playerNumber = 0; // 0 ~ 3
     
     // View 관련 설정 변수
     let roadWidth      = 2000;                    // 사실상 도로의 반폭, 도로가 -roadWidth에서 +roadWidth로 이어지면 수학이 더 간단해짐
@@ -27,6 +27,7 @@ const Main = (props) => {
     let fieldOfView    = 100;                     // 시야각 (도)
     let fogDensity     = 5;                       // 지수적 안개 밀도
 
+ 
 
 
     let fps            = 60;                      // 초당 'update' 프레임 수
@@ -49,6 +50,7 @@ const Main = (props) => {
     let background     = {};                      // 배경 이미지 (아래에서 로드됨)
     let sprites        = null;                    // 스프라이트 시트 (아래에서 로드됨)
     let playerSprites  = {};
+    let playerEnterDataList = [];
 
     let resolution     = null;                    // 해상도 독립성을 제공하기 위한 스케일링 팩터 (계산됨)
     let segmentLength  = 200;                     // 단일 세그먼트의 길이
@@ -89,13 +91,15 @@ const Main = (props) => {
     //=========================================================================
     // UPDATE THE GAME WORLD
     //=========================================================================
-    
     const update = (dt) => {
       keyLeft        = data.isLeftKeyPressed;
       keyRight       = data.isRightKeyPressed;
 
       myGameData.userX = playerX;
       myGameData.userZ = position + playerZ;
+
+      // 플레이어 캐릭터 애니메이션 프레임 업데이트
+      updatePlayerFrame();
       
       // 데이터 보내기
       // console.log("데이터 보냄!!")
@@ -109,7 +113,7 @@ const Main = (props) => {
       // })
 
       
-      for (let i = 0; i < totalCars; i++) {
+      for (let i = 0; i < playerCount.value; i++) {
         const playerGameData = playerGameDataList[i];
         // 나의 데이터는 정확한 데이터가 아니므로 receive 할 필요 없다.
         if(!playerGameData || myGameData.playerId === playerGameData.playerId) continue;
@@ -227,23 +231,28 @@ const Main = (props) => {
     const updateCars = (dt, playerSegment, playerW) => {
       let car, oldSegment, newSegment;
       for(let n = 0 ; n < cars.length ; n++) {
-        const playerGameData = playerGameDataList[n];
+        const playerData = playerGameDataList[n];
         // console.log(`playerGameData`);
         // console.log(playerGameData);
-        if (!playerGameData || myGameData.playerId === playerGameData.playerId) continue; // 나의 플레이어 번호이면?
+        if (!playerData || myGameData.playerId === playerData.playerId) continue; // 나의 플레이어 번호이면?
+
         
-
-
-
-        car         = cars[n];
+        // car = { offset, z, sprite, speed, playerId, character };
+        car         = cars[n]; // 
         oldSegment  = findSegment(car.z);
-        // car.offset  = car.offset + updateCarOffset(car, oldSegment, playerSegment, playerW);
-        car.offset  = playerGameData.userX
+        // car.offset  = car.offset + updateCarOffset(car, oldSegment, playerSegment, playerW); // playerW를 피해서 가도록 offset
+        car.offset  = playerData.userX
         // car.z       = Util.increase(car.z, dt * car.speed, trackLength);
-        car.z       = playerGameData.userZ;
+        car.z       = playerData.userZ;
         car.percent = Util.percentRemaining(car.z, segmentLength); // 세그먼트 길이에 따른 자동차의 퍼센트 업데이트 (렌더링 단계에서 보간에 유용)
         newSegment  = findSegment(car.z);
         
+
+        // if(playerGameData.playerId === undefined) console.log(`playerGameData.playerId : ${playerGameData.playerId}`)
+        car.playerId = playerEnterDataList[n].playerId
+        car.playerCharacter = playerEnterDataList[n].playerCharacter;
+
+
         // console.log(car);
         // console.log(`newSegment : ${newSegment}`)
         if (oldSegment !== newSegment) {
@@ -344,6 +353,16 @@ const Main = (props) => {
       else
         return seconds + "." + tenths;
     }
+
+
+    const updatePlayerFrame = () => {
+      playerEnterDataList.forEach((data) => {
+        // console.log(`${data.playerCharacter}'s frame : ${data.frameIndex}`)
+        const maxFrame = MAX_FRAME_COUNT[data.playerCharacter]['run'] // 프레임 개수
+        // index는 항상 프레임 개수보다 작아야 함(최대 maxFrame-1)
+        data.frameIndex = data.frameIndex + 1 < maxFrame ? data.frameIndex + 1 : 0;
+      })
+    }
     
 
 
@@ -377,7 +396,7 @@ const Main = (props) => {
       Render.background(ctx, background.faraway, width, height, BACKGROUND.FARAWAY, treeOffset, resolution * treeSpeed * playerY);
     
       let segment, car, sprite, spriteScale, spriteX, spriteY;
-    
+      
       // 루프를 통해 화면에 그려질 세그먼트 수만큼 반복
       for(let n = 0 ; n < drawDistance ; n++) {
         segment        = segments[(baseSegment.index + n) % segments.length];
@@ -412,27 +431,55 @@ const Main = (props) => {
         maxy = segment.p1.screen.y;
       }
     
+    //   segments.push({
+    //     index: n,
+    //         p1: { world: { y: lastY(), z:  n   *segmentLength }, camera: {}, screen: {} },
+    //         p2: { world: { y: y,       z: (n+1)*segmentLength }, camera: {}, screen: {} },
+    //     curve: curve,
+    //   sprites: [],
+    //       cars: [],
+    //     color: Math.floor(n/rumbleLength)%2 ? COLORS.DARK : COLORS.LIGHT
+    // });
       // 세그먼트에 있는 차량 렌더링
       for(let n = (drawDistance-1) ; n > 0 ; n--) {
         segment = segments[(baseSegment.index + n) % segments.length];
-    
+        
         for(let i = 0 ; i < segment.cars.length ; i++) {
+          // car = { offset, z, sprite, speed, playerId, character };
           car         = segment.cars[i];
-          sprite      = car.sprite;
+          // sprite      = car.sprite;
+          if(car.playerId === '') continue; // playerId가 아직 갱신이 되지 않았다면 continue
+          // console.log(sprites);
+          let playerFrameIndex = getPlayerFrameIndex(car.playerId);
+          // console.log(`${car.playerCharacter}'s Frame : ${playerFrameIndex}`)
+          try {
+            sprite      = SPRITES[car.playerCharacter]['run']['straight'][playerFrameIndex] // x, y, h, w
+          } catch {
+            // console.log(`${car.playerCharacter}'s frame : ${playerFrameIndex}`);
+            // console.log(segment);
+          }
+          if (!sprite) {
+            // console.log(`${car.playerCharacter}'s frame : ${playerFrameIndex}`);
+            continue;
+          }
+          let curSpriteObj = sprites[car.playerCharacter]['run']['straight'] // 이미지객체
           spriteScale = Util.interpolate(segment.p1.screen.scale, segment.p2.screen.scale, car.percent);
           spriteX     = Util.interpolate(segment.p1.screen.x,     segment.p2.screen.x,     car.percent) + (spriteScale * car.offset * roadWidth * width/2);
           spriteY     = Util.interpolate(segment.p1.screen.y,     segment.p2.screen.y,     car.percent);
-          Render.sprite(ctx, width, height, resolution, roadWidth, sprites, car.sprite, spriteScale, spriteX, spriteY, -0.5, -1, segment.clip);
+                                                                // sprites : 이미지 , 이미지크기
+          // sprites[spriteName][action.name][direction] === <img>
+          // Render.sprite(ctx, width, height, resolution, roadWidth, sprites, car.sprite, spriteScale, spriteX, spriteY, -0.5, -1, segment.clip);
+          Render.sprite(ctx, width, height, resolution, roadWidth, curSpriteObj, sprite, spriteScale, spriteX, spriteY, -0.5, -1, segment.clip);
         }
     
         // 세그먼트에 있는 스프라이트 렌더링
-        for(let i = 0 ; i < segment.sprites.length ; i++) {
-          sprite      = segment.sprites[i];
-          spriteScale = segment.p1.screen.scale;
-          spriteX     = segment.p1.screen.x + (spriteScale * sprite.offset * roadWidth * width/2);
-          spriteY     = segment.p1.screen.y;
-          Render.sprite(ctx, width, height, resolution, roadWidth, sprites, sprite.source, spriteScale, spriteX, spriteY, (sprite.offset < 0 ? -1 : 0), -1, segment.clip);
-        }
+        // for(let i = 0 ; i < segment.sprites.length ; i++) {
+        //   sprite      = segment.sprites[i];
+        //   spriteScale = segment.p1.screen.scale;
+        //   spriteX     = segment.p1.screen.x + (spriteScale * sprite.offset * roadWidth * width/2);
+        //   spriteY     = segment.p1.screen.y;
+        //   Render.sprite(ctx, width, height, resolution, roadWidth, sprites, sprite.source, spriteScale, spriteX, spriteY, (sprite.offset < 0 ? -1 : 0), -1, segment.clip);
+        // }
     
         // 플레이어가 속한 세그먼트인 경우 플레이어 렌더링
         if (segment === playerSegment) {
@@ -667,25 +714,70 @@ const Main = (props) => {
     
     }
     
+    
+      
+    
+
+    // 게임 시작전 필요한 플레이어 데이터 초기화
+    const resetPlayerData = () => {
+      // 대기방에서 게임으로 넘어올 때 객체 데이터를 받아온다.
+
+      // 2. 각 플레이어의 ID와 캐릭터이름
+      playerEnterDataList = [
+        { playerId: 'Participant86', playerCharacter: 'pug', frameIndex: 0, }, 
+        { playerId: 'Participant87', playerCharacter: 'pug', frameIndex: 0 }
+        // { playerId: 'Participant88', playerCharacter: 'zebra', frameIndex: 0 },
+        // { playerId: 'Participant89', playerCharacter: 'pig', frameIndex: 0 }
+      ]
+      // 1. 플레이어의 수 setting
+      playerCount.value = playerEnterDataList.length
+
+      console.log(playerEnterDataList);
+
+    }
+
+    const getPlayerFrameIndex = (playerId) => {
+      for (let data of playerEnterDataList) {
+        // console.log(`playerId : ${playerId}`)
+        // console.log(`data.playerId : ${data.playerId}`)
+        if (data.playerId === playerId) {
+          // console.log(`findSameId!!! ${data.frameIndex}`)
+          return data.frameIndex;
+        }
+      }
+    }
+
+
     const resetCars = () => {
-      cars = [];
+      resetPlayerData();
+      cars = []; // 빈 배열로 초기화
       let car, segment, offset, z, sprite, speed;
-      for (let n = 0 ; n < totalCars ; n++) {
+      for (let n = 0 ; n < playerCount.value ; n++) {
         offset = Math.random() * Util.randomChoice([-0.8, 0.8]);
         // z      = Math.floor(Math.random() * segments.length) * segmentLength;
         z      = 0;
-        sprite = Util.randomChoice(SPRITES.CARS);
-        // sprite = Util.randomChoice(SPRITES.CARS);
+        // const PLAYER_SPRITE = {
+        //   NAMES: [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra"],
+        //   ACTIONS: [ {name: "run", frames: 21} ],
+        //   DIRECTIONS: [ "uphill_left", "uphill_straight", "uphill_right", "left", "straight", "right" ]
+        // }
+        
+        sprite = {x: 0, y: 0, w: 300, h: 300}; // 스프라이트 X, Y, H, W 정보
+        // sprite = Util.randomChoice(SPRITES.CARS); 
         speed  = maxSpeed/4 + Math.random() * maxSpeed/(sprite === SPRITES.SEMI ? 4 : 2);
         // speed  = maxSpeed;
-        car = { offset: offset, z: z, sprite: sprite, speed: speed };
+        // playerEnterDataList 배열인데 지금까지 playerEnterDataList.playerId, 이렇게 참조하고 있었다..
+        car = {
+          offset: offset, z: z, 
+          sprite: sprite, speed: speed, 
+          playerId: playerEnterDataList[n].playerId, 
+          playerCharacter: playerEnterDataList[n].playerCharacter
+        };
+        // if( playerEnterDataList.playerId === undefined ) console.log(playerEnterDataList); // 출력됨!! 
         segment = findSegment(car.z);
         segment.cars.push(car);
-        cars.push(car);
+        cars.push(car); // cars 배열에 담기
       }
-      console.log(`resetCars!!!!`)
-      console.log(cars);
-
     }
     
     //=========================================================================
@@ -718,10 +810,16 @@ const Main = (props) => {
         background.faraway = images.faraway;
         // console.log(`Game.ready() -> background : ${background}`)
         // console.log(background.sky.src)
+        // 
+        // const PLAYER_SPRITE = {
+        //   NAMES: [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra"],
+        //   ACTIONS: [ {name: "run", frames: 21} ],
+        //   DIRECTIONS: [ "uphill_left", "uphill_straight", "uphill_right", "left", "straight", "right" ]
+        // }
         PLAYER_SPRITE.NAMES.forEach(name => {
           playerSprites[name] = images[name];
         })
-        sprites    = images.sprites;
+        sprites    = {...images};
         
         reset();
         localStorage.fast_lap_time = localStorage.fast_lap_time || 180;

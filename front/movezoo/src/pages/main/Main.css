@@ -2,29 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-.main-container {
-  @apply w-full min-h-screen flex flex-col justify-between bg-white;
+.main {
+
 }
 
+.main-container {
+  /* background-image:url('./sky1.jpg'); */
+  /* background-size: cover; */
+  @apply min-w-[1000px] min-h-screen flex flex-col justify-center items-center bg-blue-400
+  cursor-default;
+}
 
 /* 메인 헤더 */
 .main-header {
-  @apply h-20 flex flex-row;
+  @apply w-4/6 h-32 flex flex-row items-center justify-between;
 }
 
 .main-header-name {
-  flex: 1;
-  display: flex;
-  justify-content: left;
-  @apply font-mono text-4xl p-3 ml-5
+  @apply flex justify-start font-Pixel text-8xl text-white p-3 ml-2
 }
 
 .main-header-info {
-  @apply flex flex-1 justify-end mr-5
+  @apply flex justify-end bg-white rounded-2xl mr-2;
 }
 
 .header-info-user {
-  @apply flex flex-col justify-start p-3 pr-6;  
+  @apply flex flex-col justify-center p-3 pr-6 ml-2;  
 }
 
 .info-user-coin {
@@ -44,10 +47,10 @@
 
 /* 메인 캐러셀 */
 .main-carousel {
-  @apply flex-grow flex justify-center items-center;
+  @apply w-4/6 h-96 flex bg-white rounded-3xl;
 }
 
 /* 메인 네브바 */
 .main-navbar {
-  @apply h-20;
+  @apply w-4/6 h-36 flex justify-center items-center mt-7;
 }
