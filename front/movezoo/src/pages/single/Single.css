@@ -8,7 +8,7 @@
 }
 
 .Back {
-  @apply absolute top-0 left-0
+  @apply absolute top-5 left-5
 }
 
 .single-header {
@@ -23,13 +23,13 @@
   @apply flex flex-row items-center
 }
 
-.body-cam {
-  @apply w-[500px] h-[400px] flex items-center justify-center  bg-white 
-  rounded-3xl p-5
+.single-body-cam {
+  @apply w-[525px] h-[400px] flex items-center justify-center  bg-white 
+  rounded-3xl p-10;
 }
 
-.mycam {
-  @apply w-[450px] h-[350px] flex items-center justify-center
+.single-webCam {
+  @apply w-full flex items-center justify-center
   rounded-3xl;
 }
 
@@ -39,10 +39,6 @@
   left: 40%;
   color: white;
   font-size: xx-large;
-}
-
-.webCam {
-  @apply rounded-2xl
 }
 
 .body-selects {
