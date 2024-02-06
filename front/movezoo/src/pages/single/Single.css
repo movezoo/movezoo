@@ -16,15 +16,15 @@
 }
 
 .single-name {
-  @apply text-7xl text-white justify-center ml-36
+  @apply text-7xl text-white justify-center ml-8
 }
 
 .single-body {
-  @apply flex flex-row items-center
+  @apply w-[1000px] h-[528px] flex flex-row items-center justify-center
 }
 
 .single-body-cam {
-  @apply w-[525px] h-[400px] flex items-center justify-center  bg-white 
+  @apply w-[680px] h-[528px] flex items-center justify-center  bg-white 
   rounded-3xl p-10;
 }
 
@@ -42,7 +42,7 @@
 }
 
 .body-selects {
-  @apply w-[250px] h-[400px] flex flex-col items-center justify-between
+  @apply w-[300px] h-[528px] flex flex-col items-center justify-between
   
 }
 
@@ -51,8 +51,12 @@
 }
 
 .charact-select {
-  @apply w-[200px] h-[80px] flex justify-center items-center 
+  @apply w-[250px] h-[150px] flex justify-center items-center 
   bg-white rounded-2xl 
+}
+
+.charact-select-button {
+  @apply text-2xl
 }
 
 .start-select {
