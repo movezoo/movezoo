@@ -18,8 +18,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        log.info("OAuth2 로그인 - loadUserByUsername(userEmail)");
-        System.out.println("security 로그인 loadUserByUsername : " + userEmail);
+        log.info("일반 유저 로그인 - loadUserByUsername(userEmail)");
+//        System.out.println("security 로그인 loadUserByUsername : " + userEmail);
 
         // 시큐리티 세션에 세션 정보를 저장해 주는데 > session은 Authentication 타입 객체여야 한다.
         // 그리고 Authentication 안의 유저는 UserDetails 타입 객체여야 한다
