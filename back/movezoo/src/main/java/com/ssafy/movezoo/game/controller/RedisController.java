@@ -59,6 +59,7 @@ public class RedisController {
                         .roomTitle(room.getRoomTitle())
                         .roomMode(room.getRoomMode())
                         .currentUserCount(room.getCurrentUserCount())
+                        .roomMasterId(room.getRoomMasterId())
                         .build();
                 return ResponseEntity.status(HttpStatus.OK).body(roomResponseDto);
             } else {
@@ -73,6 +74,7 @@ public class RedisController {
                         .roomTitle(room.getRoomTitle())
                         .roomMode(room.getRoomMode())
                         .currentUserCount(room.getCurrentUserCount())
+                        .roomMasterId(room.getRoomMasterId())
                         .build();
                 log.info("make room {}", room);
                 return ResponseEntity.status(HttpStatus.OK).body(roomResponseDto);
