@@ -4,6 +4,7 @@ import axios from "axios";
 import React, { Component } from "react";
 import "./Cam.css";
 import UserVideoComponent from "./UserVideoComponent";
+import RoomForm from "./RoomForm";
 
 const APPLICATION_SERVER_URL =
   // process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
@@ -29,7 +30,7 @@ class Cam extends Component {
       chatMessages: [], // 채팅 메시지를 저장할 배열
     };
 
-    this.joinSession = this.joinSession.bind(this);
+    this.enterRoom = this.enterRoom.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.switchCamera = this.switchCamera.bind(this);
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
@@ -92,7 +93,9 @@ class Cam extends Component {
     }
   }
 
-  joinSession() {
+  //리스트를 클릭하든, 방을 만들던 백에서 만든 sessionId를 사용한다.
+  //enterRoom(sessionId)
+  enterRoom() {
     // --- 1) Get an OpenVidu object ---
 
     this.OV = new OpenVidu();
@@ -158,9 +161,14 @@ class Cam extends Component {
         });
 
         // Get a token from the OpenVidu deployment
+        //getToken(sessionId)
         this.getToken().then((token) => {
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
+
+          //redis에 방 만들기
+
+
           mySession
             .connect(token, { clientData: this.state.myUserName })
             .then(async () => {
@@ -340,7 +348,7 @@ class Cam extends Component {
             </div>
             <div id="join-dialog" className="jumbotron vertical-center">
               <h1> Join a video session </h1>
-              <form className="form-group" onSubmit={this.joinSession}>
+              <form className="form-group" onSubmit={this.enterRoom}>
                 <p>
                   <label>Participant: </label>
                   <input
@@ -373,6 +381,8 @@ class Cam extends Component {
                 </p>
               </form>
             </div>
+
+            <RoomForm></RoomForm>
           </div>
         ) : null}
 
@@ -498,6 +508,7 @@ class Cam extends Component {
    * Visit https://docs.openvidu.io/en/stable/application-server to learn
    * more about the integration of OpenVidu in your application server.
    */
+  //async getToken(sessionId)
   async getToken() {
     const sessionId = await this.createSession(this.state.mySessionId);
     return await this.createToken(sessionId);
@@ -523,6 +534,19 @@ class Cam extends Component {
       }
     );
     
+    return response.data; // The token
+  }
+
+  //방을 만들고 세션값을 리턴받는다, 그 세션값으로 방에 들어간다
+  async createRoom(roomInfo) {
+    const response = await axios.post(
+      APPLICATION_SERVER_URL + "api/room",
+      {"roomInfo" : roomInfo},
+    );
+    
+    console.log(response.data);
+
+    //response.data.roomSessionId로 세션연결 해야합니다.
     return response.data; // The token
   }
 }
