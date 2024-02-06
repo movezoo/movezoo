@@ -2,6 +2,7 @@ package com.ssafy.movezoo.auth.config.details;
 
 import com.ssafy.movezoo.user.domain.User;
 import com.ssafy.movezoo.user.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
+@Slf4j
 public class CustomOAuth2Service extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
 
@@ -21,19 +24,34 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        log.info("OAuth2 로그인 - loadUser(OAuth2UserRequest)");
+        System.out.println("oauth 로그인 loadUser : " + userRequest.getAccessToken().getTokenValue());
+
         // accessToken으로 서드파티에 요청해서 사용자 정보를 얻어옴
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        String provider = userRequest.getClientRegistration().getClientId();
-        String providerId = oAuth2User.getAttribute("sub");
-        String username = provider + "_" + providerId; //중복이 발생하지 않도록 provider와 providerId를 조합
+//        String provider = userRequest.getClientRegistration().getClientId();
+//        String providerId = oAuth2User.getAttribute("sub");
+//        String nickname = provider + "_" + providerId; //중복이 발생하지 않도록 provider와 providerId를 조합
 
         String email = oAuth2User.getAttribute("email");
+        String nickname = oAuth2User.getAttribute("name");
+
+        while (userRepository.findByNickname(nickname).isPresent()){
+            Random random = new Random(System.currentTimeMillis());
+            int randVal = random.nextInt(999);
+            nickname = nickname.concat(String.valueOf(randVal));
+
+            System.out.println("randVal : "+randVal);
+        }
+
+        System.out.println(email+" & "+nickname);
 
         // 이미 가입한 사용자인지 확인
         Optional<User> findMember = userRepository.findByGoogleEmail(email);
         if (findMember.isEmpty()) { // 가입한 사용자가 아니라면
-            User user = new User(email, username);
+            log.info("새로운 소셜 사용자 등록");
+            User user = new User(email, nickname);
             userRepository.save(user);
         }
         

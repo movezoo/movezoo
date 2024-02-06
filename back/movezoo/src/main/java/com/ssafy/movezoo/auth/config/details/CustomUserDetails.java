@@ -16,17 +16,15 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
     private User user;
     private Map<String, Object> attributes;
 
-//    public CustomUserDetails(User user) {
-//        this.user = user;
-//    }
+    // 일반로그인
+    public CustomUserDetails(User user) {
+        this.user = user;
+    }
 
+    // OAuth 로그인
     public CustomUserDetails(User user, Map<String, Object> attributes) {
         this.user = user;
         this.attributes = attributes;
-    }
-
-    public CustomUserDetails(User user) {
-        this.user = user;
     }
 
     // 계정이 갖고있는 권한 return
@@ -52,31 +50,35 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
         return String.valueOf(user.getUserId());
     }
 
-    // 계정이 만료 되었는지 (true: 만료X)
+    // 계정 만료 여부 (true: 만료X)
     @Override
     public boolean isAccountNonExpired() {
+        // 만료되었는지 확인하는 로직
         return true;
     }
 
-    // 계정이 잠겼는지 (true: 잠기지 않음)
+    // 계정 잠금 여부 (true: 잠기지 않음)
     @Override
     public boolean isAccountNonLocked() {
+        // 잠금되었는지 확인하는 로직
         return true;
     }
 
-    // 비밀번호가 만료되었는지 (true: 만료X)
+    // 비밀번호 만료 여부 (true: 만료X)
     @Override
     public boolean isCredentialsNonExpired() {
+        // 만료되었는지 확인하는 로직
         return true;
     }
 
-    // 계정이 활성화(사용가능)인지 (true: 활성화)
+    // 계정 활성화(사용가능) 여부 (true: 활성화)
     @Override
     public boolean isEnabled() {
-        return true;
+        // 활성화되었는지 확인하는 로직
+         return true;
     }
 
-    // OAuth2User
+    // OAuth2
     @Override
     public String getName() {
         return String.valueOf(user.getUserId());
@@ -84,16 +86,8 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
 
     @Override
     public Map<String, Object> getAttributes() {
-        return Collections.unmodifiableMap(attributes);
+        return attributes;
     }
-
-    @Override
-    @Nullable
-    @SuppressWarnings("unchecked")
-    public <A> A getAttribute(String name) {
-        return OAuth2User.super.getAttribute(name);
-    }
-
 
     @Override
     public String toString() {
