@@ -449,13 +449,18 @@ const Main = (props) => {
           car         = segment.cars[i];
           // sprite      = car.sprite;
           if(car.playerId === '') continue; // playerId가 아직 갱신이 되지 않았다면 continue
-
           // console.log(sprites);
           let playerFrameIndex = getPlayerFrameIndex(car.playerId);
           // console.log(`${car.playerCharacter}'s Frame : ${playerFrameIndex}`)
-          sprite      = SPRITES[car.playerCharacter]['run']['straight'][playerFrameIndex] // x, y, h, w
+          try {
+            sprite      = SPRITES[car.playerCharacter]['run']['straight'][playerFrameIndex] // x, y, h, w
+          } catch {
+            // console.log(`${car.playerCharacter}'s frame : ${playerFrameIndex}`);
+            // console.log(segment);
+          }
           if (!sprite) {
-            console.log(`${car.playerCharacter}'s frame : ${playerFrameIndex}`);
+            // console.log(`${car.playerCharacter}'s frame : ${playerFrameIndex}`);
+            continue;
           }
           let curSpriteObj = sprites[car.playerCharacter]['run']['straight'] // 이미지객체
           spriteScale = Util.interpolate(segment.p1.screen.scale, segment.p2.screen.scale, car.percent);
