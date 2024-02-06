@@ -20,18 +20,25 @@ function Main() {
   useEffect(() => {
     const fetchUserCharacters = async () => {
       try{
-        // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-        //         withCredentials: true, // 쿠키 허용
-        //       });
-        // const UserId = loginUserId.data;
-        // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {
-        // })
+        const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+                withCredentials: true, // 쿠키 허용
+              });
+        const UserId = loginUserId.data;
+
+        const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${UserId}`, {
+        })
+        console.log('===========')
+        console.log(response.data);
 
         // 임시 데이터
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102', {
-        })
+        // const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102', {
+        // })
         const userNickname = response.data.nickname;
         const userCoin = response.data.coin;
+        
+        console.log('===========')
+        console.log(userNickname, userCoin);
+
         setNickname(userNickname); 
         setCoin(userCoin);
       }catch (error) {
@@ -49,22 +56,24 @@ function Main() {
         {/* 홈으로, 프로필 */}
         <div className="main-header">
 
-          <div className="main-home">
-            <Link to="/">홈으로</Link>
+          <div className="main-header-name">
+            <h1>MoveZoo!</h1>
           </div>
 
-          <div>
-            <div>
-              <h1>{nickname} </h1>
+          <div className="main-header-info">
+            <div className="header-info-user">
+              <div>
+                <h1> {nickname} </h1>
+              </div>
+              <div className="info-user-coin">
+                <AiFillCopyrightCircle className="coinIcon" />
+                <h1> {coin} </h1>
+              </div>
             </div>
-            <div>
-              <AiFillCopyrightCircle />
-              <h1> {coin} </h1>
-            </div>
-          </div>
 
-          <div className="main-profile">
-            <Profile/>
+            <div className="header-info-profile">
+              <Profile />
+            </div>
           </div>
 
         </div>

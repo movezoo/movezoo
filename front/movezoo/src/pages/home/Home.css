@@ -1,11 +1,15 @@
 /* Home.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 .home-container {
-  display: flex;
-  height: 100vh;
-  margin: auto;
-  justify-content: center;
-  display: flex;
+  @apply
+  flex
+  h-screen
+  m-auto
+  justify-center
 }
 
 .left-section {
@@ -16,6 +20,7 @@
   height: 100%;
   justify-content: center;
   display: flex;
+  background-image: url('/public/homebg/homebg.jpg');
 }
 
 .right-section {
@@ -25,4 +30,18 @@
   height: 100%;
   justify-content: center;
   display: flex;
+  background-image: url('/public/homebg/loginbg.jpg');
+}
+
+.signupbt {
+  border: 2px solid black;
+  margin: 5px 0px;
+  width: 100%;
+  background-color: greenyellow;
+  color: black;
+}
+
+h3#or {
+  text-align: center;
+  margin: 10px 0px;
 }
