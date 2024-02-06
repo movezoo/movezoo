@@ -37,9 +37,10 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
         String nickname = oAuth2User.getAttribute("name");
 
         // 이미 가입한 사용자인지 확인
-        Optional<User> findMember = userRepository.findByGoogleEmail(email);
+        Optional<User> optionalUser = userRepository.findByGoogleEmail(email);
+
         // 가입한 사용자가 아니라면
-        if (findMember.isEmpty()) {
+        if (optionalUser.isEmpty()) {
             while (userRepository.findByNickname(nickname).isPresent()){
                 Random random = new Random(System.currentTimeMillis());
                 int randVal = random.nextInt(999);
