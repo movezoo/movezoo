@@ -12,9 +12,33 @@ const BACKGROUND_SPRITE_FILE_NAME = {
   sky: 'sky',           //.png
   faraway: 'faraway'    //.png
 };
-const SPRITE_FILE_NAMES = [
-  
-]
+const SPRITE_FILE_NAME = {
+  map1: {
+    BILLBOARD: ["billboard_ssafy", "billboard"],
+    TREE: ["dead_tree1", "dead_tree2", "dead_tree3", "stump1", "tree1", "tree2", "tree3"]
+  }
+}
+const SPRITE_SIZE = {
+  map1: {
+    BILLBOARD: {
+      billboard_ssafy:  { x:    0, y:    0, w:  1000, h:  1000 },
+      billboard:        { x:    0, y:    0, w:  1000, h:  1000 },
+    },
+    TREE: {
+      dead_tree1:       { x:    0, y:    0, w:  1000, h:  1000 },
+      dead_tree2:       { x:    0, y:    0, w:  1000, h:  1000 },
+      dead_tree3:       { x:    0, y:    0, w:  1000, h:  1000 },
+      stump1:           { x:    0, y:    0, w:  1000, h:  1000 },
+      tree1:            { x:    0, y:    0, w:  1000, h:  1000 },
+      tree2:            { x:    0, y:    0, w:  1000, h:  1000 },
+      tree3:            { x:    0, y:    0, w:  1000, h:  1000 },
+    }
+  }
+
+}
+
+// Util.randomChoice를 위해서는 배열에 각 스프라이트좌표 정보를 저장해놔야 한다.
+
 
 
 const MAX_FRAME_COUNT = {
@@ -67,7 +91,8 @@ const BACKGROUND = {
 
 
 
-
+// 아이템전
+// 바나나, 섬광(햇빛), 폭탄, 번개, 똥, 그물, 마취총, 거센바람
 
 const SPRITES = {
   // PALM_TREE:              { x:    5, y:    5, w:  215, h:  540 },
@@ -142,4 +167,14 @@ SPRITES.CARS = [
 ];
 
 
-export { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME}
+export {
+  PLAYER_SPRITE,
+  KEY,
+  COLORS,
+  BACKGROUND,
+  SPRITES,
+  MAX_FRAME_COUNT,
+  BACKGROUND_SPRITE_FILE_NAME,
+  SPRITE_FILE_NAME,
+  SPRITE_SIZE
+}
