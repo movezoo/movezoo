@@ -232,7 +232,7 @@ import './Character.css';
 import axios from 'axios';
 import Modal from 'react-modal';
 
-function Character ({ setCoin }) {
+function Character ({ setuserCoin }) {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [images, setImages] = useState([]);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
@@ -346,7 +346,7 @@ function Character ({ setCoin }) {
     }
   };
 
-  const fetchUserCoin = async (setCoin) => {
+  const fetchUserCoin = async (setuserCoin) => {
     try {
       const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
         withCredentials: true, // 쿠키 허용
