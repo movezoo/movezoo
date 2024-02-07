@@ -22,7 +22,7 @@ const Main = (props) => {
     
     // View 관련 설정 변수
     let roadWidth      = 2000;                    // 사실상 도로의 반폭, 도로가 -roadWidth에서 +roadWidth로 이어지면 수학이 더 간단해짐
-    let cameraHeight   = 3000;                    // 카메라의 z 높이
+    let cameraHeight   = 1000;                    // 카메라의 z 높이
     let drawDistance   = 300;                     // 그릴 세그먼트 수
     let fieldOfView    = 100;                     // 시야각 (도)
     let fogDensity     = 5;                       // 지수적 안개 밀도
@@ -430,59 +430,65 @@ const Main = (props) => {
         maxy = segment.p1.screen.y;
       }
     
-    //   segments.push({
-    //     index: n,
-    //         p1: { world: { y: lastY(), z:  n   *segmentLength }, camera: {}, screen: {} },
-    //         p2: { world: { y: y,       z: (n+1)*segmentLength }, camera: {}, screen: {} },
-    //     curve: curve,
-    //   sprites: [],
-    //       cars: [],
-    //     color: Math.floor(n/rumbleLength)%2 ? COLORS.DARK : COLORS.LIGHT
-    // });
-      // 세그먼트에 있는 차량 렌더링
+
+      // segments 데이터 참고용 주석
+      //   segments.push({
+      //     index: n,
+      //         p1: { world: { y: lastY(), z:  n   *segmentLength }, camera: {}, screen: {} },
+      //         p2: { world: { y: y,       z: (n+1)*segmentLength }, camera: {}, screen: {} },
+      //     curve: curve,
+      //   sprites: [],
+      //       cars: [],
+      //     color: Math.floor(n/rumbleLength)%2 ? COLORS.DARK : COLORS.LIGHT
+      // });
+      
+      // 세그먼트 데이터 렌더링
       for(let n = (drawDistance-1) ; n > 0 ; n--) {
         segment = segments[(baseSegment.index + n) % segments.length];
-        
+      
+        // 세그먼트에 있는 차량 렌더링
         for(let i = 0 ; i < segment.cars.length ; i++) {
           // car = { offset, z, sprite, speed, playerId, character };
           car         = segment.cars[i];
           // sprite      = car.sprite;
           if(car.playerId === '') continue; // playerId가 아직 갱신이 되지 않았다면 continue
-          // console.log(sprites);
+          console.log(sprites);
           let playerFrameIndex = getPlayerFrameIndex(car.playerId);
           // console.log(`${car.playerCharacter}'s Frame : ${playerFrameIndex}`)
-          try {
+          // try {
             sprite      = SPRITES[car.playerCharacter]['run']['straight'][playerFrameIndex] // x, y, h, w
-          } catch {
+          // } catch {
             // console.log(`${car.playerCharacter}'s frame : ${playerFrameIndex}`);
             // console.log(segment);
-          }
-          if (!sprite) {
+          // }
+          // if (!sprite) {
             // console.log(`${car.playerCharacter}'s frame : ${playerFrameIndex}`);
-            continue;
-          }
+            // continue;
+          // }
           let curSpriteObj = sprites[car.playerCharacter]['run']['straight'] // 이미지객체
           spriteScale = Util.interpolate(segment.p1.screen.scale, segment.p2.screen.scale, car.percent);
           spriteX     = Util.interpolate(segment.p1.screen.x,     segment.p2.screen.x,     car.percent) + (spriteScale * car.offset * roadWidth * width/2);
           spriteY     = Util.interpolate(segment.p1.screen.y,     segment.p2.screen.y,     car.percent);
-                                                                // sprites : 이미지 , 이미지크기
-          // sprites[spriteName][action.name][direction] === <img>
+                                                                
+          // 참고용 주석 // curSpriteObj : 이미지 , sprite : 이미지크기
+          // sprites[spriteName][action.name][direction] <== <img></img>
           // Render.sprite(ctx, width, height, resolution, roadWidth, sprites, car.sprite, spriteScale, spriteX, spriteY, -0.5, -1, segment.clip);
           Render.sprite(ctx, width, height, resolution, roadWidth, curSpriteObj, sprite, spriteScale, spriteX, spriteY, -0.5, -1, segment.clip);
         }
     
         // 세그먼트에 있는 스프라이트 렌더링
-        // for(let i = 0 ; i < segment.sprites.length ; i++) {
-        //   sprite      = segment.sprites[i];
-        //   spriteScale = segment.p1.screen.scale;
-        //   spriteX     = segment.p1.screen.x + (spriteScale * sprite.offset * roadWidth * width/2);
-        //   spriteY     = segment.p1.screen.y;
-        //   Render.sprite(ctx, width, height, resolution, roadWidth, sprites, sprite.source, spriteScale, spriteX, spriteY, (sprite.offset < 0 ? -1 : 0), -1, segment.clip);
-        // }
+        for(let i = 0 ; i < segment.sprites.length ; i++) {
+          sprite      = segment.sprites[i];
+          spriteScale = segment.p1.screen.scale;
+          spriteX     = segment.p1.screen.x + (spriteScale * sprite.offset * roadWidth * width/2);
+          spriteY     = segment.p1.screen.y;
+
+          // console.log(sprite);
+          // Render.sprite(ctx, width, height, resolution, roadWidth, sprites, sprite.source, spriteScale, spriteX, spriteY, (sprite.offset < 0 ? -1 : 0), -1, segment.clip);
+        }
     
         // 플레이어가 속한 세그먼트인 경우 플레이어 렌더링
         if (segment === playerSegment) {
-          
           Render.player(ctx, width, height, resolution, roadWidth, playerSprites, speed/maxSpeed,
                         cameraDepth/playerZ,
                         width/2,

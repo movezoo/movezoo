@@ -1,5 +1,5 @@
 import Stats from './stats.js';
-import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT } from './gameConstants.js';
+import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME } from './gameConstants.js';
 import { myGameData } from './data.js';
 
 
@@ -201,28 +201,58 @@ const Game = {
   //---------------------------------------------------------------------------
   // 여러 이미지를 로드하고 모든 이미지가 로드된 경우 콜백하는 메서드
   loadImages: (names, callback) => {
+    const result = {}; // 이미지 엘리먼트를 저장할 배열
+    
+    // let count = names.length + 3;
+    const setCount = () => {
+      const getPlayerSpritesCount = () => {
+        let tempCount = 0;
+        PLAYER_SPRITE.NAMES.forEach( spriteName => {                    // 이미지 개수에 포함됨 
+          PLAYER_SPRITE.ACTIONS.forEach( action => {                    // 이미지 개수에 포함됨
+            const maxFrameCount = MAX_FRAME_COUNT[spriteName][action.name];
+            tempCount += (maxFrameCount*6) // 6 : PLAYER_SPRITE.DIRECTIONS.length
+          })
+        })
+        return tempCount;
+      }
+      const backgroundCount = Object.keys(BACKGROUND_SPRITE_FILE_NAME).length
+      const SpritesCount = 0;
+      const playerSpritesCount = getPlayerSpritesCount();
+
+      // Log
+      console.log(`backgroundCount: ${backgroundCount}`)
+      console.log(`SpritesCount: ${SpritesCount}`)
+      console.log(`playerSpritesCount: ${playerSpritesCount}`)
+      console.log(`countAll: ${backgroundCount + SpritesCount + playerSpritesCount}`)
+      return backgroundCount + SpritesCount + playerSpritesCount;
+    }
+    let count = setCount();
+
+
     // names => ["background", "sprites", "playerSpriteNames"]
     // const PLAYER_SPRITE.NAMES = [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra"]
-    const result = {}; // 이미지 엘리먼트를 저장할 배열
     // 로드할 이미지의 총 개수
-    let count = names.length - 1 + 3;
-    count += 3 // background
-    
-
+    // count += 3 // background
     // count += PLAYER_SPRITE.NAMES.length * PLAYER_SPRITE.ACTIONS.length * PLAYER_SPRITE.DIRECTIONS.length;       
     // SPRITES["pug"]["run"]["straight"].push({x,y,w,h});
 
     // 각 이미지가 로드될 때 실행될 콜백 함수
     const onload = () => {
+      // console.log(count)
       if (--count === 0) {
+        console.log(`모든 이미지 로드 완료!!`)
         callback(result); // 이미지 로드 카운트를 감소시키고, 모든 이미지가 로드되었을 때 콜백 함수 호출
       }
     };
 
+
+    
+    
+    
     // 플레이어 스프라이트에 대한 정보를 가져와서 SPRITE객체에 이미지에 대한 정보를 저장하는 함수
     const setPlayerSprite = () => {
       // 모든 객체 in 객체 초기화 진행
-      PLAYER_SPRITE.NAMES.forEach(spriteName => {
+      PLAYER_SPRITE.NAMES.forEach(spriteName => { 
         SPRITES[spriteName] = {}
         result[spriteName] = {}
         PLAYER_SPRITE.ACTIONS.forEach(action => {
@@ -233,15 +263,13 @@ const Game = {
           })
         })
       })
-
-      
       // 이미지 객체 생성 및 저장
-      PLAYER_SPRITE.NAMES.forEach( spriteName => {
-        PLAYER_SPRITE.ACTIONS.forEach( action => {
-          PLAYER_SPRITE.DIRECTIONS.forEach( direction => {
+      PLAYER_SPRITE.NAMES.forEach( spriteName => {                    // 이미지 개수에 포함됨 
+        PLAYER_SPRITE.ACTIONS.forEach( action => {                    // 이미지 개수에 포함됨
+          PLAYER_SPRITE.DIRECTIONS.forEach( direction => {            // 이미지 개수에 포함됨
             const frameSize = 300; // 300px X 300px 고정사이즈로 정함
             // const totalFrames = action.frames;
-            const maxFrameCount = MAX_FRAME_COUNT[spriteName][action.name];
+            const maxFrameCount = MAX_FRAME_COUNT[spriteName][action.name];             // 이미지 개수에 포함됨
             for(let frameIndex = 0; frameIndex < maxFrameCount; frameIndex++) {
               // SPRITES.동물이름.액션[이름].방향 : [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}]
               // SPRITES.spriteName[action.name].direction: [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}]
@@ -266,16 +294,20 @@ const Game = {
     }
 
     const setBackground = () => {
-      const spriteName = ['hills', 'sky', 'faraway'];
-      spriteName.forEach(name => {
+      const backgroundSprites = ['hills', 'sky', 'faraway'];        
+      backgroundSprites.forEach(name => {   
+        const fileName = BACKGROUND_SPRITE_FILE_NAME[name];   // 이미지 개수에 포함됨 
         result[name] = document.createElement('img');
         if(result[name] !== null) {
           Dom.on(result[name], 'load', onload);
-          result[name].src = `/images/sheets/${selectMap}/background/${name}.png`
+          result[name].src = `/images/sheets/${selectMap}/background/${fileName}.png`
         }
       })
     }
     
+    const setSprites = () => {
+      
+    }
 
 
     // 주어진 이미지 이름에 대해 이미지 엘리먼트를 생성하고 이벤트를 등록하는 루프
@@ -287,14 +319,14 @@ const Game = {
         setPlayerSprite();
       } else if(name === "background") {
         setBackground();
-      } else {
+      } else if(name === "sprites") { // sprites
         result[name] = document.createElement('img'); // 이미지 엘리먼트 생성 및 배열에 저장
         Dom.on(result[name], 'load', onload); // 이미지 로드 이벤트에 onload 콜백 등록
         // Dom.on(result[name], 'onerror', console.log(`error`));
         // result[name].src = "/images/" + name + ".png"; // 이미지의 소스 경로 설정
         
         result[name].src = images[`${name}`]; // important!!!! : react는 빌드 후 src내의 경로가 변경된다!!! 이미지 같은거 import 해서 사용하면 빌드된 경로를 알 수 있다. (onerror 이벤트리스너로 찾았음)
-      }
+      } else { console.log(`error 발생: ${name}???`) }
     }
   },
 
