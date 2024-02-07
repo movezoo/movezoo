@@ -1,11 +1,13 @@
 package com.ssafy.movezoo.game.controller;
 
+import com.ssafy.movezoo.game.dto.RoomResponseDto;
 import lombok.RequiredArgsConstructor;
 import com.ssafy.movezoo.game.domain.Room;
 import com.ssafy.movezoo.game.dto.CreateRoomRequestDto;
 import com.ssafy.movezoo.game.dto.RoomSessionIdDto;
 import com.ssafy.movezoo.game.serivce.RedisService;
 import com.ssafy.movezoo.global.dto.SimpleResponseDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -14,47 +16,81 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/api")
 public class RedisController {
     private final RedisService redisService;
 
     // 방 만들기
     @PostMapping("/room")
-    public ResponseEntity<SimpleResponseDto> createRoom(Authentication authentication, @RequestBody CreateRoomRequestDto dto){
+    public ResponseEntity<RoomResponseDto> createRoom(Authentication authentication, @RequestBody CreateRoomRequestDto dto){
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
         simpleResponseDto.setSuccess(true);
 
         int userId = Integer.parseInt(authentication.getName());
 
+        dto.setRoomSessionId(makeRandomSessionId());
         // roomSessionId 중복 체크 필요
         if (redisService.isDuplicateRoomSessionId(dto.getRoomSessionId())){  // 세션 아이디가 중복이라면
             System.out.println("세션 아이디가 중복입니다.");
             simpleResponseDto.setMsg("세션 아이디가 중복입니다.");
             simpleResponseDto.setSuccess(false);
 
-            return ResponseEntity.badRequest().body(simpleResponseDto);
+            return ResponseEntity.badRequest().body(null);
         }
 
         try {
-            if (dto.getRoomPassword() != null || dto.getRoomPassword().equals("")){     // 비밀방일 경우
-                redisService.createSecretRoom(userId, dto);
+            if (dto.getRoomPassword() != null && dto.getRoomPassword().equals("")){     // 비밀방일 경우
+                Room room = redisService.createSecretRoom(userId, dto);
+                log.info("make s room {}",room);
                 simpleResponseDto.setMsg("비밀방 생성 성공");
+
+                RoomResponseDto roomResponseDto = RoomResponseDto.builder()
+                        .roomId(room.getId())
+                        .roomSessionId(room.getRoomSessionId())
+                        .secretRoom(room.isSecretRoom())
+                        .secretRoomPassword(room.getSecretRoomPassword())
+                        .roomStatus(room.isRoomStatus())
+                        .trackId(room.getTrackId())
+                        .roomTitle(room.getRoomTitle())
+                        .roomMode(room.getRoomMode())
+                        .currentUserCount(room.getCurrentUserCount())
+                        .roomMasterId(room.getRoomMasterId())
+                        .build();
+                return ResponseEntity.status(HttpStatus.OK).body(roomResponseDto);
             } else {
-                redisService.createRoom(userId, dto);
-                simpleResponseDto.setMsg("일반방 생성 성공");
+                Room room = redisService.createRoom(userId, dto);
+                RoomResponseDto roomResponseDto = RoomResponseDto.builder()
+                        .roomId(room.getId())
+                        .roomSessionId(room.getRoomSessionId())
+                        .secretRoom(room.isSecretRoom())
+                        .secretRoomPassword(room.getSecretRoomPassword())
+                        .roomStatus(room.isRoomStatus())
+                        .trackId(room.getTrackId())
+                        .roomTitle(room.getRoomTitle())
+                        .roomMode(room.getRoomMode())
+                        .currentUserCount(room.getCurrentUserCount())
+                        .roomMasterId(room.getRoomMasterId())
+                        .build();
+                log.info("make room {}", room);
+                return ResponseEntity.status(HttpStatus.OK).body(roomResponseDto);
             }
-            return ResponseEntity.ok().body(simpleResponseDto);
 
         } catch (Exception e){
             e.printStackTrace();
             simpleResponseDto.setMsg("방 생성 실패");
             simpleResponseDto.setSuccess(false);
 
-            return ResponseEntity.badRequest().body(simpleResponseDto);
+            return ResponseEntity.badRequest().body(null);
         }
+    }
+
+    private String makeRandomSessionId(){
+        return UUID.randomUUID().toString();
     }
 
     // 방 목록

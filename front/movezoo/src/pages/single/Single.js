@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import styles from "./Single.module.css";
 import Webcam from "react-webcam";
 import Map2 from "../../components/single/Map2";
 import Back from "../../components/single/Back";
 import Start from "../../components/single/Start";
+import "./Single.css";
 
 function Single() {
   const [loading, setLoading] = useState(true);
@@ -14,37 +14,45 @@ function Single() {
     });
   }, []);
   return (
-    <div>
-      <div className={styles.container}>
-        {/*왼쪽 영역*/}
-        <div className={styles.leftSection}>
-          <div className={styles.infoSection}>
-            <div className={styles.goBack}>
-              <Back />
-            </div>
-            <h1 style={{ margin: 10 }}>Single Play</h1>
-          </div>
-          {loading ? (
-            <h1 className={styles.txtLoading}>Loading...</h1>
-          ) : (
-            <Webcam className={styles.webCam} mirrored={true} />
-          )}
-
-          <div>
-            <button className={styles.btnSelect}>카트 고르기</button>
-          </div>
+    <div className="single-container">
+      <div className="Back">
+        <Back />
+      </div>
+      
+      {/* header */}
+      <div className="single-header">
+        <div>
+          <h1 className="single-name">Single Play!</h1>
         </div>
-        {/*오른쪽 영역*/}
-        <div className={styles.rightSection}>
-          {/*맵 & 최고기록*/}
-          <div className={styles.btnSelectMap}>
+      </div>
+
+      {/*body*/}
+      <div className="single-body">
+
+        <div className="single-body-cam">
+          
+            {loading ? (
+              <h1 className="txtLoading">Loading...</h1>
+            ) : (
+              <Webcam className="single-webCam" mirrored={true} />
+            )}
+          
+        </div>
+        
+        <div className="body-selects">
+
+          <div className="map-select">
             <Map2 />
           </div>
+          <div className="charact-select">
+            <button className="charact-select-button">캐릭터 고르기</button>
+          </div>
           {/* 시작 버튼*/}
-          <div className={styles.btnStart}>
+          <div className="start-select">
             <Start />
           </div>
         </div>
+
       </div>
     </div>
   );

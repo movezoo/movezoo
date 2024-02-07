@@ -21,13 +21,20 @@
   border-2
   mb-1
   pl-3
+  h-8
 }
 
 .loginbt {
   border: 2px solid black;
   margin-top: 5px;
   width: 100%;
-  background-color: rgb(21, 21, 213);
+  background-color: rgb(24, 24, 136);
   color: white;
   border-radius: 20px;
+  font-family: 'DNFBitBitv2';
+}
+
+.loginbt:hover {
+  background-color: blue;
+  transition: 0.5s;
 }

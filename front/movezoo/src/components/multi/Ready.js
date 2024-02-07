@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import styles from "./Ready.module.css";
 
-function Ready() {
+function Ready(props) {
+  console.log(props);
   return (
     <div>
-      <Link to="/MultiGame">
+      <Link to="/multiGame" state={{mySessionId: props.mySessionId, isGameStart:props.isGameStart}}>
         <button className={styles.btnReady}>준비</button>
       </Link>
     </div>
