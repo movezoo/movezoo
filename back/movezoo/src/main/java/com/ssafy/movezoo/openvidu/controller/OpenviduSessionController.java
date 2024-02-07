@@ -1,6 +1,8 @@
 package com.ssafy.movezoo.openvidu.controller;
 
+import com.ssafy.movezoo.game.domain.Room;
 import com.ssafy.movezoo.game.serivce.RedisService;
+import com.ssafy.movezoo.openvidu.dto.ExitRoomDto;
 import io.openvidu.java.client.*;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -8,11 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 //@CrossOrigin(origins = "*")
 @RestController
@@ -35,10 +39,7 @@ public class OpenviduSessionController {
         this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
     }
 
-    /**
-     * @param params The Session properties
-     * @return The Session ID
-     */
+    //입력받은 sessionId로 세션을 생성한다.
     @PostMapping("/api/openvidu/sessions")
     public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
@@ -55,11 +56,7 @@ public class OpenviduSessionController {
         return new ResponseEntity<>(session.getSessionId(), HttpStatus.OK);
     }
 
-    /**
-     * @param sessionId The Session in which to create the Connection
-     * @param params    The Connection properties
-     * @return The Token associated to the Connection
-     */
+    //initializeSession함수로 생성된 세션으로 연결
     @PostMapping("/api/openvidu/sessions/{sessionId}/connections")
     public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId,
                                                    @RequestBody(required = false) Map<String, Object> params)
@@ -80,6 +77,12 @@ public class OpenviduSessionController {
 
         log.info("{}",params);
 
+
+        /**
+         * 방을 만들어서 접속시 이미 redis에 생성을 했으므로 sessionId로 찾기 가능
+         */
+        redisService.getRoomInfoBySessionId(sessionId);
+
         //openvidu session에 연결생성
         Connection connection = session.createConnection(properties);
         return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);
@@ -89,7 +92,9 @@ public class OpenviduSessionController {
     required = false -> 매개변수가 필수가 아니다(null)
     required = true -> 매개변수가 필수여야한다
      */
-    @GetMapping("api/session/{sessionId}/connections")
+
+    //방에 접속되어 있는 유저 리스트
+    @GetMapping("api/openvidu/session/{sessionId}")
     public ResponseEntity<List<String>> getSessionUsers(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params) {
         List<String> connectionUsers = new ArrayList<>();
 
@@ -104,7 +109,56 @@ public class OpenviduSessionController {
         return new ResponseEntity<>(connectionUsers, HttpStatus.OK);
     }
 
-    @GetMapping("api/openvidu/roomList")
+    //유저를 방에서 내보내기(아이디를 가져와서 방장이면 방삭제)
+    @DeleteMapping("api/openvidu/session")
+    public ResponseEntity<String> deleteSessionUser(@RequestBody ExitRoomDto exitRoomDto, Authentication authentication) throws OpenViduJavaClientException, OpenViduHttpException {
+        String sessionId = exitRoomDto.getSessionId();
+        String connectionId = exitRoomDto.getConnectionId();
+
+        log.info("api/openvidu/session {}",authentication.getName());
+
+        Optional<Room> findRoom = redisService.getRoomInfoBySessionId(sessionId);
+        if(findRoom.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not exist room");
+        }
+
+        //방장이 나갈경우 방 삭제
+        int masterId = findRoom.get().getRoomMasterId();
+
+        if(Integer.parseInt(authentication.getName()) == masterId) {
+            deleteSession(sessionId);
+            redisService.deleteRoom(findRoom.get().getId());
+            return ResponseEntity.status(HttpStatus.OK).body("master out");
+        }
+
+        //방장이 아닐경우 세션에서 connectionId를 찾아서 연결 해제
+        Session session = openvidu.getActiveSession(sessionId);
+        List<Connection> connections = session.getConnections();
+
+//        String result = "";
+
+        for (Connection connection : connections) {
+            if(connection.getConnectionId().equals(connectionId)){
+                session.forceDisconnect(connection);
+//                result= connectionId;
+                break;
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(connectionId+" out");
+    }
+
+    //방 삭제
+    public boolean deleteSession(String sessionId) throws OpenViduJavaClientException, OpenViduHttpException {
+        Session session = openvidu.getActiveSession(sessionId);
+        if(session==null) return false;
+        session.close();
+
+        return true;
+    }
+
+    //전체 방 리스트
+    @GetMapping("api/openvidu/session/room-list")
     public ResponseEntity<List<String>> findAllSession(){
         List<String> roomList = new ArrayList<>();
 
