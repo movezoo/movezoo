@@ -1,4 +1,4 @@
-package com.ssafy.movezoo.auth.config.details;
+package com.ssafy.movezoo.auth.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,20 +28,11 @@ public class OAuthCustomSuccesHandler extends SimpleUrlAuthenticationSuccessHand
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        setDefaultTargetUrl("/");
+        setDefaultTargetUrl("/main");
 
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
         log.info("소셜 로그인 성공 - 사용자명: {}", userDetails.getUsername());
-
-        // 있을 경우 URI 등 정보를 가져와서 사용
-        if (savedRequest != null){
-            String targetUrl = savedRequest.getRedirectUrl();
-            redirectStrategy.sendRedirect(request, response, targetUrl);
-        } else {
-            redirectStrategy.sendRedirect(request, response, getDefaultTargetUrl());
-        }
-
 
         // 세션에 사용자 정보 저장
         HttpSession session = request.getSession();
@@ -51,6 +42,14 @@ public class OAuthCustomSuccesHandler extends SimpleUrlAuthenticationSuccessHand
         log.info("session get oauth2 {} ", userDetails2.getUsername());
 
         response.setStatus(HttpServletResponse.SC_OK);
+
+//        // 있을 경우 URI 등 정보를 가져와서 사용
+//        if (savedRequest != null){
+//            String targetUrl = savedRequest.getRedirectUrl();
+//            redirectStrategy.sendRedirect(request, response, targetUrl);
+//        } else {
+//            redirectStrategy.sendRedirect(request, response, getDefaultTargetUrl());
+//        }
     }
 
 }

@@ -11,9 +11,11 @@ const GoogleLoginButton = () => {
 
     return (
         <div>
-            <a className="googlelogin" href="https://i10e204.p.ssafy.io/oauth2/authorization/google">
+            <a className="googlelogin" href="/oauth2/authorization/google">
                 <img alt="Google로고" className="googleLogo"/>
                 Google 계정으로 가입</a>
+
+
         </div>
 
         // <div className="googlelogin">
