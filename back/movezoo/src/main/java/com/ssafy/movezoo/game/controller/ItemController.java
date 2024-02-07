@@ -26,7 +26,9 @@ public class ItemController {
     @GetMapping
     public ResponseEntity<List<ItemResponseDto>> findItemList(Authentication authentication){
 
-        System.out.println(authentication.getName());
+        log.info("item controller {}", authentication);
+        log.info("item controller {}", authentication.getName());
+
         List<ItemResponseDto> itemList = itemService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK).body(itemList);
