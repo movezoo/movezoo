@@ -26,12 +26,7 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
         log.info("oauth 유저 로그인 - loadUser(userRequest)");
 //        System.out.println("oauth 로그인 loadUser : " + userRequest.getAccessToken().getTokenValue());
 
-        // accessToken으로 서드파티에 요청해서 사용자 정보를 얻어옴
         OAuth2User oAuth2User = super.loadUser(userRequest);
-
-//        String provider = userRequest.getClientRegistration().getClientId();
-//        String providerId = oAuth2User.getAttribute("sub");
-//        String nickname = provider + "_" + providerId; //중복이 발생하지 않도록 provider와 providerId를 조합
 
         String email = oAuth2User.getAttribute("email");
         String nickname = oAuth2User.getAttribute("name");
@@ -55,6 +50,7 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
         }
 
         log.info("OAuth2User loadUser - 로그인한 유저 attributes : "+oAuth2User.getAttributes().toString());
+
 
         return oAuth2User;
     }
