@@ -57,6 +57,13 @@ const Login = () => {
     }
   };
 
+  const handleKeyPress = (e) => {
+    // 엔터 키를 눌렀을 때 로그인 함수 호출
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
+
   return (
     <div>
       <h1 className='login'>Login</h1>
@@ -81,6 +88,7 @@ const Login = () => {
             placeholder='Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={handleKeyPress}
           />
         </label>
         <br />
