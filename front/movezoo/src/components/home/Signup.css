@@ -51,7 +51,7 @@ h3 {
   display: block;
   position: relative;
   width: 100%;
-  height: 29px;
+  height: 30px;
   border: none;
   background: #fff;
   font-size: 15px;
@@ -67,12 +67,12 @@ input {
 }
 
 .box.int_pass {
-  padding-right: 40px;
+  padding-right: 100px;
   border-radius: 15px;
 }
 
 .box.int_pass_check {
-  padding-right: 40px;
+  padding-right: 100px;
   border-radius: 15px;
 }
 
@@ -101,39 +101,12 @@ input {
   cursor: pointer;
 }
 
-#bir_wrap {
-  display: table;
-  width: 100%;
-}
-
-#bir_yy {
-  display: table-cell;
-  width: 147px;
-  
-}
-
-#bir_mm {
-  display: table-cell;
-  width: 147px;
-  vertical-align: middle;
-}
-
-#bir_dd {
-  display: table-cell;
-  width: 147px;
-}
-
-#bir_mm, #bir_dd {
-  padding-left: 10px;
-}
-
 /* 에러메세지 */
 
 .error_next_box {
   margin-top: 9px;
   font-size: 12px;
-  color: red;    
-  display: none;
+  color: red;
 }
 
 #alertTxt {
@@ -142,7 +115,6 @@ input {
   right: 38px;
   font-size: 12px;
   color: red;
-  display: none;
 }
 
 /* 버튼 */
