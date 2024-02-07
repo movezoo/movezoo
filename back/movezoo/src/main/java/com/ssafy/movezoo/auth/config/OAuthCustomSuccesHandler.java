@@ -1,4 +1,4 @@
-package com.ssafy.movezoo.auth.config.details;
+package com.ssafy.movezoo.auth.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

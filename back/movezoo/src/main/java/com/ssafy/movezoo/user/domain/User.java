@@ -71,7 +71,6 @@ public class User {
 
 
     // 회원가입 용 Constructor
-    @Builder
     public User(String userEmail, String password, String nickname, String profileImgUrl) {
         this.userEmail = userEmail;
         this.password = password;
@@ -107,6 +106,7 @@ public class User {
 //    }
 
     // 소셜 회원가입 용 Constructor
+    @Builder
     public User(String googleUserEmail, String googleUserName) {
         this.googleUserEmail = googleUserEmail;
         this.nickname = googleUserName;
@@ -115,6 +115,12 @@ public class User {
         this.mic = 50;
         this.cameraSensitivity = 50;
         this.role=UserRole.USER;
+    }
+
+    // 소셜 회원인 경우 update만 하자
+    public User update(String email){
+        this.googleUserEmail = email;
+        return this;
     }
 
 

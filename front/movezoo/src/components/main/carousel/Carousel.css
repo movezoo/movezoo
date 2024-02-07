@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .carousel-container {
-  @apply flex flex-row justify-center items-center w-full
+  @apply select-none flex flex-row justify-center items-center w-full
 }
 
 .carousel-prev {
@@ -16,10 +16,39 @@
 }
 
 .carousel-image {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @apply flex flex-1 justify-center items-center
+}
+
+.slide-right-enter {
+  @apply transform translate-x-2/4;
+}
+
+.slide-right-enter-active {
+  @apply transform translate-x-0 transition-transform duration-300;
+}
+
+.slide-right-exit {
+  @apply transform translate-x-0;
+}
+
+.slide-right-exit-active {
+  @apply transform -translate-x-2/4 transition-transform duration-300;
+}
+
+.slide-left-enter {
+  @apply transform -translate-x-2/4;
+}
+
+.slide-left-enter-active {
+  @apply transform translate-x-0 transition-transform duration-300;
+}
+
+.slide-left-exit {
+  @apply transform translate-x-0;
+}
+
+.slide-left-exit-active {
+  @apply transform translate-x-2/4 transition-transform duration-300;
 }
 
 .carousel-next {
