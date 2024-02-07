@@ -25,6 +25,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final RacerService racerService;
 
+    private final String defaultProfileImgUrl = "./profileImg/profile1.png";
     // 회원가입
     @PostMapping
     public ResponseEntity<SimpleResponseDto> registUser(@RequestBody UserJoinRequestDto dto) {
@@ -38,7 +39,7 @@ public class UserController {
             msg = "중복된 닉네임입니다.";
         } else {
             // 회원가입 성공
-            userService.join(new User(dto.getUserEmail(), passwordEncoder.encode(dto.getPassword()), dto.getNickname()));
+            userService.join(new User(dto.getUserEmail(), passwordEncoder.encode(dto.getPassword()), dto.getNickname(),defaultProfileImgUrl));
 
             Optional<User> findUser = userService.findByEmail(dto.getUserEmail());
             findUser.ifPresent(user -> racerService.addMyRacer(user.getUserId(), 1));
