@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.single-result-container {
+  background-image:url('../Summer6.png');
+  background-size: cover;
+  @apply min-w-[1000px] min-h-screen flex flex-col justify-center 
+  items-center bg-green-400 cursor-default;
+}
+
+.result-header {
+  @apply  w-[1000px] flex flex-col mb-5
+}
+
+.result-name {
+  @apply text-7xl text-white justify-center ml-8
+}
+
+.result-body {
+  @apply w-[1000px] h-[528px] flex flex-row items-center justify-center
+}
+
+.result-body-cam {
+  @apply w-[680px] h-[528px] flex items-center justify-center  bg-white 
+  rounded-3xl p-10;
+}
+
+.result-select {
+  @apply w-[300px] h-[528px] flex flex-col items-center justify-between
+}
+
+.result-webcam {
+  @apply w-full flex items-center justify-center
+  rounded-3xl;
+}
+
+.result-record {
+  @apply w-[250px] h-[250px] flex justify-center items-center 
+  bg-white rounded-2xl
+}
+
+.result-reward {
+  @apply w-[250px] h-[150px] flex flex-col justify-between items-center
+  bg-white rounded-2xl
+}
+
+.reward-alarm {
+  @apply text-3xl pt-5
+}
+
+.reward-coin {
+  @apply text-xl pb-14
+}
+
+.result-back-button {
+  
+}
