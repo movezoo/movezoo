@@ -4,7 +4,6 @@ import axios from "axios";
 import React, { Component } from "react";
 import "./Cam.css";
 import UserVideoComponent from "./UserVideoComponent";
-import RoomForm from "./RoomForm";
 
 const APPLICATION_SERVER_URL =
   // process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
@@ -44,8 +43,10 @@ class Cam extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener("beforeunload", this.handleBeforeUnload);
+    // window.addEventListener("beforeunload", this.handleBeforeUnload);
+    window.addEventListener("beforeunload", this.onbeforeunload);
   }
+  
 
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.handleBeforeUnload);
@@ -61,6 +62,7 @@ class Cam extends Component {
   onbeforeunload(event) {
     this.leaveSession();
   }
+  
 
   handleChangeSessionId(e) {
     this.setState({
@@ -252,8 +254,16 @@ class Cam extends Component {
   }
 
 
-  leaveSession() {
+  //브라우저자체를 닫으면 이게 실행안되서 오류발생
+  async leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
+
+    const response = await axios.delete(
+      `${APPLICATION_SERVER_URL}api/openvidu/session?sessionId=${this.state.mySessionId}&connectionId=${this.state.connectionId}`,
+      {
+          headers: { "Content-Type": "application/json" },
+      }
+  );
 
     const mySession = this.state.session;
 
@@ -271,6 +281,8 @@ class Cam extends Component {
       mainStreamManager: undefined,
       publisher: undefined,
     });
+
+
   }
 
   async switchCamera() {
@@ -382,7 +394,7 @@ class Cam extends Component {
               </form>
             </div>
 
-            <RoomForm></RoomForm>
+
           </div>
         ) : null}
 
@@ -530,26 +542,26 @@ class Cam extends Component {
   async createToken(sessionId) {
     const response = await axios.post(
       APPLICATION_SERVER_URL + "api/openvidu/sessions/" + sessionId + "/connections",
-      {"nickname" : this.state.myUserName},
+      { "nickname": this.state.myUserName },
       {
         headers: { "Content-Type": "application/json" },
       }
     );
-    
+
     return response.data; // The token
   }
 
   //방을 만들고 세션값을 리턴받는다, 그 세션값으로 방에 들어간다
   async createRoom(roomInfo) {
-    const response = await axios.post(  
+    const response = await axios.post(
       APPLICATION_SERVER_URL + "api/room",
-      {"roomInfo" : roomInfo},
+      { "roomInfo": roomInfo },
     );
-    
+
     console.log(response.data);
 
     //response.data.roomSessionId로 세션연결 해야합니다.
-      return response.data; // The token
+    return response.data; // The token
   }
 }
 
