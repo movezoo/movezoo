@@ -48,7 +48,7 @@ function Shop ({ setCoin }) {
           </div> */}
 
           <div className='shop-chracter'>
-            <Character setCoin={setCoin}/>
+            <Character setuserCoin={setCoin}/>
           </div>
           <div className='shop-exit'>
             <IoCloseSharp className='exit-button' onClick={closeModal} />
