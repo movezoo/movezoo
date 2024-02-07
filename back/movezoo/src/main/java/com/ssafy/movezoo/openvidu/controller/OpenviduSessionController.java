@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 
 //@CrossOrigin(origins = "*")
-//@RestController
+@RestController
 @RequiredArgsConstructor
 @Slf4j
 public class OpenviduSessionController {
