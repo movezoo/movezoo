@@ -2,6 +2,7 @@
 
     import com.ssafy.movezoo.auth.config.details.CustomOAuth2Service;
     import com.ssafy.movezoo.auth.config.details.CustomUserDetailsService;
+    import com.ssafy.movezoo.auth.config.details.OAuthCustomSuccesHandler;
     import jakarta.servlet.ServletException;
     import jakarta.servlet.http.HttpServletRequest;
     import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +18,8 @@
     import org.springframework.security.core.AuthenticationException;
     import org.springframework.security.core.userdetails.UserDetails;
     import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+    import org.springframework.security.oauth2.client.OAuth2AuthorizationSuccessHandler;
+    import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
     import org.springframework.security.web.AuthenticationEntryPoint;
     import org.springframework.security.web.SecurityFilterChain;
     import org.springframework.security.web.access.AccessDeniedHandler;
@@ -25,6 +28,7 @@
     import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
     import java.io.IOException;
+    import java.util.Map;
 
     @Configuration
     @EnableWebSecurity  // security 활성화 후 기본 스프링 필터체인에 등록
@@ -34,9 +38,12 @@
 
         private final CustomUserDetailsService UserDetailsServcie;
         private final CustomOAuth2Service customOAuth2Service;
+        private final OAuthCustomSuccesHandler oAuthCustomSuccesHandler;
 
         AuthenticationEntryPoint authenticationEntryPoint;
         AccessDeniedHandler accessDeniedHandler;
+
+
         @Bean
         public BCryptPasswordEncoder passwordEncoder() {
             return new BCryptPasswordEncoder();
@@ -80,7 +87,7 @@
                                             session.setAttribute("user", userDetails);
 
                                             UserDetails userDetails2 = (UserDetails)session.getAttribute("user");
-                                            log.info("session get ", userDetails2.getUsername());
+                                            log.info("session get {}", userDetails2.getUsername());
                                             
 
                                             // 성공 응답을 생성하거나 추가 작업 수행
@@ -137,12 +144,10 @@
             http
                 .oauth2Login((oauth2Login) ->
                         oauth2Login
-//                                .loginPage("/")
                                 .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
                                         .userService(customOAuth2Service)))
-                                .defaultSuccessUrl("/main")
+                                .successHandler(oAuthCustomSuccesHandler)
                 );
-
 
             return http.build();
         }

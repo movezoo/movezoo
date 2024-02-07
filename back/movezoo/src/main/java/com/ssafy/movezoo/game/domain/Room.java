@@ -8,6 +8,8 @@ import org.springframework.data.annotation.Id;  // redis 사용 시 jpa @Id impo
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,6 +31,7 @@ public class Room {
     private String roomTitle;
     private int currentUserCount;
     private int maxUserCount;
+    private LocalDateTime creationDateTime; // 객체 생성 날짜와 시간
 
     // 비밀방
     public Room(int userId, String roomSessionId, String roomTitle, int roomMode, int maxUserCount, String secretRoomPassword){
@@ -42,6 +45,7 @@ public class Room {
         this.roomTitle = roomTitle;
         this.currentUserCount = 1;
         this.maxUserCount = maxUserCount;
+        this.creationDateTime = LocalDateTime.now(); // 현재 날짜와 시간 저장
     }
 
     // 일반방
@@ -56,6 +60,7 @@ public class Room {
         this.roomTitle = roomTitle;
         this.currentUserCount = 1;
         this.maxUserCount = maxUserCount;
+        this.creationDateTime = LocalDateTime.now(); // 현재 날짜와 시간 저장
     }
 
     @Override
@@ -72,6 +77,7 @@ public class Room {
                 ", roomTitle='" + roomTitle + '\'' +
                 ", currentUserCount=" + currentUserCount +
                 ", maxUserCount=" + maxUserCount +
+                ", creationDateTime=" + creationDateTime +
                 '}';
     }
 }

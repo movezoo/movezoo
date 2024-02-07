@@ -253,7 +253,6 @@ class Cam extends Component {
     }
   }
 
-
   //브라우저자체를 닫으면 이게 실행안되서 오류발생
   async leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
@@ -530,24 +529,27 @@ class Cam extends Component {
   //세션을 만들고 입장만 하지않는것, createRoom과 동일 근데!!! customSessionId만 set가능하니까 redis에 들어갈 방정보는 따로 관리하는 함수를 작성해야한다
   async createSession(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/openvidu/sessions",
+      APPLICATION_SERVER_URL + "api/room",
       { customSessionId: sessionId },
       {
         headers: { "Content-Type": "application/json" },
       }
     );
-    return response.data; // The sessionId
+
+    console.log("create session ",response.data.roomSessionId);
+    return response.data.roomSessionId; // The sessionId
   }
 
   async createToken(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/openvidu/sessions/" + sessionId + "/connections",
-      { "nickname": this.state.myUserName },
+      APPLICATION_SERVER_URL + "api/room/enter",
+      { "roomSessionId" : sessionId,
+        "nickname": this.state.myUserName },
       {
         headers: { "Content-Type": "application/json" },
       }
     );
-
+    console.log("create Token ",response.data );
     return response.data; // The token
   }
 
@@ -558,7 +560,7 @@ class Cam extends Component {
       { "roomInfo": roomInfo },
     );
 
-    console.log(response.data);
+    console.log("create room ", response.data);
 
     //response.data.roomSessionId로 세션연결 해야합니다.
     return response.data; // The token
