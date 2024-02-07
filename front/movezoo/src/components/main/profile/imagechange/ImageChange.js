@@ -44,7 +44,8 @@ const ImageChangeModal = ({ onImageChange }) => {
 
       const loginUserEmail = await axios.get(`https://i10e204.p.ssafy.io/api/user/${loginUserId}`, {
         });
-      setEmail(loginUserEmail.data.userEmail);
+      // setEmail(loginUserEmail.data.userEmail);
+      const userEmail = loginUserEmail.data.userEmail;
 
       const profileImgUrl = selectedImage.image;
       console.log('====================================')
@@ -54,6 +55,8 @@ const ImageChangeModal = ({ onImageChange }) => {
         {userEmail, profileImgUrl},
         { withCredentials: true}
         );
+
+      console.log('이미지 변경 성공:', response);
 
       onImageChange(profileImgUrl);
 
