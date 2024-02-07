@@ -144,6 +144,7 @@
             http
                 .oauth2Login((oauth2Login) ->
                         oauth2Login
+                                .loginPage("/")
                                 .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
                                         .userService(customOAuth2Service)))
                                 .successHandler(oAuthCustomSuccesHandler)
