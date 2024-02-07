@@ -142,6 +142,11 @@ function Main() {
   const [userImage, setUserImage] = React.useState(''); // 사용자 이미지 상태 추가
   const [userNickname, setUserNickname] = React.useState(''); // 사용자 닉네임 상태 추가
 
+  const backgroundImage = {
+    backgroundImage: `url('/images/mainbg/sky1.jpg')`,
+    backgroundSize: 'cover',
+  };
+
   const openProfileModal = () => {
     setIsProfileOpen(true);
   };
@@ -154,16 +159,16 @@ function Main() {
     const fetchUserCharacters = async () => {
       setLoading(true);
       try{
-        const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-                withCredentials: true, // 쿠키 허용
-              });
-        const UserId = loginUserId.data;
+        // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+        //         withCredentials: true, // 쿠키 허용
+        //       });
+        // const UserId = loginUserId.data;
 
-        const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${UserId}`, {})
+        // const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${UserId}`, {})
         
 
         // 임시 데이터
-        // const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102', {})
+        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102', {})
 
         const nickname = response.data.nickname;
         const userCoin = response.data.coin;
@@ -191,7 +196,7 @@ function Main() {
   }
 
   return (
-    <div className="main-container" >
+    <div className="main-container">
 
       {/* 홈으로, 프로필 */}
       <div className="main-header">
@@ -212,7 +217,7 @@ function Main() {
           </div>
 
           <div className="header-info-profile">
-          <img src={userImage} alt="프로필 이미지" onClick={openProfileModal} />
+          <img className="profile-image" src={userImage} alt="프로필 이미지" onClick={openProfileModal} />
           <Profile isProfileOpen={isProfileOpen} isProfileClose={closeProfileModal} setUserImage={setUserImage} setUserNickname={setUserNickname} />
           </div>
         </div>
