@@ -7,6 +7,12 @@ const PLAYER_SPRITE = {
   DIRECTIONS: [ "uphill_left", "uphill_straight", "uphill_right", "left", "straight", "right" ]
 }
 
+const BACKGROUND_SPRITE_FILE_NAME = {
+  hills: 'hills',       //.png
+  sky: 'sky',           //.png
+  faraway: 'faraway'    //.png
+};
+
 const MAX_FRAME_COUNT = {
   pug: { run: 21 },
   sheep: { run: 21 },
@@ -53,6 +59,12 @@ const BACKGROUND = {
 
 // SPRITES.동물이름.액션[이름].방향 : [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}] // 프레임별로 있음
 // SPRITES.spriteName[action.name].direction: [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}]
+
+
+
+
+
+
 const SPRITES = {
   PALM_TREE:              { x:    5, y:    5, w:  215, h:  540 },
   BILLBOARD08:            { x:  230, y:    5, w:  385, h:  265 },
@@ -82,13 +94,14 @@ const SPRITES = {
   CAR02:                  { x: 1383, y:  825, w:   80, h:   59 },
   CAR04:                  { x: 1383, y:  894, w:   80, h:   57 },
   CAR01:                  { x: 1205, y: 1018, w:   80, h:   56 },
+  PLAYER_STRAIGHT: { w: 300 } // 플레이어의 좌우 길이
 
-  PLAYER_UPHILL_LEFT:     { x: 0, y:  0, w:   80, h:   45 },
-  PLAYER_UPHILL_STRAIGHT: { x: 0, y: 0, w:   80, h:   45 },
-  PLAYER_UPHILL_RIGHT:    { x: 0, y: 0, w:   80, h:   45 },
-  PLAYER_LEFT:            { x:  0, y:  0, w:   80, h:   41 },
-  PLAYER_STRAIGHT:        { x: 0, y:  0, w:   100, h:   100 },
-  PLAYER_RIGHT:           { x:  0, y:  0, w:   80, h:   41 }
+  // PLAYER_UPHILL_LEFT:     { x: 0, y:  0, w:   80, h:   45 },
+  // PLAYER_UPHILL_STRAIGHT: { x: 0, y: 0, w:   80, h:   45 },
+  // PLAYER_UPHILL_RIGHT:    { x: 0, y: 0, w:   80, h:   45 },
+  // PLAYER_LEFT:            { x:  0, y:  0, w:   80, h:   41 },
+  // PLAYER_STRAIGHT:        { x: 0, y:  0, w:   100, h:   100 },
+  // PLAYER_RIGHT:           { x:  0, y:  0, w:   80, h:   41 }
 };
 
 // SPRITES.SCALE은 참조 스프라이트 폭이 (반쪽) 도로 폭의 1/3이어야 하므로 설정
@@ -130,4 +143,4 @@ SPRITES.CARS = [
 ];
 
 
-export { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT}
+export { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME}
