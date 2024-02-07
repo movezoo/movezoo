@@ -27,7 +27,6 @@ const Main = (props) => {
     let fieldOfView    = 100;                     // 시야각 (도)
     let fogDensity     = 5;                       // 지수적 안개 밀도
 
- 
 
 
     let fps            = 60;                      // 초당 'update' 프레임 수
@@ -633,25 +632,25 @@ const Main = (props) => {
     const resetRoad = () => {
       segments = [];
       addStraight(ROAD.LENGTH.LONG);
-      // addLowRollingHills();
-      // addSCurves();
-      // addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
-      // addBumps();
-      // addLowRollingHills();
-      // addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
-      // addStraight();
-      // addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
-      // addSCurves();
-      // addCurve(ROAD.LENGTH.LONG, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
-      // addHill(ROAD.LENGTH.LONG, ROAD.HILL.HIGH);
-      // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
-      // addBumps();
-      // addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
-      // addStraight();
-      // addSCurves();
+      addLowRollingHills();
+      addSCurves();
+      addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
+      addBumps();
+      addLowRollingHills();
+      addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
+      addStraight();
+      addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
+      addSCurves();
+      addCurve(ROAD.LENGTH.LONG, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
+      addHill(ROAD.LENGTH.LONG, ROAD.HILL.HIGH);
+      addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
+      addBumps();
+      addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
+      addStraight();
+      addSCurves();
       addDownhillToEnd();
     
-      // resetSprites();
+      resetSprites();
       resetCars();
     
       // 플레이어 현재 위치 다음 2개 세그먼트의 색을 START 색으로 설정
@@ -949,16 +948,16 @@ const Main = (props) => {
       </table> */}
 
 
-      <div id='instructions'>
-        {/* <p>Use the <b>arrow keys</b> to drive the car.</p>
+      {/* <div id='instructions'>
+        <p>Use the <b>arrow keys</b> to drive the car.</p>
         내차 X 위치 : <span id="playerX">0</span><br/>
         내차 Z 위치 : <span id="position">0</span><br/>
 
         상대차 X 위치 : <span id="userX">0</span><br/>
         상대차 Z 위치 : <span id="userZ">0</span><br/>
 
-        trackLength : <span id="trackLength">0</span><br/> */}
-      </div>
+        trackLength : <span id="trackLength">0</span><br/>
+      </div> */}
 
       <div id="racer">
         <div id="hud">

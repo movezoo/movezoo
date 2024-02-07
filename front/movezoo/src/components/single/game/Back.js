@@ -2,6 +2,7 @@ import { Fragment, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import "./Back.css";
 
 function Back() {
   const [open, setOpen] = useState(false);
@@ -11,7 +12,7 @@ function Back() {
   const handleLeaveGame = () => navigate("/main");
 
   return (
-    <div>
+    <div className="">
       <button
         type="button"
         className="inline-flex w-full rounded-md bg-red-600 px-5 py-4 text-sm font-semibold text-white shadow-sm hover:bg-red-500"

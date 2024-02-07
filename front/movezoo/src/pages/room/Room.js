@@ -31,7 +31,7 @@ function Room() {
     fetchRoomList();
   }, []);
 
-  console.log(rooms)
+  console.log(rooms);
 
   return (
     <div className="room-container">
@@ -46,8 +46,8 @@ function Room() {
       <div className="room-main">
         <div className="room-info">
           <div className="room-search">
-            <input />
-            <button>검색</button>
+            <input style={{ width: "80%" }} />
+            <button style={{ width: "20%", backgroundColor: "burlywood" }}>검색</button>
           </div>
           <Link className="room-match" to="/multi">
             <button>빠른 입장</button>
@@ -63,7 +63,8 @@ function Room() {
                 <Inforoom
                   key={room.id}
                   title={room.roomTitle}
-                  userCount={room.maxUserCount}
+                  userCount={room.currentUserCount}
+                  userMaxCount={room.maxUserCount}
                   mode={room.roomMode}
                   track={room.trackId}
                   session={room.roomSessionId}

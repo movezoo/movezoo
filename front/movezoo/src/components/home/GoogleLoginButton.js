@@ -3,14 +3,18 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import './GoogleLogin.css'
 
+
 const GoogleLoginButton = () => {
     // const clientId = '646007525436-ice4fd79vbt6e0vv0m80lkfihehsfpgn.apps.googleusercontent.com'; // Google Developers Console에서 발급받은 클라이언트 ID
     const navigate = useNavigate();
 
 
     return (
-
-        <a href="https://i10e204.p.ssafy.io/oauth2/authorization/google">Google Login</a>
+        <div>
+            <a className="googlelogin" href="https://i10e204.p.ssafy.io/oauth2/authorization/google">
+                <img src="../../../homebg/googlelogo.png" alt="Google로고" className="googleLogo"/>
+                Google 계정으로 가입</a>
+        </div>
 
         // <div className="googlelogin">
         //     {/* GoogleOAuthProvider를 사용하여 OAuth Provider를 설정 */}
