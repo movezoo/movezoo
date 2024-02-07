@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
-import Navbar from "../../components/navbar/Navbar";
-import Makeroom from "../../components/room/Makeroom";
-import Inforoom from "../../components/room/Inforoom";
+import Navbar from "../../../components/navbar/Navbar";
+import Makeroom from "../../../components/multi/roomlist/Makeroom";
+import Inforoom from "../../../components/multi/roomlist/Inforoom";
 import * as React from "react";
 import Modal from "react-modal";
-import "./Room.css";
+import "./RoomList.css";
 import axios from "axios";
 import { useEffect } from "react";
 
 Modal.setAppElement("#root");
 
-function Room() {
+function RoomList(props) {
   const [volume, setVolume] = React.useState(80);
   const [rooms, setRooms] = React.useState([]);
 
@@ -33,6 +33,10 @@ function Room() {
 
   console.log(rooms);
 
+  function enterRoom() {
+    props.setPage(2);
+  }
+
   return (
     <div className="room-container">
       {/* 홈으로, 프로필 */}
@@ -47,11 +51,13 @@ function Room() {
         <div className="room-info">
           <div className="room-search">
             <input style={{ width: "80%" }} />
-            <button style={{ width: "20%", backgroundColor: "burlywood" }}>검색</button>
+            <button style={{ width: "20%", backgroundColor: "burlywood" }}>
+              검색
+            </button>
           </div>
-          <Link className="room-match" to="/multi">
-            <button>빠른 입장</button>
-          </Link>
+          <button className="room-match" onClick={enterRoom}>
+            빠른 입장
+          </button>
           <button className="room-make">
             <Makeroom />
           </button>
@@ -68,6 +74,8 @@ function Room() {
                   mode={room.roomMode}
                   track={room.trackId}
                   session={room.roomSessionId}
+                  setPage={props.setPage}
+                  setMySessionId={props.setMySessionId} 
                 />
               }
             </div>
@@ -92,4 +100,4 @@ function Room() {
   );
 }
 
-export default Room;
+export default RoomList;
