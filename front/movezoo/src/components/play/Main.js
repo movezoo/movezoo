@@ -2,7 +2,7 @@
 // import io from "socket.io-client";
 import { useRef, useEffect } from 'react'
 import { Dom, Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
-import { MAX_FRAME_COUNT, PLAYER_SPRITE, SPRITE_SIZE } from './gameConstants.js';
+import { MAX_FRAME_COUNT, PLAYER_SPRITE, SPRITE_FILE_NAME, SPRITE_SIZE } from './gameConstants.js';
 import { data, myGameData, playerGameDataList, playerCount, playerGameResetDataList } from './data.js';
 
 const localStorage = window.localStorage || {};
@@ -680,8 +680,60 @@ const Main = (props) => {
     }
     
     const resetSprites = () => {
+      // addSprite(z축위치, 스프라이트그룹, 스프라이트이름, x축위치)
+
+
       // 고정된 위치에 각종 스프라이트 추가
       addSprite(20, 'BILLBOARD', 'billboard_ssafy', -1);
+      // addSprite(40, 'BILLBOARD', 'billboard_ssafy', -1);
+      addSprite(60, 'BILLBOARD', 'billboard', -1);
+      // addSprite(80, 'BILLBOARD', 'billboard_ssafy', -1);
+      addSprite(100, 'BILLBOARD', 'billboard_ssafy', -1);
+      // addSprite(120, 'BILLBOARD', 'billboard_ssafy', -1);
+      addSprite(140, 'BILLBOARD', 'billboard', -1);
+      addSprite(160, 'BILLBOARD', 'billboard_ssafy', -1);
+
+      // 반복문으로 생성
+      for(let n = 10; n < 200; n += 4 + Math.floor(n/100)) {
+        addSprite(n, 'TREE', 'tree1', 0.5 + Math.random()*0.5);
+        addSprite(n, 'TREE', 'tree1',   1 + Math.random()*2);
+      }
+      for(let n = 250; n < 1000; n += 5) {
+        addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
+        addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
+      }
+
+      // 다양한 위치에 랜덤하게 식물 스프라이트 추가
+      for(let n = 200; n < segments.length; n += 3) {
+        addSprite(
+          n,
+          'TREE',
+          Util.randomChoice(SPRITE_FILE_NAME['map1'].TREE),
+          Util.randomChoice([1,-1]) * (2 + Math.random() * 5)
+        );
+      }
+    
+      // 일정한 간격으로 랜덤한 방향으로 빌보드 및 식물 스프라이트 추가
+      let side, sprite, offset;
+      for(let n = 1000; n < (segments.length-50); n += 100) {
+        side = Util.randomChoice([1, -1]);
+        addSprite(
+          n + Util.randomInt(0, 50),
+          'BILLBOARD',
+          Util.randomChoice(SPRITE_FILE_NAME['map1'].BILLBOARD),
+          -side
+        );
+        for(let i = 0; i < 20; i++) {
+          sprite = Util.randomChoice(SPRITE_FILE_NAME['map1'].TREE);
+          offset = side * (1.5 + Math.random());
+          addSprite(n + Util.randomInt(0, 50), 'TREE', sprite, offset);
+        }
+          
+      }
+
+
+      // *************Legacy function**************
+      // addSprite(20,  SPRITES.BILLBOARD05, -1);
       // addSprite(40,  SPRITES.BILLBOARD06, -1);
       // addSprite(60,  SPRITES.BILLBOARD08, -1);
       // addSprite(80,  SPRITES.BILLBOARD09, -1);
