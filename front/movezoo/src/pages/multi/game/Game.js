@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+
 import styles from "./Game.module.css";
 import "./Game.module.css";
 // import Webcam from "react-webcam";
@@ -6,12 +6,7 @@ import Back from "../../../components/single/game/Back";
 import Main from "../../../components/play/Main";
 import Cam from "../../../components/play/Cam";
 
-import { useLocation } from "react-router-dom";
-
 function Game(props) {
-  const { state } = useLocation();
-  const { mySessionId, isGameStart } = state;
-
   return (
     <div>
       {/*일단 축소 화면*/}
@@ -28,7 +23,7 @@ function Game(props) {
           </div>
           {/*웹캠*/}
           {/* <div className={styles.webCam}> */}
-          <Cam mySessionId={mySessionId} isGameStart={isGameStart} />
+          <Cam />
           multigame
           {/* </div> */}
           {/* <Webcam className={styles.webCam} mirrored={true} /> */}

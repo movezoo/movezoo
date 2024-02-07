@@ -15,7 +15,7 @@ function Inforoom( props ) {
   const onClickRoom = () => {
     // 필요한 데이터 : 사용자 ID, sessionID
     // console.log(props.session);
-    props.setMySessionId(props.session) 
+    props.func(props.session) 
     props.setPage(2);
   }
   const images = ["n.png", "o.png"];
