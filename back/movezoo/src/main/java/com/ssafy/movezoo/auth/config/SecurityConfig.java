@@ -2,7 +2,6 @@
 
     import com.ssafy.movezoo.auth.config.details.CustomOAuth2Service;
     import com.ssafy.movezoo.auth.config.details.CustomUserDetailsService;
-    import com.ssafy.movezoo.auth.config.details.OAuthCustomSuccesHandler;
     import jakarta.servlet.ServletException;
     import jakarta.servlet.http.HttpServletRequest;
     import jakarta.servlet.http.HttpServletResponse;
@@ -18,8 +17,6 @@
     import org.springframework.security.core.AuthenticationException;
     import org.springframework.security.core.userdetails.UserDetails;
     import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-    import org.springframework.security.oauth2.client.OAuth2AuthorizationSuccessHandler;
-    import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
     import org.springframework.security.web.AuthenticationEntryPoint;
     import org.springframework.security.web.SecurityFilterChain;
     import org.springframework.security.web.access.AccessDeniedHandler;
@@ -28,7 +25,6 @@
     import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
     import java.io.IOException;
-    import java.util.Map;
 
     @Configuration
     @EnableWebSecurity  // security 활성화 후 기본 스프링 필터체인에 등록
@@ -145,8 +141,8 @@
                 .oauth2Login((oauth2Login) ->
                         oauth2Login
                                 .loginPage("/")
-                                .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
-                                        .userService(customOAuth2Service)))
+                                .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig // OAuth2 로그인 성공 후 가져올 설정들
+                                        .userService(customOAuth2Service))) // 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시
                                 .successHandler(oAuthCustomSuccesHandler)
                 );
 

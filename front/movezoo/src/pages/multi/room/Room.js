@@ -86,8 +86,8 @@ const Room = (props) => {
   const [myUserName, setMyUserName] = useState(
     "Participant" + Math.floor(Math.random() * 100)
   );
-  const [session, setSession] = useState(undefined);
-  const [mainStreamManager, setMainStreamManager] = useState(undefined);
+  const session = props.session;
+  const mainStreamManager = props.mainStreamManager;
   const [publisher, setPublisher] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
 
@@ -103,6 +103,27 @@ const Room = (props) => {
           <h1 style={{ margin: 10 }}>Multi Play</h1>
         </div>
         {/* User 영역 */}
+        {/* 메인 비디오 */}
+        {mainStreamManager !== undefined ? (
+            <div id="main-video" className="col-md-6">
+              <MyVideoComponent
+                streamManager={mainStreamManager}
+                mySession={session}
+              />
+            </div>
+          ) : "asdf"}
+
+          <div id="video-container" className="col-md-6">
+            {subscribers.map((sub, i) => (
+              <div
+                key={sub.id}
+                className="stream-container col-md-6 col-xs-6"
+              >
+                <span>{sub.id}</span>
+                <UserVideoComponent streamManager={sub} />
+              </div>
+            ))}
+          </div>
         {/* <div className={styles.userSection}>
           {session === undefined ? (
             <div id="join">
@@ -192,14 +213,6 @@ const Room = (props) => {
             </div>
           ) : null}
         </div> */}
-
-
-
-
-
-
-
-
         {/* {loading ? (
             <h1 className={styles.txtLoading}>Loading...</h1>
           ) : (
@@ -210,12 +223,6 @@ const Room = (props) => {
             <button className={styles.btnSelect}>카트 고르기</button>
           </div> */}
       </div>
-
-
-
-
-
-
       {/*오른쪽 영역*/}
       <div className={styles.rightSection}>
         {/*맵*/}
@@ -231,16 +238,6 @@ const Room = (props) => {
           <Ready mySessionId={props.mySessionId} isGameStart={isGameStart} setPage={props.setPage}/>
         </div>
       </div>
-      
-      
-
-
-
-
-
-
-
-
     </div>
   );
 };
