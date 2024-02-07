@@ -14,6 +14,7 @@ const Profile = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [userImage, setUserImage] = useState(null);
+  const [nickname, setNickname] = useState(null);
 
     const openModal = () => {
       setIsOpen(true);
@@ -27,27 +28,31 @@ const Profile = () => {
       setUserImage(newImage);
     };
 
+    const handleNicknameChange = (newNickname) => {
+      setNickname(newNickname);
+    };
+
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
         // == 쿠키 사용해서 로그인한 유저 id 가져오기 ============
 
-        // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-        //   withCredentials: true, // 쿠키 허용
-        // });
-        // const UserId = loginUserId.data;
+        const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+          withCredentials: true, // 쿠키 허용
+        });
+        const UserId = loginUserId.data;
 
-        // console.log("UserId : ", UserId);
+        console.log("UserId : ", UserId);
 
-        // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {
-        // })
+        const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
 
         // 임시 유저 데이터
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102');
+        // const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102');
 
         const user = response.data;
         setUser(user);
+        setNickname(user.nickname);
 
         const userImage = response.data.profileImgUrl;
         setUserImage(userImage)
@@ -65,7 +70,8 @@ const Profile = () => {
     <div className='profile'>
       <button className='profileButton'  onClick={openModal}>
         <img src={userImage} alt="프로필 이미지" 
-        className='profileButton' onClick={openModal}/>             
+        className='profileButton' onClick={openModal}/>   
+        { nickname }          
       </button>
 
       <Modal 
@@ -87,7 +93,7 @@ const Profile = () => {
           <div className='profile-body'>
             <div className='body-change'>
               <ImageChange onImageChange={handleImageChange} />
-              <NicknameChange/>
+              <NicknameChange onNicknameChange={handleNicknameChange}/>
               <PasswordChange/>
               <LogoutModal/>
             </div>
