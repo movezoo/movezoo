@@ -40,7 +40,7 @@ public class OpenviduSessionController {
     }
 
     //입력받은 sessionId로 세션을 생성한다.
-//    @PostMapping("/api/openvidu/sessions")
+    @PostMapping("/api/openvidu/sessions")
     public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
         log.info("/api/sessions");
@@ -57,7 +57,7 @@ public class OpenviduSessionController {
     }
 
     //initializeSession함수로 생성된 세션으로 연결
-//    @PostMapping("/api/openvidu/sessions/{sessionId}/connections")
+    @PostMapping("/api/openvidu/sessions/{sessionId}/connections")
     public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId,
                                                    @RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
@@ -94,7 +94,7 @@ public class OpenviduSessionController {
      */
 
     //방에 접속되어 있는 유저 리스트
-//    @GetMapping("api/openvidu/session/{sessionId}")
+    @GetMapping("api/openvidu/session/{sessionId}")
     public ResponseEntity<List<String>> getSessionUsers(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params) {
         List<String> connectionUsers = new ArrayList<>();
 
@@ -111,7 +111,7 @@ public class OpenviduSessionController {
 
     //deleteampping에서는 RequestBody를 사용할수 없다
     //유저를 방에서 내보내기(아이디를 가져와서 방장이면 방삭제)
-//    @DeleteMapping("api/openvidu/session")
+    @DeleteMapping("api/openvidu/session")
     public ResponseEntity<String> deleteSessionUser(@RequestParam String sessionId, @RequestParam String connectionId, Authentication authentication) throws OpenViduJavaClientException, OpenViduHttpException {
 
 //        log.info("api/openvidu/session {}", authentication.getName());
@@ -162,7 +162,7 @@ public class OpenviduSessionController {
     }
 
     //전체 방 리스트
-//    @GetMapping("api/openvidu/session/room-list")
+    @GetMapping("api/openvidu/session/room-list")
     public ResponseEntity<List<String>> findAllSession() {
         List<String> roomList = new ArrayList<>();
 
