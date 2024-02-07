@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -34,6 +35,7 @@ public class RedisController {
     private OpenVidu openvidu;
 
     private final RedisService redisService;
+
     @PostConstruct
     public void init() {
         this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
@@ -42,7 +44,7 @@ public class RedisController {
     // 방 만들기
     @PostMapping("/room")
     public ResponseEntity<RoomResponseDto> createRoom(Authentication authentication, @RequestBody CreateRoomRequestDto dto) throws OpenViduJavaClientException, OpenViduHttpException {
-        log.info("make room {}",dto);
+        log.info("make room {}", dto);
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
         simpleResponseDto.setSuccess(true);
 
@@ -65,7 +67,7 @@ public class RedisController {
         //openvidu session create end
 
         // roomSessionId 중복 체크 필요
-        if (redisService.isDuplicateRoomSessionId(dto.getRoomSessionId())){  // 세션 아이디가 중복이라면
+        if (redisService.isDuplicateRoomSessionId(dto.getRoomSessionId())) {  // 세션 아이디가 중복이라면
             System.out.println("세션 아이디가 중복입니다.");
             simpleResponseDto.setMsg("세션 아이디가 중복입니다.");
             simpleResponseDto.setSuccess(false);
@@ -75,9 +77,9 @@ public class RedisController {
 
         try {
             dto.setMaxRange(4);
-            if (dto.getRoomPassword() != null && !dto.getRoomPassword().isEmpty()){     // 비밀방일 경우
+            if (dto.getRoomPassword() != null && !dto.getRoomPassword().isEmpty()) {     // 비밀방일 경우
                 Room room = redisService.createSecretRoom(userId, dto);
-                log.info("make s room {}",room);
+                log.info("make s room {}", room);
                 simpleResponseDto.setMsg("비밀방 생성 성공");
 
                 RoomResponseDto roomResponseDto = RoomResponseDto.builder()
@@ -111,7 +113,7 @@ public class RedisController {
                 return ResponseEntity.status(HttpStatus.OK).body(roomResponseDto);
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             simpleResponseDto.setMsg("방 생성 실패");
             simpleResponseDto.setSuccess(false);
@@ -120,101 +122,21 @@ public class RedisController {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private String makeRandomSessionId(){
+    private String makeRandomSessionId() {
         return UUID.randomUUID().toString();
     }
 
     // 방 목록
     @GetMapping("/room")
-    public List<Room> getRoomList(){
+    public List<Room> getRoomList() {
         List<Room> roomList = redisService.getRoomList();
         roomList.sort(new Comparator<Room>() {
             @Override
             public int compare(Room o1, Room o2) {
-                return o1.getCreationDateTime().compareTo(o2.getCreationDateTime());
+                return o2.getCreationDateTime().compareTo(o1.getCreationDateTime());
             }
         });
         return roomList;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //initializeSession함수로 생성된 세션으로 연결
-    @PostMapping("/api/openvidu/sessions/{sessionId}/connections")
-    public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId,
-                                                   @RequestBody(required = false) Map<String, Object> params)
-            throws OpenViduJavaClientException, OpenViduHttpException {
-
-        log.info("/api/sessions/{} ", sessionId);
-
-        //sessionId 사용하여 OpenVidu에서 해당 세션 get
-        Session session = openvidu.getActiveSession(sessionId);
-
-        //세션 존재하지 않으면 404 반환
-        if (session == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        //프론트에서 넘어온 json데이터를 사용하여 ConnectionProperties객체생성, openvidu session에 연결할때 필요
-        ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
-
-        log.info("{}", params);
-
-
-        /**
-         * 방을 만들어서 접속시 이미 redis에 생성을 했으므로 sessionId로 찾기 가능
-         */
-        redisService.getRoomInfoBySessionId(sessionId);
-
-        //openvidu session에 연결생성
-        Connection connection = session.createConnection(properties);
-        return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);
     }
 
 
@@ -231,24 +153,23 @@ public class RedisController {
         //sessionId 사용하여 OpenVidu에서 해당 세션 get
         Session session = openvidu.getActiveSession(sessionId);
 
-        if(session == null || redisService.isPlay(sessionId)){
+        //redis에도 있어야하지만, openvidu session에도 연결되어있어야한다.
+        if (session == null || redisService.isPlay(sessionId)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
         Optional<Room> roomInfoBySessionId = redisService.getRoomInfoBySessionId(sessionId);
-        if(roomInfoBySessionId.isPresent()) System.out.println(roomInfoBySessionId.get().toString());
-        if (redisService.enterRoom(sessionId)){
-            System.out.println("asdasdasd");
+        if (roomInfoBySessionId.isPresent()) System.out.println(roomInfoBySessionId.get().toString());
+        if (redisService.enterRoom(sessionId)) {
             //프론트에서 넘어온 json데이터를 사용하여 ConnectionProperties객체생성, openvidu session에 연결할때 필요
             Map<String, Object> params = new HashMap<>();
-            params.put("nickname",nickname);
+            params.put("nickname", nickname);
             ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
 
             //openvidu session에 연결생성
             Connection connection = session.createConnection(properties);
             return ResponseEntity.status(HttpStatus.OK).body(connection.getToken());
         } else {
-            System.out.println("Tlqkf");
             simpleResponseDto.setSuccess(false);
             simpleResponseDto.setMsg("방 입장 실패");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -256,42 +177,72 @@ public class RedisController {
     }
 
     @PatchMapping("/room/start")
-    public void changeRoomStatus(@RequestBody(required = true) Map<String, Object> params){
+    public ResponseEntity<String> changeRoomStatus(@RequestBody(required = true) Map<String, Object> params) {
         String sessionId = (String) params.get("roomSessionId");
         redisService.changRoomStatus(sessionId);
+        return ResponseEntity.status(HttpStatus.OK).body("game start");
     }
 
     // 방 나가기 (방장 -> 방 폭파 / 방장 X -> 방 퇴장)
     @PatchMapping("/room/exit")
-    public ResponseEntity<SimpleResponseDto> exitRoom(Authentication authentication, @RequestBody RoomSessionIdDto dto){
+    public ResponseEntity<String> exitRoom(Authentication authentication, @RequestBody(required = true) Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException {
+        String sessionId = (String) params.get("roomSessionId");
+        String connectionId = (String) params.get("connectionId");
+
+        log.info("room exit {} {}", sessionId, connectionId);
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
 
+
+        Optional<Room> findRoom = redisService.getRoomInfoBySessionId(sessionId);
+        if (findRoom.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not exist room");
+        }
+
+        Room room = findRoom.get();
         int userId = Integer.parseInt(authentication.getName());
+        int masterId = findRoom.get().getRoomMasterId();
 
-        // 나가려는 방 정보를 가져온다.
-        if (redisService.getRoomInfoBySessionId(dto.getRoomSessionId()).isPresent()){
-            Room room = redisService.getRoomInfoBySessionId(dto.getRoomSessionId()).get();
+        //나가려고 하는 유저가 마스터이면 방을(세션)을 닫는다
+        if (userId == masterId) {
+            redisService.deleteRoom(room.getId());
+            deleteSession(sessionId);
+            return ResponseEntity.status(HttpStatus.OK).body("master out");
+        }
 
-            // 나가려는 사용자가 방장 -> 방 삭제
-            if (room.getRoomMasterId() == userId){
-                redisService.deleteRoom(room.getId());
-                simpleResponseDto.setMsg("방장 퇴장 - 방 폭파 성공");
-            } else {    // 나려는 사용자가 방장 X -> 퇴장
-                redisService.exitRoom(room.getId());
-                simpleResponseDto.setMsg("방 나가기 성공");
+        // 나가려는 사용자가 방장 X -> 퇴장, 세션에서도 제외한다.(프론트에서 보이지 않아도 백엔드쪽에는 정보가 남아있다, connectionId 제거)
+        redisService.exitRoom(room.getId());
+        Session session = openvidu.getActiveSession(sessionId);
+        if (session == null) return ResponseEntity.status(HttpStatus.OK).body("not exist session " + sessionId);
+        List<Connection> connections = session.getConnections();
+
+//        String result = "";
+        log.info("session {} connections {}", session.getSessionId(),connections.size());
+        for (Connection connection : connections) {
+            if (connection.getConnectionId().equals(connectionId)) {
+                session.forceDisconnect(connection);
+                break;
             }
         }
 
-        simpleResponseDto.setSuccess(true);
-        return ResponseEntity.ok().body(simpleResponseDto);
+        //세션에 연결된 connection이 0명이면 session close해야한다 -> 방장이 나가는 경우 세션을 close한다
+        return ResponseEntity.status(HttpStatus.OK).body(connectionId + " out");
     }
 
+
+    //openvidu session을 닫는다. 방장이 나가면 같은 세션에 있는 사용자들도 나가진다
+    public boolean deleteSession(String sessionId) throws OpenViduJavaClientException, OpenViduHttpException {
+        Session session = openvidu.getActiveSession(sessionId);
+        if (session == null) return false;
+        session.close();
+        return true;
+    }
+
+
     // 방 삭제
-    @GetMapping("/room/remove")
-    public ResponseEntity<SimpleResponseDto> removeRoom(@RequestParam("sessionId") String roomSessionId){
+    public ResponseEntity<SimpleResponseDto> removeRoom(@RequestParam("sessionId") String roomSessionId) {
         Room room = redisService.getRoomInfoBySessionId(roomSessionId).get();
 
-        if (room != null){
+        if (room != null) {
             redisService.deleteRoom(room.getId());
         }
 
@@ -304,17 +255,17 @@ public class RedisController {
     @GetMapping("/room-filter")
     public List<Room> searchByTitleAndMode(
             @RequestParam(name = "title", required = false) String roomTitle,
-            @RequestParam(name = "mode", required = false) Integer roomMode){
+            @RequestParam(name = "mode", required = false) Integer roomMode) {
 
-        System.out.println("roomMode: " + roomMode+ " , roomTitle: "+roomTitle);
+        System.out.println("roomMode: " + roomMode + " , roomTitle: " + roomTitle);
 
         List<Room> roomList = getRoomList();
 
         // mode 필터링
-        if (roomMode != null){
+        if (roomMode != null) {
             System.out.println("Mode Filtering");
             int size = roomList.size();
-            for (int i = size - 1; i >= 0; i--){
+            for (int i = size - 1; i >= 0; i--) {
                 Room currRoom = roomList.get(i);
                 if (currRoom.getRoomMode() != roomMode)
                     roomList.remove(currRoom);
@@ -327,10 +278,10 @@ public class RedisController {
 //        }
 
         // title 필터링
-        if (roomTitle != null){
+        if (roomTitle != null) {
             System.out.println("Title Filtering");
             int size = roomList.size();
-            for (int i = size - 1; i >= 0; i--){
+            for (int i = size - 1; i >= 0; i--) {
                 Room currRoom = roomList.get(i);
                 if (!currRoom.getRoomTitle().equals(roomTitle))
                     roomList.remove(currRoom);
@@ -344,12 +295,57 @@ public class RedisController {
         return roomList;
     }
 
-    public ResponseEntity<SimpleResponseDto> deleteAllRoom(){
+    public ResponseEntity<SimpleResponseDto> deleteAllRoom() {
         redisService.deleteAllRoom();
 
-        SimpleResponseDto simpleResponseDto= new SimpleResponseDto();
+        SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
         simpleResponseDto.setSuccess(true);
         simpleResponseDto.setMsg("all room delete");
         return ResponseEntity.status(HttpStatus.OK).body(simpleResponseDto);
     }
+
+
+    // -------------------------TEST delete-------------------------//
+
+    //openvidu session List확인
+//    @GetMapping("openvidu/session/room-list")
+//    public ResponseEntity<List<String>> findAllSession() {
+//        List<String> roomList = new ArrayList<>();
+//
+//        List<Session> sessions = openvidu.getActiveSessions();
+//        for (Session session : sessions) {
+//            roomList.add(session.getSessionId());
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(roomList);
+//    }
+//
+//    //openvidu session connection확인
+//    @GetMapping("openvidu/session/{sessionId}")
+//    public ResponseEntity<List<String>> getSessionUsers(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params) {
+//        List<String> connectionUsers = new ArrayList<>();
+//
+//        Session session = openvidu.getActiveSession(sessionId);
+//        //getActiveConnections -> 활성상태만, getConnections -> 비활성상태도 포함(미디어스트림 제공하지 않는 connection, 음소거 등)
+//        List<Connection> connections = session.getConnections();
+//
+//        for (Connection connection : connections) {
+//            connectionUsers.add(connection.getConnectionId());
+//        }
+//
+//        return new ResponseEntity<>(connectionUsers, HttpStatus.OK);
+//    }
+//
+//    //redis room List 확익
+//    //@GetMapping("/room")
+//
+//    //redis room currentUser 확인
+//    @GetMapping("room/redis/{roomSessionId}")
+//    public ResponseEntity<Integer> getRoomCurrentUser(@PathVariable("roomSessionId") String roomSessionId){
+//        Optional<Room> findRoom = redisService.getRoomInfoBySessionId(roomSessionId);
+//        if(findRoom.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(0);
+//        return ResponseEntity.status(HttpStatus.OK).body(findRoom.get().getCurrentUserCount());
+//    }
+
+
 }
