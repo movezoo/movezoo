@@ -3,19 +3,17 @@
 @tailwind utilities;
 
 .room-container {
-  @apply w-full min-h-screen flex flex-col justify-between bg-white;
+  @apply min-w-[1000px] min-h-screen flex flex-col justify-center items-center bg-blue-400
+  cursor-default;
 }
 
 /* 메인 헤더 */
 .room-header {
-  @apply h-20 flex flex-row;
+  @apply w-4/6 h-32 flex flex-row items-center justify-between;
 }
 
 .room-header-name {
-  flex: 1;
-  display: flex;
-  justify-content: left;
-  @apply font-mono text-4xl p-3 ml-5;
+  @apply flex justify-start font-Pixel text-8xl text-white p-3 ml-2
 }
 
 .room-main {
@@ -81,6 +79,6 @@
 }
 
 /* 메인 네브바 */
-.main-navbar {
-  @apply h-20;
+.room-navbar {
+  @apply w-4/6 h-36 flex justify-center items-center;
 }

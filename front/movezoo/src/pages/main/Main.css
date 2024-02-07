@@ -7,8 +7,8 @@
 }
 
 .main-container {
-  /* background-image:url('./sky1.jpg'); */
-  /* background-size: cover; */
+  background-image:url('./sky1.jpg');
+  background-size: cover;
   @apply min-w-[1000px] min-h-screen flex flex-col justify-center items-center bg-blue-400
   cursor-default;
 }
@@ -19,7 +19,7 @@
 }
 
 .main-header-name {
-  @apply flex justify-start font-Pixel text-8xl text-white p-3 ml-2
+  @apply flex justify-start font-Pixel text-7xl text-white p-3 ml-2
 }
 
 .main-header-info {
