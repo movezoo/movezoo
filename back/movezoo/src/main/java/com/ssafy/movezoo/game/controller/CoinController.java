@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController
-@RequestMapping("/api/coin")
+//@RestController
+//@RequestMapping("/api/coin")
 @RequiredArgsConstructor
 public class CoinController {
     private final UserService userService;
-    private  static int[] reward = {10,7,5,3};
+    private static int[] reward = {10,7,5,3};
 
     @GetMapping("/{userId}")
     public ResponseEntity<CoinResponseDto> findUserCoin(@PathVariable Integer userId){
@@ -33,6 +33,24 @@ public class CoinController {
         return ResponseEntity.status(HttpStatus.OK).body(coinResponseDto);
     }
     
+//    @PostMapping
+//    public ResponseEntity<SimpleResponseDto> gameReward(@RequestBody RoomSessionIdDto dto){
+//        String roomSessionId = dto.getRoomSessionId();    // roomId: Long
+//
+//        List<SessionUserInfo> sessionUserList = findSessionUserList(roomSessionId);
+//
+//        for(int i = 0 ;i<sessionUserList.size(); i++){
+//            SessionUserInfo sessionUserInfo = sessionUserList.get(i);
+//            userService.addUserCoin(sessionUserInfo.getUserId(),reward[i]);
+//        }
+//
+//        SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
+//        simpleResponseDto.setSuccess(true);
+//        simpleResponseDto.setMsg("순위별 재화 지급 완료");
+//        return ResponseEntity.status(HttpStatus.OK).body(simpleResponseDto);
+//    }
+
+
     @PostMapping
     public ResponseEntity<SimpleResponseDto> gameReward(@RequestBody RoomSessionIdDto dto){
         String roomSessionId = dto.getRoomSessionId();    // roomId: Long
@@ -49,6 +67,7 @@ public class CoinController {
         simpleResponseDto.setMsg("순위별 재화 지급 완료");
         return ResponseEntity.status(HttpStatus.OK).body(simpleResponseDto);
     }
+
 
     private List<SessionUserInfo> findSessionUserList(String roomSessionId) {
         // 해당 방에 들어있는 유저에 대해서 처리하는 코드 필요
