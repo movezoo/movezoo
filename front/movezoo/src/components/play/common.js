@@ -1,29 +1,35 @@
 import Stats from './stats.js';
-import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME } from './gameConstants.js';
+import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, SPRITE_FILE_NAME } from './gameConstants.js';
 import { myGameData } from './data.js';
 
 
 // 이미지 불러오기
-import background from './images/background.png';
-import mute from './images/mute.png';
-import sprites from './images/sprites.png';
+// import background from './images/background.png';
+// import mute from './images/mute.png';
+// import sprites from './images/sprites.png';
 
-const selectPlayer = "pug";
+const selectPlayer = "cow";
 myGameData.playerCharacter = selectPlayer;  // 오픈비두 통신을 위한 데이터 설정
 const selectAction = "run";
 const selectMap = "map1";
 const frameIndex = {
-  run: 0
+  pug: { run: 0 },
+  sheep: { run: 0 },
+  pig: { run: 0 },
+  cow: { run: 0 },
+  llama: { run: 0 },
+  horse: { run: 0 },
+  zebra: { run: 0 }
 }
-const totalsFrames = {
-  run: 21
-}
+// const totalsFrames = {
+//   run: 21
+// }
 
-const images = {
-  background: background, 
-  mute: mute, 
-  sprites: sprites
-};
+// const images = {
+//   background: background, 
+//   mute: mute, 
+//   sprites: sprites
+// };
 
 //=========================================================================
 // 미니멀리스트 DOM 도우미
@@ -201,6 +207,12 @@ const Game = {
   //---------------------------------------------------------------------------
   // 여러 이미지를 로드하고 모든 이미지가 로드된 경우 콜백하는 메서드
   loadImages: (names, callback) => {
+    // 게임 초기화할 때 이미지를 로드하는 과정이 필요하다.
+    // 이미지의 총 개수를 계산하고
+    // 모든 이미지의 로드가 끝나면 모든 이미지를 담은 객체를 리턴한다.
+    // 백그라운드와 스프라이트는 초기 선택한 맵에 따라서 로딩한다.
+
+
     const result = {}; // 이미지 엘리먼트를 저장할 배열
     
     // let count = names.length + 3;
@@ -215,15 +227,22 @@ const Game = {
         })
         return tempCount;
       }
+      const getSpritesCount = () => {
+        let tempCount = 0;
+        Object.keys(SPRITE_FILE_NAME[selectMap]).forEach(spriteGroup => {
+          tempCount += SPRITE_FILE_NAME[selectMap][spriteGroup].length;
+        })
+        return tempCount;
+      }
       const backgroundCount = Object.keys(BACKGROUND_SPRITE_FILE_NAME).length
-      const SpritesCount = 0;
+      const SpritesCount = getSpritesCount();
       const playerSpritesCount = getPlayerSpritesCount();
 
       // Log
-      console.log(`backgroundCount: ${backgroundCount}`)
-      console.log(`SpritesCount: ${SpritesCount}`)
-      console.log(`playerSpritesCount: ${playerSpritesCount}`)
-      console.log(`countAll: ${backgroundCount + SpritesCount + playerSpritesCount}`)
+      // console.log(`backgroundCount: ${backgroundCount}`)
+      // console.log(`SpritesCount: ${SpritesCount}`)
+      // console.log(`playerSpritesCount: ${playerSpritesCount}`)
+      // console.log(`countAll: ${backgroundCount + SpritesCount + playerSpritesCount}`)
       return backgroundCount + SpritesCount + playerSpritesCount;
     }
     let count = setCount();
@@ -240,7 +259,7 @@ const Game = {
     const onload = () => {
       // console.log(count)
       if (--count === 0) {
-        console.log(`모든 이미지 로드 완료!!`)
+        // console.log(`모든 이미지 로드 완료!!`)
         callback(result); // 이미지 로드 카운트를 감소시키고, 모든 이미지가 로드되었을 때 콜백 함수 호출
       }
     };
@@ -306,6 +325,21 @@ const Game = {
     }
     
     const setSprites = () => {
+      // 객체 초기화
+      Object.keys(SPRITE_FILE_NAME[selectMap]).forEach(spriteGroup => {
+        // map은 한 게임에 무조건 1개이므로 굳이 구분하지 않는다.
+        result[spriteGroup] = {};
+      })
+      // selectMap === 'map1'
+      Object.keys(SPRITE_FILE_NAME[selectMap]).forEach(spriteGroup => {
+        SPRITE_FILE_NAME[selectMap][spriteGroup].forEach(spriteName => {
+          result[spriteGroup][spriteName] = document.createElement('img');
+          if(result[spriteGroup][spriteName] !== null) {
+            Dom.on(result[spriteGroup][spriteName], 'load', onload);
+            result[spriteGroup][spriteName].src = `/images/sheets/${selectMap}/sprites/${spriteName}.png`
+          }
+        })
+      })
       // result[name] = document.createElement('img'); // 이미지 엘리먼트 생성 및 배열에 저장
       // Dom.on(result[name], 'load', onload); // 이미지 로드 이벤트에 onload 콜백 등록
       // // Dom.on(result[name], 'onerror', console.log(`error`));
@@ -518,7 +552,25 @@ const Render = {
 
     // playerSprites[selectPlayer][action.name][direction] === <img></img>
 
-    frameIndex[selectAction] = (frameIndex[selectAction] + 1) % totalsFrames[selectAction]; // 프레임idx 증가(최대 값 넘으면 0으로)
+    // frameIndex[selectAction] = (frameIndex[selectAction] + 1) % totalsFrames[selectAction]; // 프레임idx 증가(최대 값 넘으면 0으로)
+
+    // speedPercent에 따라 멈추기 걷기 달리기
+    // if(speedPercent === 0) {
+    //   selectAction = 'stop' 
+    // } else if(speedPercent < 30 && speedPercent < 80) {
+    //   selectAction = 'walk'
+    // } else {
+    //   selectAction = 'run' 
+    // }
+
+    // 현재프레임 = (현재프레임+1) % 최대프레임
+    frameIndex[selectPlayer][selectAction] =
+      (frameIndex[selectPlayer][selectAction] + 1)
+      % MAX_FRAME_COUNT[selectPlayer][selectAction];
+
+
+
+
     
     // 조향에 따라 적절한 스프라이트 선택
     if (steer < 0) {          // 왼쪽
@@ -532,7 +584,7 @@ const Render = {
       else direction = "straight"
     }
     imageObj = playerSprites[selectPlayer][selectAction][direction]; // 이미지객체
-    sprite   = SPRITES[selectPlayer][selectAction][direction][frameIndex[selectAction]] // 좌표 정보(잘라내기정보)
+    sprite   = SPRITES[selectPlayer][selectAction][direction][frameIndex[selectPlayer][selectAction]] // 좌표 정보(잘라내기정보)
     // console.log(imageObj)
     // console.log(sprite)
     // 스프라이트 렌더링
