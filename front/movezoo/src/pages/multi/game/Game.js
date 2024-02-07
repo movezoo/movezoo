@@ -1,12 +1,16 @@
-
 import styles from "./Game.module.css";
 import "./Game.module.css";
 // import Webcam from "react-webcam";
 import Back from "../../../components/single/game/Back";
 import Main from "../../../components/play/Main";
 import Cam from "../../../components/play/Cam";
+import MyVideoComponent from "../../../components/play/MyVideoComponent.js";
+import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
 
 function Game(props) {
+  const session = props.session;
+  const mainStreamManager = props.mainStreamManager;
+  const subscribers = props.subscribers;
   return (
     <div>
       {/*일단 축소 화면*/}
@@ -23,8 +27,14 @@ function Game(props) {
           </div>
           {/*웹캠*/}
           {/* <div className={styles.webCam}> */}
-          <Cam />
-          multigame
+          {mainStreamManager !== undefined ? (
+            <div id="main-video" className="col-md-6">
+              <MyVideoComponent
+                streamManager={mainStreamManager}
+                mySession={session}
+              />
+            </div>
+          ) : "asdf"}
           {/* </div> */}
           {/* <Webcam className={styles.webCam} mirrored={true} /> */}
           {/* 일단 결과창으로 넘어가는 버튼*/}
@@ -48,9 +58,15 @@ function Game(props) {
         {/*오른쪽 화면*/}
         <div className={styles.rightSection}>
           <div className={styles.userSection}>
-            <div className={styles.userBox}>1</div>
-            <div className={styles.userBox}>2</div>
-            <div className={styles.userBox}>3</div>
+            {subscribers.map((sub, i) => (
+              <div
+                key={sub.id}
+                className={styles.userBox}
+              >
+                <span>{sub.id}</span>
+                <UserVideoComponent streamManager={sub} />
+              </div>
+            ))}
           </div>
         </div>
       </div>
