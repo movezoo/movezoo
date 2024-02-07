@@ -88,6 +88,7 @@ const Multi = (props) => {
   const [myUserName, setMyUserName] = useState(
     "Participant" + Math.floor(Math.random() * 100)
   );
+  // 세션 및 스트림 관리 상태
   const [session, setSession] = useState(undefined);
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
   const [publisher, setPublisher] = useState(undefined);
@@ -123,31 +124,48 @@ const Multi = (props) => {
     }
   };
 
+  // const enterRoom = (sessionId) => {
+  //   setSession(sessionId)
+  //   joinSession();
+  // }
+
+  // 세션에 참여하는 함수
   const joinSession = async () => {
+    // OpenVidu 객체 생성
     OV = new OpenVidu();
     OV.enableProdMode();
-
+  
+    // 새 세션 초기화
     const newSession = OV.initSession();
     setSession(newSession);
-
+  
+    // 새 스트림 생성 이벤트 핸들러
     newSession.on("streamCreated", (event) => {
+      // 새로운 스트림을 구독하고 구독자 목록에 추가
       const subscriber = newSession.subscribe(event.stream, undefined);
       setSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
     });
-
+  
+    // 스트림 소멸 이벤트 핸들러
     newSession.on("streamDestroyed", (event) => {
-      // deleteSubscriber(event.stream.streamManager);
+      // 여기에 스트림 소멸 시 수행할 작업 작성 가능
+      // 예: deleteSubscriber(event.stream.streamManager);
     });
-
+  
+    // 예외 발생 시 핸들러
     newSession.on("exception", (exception) => {
       console.warn(exception);
     });
-
+  
     try {
+      // 토큰 가져오기
       const token = await getToken();
+  
+      // 토큰으로 세션에 연결
       newSession
         .connect(token, { clientData: myUserName })
         .then(async () => {
+          // 새로운 퍼블리셔 생성
           let newPublisher = await OV.initPublisherAsync(undefined, {
             audioSource: undefined,
             videoSource: undefined,
@@ -158,38 +176,47 @@ const Multi = (props) => {
             insertMode: "APPEND",
             mirror: false,
           });
-
+  
+          // 새로운 퍼블리셔를 세션에 발행
           newSession.publish(newPublisher);
-
+  
+          // 사용 가능한 비디오 장치 가져오기
           const devices = await OV.getDevices();
           const videoDevices = devices.filter(
             (device) => device.kind === "videoinput"
           );
+          // 현재 비디오 장치 ID 가져오기
           const currentVideoDeviceId = newPublisher.stream
             .getMediaStream()
             .getVideoTracks()[0]
             .getSettings().deviceId;
+          // 현재 비디오 장치 가져오기
           currentVideoDevice = videoDevices.find(
             (device) => device.deviceId === currentVideoDeviceId
           );
-
+  
+          // 메인 스트림 매니저 및 퍼블리셔 설정
           setMainStreamManager(newPublisher);
           setPublisher(newPublisher);
-
+  
+          // 사용자 게임 데이터 설정
           myGameData.playerId = myUserName;
           let existMyData = false;
+          // 중복 데이터 확인 후 추가
           playerGameDataList.forEach((item) => {
             if (item === myGameData.playerId) {
               existMyData = true;
             }
           });
           if (!existMyData) playerGameDataList.push(myGameData);
-
+  
+          // 디버그 로그
           console.log(
             `joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`
           );
         })
         .catch((error) => {
+          // 연결 중 오류 발생 시 로그 출력
           console.log(
             "세션에 연결 중 오류가 발생했습니다:",
             error.code,
@@ -197,11 +224,13 @@ const Multi = (props) => {
           );
         });
     } catch (error) {
+      // 오류 발생 시 로그 출력
       console.error("Error joining session:", error);
     }
   };
   
 
+  // 세션을 떠나는 함수
   const leaveSession = () => {
     if (session) {
       session.disconnect();
@@ -209,12 +238,13 @@ const Multi = (props) => {
 
     setSession(undefined);
     setSubscribers([]);
-    setMySessionId(state.session);
+    setMySessionId(undefined);
     setMyUserName("Participant" + Math.floor(Math.random() * 100));
     setMainStreamManager(undefined);
     setPublisher(undefined);
   };
 
+  // 카메라 변경 함수
   const switchCamera = async () => {
     try {
       const devices = await OV.getDevices();
@@ -252,6 +282,7 @@ const Multi = (props) => {
     return await createToken(sessionId);
   };
 
+  // mySessionId로 새로운 세션 생성
   const createSession = async (sessionId) => {
     try {
       const response = await axios.post(
@@ -268,6 +299,7 @@ const Multi = (props) => {
     }
   };
 
+  // mySessionId로 만든 세션을 받아와 토큰 생성
   const createToken = async (sessionId) => {
     try {
       const response = await axios.post(
@@ -372,7 +404,7 @@ const Multi = (props) => {
                 />
               </div>
 
-              {/* 메인 비디오 */}
+              {/* 내 비디오 */}
               {mainStreamManager !== undefined ? (
                 <div id="main-video" className={styles.userBox}>
                   <MyVideoComponent
