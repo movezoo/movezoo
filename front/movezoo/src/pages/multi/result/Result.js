@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import styles from "./MultiResult.module.css";
+import styles from "./Result.module.css";
 import Webcam from "react-webcam";
 import Back from "../../../components/single/result/Back";
 import Record from "../../../components/single/result/Record";
 
-function Result() {
+function Result(props) {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {

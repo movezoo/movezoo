@@ -6,14 +6,14 @@ import { AiFillCaretRight } from "react-icons/ai";
 
 function Carousel() {
   const initialImages  = [
-    { id: 1, name: '캐릭터 1', image: './shop/1.png' },
-    { id: 2, name: '캐릭터 2', image: './shop/2.png' },
-    { id: 3, name: '캐릭터 3', image: './shop/3.png' },
-    { id: 4, name: '캐릭터 4', image: './shop/4.png' },
-    { id: 5, name: '캐릭터 5', image: './shop/5.png' },
-    { id: 6, name: '캐릭터 6', image: './shop/6.png' },
-    { id: 7, name: '캐릭터 7', image: './shop/7.png' },
-    { id: 8, name: '캐릭터 8', image: './shop/8.png' },
+    { id: 1, name: '퍼그', image: './shop/pug.png' },
+    { id: 2, name: '돼지', image: './shop/pig.png' },
+    { id: 3, name: '소', image: './shop/cow.png' },
+    { id: 4, name: '양', image: './shop/sheep.png' },
+    { id: 5, name: '라마', image: './shop/llama.png' },
+    { id: 6, name: '말', image: './shop/horse.png' },
+    { id: 7, name: '얼룩말', image: './shop/zebra.png' },
+    { id: 8, name: '미정', image: './shop/8.png' },
   ];
 
   const [images, setImages] = useState([]);
