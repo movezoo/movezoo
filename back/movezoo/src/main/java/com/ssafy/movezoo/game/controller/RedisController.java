@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -303,48 +304,48 @@ public class RedisController {
         return ResponseEntity.status(HttpStatus.OK).body(simpleResponseDto);
     }
 
-    
-    // -------------------------TEST-------------------------//
-    
+
+    // -------------------------TEST delete-------------------------//
+
     //openvidu session List확인
-    @GetMapping("openvidu/session/room-list")
-    public ResponseEntity<List<String>> findAllSession() {
-        List<String> roomList = new ArrayList<>();
-
-        List<Session> sessions = openvidu.getActiveSessions();
-        for (Session session : sessions) {
-            roomList.add(session.getSessionId());
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(roomList);
-    }
-
-    //openvidu session connection확인
-    @GetMapping("openvidu/session/{sessionId}")
-    public ResponseEntity<List<String>> getSessionUsers(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params) {
-        List<String> connectionUsers = new ArrayList<>();
-
-        Session session = openvidu.getActiveSession(sessionId);
-        //getActiveConnections -> 활성상태만, getConnections -> 비활성상태도 포함(미디어스트림 제공하지 않는 connection, 음소거 등)
-        List<Connection> connections = session.getConnections();
-
-        for (Connection connection : connections) {
-            connectionUsers.add(connection.getConnectionId());
-        }
-
-        return new ResponseEntity<>(connectionUsers, HttpStatus.OK);
-    }
-    
-    //redis room List 확익
-    //@GetMapping("/room")
-
-    //redis room currentUser 확인
-    @GetMapping("room/redis/{roomSessionId}")
-    public ResponseEntity<Integer> getRoomCurrentUser(@PathVariable("roomSessionId") String roomSessionId){
-        Optional<Room> findRoom = redisService.getRoomInfoBySessionId(roomSessionId);
-        if(findRoom.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(0);
-        return ResponseEntity.status(HttpStatus.OK).body(findRoom.get().getCurrentUserCount());
-    }
+//    @GetMapping("openvidu/session/room-list")
+//    public ResponseEntity<List<String>> findAllSession() {
+//        List<String> roomList = new ArrayList<>();
+//
+//        List<Session> sessions = openvidu.getActiveSessions();
+//        for (Session session : sessions) {
+//            roomList.add(session.getSessionId());
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(roomList);
+//    }
+//
+//    //openvidu session connection확인
+//    @GetMapping("openvidu/session/{sessionId}")
+//    public ResponseEntity<List<String>> getSessionUsers(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params) {
+//        List<String> connectionUsers = new ArrayList<>();
+//
+//        Session session = openvidu.getActiveSession(sessionId);
+//        //getActiveConnections -> 활성상태만, getConnections -> 비활성상태도 포함(미디어스트림 제공하지 않는 connection, 음소거 등)
+//        List<Connection> connections = session.getConnections();
+//
+//        for (Connection connection : connections) {
+//            connectionUsers.add(connection.getConnectionId());
+//        }
+//
+//        return new ResponseEntity<>(connectionUsers, HttpStatus.OK);
+//    }
+//
+//    //redis room List 확익
+//    //@GetMapping("/room")
+//
+//    //redis room currentUser 확인
+//    @GetMapping("room/redis/{roomSessionId}")
+//    public ResponseEntity<Integer> getRoomCurrentUser(@PathVariable("roomSessionId") String roomSessionId){
+//        Optional<Room> findRoom = redisService.getRoomInfoBySessionId(roomSessionId);
+//        if(findRoom.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(0);
+//        return ResponseEntity.status(HttpStatus.OK).body(findRoom.get().getCurrentUserCount());
+//    }
 
 
 }

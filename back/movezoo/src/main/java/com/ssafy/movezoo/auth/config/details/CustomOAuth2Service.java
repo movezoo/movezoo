@@ -70,7 +70,7 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
 
     // 소셜로그인시 기존 회원이 존재하면 이메일만 업데이트 해 기존 데이터 보존
     private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.findByGoogleEmail(attributes.getEmail())
+        User user = userRepository.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getEmail()))
                 .orElse(attributes.toEntity());
         return userRepository.save(user);

@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 .shop {
-  @apply w-full h-full 
+  @apply w-full h-full
 }
 
 .shop-button-container {
-  @apply w-full h-full flex justify-center items-center
+  @apply w-full h-full flex justify-center items-center;
 }
 
 .shop-button-container:hover .shopButton {
@@ -19,17 +19,17 @@
 }
 
 .shop-container {
-  @apply flex flex-col 
+  @apply flex flex-row ;
 }
 
-.shop-header {
+/* .shop-header {
   @apply flex flex-row justify-between items-center;
 }
 
 .shop-header-name {
   @apply flex text-4xl items-center mx-auto
-}
+} */
 
-.shop-header-exit {
-  @apply flex 
+.shop-exit {
+  @apply flex justify-end
 }
