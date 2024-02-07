@@ -463,7 +463,7 @@ const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === 'production' ? '' : 'https://i10e204.p.ssafy.io/';
 
 const Cam = () => {
-  const [mySessionId, setMySessionId] = useState('SessionC');
+  const [mySessionId, setMySessionId] = useState('SessionE');
   const [myUserName, setMyUserName] = useState( 'Participant' + Math.floor(Math.random() * 100) );
   const [session, setSession] = useState(undefined);
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
@@ -557,7 +557,7 @@ const Cam = () => {
           });
           if (!existMyData) playerGameDataList.push(myGameData);
 
-          console.log(`joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`);
+          // console.log(`joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`);
         })
         .catch((error) => {
           console.log('세션에 연결 중 오류가 발생했습니다:', error.code, error.message);

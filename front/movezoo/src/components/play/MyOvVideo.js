@@ -138,7 +138,7 @@ const MyOvVideo = (props) => {
       runFaceDetection(); // 계속 실행
     }
 
-    if (isGameStart)  gameStart();
+    gameStart();
   }, [streamManager]);
   
 
