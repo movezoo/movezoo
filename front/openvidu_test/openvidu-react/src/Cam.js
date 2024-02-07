@@ -46,7 +46,7 @@ class Cam extends Component {
     // window.addEventListener("beforeunload", this.handleBeforeUnload);
     window.addEventListener("beforeunload", this.onbeforeunload);
   }
-  
+
 
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.handleBeforeUnload);
@@ -62,7 +62,7 @@ class Cam extends Component {
   onbeforeunload(event) {
     this.leaveSession();
   }
-  
+
 
   handleChangeSessionId(e) {
     this.setState({
@@ -257,12 +257,17 @@ class Cam extends Component {
   async leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
-    const response = await axios.delete(
-      `${APPLICATION_SERVER_URL}api/openvidu/session?sessionId=${this.state.mySessionId}&connectionId=${this.state.connectionId}`,
+
+    const response = await axios.patch(
+      APPLICATION_SERVER_URL + "api/exit",
       {
-          headers: { "Content-Type": "application/json" },
+        "roomSessionId": this.state.mySessionId,
+        "connectionId": this.state.connectionId
+      },
+      {
+        headers: { "Content-Type": "application/json" },
       }
-  );
+    );
 
     const mySession = this.state.session;
 
@@ -536,33 +541,22 @@ class Cam extends Component {
       }
     );
 
-    console.log("create session ",response.data.roomSessionId);
+    console.log("create session ", response.data.roomSessionId);
     return response.data.roomSessionId; // The sessionId
   }
 
   async createToken(sessionId) {
     const response = await axios.post(
       APPLICATION_SERVER_URL + "api/room/enter",
-      { "roomSessionId" : sessionId,
-        "nickname": this.state.myUserName },
+      {
+        "roomSessionId": sessionId,
+        "nickname": this.state.myUserName
+      },
       {
         headers: { "Content-Type": "application/json" },
       }
     );
-    console.log("create Token ",response.data );
-    return response.data; // The token
-  }
-
-  //방을 만들고 세션값을 리턴받는다, 그 세션값으로 방에 들어간다
-  async createRoom(roomInfo) {
-    const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/room",
-      { "roomInfo": roomInfo },
-    );
-
-    console.log("create room ", response.data);
-
-    //response.data.roomSessionId로 세션연결 해야합니다.
+    console.log("create Token ", response.data);
     return response.data; // The token
   }
 }
