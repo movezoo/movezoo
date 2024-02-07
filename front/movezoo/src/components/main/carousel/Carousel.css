@@ -11,8 +11,8 @@
 }
 
 .prevButton {
-  @apply w-20 h-20 text-CelestialBlue hover:text-GreenBlue active:scale-90 active:text-blue-900
-  hover:cursor-pointer ml-20
+  @apply w-28 h-28 text-CelestialBlue hover:text-GreenBlue active:scale-90 active:text-blue-900
+  hover:cursor-pointer ml-16
 }
 
 .carousel-image {
@@ -20,7 +20,7 @@
 }
 
 .slide-right-enter {
-  @apply transform translate-x-2/4;
+  @apply transform translate-x-1/4;
 }
 
 .slide-right-enter-active {
@@ -32,11 +32,11 @@
 }
 
 .slide-right-exit-active {
-  @apply transform -translate-x-2/4 transition-transform duration-300;
+  @apply transform -translate-x-1/4 transition-transform duration-300;
 }
 
 .slide-left-enter {
-  @apply transform -translate-x-2/4;
+  @apply transform -translate-x-1/4;
 }
 
 .slide-left-enter-active {
@@ -48,7 +48,7 @@
 }
 
 .slide-left-exit-active {
-  @apply transform translate-x-2/4 transition-transform duration-300;
+  @apply transform translate-x-1/4 transition-transform duration-300;
 }
 
 .carousel-next {
@@ -56,6 +56,6 @@
 }
 
 .nextButton {
-  @apply w-20 h-20 text-CelestialBlue hover:text-GreenBlue active:scale-90 active:text-blue-900
-  hover:cursor-pointer mr-20
+  @apply w-28 h-28 text-CelestialBlue hover:text-GreenBlue active:scale-90 active:text-blue-900
+  hover:cursor-pointer mr-16
 }
