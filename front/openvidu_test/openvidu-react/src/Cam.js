@@ -511,9 +511,11 @@ class Cam extends Component {
   //async getToken(sessionId)
   async getToken() {
     const sessionId = await this.createSession(this.state.mySessionId);
+    //만약 방 생성이면 세션을 만들고 createroom하기
     return await this.createToken(sessionId);
   }
 
+  //세션을 만들고 입장만 하지않는것, createRoom과 동일 근데!!! customSessionId만 set가능하니까 redis에 들어갈 방정보는 따로 관리하는 함수를 작성해야한다
   async createSession(sessionId) {
     const response = await axios.post(
       APPLICATION_SERVER_URL + "api/openvidu/sessions",
@@ -539,7 +541,7 @@ class Cam extends Component {
 
   //방을 만들고 세션값을 리턴받는다, 그 세션값으로 방에 들어간다
   async createRoom(roomInfo) {
-    const response = await axios.post(
+    const response = await axios.post(  
       APPLICATION_SERVER_URL + "api/room",
       {"roomInfo" : roomInfo},
     );
@@ -547,7 +549,7 @@ class Cam extends Component {
     console.log(response.data);
 
     //response.data.roomSessionId로 세션연결 해야합니다.
-    return response.data; // The token
+      return response.data; // The token
   }
 }
 
