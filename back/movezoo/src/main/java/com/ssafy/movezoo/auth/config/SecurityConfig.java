@@ -10,6 +10,7 @@
     import lombok.extern.slf4j.Slf4j;
     import org.springframework.context.annotation.Bean;
     import org.springframework.context.annotation.Configuration;
+    import org.springframework.security.config.Customizer;
     import org.springframework.security.config.annotation.web.builders.HttpSecurity;
     import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
     import org.springframework.security.core.Authentication;
@@ -78,7 +79,8 @@
                                             session.setAttribute("user", userDetails);
 
                                             UserDetails userDetails2 = (UserDetails)session.getAttribute("user");
-                                            log.info("session get {}", userDetails2.getUsername());
+                                            log.info("session get ", userDetails2.getUsername());
+                                            
 
                                             // 성공 응답을 생성하거나 추가 작업 수행
                                             response.setStatus(HttpServletResponse.SC_OK);
@@ -99,7 +101,8 @@
                                     .invalidateHttpSession(true)
                                     .deleteCookies("JSESSIONID")
                     )
-                    .userDetailsService(UserDetailsServcie);
+                    .userDetailsService(UserDetailsServcie)
+                            .oauth2Login(Customizer.withDefaults());
 
             // 인가 관리
             http
@@ -107,7 +110,7 @@
                         session
                                 .maximumSessions(1) // 최대 허용 가능 세션 수 (-1: 무제한 세션 허용)
                                 .maxSessionsPreventsLogin(true) // 동시 로그인 차단 (false: 기존 세션 만료, default)
-                                .expiredUrl("/expired") // 세션이 만료된 경우 이동할 페이지
+                                .expiredUrl("/") // 세션이 만료된 경우 이동할 페이지
 
 
                 );
@@ -133,10 +136,10 @@
             http
                 .oauth2Login((oauth2Login) ->
                         oauth2Login
-
+                                .loginPage("/")
                                 .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
                                         .userService(customOAuth2Service)))
-                                .defaultSuccessUrl("/")
+                                .defaultSuccessUrl("/main")
                 );
 
 

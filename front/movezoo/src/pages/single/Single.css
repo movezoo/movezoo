@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.single-container {
+  @apply min-w-[1000px] min-h-screen flex flex-col justify-center 
+  items-center bg-green-400 cursor-default;
+}
+
+.Back {
+  @apply absolute top-0 left-0
+}
+
+.single-header {
+  @apply  w-[1000px] flex flex-col mb-5
+}
+
+.single-name {
+  @apply text-7xl text-white justify-center ml-36
+}
+
+.single-body {
+  @apply flex flex-row items-center
+}
+
+.body-cam {
+  @apply w-[500px] h-[400px] flex items-center justify-center  bg-white 
+  rounded-3xl p-5
+}
+
+.mycam {
+  @apply w-[450px] h-[350px] flex items-center justify-center
+  rounded-3xl;
+}
+
+.txtLoading {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  color: white;
+  font-size: xx-large;
+}
+
+.webCam {
+  @apply rounded-2xl
+}
+
+.body-selects {
+  @apply w-[250px] h-[400px] flex flex-col items-center justify-between
+  
+}
+
+.map-select {
+  
+}
+
+.charact-select {
+  @apply w-[200px] h-[80px] flex justify-center items-center 
+  bg-white rounded-2xl 
+}
+
+.start-select {
+
+}
+
