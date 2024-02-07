@@ -2,12 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-.main {
 
-}
 
 .main-container {
-  background-image:url('./sky1.jpg');
+  /* background-image:url('./sky1.jpg'); */
   background-size: cover;
   @apply min-w-[1000px] min-h-screen flex flex-col justify-center items-center bg-blue-400
   cursor-default;
