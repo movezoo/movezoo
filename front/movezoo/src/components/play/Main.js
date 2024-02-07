@@ -13,20 +13,12 @@ const Main = (props) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     
-    // const socketClient = io("http://192.168.30.204:3000");
-    // socketClient.on("connect", () => {
-    //   console.log(`connection server`);
-    // });
-    
-    // const playerNumber = 0; // 0 ~ 3
-    
     // View 관련 설정 변수
     let roadWidth      = 2000;                    // 사실상 도로의 반폭, 도로가 -roadWidth에서 +roadWidth로 이어지면 수학이 더 간단해짐
     let cameraHeight   = 1000;                    // 카메라의 z 높이
     let drawDistance   = 300;                     // 그릴 세그먼트 수
     let fieldOfView    = 100;                     // 시야각 (도)
     let fogDensity     = 5;                       // 지수적 안개 밀도
-
 
 
     let fps            = 60;                      // 초당 'update' 프레임 수
@@ -67,7 +59,7 @@ const Main = (props) => {
     let decel          = -maxSpeed/5;             // 가속 및 감속하지 않을 때 '자연스러운' 감속률
     let offRoadDecel   = -maxSpeed/2;             // 도로를 벗어났을 때의 감속률은 중간 정도
     let offRoadLimit   =  maxSpeed/4;             // 도로를 벗어났을 때의 감속률이 더 이상 적용되지 않는 한계 (예: 도로를 벗어나도 항상 이 속도 이상으로 이동할 수 있음)
-    let totalCars      = 2;                       // 도로 상의 총 자동차 수, 플레이어의 수
+    // let totalCars      = 2;                       // 도로 상의 총 자동차 수, 플레이어의 수
     let currentLapTime = 0;                       // 현재 랩 타임
     let lastLapTime    = null;                    // 마지막 랩 타임
     
