@@ -21,23 +21,21 @@ const SPRITE_FILE_NAME = {
 const SPRITE_SIZE = {
   map1: {
     BILLBOARD: {
-      billboard_ssafy:  { x:    0, y:    0, w:  1000, h:  1000 },
-      billboard:        { x:    0, y:    0, w:  1000, h:  1000 },
+      billboard_ssafy:  { x:    0, y:    0, w:  1000, h:  766 },
+      billboard:        { x:    0, y:    0, w:  1000, h:  765 },
     },
     TREE: {
-      dead_tree1:       { x:    0, y:    0, w:  1000, h:  1000 },
-      dead_tree2:       { x:    0, y:    0, w:  1000, h:  1000 },
-      dead_tree3:       { x:    0, y:    0, w:  1000, h:  1000 },
-      stump1:           { x:    0, y:    0, w:  1000, h:  1000 },
-      tree1:            { x:    0, y:    0, w:  1000, h:  1000 },
-      tree2:            { x:    0, y:    0, w:  1000, h:  1000 },
-      tree3:            { x:    0, y:    0, w:  1000, h:  1000 },
+      dead_tree1:       { x:    0, y:    0, w:  556, h:  995 },
+      dead_tree2:       { x:    0, y:    0, w:  872, h:  982 },
+      dead_tree3:       { x:    0, y:    0, w:  988, h:  296 },
+      stump1:           { x:    0, y:    0, w:  756, h:  960 },
+      tree1:            { x:    0, y:    0, w:  657, h:  992 },
+      tree2:            { x:    0, y:    0, w:  942, h:  992 },
+      tree3:            { x:    0, y:    0, w:  985, h:  875 },
     }
   }
 
 }
-
-// Util.randomChoice를 위해서는 배열에 각 스프라이트좌표 정보를 저장해놔야 한다.
 
 
 

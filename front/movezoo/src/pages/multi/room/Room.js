@@ -74,8 +74,8 @@ import Map from "../../../components/multi/room/Map.js";
 import Chat from "../../../components/multi/room/Chat.js";
 import Ready from "../../../components/multi/room/Ready.js";
 import Cam from "../../../components/play/Cam.js";
-import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
 import MyVideoComponent from "../../../components/play/MyVideoComponent.js";
+import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
 
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
@@ -88,10 +88,11 @@ const Room = (props) => {
   );
   const session = props.session;
   const mainStreamManager = props.mainStreamManager;
+  const subscribers = props.subscribers;
   const [publisher, setPublisher] = useState(undefined);
-  const [subscribers, setSubscribers] = useState([]);
+  // const [subscribers, setSubscribers] = useState([]);
 
-  console.log(props.mySessionId)
+  console.log(props)
   return (
     <div className={styles.container}>
       {/*왼쪽 영역*/}
@@ -104,26 +105,24 @@ const Room = (props) => {
         </div>
         {/* User 영역 */}
         {/* 메인 비디오 */}
+        <div className={styles.userSection}>
+          {subscribers.map((sub, i) => (
+            <div key={sub.id} className={styles.userBox}>
+              <span>{sub.id}</span>
+              <UserVideoComponent streamManager={sub} />
+            </div>
+          ))}
+        </div>
         {mainStreamManager !== undefined ? (
-            <div id="main-video" className="col-md-6">
+            <div id="main-video" className={styles.userBox}>
               <MyVideoComponent
                 streamManager={mainStreamManager}
                 mySession={session}
               />
             </div>
-          ) : "asdf"}
+          ) : "Loading..."}
 
-          <div id="video-container" className="col-md-6">
-            {subscribers.map((sub, i) => (
-              <div
-                key={sub.id}
-                className="stream-container col-md-6 col-xs-6"
-              >
-                <span>{sub.id}</span>
-                <UserVideoComponent streamManager={sub} />
-              </div>
-            ))}
-          </div>
+          
         {/* <div className={styles.userSection}>
           {session === undefined ? (
             <div id="join">
