@@ -231,7 +231,7 @@ function Main() {
     
       {/* 네브바 */}
       <div className="main-navbar">
-        <Navbar/>
+        <Navbar setCoin={setCoin}/>
       </div>
 
 
