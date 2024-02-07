@@ -37,7 +37,7 @@ function Home() {
         </div>
         {/* 비디오 재생 */}
         <video id="videoElement" className="video-element" autoPlay muted controls>
-          <source src="/homebg/bgracing.mp4" type="video/mp4" />
+          <source src="/images/homebg/bgracing.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         <h1> 소개 </h1>
