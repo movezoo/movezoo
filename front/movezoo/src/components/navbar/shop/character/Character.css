@@ -3,36 +3,59 @@
 @tailwind utilities;
 
 .Character-container {
-  @apply flex flex-row justify-between items-center mt-4
+  @apply w-[900px] h-[500px] flex flex-row items-center;
 }
 
 .Character-list {
-  @apply ml-10 w-[250px] flex flex-row flex-wrap justify-center;
+  @apply w-[600px] h-[500px] flex flex-row flex-wrap justify-center items-center ml-2
+  bg-blue-400  rounded-2xl;
+}
+
+.character-images-wrapper {
+  @apply w-[172px] h-[100px] ml-2 mr-2 flex justify-center object-center rounded-lg transition duration-200
+  bg-white border-2 border-gray-400
+  hover:opacity-100 hover:scale-110;
 }
 
 .character-image {
-  @apply w-[90px] m-1 ml-5 object-cover rounded-lg transition duration-200 hover:opacity-60 
-  border-2 border-black;
-
+  @apply h-full
 }
 
 .Character-select {
-  @apply w-[300px] flex items-center mx-auto flex-row justify-center;
+  @apply w-[600px] h-[500px] flex items-center flex-row justify-center;
 }
 
 .select-body {
-  @apply flex flex-col;
+  @apply h-[500px] flex flex-col ml-16;
+}
+
+.body-select-image {
+  @apply mt-10
+}
+
+.body-select-name {
+  @apply mt-2;
+}
+
+.body-select-button {
+  @apply flex justify-end mt-2
 }
 
 .select-image {
-  @apply object-cover rounded-lg transition duration-200 border-2 border-black
+  @apply object-cover rounded-lg transition duration-200;
 }
 
 .image-name {
-  @apply flex justify-center items-center text-2xl font-semibold;
+  @apply flex justify-center items-center text-3xl font-semibold;
 }
 
 .character-buy-button {
-  @apply h-8 m-2 flex flex-1 items-center justify-center p-2 text-white bg-blue-500 rounded-md
-  hover:bg-blue-700;
+  @apply w-20 h-10 m-2 items-center justify-center p-2 text-white bg-blue-500 rounded-md
+  hover:bg-blue-700 hover:scale-125 transition duration-200;
+}
+
+/* 모달창 ====================== */
+
+.buy-modal {
+  @apply flex flex-col items-center justify-center
 }

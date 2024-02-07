@@ -41,17 +41,17 @@ function Shop () {
         
         <div className="shop-container">
 
-          <div className="shop-header">
+          {/* <div className="shop-header"> 
             <div className='shop-header-name'>
-              <h1>상점</h1>
+            <h1>상점</h1>
             </div>
-            <div className='shop-header-exit'>
-              <IoCloseSharp className='exit-button' onClick={closeModal} />
-            </div>
-          </div>
+          </div> */}
 
           <div className='shop-chracter'>
             <Character/>
+          </div>
+          <div className='shop-exit'>
+            <IoCloseSharp className='exit-button' onClick={closeModal} />
           </div>
         </div>
         
