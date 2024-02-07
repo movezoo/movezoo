@@ -72,11 +72,12 @@ public class User {
 
     // 회원가입 용 Constructor
     @Builder
-    public User(String userEmail, String password, String nickname) {
+    public User(String userEmail, String password, String nickname, String profileImgUrl) {
         this.userEmail = userEmail;
         this.password = password;
         this.nickname = nickname;
         this.coin = 0;
+        this.profileImgUrl = profileImgUrl;
         this.volume = 50;
         this.mic = 50;
         this.cameraSensitivity = 50;
