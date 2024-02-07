@@ -10,7 +10,7 @@ import axios from 'axios';
 import { IoCloseSharp } from "react-icons/io5";
 
 
-const Profile = () => {
+const Profile = ({ isProfileOpen, isProfileClose }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [userImage, setUserImage] = useState(null);
@@ -38,17 +38,17 @@ const Profile = () => {
       try {
         // == 쿠키 사용해서 로그인한 유저 id 가져오기 ============
 
-        const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-          withCredentials: true, // 쿠키 허용
-        });
-        const UserId = loginUserId.data;
+        // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+        //   withCredentials: true, // 쿠키 허용
+        // });
+        // const UserId = loginUserId.data;
 
-        console.log("UserId : ", UserId);
+        // console.log("UserId : ", UserId);
 
-        const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
+        // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
 
         // 임시 유저 데이터
-        // const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102');
+        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102');
 
         const user = response.data;
         setUser(user);
@@ -68,15 +68,17 @@ const Profile = () => {
 
   return (
     <div className='profile'>
-      <button className='profileButton'  onClick={openModal}>
+      {/* <div>
+       
         <img src={userImage} alt="프로필 이미지" 
         className='profileButton' onClick={openModal}/>   
         { nickname }          
-      </button>
+        
+      </div> */}
 
       <Modal 
-      isOpen={isOpen} 
-      onRequestClose={closeModal}
+      isOpen={isProfileOpen} 
+      onRequestClose={isProfileClose}
       className="pofileModal"
       >
         <div className='modal-container'>
@@ -86,7 +88,7 @@ const Profile = () => {
               
             </div>
             <div className='header-exit'>
-              <IoCloseSharp className='exit-button' onClick={closeModal} />
+              <IoCloseSharp className='exit-button' onClick={isProfileClose} />
             </div>
           </div>
 
