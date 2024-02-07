@@ -149,7 +149,6 @@
                                 .successHandler(oAuthCustomSuccesHandler)
                 );
 
-
             return http.build();
         }
     }
