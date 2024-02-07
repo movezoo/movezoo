@@ -236,7 +236,7 @@ function Character () {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [images, setImages] = useState([]);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
-  const [userCoin, setUserCoin] = useState('');
+  const [userCoin, setCoin] = useState('');
   const [characterPrice, setCharacterPrice] = useState(0);
 
 
@@ -346,7 +346,7 @@ function Character () {
     }
   };
 
-  const fetchUserCoin = async () => {
+  const fetchUserCoin = async (setCoin) => {
     try {
       const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
         withCredentials: true, // 쿠키 허용
@@ -361,14 +361,14 @@ function Character () {
       // const userCoinResponse = await axios.get(`https://i10e204.p.ssafy.io/api/user/2202`, {
       // }, { withCredentials: true });
   
-      setUserCoin(userCoinResponse.data.coin);
+      setCoin(userCoinResponse.data.coin);
     } catch (error) {
       console.error('유저 코인 정보 요청 실패:', error);
     }
   }
   
   useEffect(() => {
-    fetchUserCoin();
+    fetchUserCoin(setCoin);
   }, []);
 
 
