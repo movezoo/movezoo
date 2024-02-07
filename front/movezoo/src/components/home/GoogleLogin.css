@@ -11,6 +11,7 @@
   width: 30px;
   height: 20px;
   margin-right: 20px;
+  content: url('/public/images/homebg/googlelogo.png');
 }
 
 .googlelogin:hover {
