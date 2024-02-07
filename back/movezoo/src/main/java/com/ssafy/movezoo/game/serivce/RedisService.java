@@ -38,6 +38,18 @@ public class RedisService {
         return redisRepository.findAll();
     }
 
+    public boolean isPlay(String roomSessionId){
+        Optional<Room> findRoom = redisRepository.findByRoomSessionId(roomSessionId);
+        return findRoom.map(Room::isRoomStatus).orElse(false);
+    }
+
+    public void changRoomStatus(String roomSessionId){
+        Optional<Room> findRoom = redisRepository.findByRoomSessionId(roomSessionId);
+        findRoom.ifPresent(room -> room.setRoomStatus(true));
+
+    }
+
+
     // 방 입장 (현재 방 참가 인원 +1)
     public boolean enterRoom(String roomSessionId) {
         Room room = redisRepository.findByRoomSessionId(roomSessionId).get();
