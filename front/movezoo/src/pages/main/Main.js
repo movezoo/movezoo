@@ -159,16 +159,16 @@ function Main() {
     const fetchUserCharacters = async () => {
       setLoading(true);
       try{
-        // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-        //         withCredentials: true, // 쿠키 허용
-        //       });
-        // const UserId = loginUserId.data;
+        const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+                withCredentials: true, // 쿠키 허용
+              });
+        const UserId = loginUserId.data;
 
-        // const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${UserId}`, {})
+        const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${UserId}`, {})
         
 
         // 임시 데이터
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102', {})
+        // const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102', {})
 
         const nickname = response.data.nickname;
         const userCoin = response.data.coin;
