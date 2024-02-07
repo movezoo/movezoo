@@ -15,10 +15,21 @@
 //   const [volume, setVolume] = React.useState(80);
 //   const [nickname, setNickname] = React.useState('');
 //   const [coin, setCoin] = React.useState('');
+//   const [userimg, setUserimg] = React.useState('');
+//   const [loading, setLoading] = React.useState(true);
+//   const [isProfileOpen, setIsProfileOpen] = React.useState(false);
 
+//   const openProfileModal = () => {
+//     setIsProfileOpen(true);
+//   };
+
+//   const closeProfileModal = () => {
+//     setIsProfileOpen(false);
+//   };
   
 //   useEffect(() => {
 //     const fetchUserCharacters = async () => {
+//       setLoading(true);
 //       try{
 //         // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
 //         //         withCredentials: true, // 쿠키 허용
@@ -33,20 +44,28 @@
 
 //         const userNickname = response.data.nickname;
 //         const userCoin = response.data.coin;
+//         const userImg = response.data.profileImgUrl;
         
 //         console.log('===========')
-//         console.log(userNickname, userCoin);
+//         console.log(userNickname, userCoin, userImg);
+        
 
 //         setNickname(userNickname); 
 //         setCoin(userCoin);
+//         setUserimg(userImg)
 //       }catch (error) {
 //         console.error('캐릭터 정보 요청 실패:', error);
 //       }
-//       }
+//       setLoading(false);
+//       };
    
 
 //     fetchUserCharacters();
 //   }, []);
+
+//   if (loading) {
+//     return <div>Loading...</div>;
+//   }
 
 //   return (
 //     <div className="main-container" >
@@ -70,7 +89,8 @@
 //           </div>
 
 //           <div className="header-info-profile">
-//             <Profile />
+//             <img src={userimg} alt="프로필 이미지" onClick={openProfileModal} />
+//             <Profile isProfileOpen={isProfileOpen} isProfileClose={closeProfileModal} />
 //           </div>
 //         </div>
 
@@ -96,6 +116,7 @@
 
 // export default Main;
 
+
 // test
 
 import { Link } from "react-router-dom";
@@ -118,6 +139,8 @@ function Main() {
   const [userimg, setUserimg] = React.useState('');
   const [loading, setLoading] = React.useState(true);
   const [isProfileOpen, setIsProfileOpen] = React.useState(false);
+  const [userImage, setUserImage] = React.useState(''); // 사용자 이미지 상태 추가
+  const [userNickname, setUserNickname] = React.useState(''); // 사용자 닉네임 상태 추가
 
   const openProfileModal = () => {
     setIsProfileOpen(true);
@@ -131,27 +154,28 @@ function Main() {
     const fetchUserCharacters = async () => {
       setLoading(true);
       try{
-        // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-        //         withCredentials: true, // 쿠키 허용
-        //       });
-        // const UserId = loginUserId.data;
+        const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+                withCredentials: true, // 쿠키 허용
+              });
+        const UserId = loginUserId.data;
 
-        // const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${UserId}`, {})
+        const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${UserId}`, {})
         
 
         // 임시 데이터
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102', {})
+        // const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102', {})
 
-        const userNickname = response.data.nickname;
+        const nickname = response.data.nickname;
         const userCoin = response.data.coin;
         const userImg = response.data.profileImgUrl;
         
         console.log('===========')
-        console.log(userNickname, userCoin);
+        console.log(userNickname, userCoin, userImg);
+        
 
-        setNickname(userNickname); 
         setCoin(userCoin);
-        setUserimg(userImg)
+        setUserimg(userImg); // 기존의 setUserimg를 setUserImage로 변경
+        setNickname(nickname); // 기존의 setNickname을 setUserNickname으로 변경
       }catch (error) {
         console.error('캐릭터 정보 요청 실패:', error);
       }
@@ -188,8 +212,8 @@ function Main() {
           </div>
 
           <div className="header-info-profile">
-            <img src={userimg} alt="프로필 이미지" onClick={openProfileModal} />
-            <Profile isProfileOpen={isProfileOpen} isProfileClose={closeProfileModal} />
+          <img src={userImage} alt="프로필 이미지" onClick={openProfileModal} />
+          <Profile isProfileOpen={isProfileOpen} isProfileClose={closeProfileModal} setUserImage={setUserImage} setUserNickname={setUserNickname} />
           </div>
         </div>
 
