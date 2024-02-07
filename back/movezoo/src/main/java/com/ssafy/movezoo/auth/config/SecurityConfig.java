@@ -87,7 +87,7 @@
                                             session.setAttribute("user", userDetails);
 
                                             UserDetails userDetails2 = (UserDetails)session.getAttribute("user");
-                                            log.info("session get ", userDetails2.getUsername());
+                                            log.info("session get {}", userDetails2.getUsername());
                                             
 
                                             // 성공 응답을 생성하거나 추가 작업 수행

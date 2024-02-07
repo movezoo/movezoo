@@ -7,4 +7,5 @@
     @Setter
     public class RoomSessionIdDto {
         private String roomSessionId;
+        private String nickname;
     }
