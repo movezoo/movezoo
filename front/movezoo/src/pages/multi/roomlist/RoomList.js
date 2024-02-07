@@ -75,7 +75,7 @@ function RoomList(props) {
                   track={room.trackId}
                   session={room.roomSessionId}
                   setPage={props.setPage}
-                  setMySessionId={props.setMySessionId} 
+                  func={props.func} 
                 />
               }
             </div>
