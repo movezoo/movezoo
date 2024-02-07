@@ -4,6 +4,7 @@ import com.ssafy.movezoo.game.domain.Room;
 import com.ssafy.movezoo.game.dto.CreateRoomRequestDto;
 import com.ssafy.movezoo.game.repository.RedisRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RedisService {
 
     private final RedisRepository redisRepository;
@@ -45,8 +47,11 @@ public class RedisService {
 
     public void changRoomStatus(String roomSessionId){
         Optional<Room> findRoom = redisRepository.findByRoomSessionId(roomSessionId);
-        findRoom.ifPresent(room -> room.setRoomStatus(true));
-
+        if(findRoom.isPresent()){
+            Room room = findRoom.get();
+            room.setRoomStatus(true);
+            redisRepository.save(room);
+        }
     }
 
 
@@ -64,7 +69,7 @@ public class RedisService {
                 return true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("enterRoom error",e);
         }
 
         return false;
@@ -74,7 +79,6 @@ public class RedisService {
     public boolean exitRoom(Long roomId) {
         // id로 방 정보 가져오기
         Room room= redisRepository.findById(roomId).get();
-
         try {
             int currUser = room.getCurrentUserCount();
             room.setCurrentUserCount(currUser - 1);
@@ -82,7 +86,7 @@ public class RedisService {
 
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("exit room error",e);
         }
         return false;
     }
