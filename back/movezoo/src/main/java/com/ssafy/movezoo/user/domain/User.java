@@ -114,7 +114,7 @@ public class User {
         this.volume = 50;
         this.mic = 50;
         this.cameraSensitivity = 50;
-        this.role=UserRole.SOCIAL;
+        this.role=UserRole.USER;
     }
 
     // 소셜 회원인 경우 update만 하자
