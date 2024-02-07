@@ -10,23 +10,23 @@ function Character () {
   const [buyModalOpen, setBuyModalOpen] = useState(false);
 
   const chracterImages = [
-        { id: 1, name: '퍼그', image: './shop/1.png' },
-        { id: 2, name: '소', image: './shop/2.png' },
-        { id: 3, name: '돼지', image: './shop/3.png' },
-        { id: 4, name: '양', image: './shop/4.png' },
-        { id: 5, name: '말', image: './shop/5.png' },
-        { id: 6, name: '라마', image: './shop/6.png' },
-        { id: 7, name: '얼룩말', image: './shop/7.png' },
-        { id: 8, name: '비밀', image: './shop/8.png' },
+        { id: 1, name: '퍼그', image: './shop/pug.png' },
+        { id: 2, name: '돼지', image: './shop/pig.png' },
+        { id: 3, name: '소', image: './shop/cow.png' },
+        { id: 4, name: '양', image: './shop/sheep.png' },
+        { id: 5, name: '라마', image: './shop/llama.png' },
+        { id: 6, name: '말', image: './shop/horse.png' },
+        { id: 7, name: '얼룩말', image: './shop/zebra.png' },
+        { id: 8, name: '미정', image: './shop/8.png' },
       ];
     
   const noCharacterImages = [
     { id: 1, name: '퍼그', image: './shop/no1.png' },
-    { id: 2, name: '소', image: './shop/no2.png' },
-    { id: 3, name: '돼지', image: './shop/no3.png' },
+    { id: 2, name: '돼지', image: './shop/no2.png' },
+    { id: 3, name: '소', image: './shop/no3.png' },
     { id: 4, name: '양', image: './shop/no4.png' },
-    { id: 5, name: '말', image: './shop/no5.png' },
-    { id: 6, name: '라마', image: './shop/no6.png' },
+    { id: 5, name: '라마', image: './shop/no5.png' },
+    { id: 6, name: '말', image: './shop/no6.png' },
     { id: 7, name: '얼룩말', image: './shop/no7.png' },
     { id: 8, name: '비밀', image: './shop/no8.png' },
   ];
