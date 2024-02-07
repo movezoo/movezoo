@@ -55,7 +55,7 @@ function Main() {
       <div className="main-header">
 
         <div className="main-header-name">
-          <h1>MoveZoo!</h1>
+          <h1>MoveZoo</h1>
         </div>
 
         <div className="main-header-info">

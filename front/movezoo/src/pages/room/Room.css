@@ -3,27 +3,22 @@
 @tailwind utilities;
 
 .room-container {
-  @apply w-full min-h-screen flex flex-col justify-between bg-white;
+  @apply min-w-[1000px] min-h-screen flex flex-col justify-center items-center bg-blue-400
+  cursor-default;
 }
 
 /* 메인 헤더 */
 .room-header {
-  @apply h-20 flex flex-row;
+  @apply w-4/6 h-32 flex flex-row items-center justify-between;
 }
 
 .room-header-name {
-  flex: 1;
-  display: flex;
-  justify-content: left;
-  @apply font-mono text-4xl p-3 ml-5;
+  @apply flex justify-start font-Pixel text-7xl text-white p-3 ml-2
 }
 
 .room-main {
-  width: 1000px;
-  height: 500px;
-  border: solid black 1px;
-  background-color: gray;
-  @apply mx-auto;
+  @apply w-4/6 h-96 bg-white rounded-3xl;
+  padding: 5px;
 }
 
 .room-info {
@@ -34,12 +29,16 @@
 }
 
 .room-search{
-  display: flex;
+  display: inline-flex;
   position: relative;
   border: solid black 1px;
+  border-radius: 10px;
   background-color: white;
   width: 50%;
+  margin-right: 10px;
+  margin-left: 10px;
   text-align: center;
+  overflow: hidden;
 }
 
 .room-match{
@@ -47,7 +46,7 @@
   border-radius: 20px;
   background-color: black;
   color: white;
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 25px;
   text-align: center;
   width: 25%;
@@ -59,7 +58,7 @@
   border-radius: 20px;
   background-color: black;
   color: white;
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 25px;
   text-align: center;
   width: 25%;
@@ -69,6 +68,8 @@
 .room-list{
   display: flex;
   flex-wrap: wrap;
+  overflow-y: scroll;
+  max-height: 300px;
   margin: 10px;
 }
 
@@ -81,6 +82,6 @@
 }
 
 /* 메인 네브바 */
-.main-navbar {
-  @apply h-20;
+.room-navbar {
+  @apply w-4/6 h-36 flex justify-center items-center;
 }

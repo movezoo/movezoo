@@ -9,7 +9,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -24,8 +23,8 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info("OAuth2 로그인 - loadUser(OAuth2UserRequest)");
-        System.out.println("oauth 로그인 loadUser : " + userRequest.getAccessToken().getTokenValue());
+        log.info("oauth 유저 로그인 - loadUser(userRequest)");
+//        System.out.println("oauth 로그인 loadUser : " + userRequest.getAccessToken().getTokenValue());
 
         // accessToken으로 서드파티에 요청해서 사용자 정보를 얻어옴
         OAuth2User oAuth2User = super.loadUser(userRequest);
@@ -37,24 +36,26 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
         String email = oAuth2User.getAttribute("email");
         String nickname = oAuth2User.getAttribute("name");
 
-        while (userRepository.findByNickname(nickname).isPresent()){
-            Random random = new Random(System.currentTimeMillis());
-            int randVal = random.nextInt(999);
-            nickname = nickname.concat(String.valueOf(randVal));
-
-            System.out.println("randVal : "+randVal);
-        }
-
-        System.out.println(email+" & "+nickname);
-
         // 이미 가입한 사용자인지 확인
-        Optional<User> findMember = userRepository.findByGoogleEmail(email);
-        if (findMember.isEmpty()) { // 가입한 사용자가 아니라면
-            log.info("새로운 소셜 사용자 등록");
+        Optional<User> optionalUser = userRepository.findByGoogleEmail(email);
+
+        // 가입한 사용자가 아니라면
+        if (optionalUser.isEmpty()) {
+            while (userRepository.findByNickname(nickname).isPresent()){
+                Random random = new Random(System.currentTimeMillis());
+                int randVal = random.nextInt(999);
+                nickname = nickname.concat(String.valueOf(randVal));
+
+                System.out.println("randVal : "+randVal);
+            }
+
+            log.info("새로운 소셜 사용자 등록 성공");
             User user = new User(email, nickname);
             userRepository.save(user);
         }
-        
+
+        log.info("OAuth2User loadUser - 로그인한 유저 attributes : "+oAuth2User.getAttributes().toString());
+
         return oAuth2User;
     }
 

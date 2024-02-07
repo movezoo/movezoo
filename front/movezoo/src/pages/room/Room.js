@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import Makeroom from "../../components/room/Makeroom";
+import Inforoom from "../../components/room/Inforoom";
 import * as React from "react";
 import Modal from "react-modal";
 import "./Room.css";
@@ -11,8 +12,26 @@ Modal.setAppElement("#root");
 
 function Room() {
   const [volume, setVolume] = React.useState(80);
-  const [nickname, setNickname] = React.useState("");
-  const [coin, setCoin] = React.useState("");
+  const [rooms, setRooms] = React.useState([]);
+
+  const fetchRoomList = async () => {
+    try {
+      // 임시 데이터
+      const response = await axios.get(
+        "https://i10e204.p.ssafy.io/api/room",
+        {}
+      );
+      setRooms(response.data);
+    } catch (error) {
+      console.error("캐릭터 정보 요청 실패:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRoomList();
+  }, []);
+
+  console.log(rooms);
 
   return (
     <div className="room-container">
@@ -27,8 +46,8 @@ function Room() {
       <div className="room-main">
         <div className="room-info">
           <div className="room-search">
-            <input />
-            <button>검색</button>
+            <input style={{ width: "80%" }} />
+            <button style={{ width: "20%", backgroundColor: "burlywood" }}>검색</button>
           </div>
           <Link className="room-match" to="/multi">
             <button>빠른 입장</button>
@@ -38,16 +57,26 @@ function Room() {
           </button>
         </div>
         <div className="room-list">
-          <div className="room-box">1</div>
-          <div className="room-box">1</div>
-          <div className="room-box">1</div>
-          <div className="room-box">1</div>
-          <div className="room-box">1</div>
+          {rooms.map((room) => (
+            <div className="room-box" key={room.id}>
+              {
+                <Inforoom
+                  key={room.id}
+                  title={room.roomTitle}
+                  userCount={room.currentUserCount}
+                  userMaxCount={room.maxUserCount}
+                  mode={room.roomMode}
+                  track={room.trackId}
+                  session={room.roomSessionId}
+                />
+              }
+            </div>
+          ))}
         </div>
       </div>
 
       {/* 네브바 */}
-      <div className="main-navbar">
+      <div className="room-navbar">
         <Navbar />
       </div>
 

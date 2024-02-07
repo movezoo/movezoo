@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 // import "./Game.module.css";
 // import * as tf from'@tensorflow/tfjs-core';
 import '@mediapipe/face_detection';
@@ -8,7 +8,7 @@ import * as faceDetection from '@tensorflow-models/face-detection';
 import { data, myGameData, playerGameDataList } from "./data.js";
 
 const MyOvVideo = (props) => {
-  const { streamManager, mySession } = props;
+  const { streamManager, mySession, isGameStart } = props;
   const videoRef = useRef(null);
   const detector = useRef(null);
 
@@ -78,7 +78,9 @@ const MyOvVideo = (props) => {
       detectFaces();
       requestAnimationFrame(runFaceDetection)
     };
-    runFaceDetection();
+
+    // runFaceDetection();
+    
 
 
 
@@ -101,13 +103,6 @@ const MyOvVideo = (props) => {
       mySession.on('signal:custom', (res) => {
         // console.log('Signal receive successfully')
         const newPlayerGameData = JSON.parse(res.data); // 수신한 다른사람의 객체 데이터
-        // res.data : { playerId: '', playerCharacter: '', userX: 0, userZ: 0, speed: 0 }
-        // if(newPlayerGameData.playerCharacter === undefined) {
-        //   console.log(newPlayerGameData)
-        // }
-
-
-
 
         let needPush = true; // push가 필요한지 check
         // 1. 수신한 데이터의 id가 내 id와 일치하면 필요없다.
@@ -129,14 +124,21 @@ const MyOvVideo = (props) => {
     }
 
 
-    const connectData = () => {
+    const sendDataStart = () => {
       // console.log(playerGameDataList);
       sendData();
-      requestAnimationFrame(connectData)
+      // responseData();
+      requestAnimationFrame(sendDataStart)
     }
-    responseData();
-    connectData();
+    
+    
+    const gameStart = () => {
+      responseData(); // 1회 열기
+      sendDataStart(); // 계속 실행
+      runFaceDetection(); // 계속 실행
+    }
 
+    if (isGameStart)  gameStart();
   }, [streamManager]);
   
 

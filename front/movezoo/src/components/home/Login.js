@@ -48,8 +48,8 @@ const Login = () => {
         alert('id 또는 비밀번호가 틀렸습니다.');
       }
     } catch (error) {
-      console.error('로그인 요청 중 에러 발생:', error);
-      alert('로그인 요청 중 에러 발생.');
+      console.error('로그인에 실해했습니다.', error);
+      alert('로그인 실패.');
     }
   };
 

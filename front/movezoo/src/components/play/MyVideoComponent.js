@@ -41,8 +41,9 @@ const MyVideoComponent = (props) => {
     <div>
       {props.streamManager !== undefined ? (
         <div className="streamcomponent">
-          <MyOvVideo streamManager={props.streamManager}
-          mySession={props.mySession}
+          <MyOvVideo
+            streamManager={props.streamManager}
+            mySession={props.mySession}
            />
           <div>
             <p>{getNicknameTag()}</p>

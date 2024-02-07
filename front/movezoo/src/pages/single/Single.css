@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.single-container {
+  background-image:url('./Summer6.png');
+  background-size: cover;
+  @apply min-w-[1000px] min-h-screen flex flex-col justify-center 
+  items-center bg-green-400 cursor-default;
+}
+
+.Back {
+  @apply absolute top-5 left-5
+}
+
+.single-header {
+  @apply  w-[1000px] flex flex-col mb-5
+}
+
+.single-name {
+  @apply text-7xl text-white justify-center ml-8
+}
+
+.single-body {
+  @apply w-[1000px] h-[528px] flex flex-row items-center justify-center
+}
+
+.single-body-cam {
+  @apply w-[680px] h-[528px] flex items-center justify-center  bg-white 
+  rounded-3xl p-10;
+}
+
+.single-webCam {
+  @apply w-full flex items-center justify-center
+  rounded-3xl;
+}
+
+.txtLoading {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  color: white;
+  font-size: xx-large;
+}
+
+.body-selects {
+  @apply w-[300px] h-[528px] flex flex-col items-center justify-between
+  
+}
+
+.map-select {
+  
+}
+
+.charact-select {
+  @apply w-[250px] h-[150px] flex justify-center items-center 
+  bg-white rounded-2xl 
+}
+
+.charact-select-button {
+  @apply text-2xl
+}
+
+.start-select {
+
+}
+

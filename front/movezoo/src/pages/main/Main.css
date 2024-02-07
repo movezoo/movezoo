@@ -5,10 +5,17 @@
 
 
 .main-container {
+<<<<<<< HEAD
   /* C:\Repo\S10P12E204\front\movezoo\public\images\pageBackground\sky1.jpg */
   background-image:url('../../images/pageBackground/sky1.jpg');
   /* background-size: cover; */
   @apply w-full min-h-screen flex flex-col justify-center items-center bg-blue-400;
+=======
+  background-image:url('./sky1.jpg');
+  background-size: cover;
+  @apply min-w-[1000px] min-h-screen flex flex-col justify-center items-center bg-blue-400
+  cursor-default;
+>>>>>>> f0be560913b7f3be4124da10c0720cba84cb57ed
 }
 
 /* 메인 헤더 */
@@ -17,7 +24,7 @@
 }
 
 .main-header-name {
-  @apply flex justify-start font-mono text-8xl text-white p-3 ml-2
+  @apply flex justify-start font-Pixel text-7xl text-white p-3 ml-2
 }
 
 .main-header-info {
@@ -50,5 +57,5 @@
 
 /* 메인 네브바 */
 .main-navbar {
-  @apply w-4/6 h-36 flex justify-center items-center;
+  @apply w-4/6 h-36 flex justify-center items-center mt-1;
 }
