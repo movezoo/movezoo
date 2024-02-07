@@ -43,6 +43,10 @@ const Login = () => {
       // API response handling
       if (response.status === 200) {
         setSessionId(response.data.sessionId); // 세션 식별자 저장
+
+      // 로그인 요청 후 1초 동안 대기
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
         navigate('/main');
       } else {
         alert('id 또는 비밀번호가 틀렸습니다.');

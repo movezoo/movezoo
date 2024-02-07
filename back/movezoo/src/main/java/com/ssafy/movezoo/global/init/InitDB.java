@@ -28,6 +28,7 @@ public class InitDB {
     private final RacerService racerService;
     private final LapTimeService lapTimeService;
     private final ItemService itemService;
+    private final String defaultProfileImgUrl = "./profileImg/profile1.png";
 //    @Autowired
 //    public InitDB(UserService userService) {
 //        this.userService=userService;
@@ -43,18 +44,18 @@ public class InitDB {
         UserJoinRequestDto dto = new UserJoinRequestDto("123@123.com","123","test123");
         userController.registUser(dto);
 
-        User userA = new User("rlackdgml97@naver.com","1234","창히");
+        User userA = new User("rlackdgml97@naver.com","1234","창히",defaultProfileImgUrl);
         userA.setCoin(5000);
         userA.setProfileImgUrl("userA.jpg");
         userA.setGoogleUserEmail("123@123.com");
         userRepository.save(userA);
 
-        User userB = new User("jww5555@naver.com","1234","재원");
+        User userB = new User("jww5555@naver.com","1234","재원",defaultProfileImgUrl);
         userB.setCoin(1000);
         userB.setProfileImgUrl("userB.jpg");
         userRepository.save(userB);
 
-        User userC = new User("goqdp@naver.com","1234","창히분신");
+        User userC = new User("goqdp@naver.com","1234","창히분신",defaultProfileImgUrl);
         userC.setProfileImgUrl("userC.jpg");
         userRepository.save(userC);
 
