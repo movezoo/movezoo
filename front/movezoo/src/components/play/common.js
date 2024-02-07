@@ -306,12 +306,21 @@ const Game = {
     }
     
     const setSprites = () => {
+      // result[name] = document.createElement('img'); // 이미지 엘리먼트 생성 및 배열에 저장
+      // Dom.on(result[name], 'load', onload); // 이미지 로드 이벤트에 onload 콜백 등록
+      // // Dom.on(result[name], 'onerror', console.log(`error`));
+      // // result[name].src = "/images/" + name + ".png"; // 이미지의 소스 경로 설정
       
+      // result[name].src = images[`${name}`]; // important!!!! : react는 빌드 후 src내의 경로가 변경된다!!! 이미지 같은거 import 해서 사용하면 빌드된 경로를 알 수 있다. (onerror 이벤트리스너로 찾았음)
     }
+
+
+    
 
 
     // 주어진 이미지 이름에 대해 이미지 엘리먼트를 생성하고 이벤트를 등록하는 루프
     for(let n = 0 ; n < names.length ; n++) {
+      // names <-- option.images: ["background", "sprites", "playerSpriteNames"],
       let name = names[n]; // 현재 이미지의 이름
       
       // 플레이어들에 대한 이미지 생성하기
@@ -320,13 +329,8 @@ const Game = {
       } else if(name === "background") {
         setBackground();
       } else if(name === "sprites") { // sprites
-        result[name] = document.createElement('img'); // 이미지 엘리먼트 생성 및 배열에 저장
-        Dom.on(result[name], 'load', onload); // 이미지 로드 이벤트에 onload 콜백 등록
-        // Dom.on(result[name], 'onerror', console.log(`error`));
-        // result[name].src = "/images/" + name + ".png"; // 이미지의 소스 경로 설정
-        
-        result[name].src = images[`${name}`]; // important!!!! : react는 빌드 후 src내의 경로가 변경된다!!! 이미지 같은거 import 해서 사용하면 빌드된 경로를 알 수 있다. (onerror 이벤트리스너로 찾았음)
-      } else { console.log(`error 발생: ${name}???`) }
+        setSprites();
+      } else { console.log(`load images error: ${name}???`) }
     }
   },
 
