@@ -30,11 +30,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 //        Optional<User> optionalUser = userRepository.findByEmail(userEmail);
 
         try {
-            System.out.println("Logined User is : "+ user.toString());
+            System.out.println("Login 유저 : "+ user.toString());
 
             return new CustomUserDetails(user);
         } catch (UsernameNotFoundException e){
-            System.out.println("Login 못했지롱 : "+ user.toString());
+            System.out.println("Login 실패 : "+ user.toString());
 
             e.printStackTrace();
 
