@@ -224,6 +224,7 @@ function Multi() {
     setMyUserName(myUserName);
     setMainStreamManager(mainStreamManager);
     setSubscribers(subscribers);
+    setPublisher(publisher);
   };
 
   return (
@@ -234,6 +235,8 @@ function Multi() {
           setPage={setPage}
           session={session}
           mainStreamManager={mainStreamManager}
+          subscribers={subscribers}
+          publisher={publisher}
           mySessionId={mySessionId}
         />
       ) : null}
@@ -242,6 +245,8 @@ function Multi() {
           setPage={setPage}
           session={session}
           mainStreamManager={mainStreamManager}
+          subscribers={subscribers}
+          publisher={publisher}
           mySessionId={mySessionId}
         />
       ) : null}
