@@ -4,14 +4,14 @@ import Modal from 'react-modal';
 import './ImageChange.css';
 
 const profileImages = [
-  { id: 1, name: '프로필 1', image: './profileImg/profile1.png' },
-  { id: 2, name: '프로필 2', image: './profileImg/profile2.png' },
-  { id: 3, name: '프로필 3', image: './profileImg/profile3.png' },
-  { id: 4, name: '프로필 4', image: './profileImg/profile4.png' },
-  { id: 5, name: '프로필 5', image: './profileImg/profile5.png' },
-  { id: 6, name: '프로필 6', image: './profileImg/profile6.png' },
-  { id: 7, name: '프로필 7', image: './profileImg/profile7.png' },
-  { id: 8, name: '프로필 8', image: './profileImg/profile8.png' },
+  { id: 1, name: '프로필 1', image: '/images/profileImg/profile1.png' },
+  { id: 2, name: '프로필 2', image: '/images/profileImg/profile2.png' },
+  { id: 3, name: '프로필 3', image: '/images/profileImg/profile3.png' },
+  { id: 4, name: '프로필 4', image: '/images/profileImg/profile4.png' },
+  { id: 5, name: '프로필 5', image: '/images/profileImg/profile5.png' },
+  { id: 6, name: '프로필 6', image: '/images/profileImg/profile6.png' },
+  { id: 7, name: '프로필 7', image: '/images/profileImg/profile7.png' },
+  { id: 8, name: '프로필 8', image: '/images/profileImg/profile8.png' },
 ]
 
 const ImageChangeModal = ({ onImageChange }) => {
