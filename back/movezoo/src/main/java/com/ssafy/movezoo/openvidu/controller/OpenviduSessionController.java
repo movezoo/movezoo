@@ -62,7 +62,7 @@ public class OpenviduSessionController {
                                                    @RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
 
-        log.info("/api/sessions/{} ",sessionId);
+        log.info("/api/sessions/{} ", sessionId);
 
         //sessionId 사용하여 OpenVidu에서 해당 세션 get
         Session session = openvidu.getActiveSession(sessionId);
@@ -75,7 +75,7 @@ public class OpenviduSessionController {
         //프론트에서 넘어온 json데이터를 사용하여 ConnectionProperties객체생성, openvidu session에 연결할때 필요
         ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
 
-        log.info("{}",params);
+        log.info("{}", params);
 
 
         /**
@@ -109,49 +109,53 @@ public class OpenviduSessionController {
         return new ResponseEntity<>(connectionUsers, HttpStatus.OK);
     }
 
+    //deleteampping에서는 RequestBody를 사용할수 없다
     //유저를 방에서 내보내기(아이디를 가져와서 방장이면 방삭제)
     @DeleteMapping("api/openvidu/session")
-    public ResponseEntity<String> deleteSessionUser(@RequestBody ExitRoomDto exitRoomDto, Authentication authentication) throws OpenViduJavaClientException, OpenViduHttpException {
-        String sessionId = exitRoomDto.getSessionId();
-        String connectionId = exitRoomDto.getConnectionId();
+    public ResponseEntity<String> deleteSessionUser(@RequestParam String sessionId, @RequestParam String connectionId, Authentication authentication) throws OpenViduJavaClientException, OpenViduHttpException {
 
-        log.info("api/openvidu/session {}",authentication.getName());
+//        log.info("api/openvidu/session {}", authentication.getName());
+        log.info("api/openvidu/session {} {}", sessionId,connectionId);
+
 
         Optional<Room> findRoom = redisService.getRoomInfoBySessionId(sessionId);
-        if(findRoom.isEmpty()) {
+        if (findRoom.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not exist room");
         }
 
         //방장이 나갈경우 방 삭제
         int masterId = findRoom.get().getRoomMasterId();
 
-        if(Integer.parseInt(authentication.getName()) == masterId) {
-            deleteSession(sessionId);
-            redisService.deleteRoom(findRoom.get().getId());
-            return ResponseEntity.status(HttpStatus.OK).body("master out");
-        }
+//        if (Integer.parseInt(authentication.getName()) == masterId) {
+//            deleteSession(sessionId);
+//            redisService.deleteRoom(findRoom.get().getId());
+//            return ResponseEntity.status(HttpStatus.OK).body("master out");
+//        }
 
         //방장이 아닐경우 세션에서 connectionId를 찾아서 연결 해제
         Session session = openvidu.getActiveSession(sessionId);
+        if(session == null)  return ResponseEntity.status(HttpStatus.OK).body("not exist session "+sessionId);
         List<Connection> connections = session.getConnections();
 
 //        String result = "";
-
+        log.info("connections size {}", connections.size());
         for (Connection connection : connections) {
-            if(connection.getConnectionId().equals(connectionId)){
+            log.info("{} {}", connection.getConnectionId(),connectionId);
+            if (connection.getConnectionId().equals(connectionId)) {
                 session.forceDisconnect(connection);
 //                result= connectionId;
                 break;
             }
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(connectionId+" out");
+        //세션에 연결된 connection이 0명이면 session close해야한다
+        return ResponseEntity.status(HttpStatus.OK).body(connectionId + " out");
     }
 
     //방 삭제
     public boolean deleteSession(String sessionId) throws OpenViduJavaClientException, OpenViduHttpException {
         Session session = openvidu.getActiveSession(sessionId);
-        if(session==null) return false;
+        if (session == null) return false;
         session.close();
 
         return true;
@@ -159,7 +163,7 @@ public class OpenviduSessionController {
 
     //전체 방 리스트
     @GetMapping("api/openvidu/session/room-list")
-    public ResponseEntity<List<String>> findAllSession(){
+    public ResponseEntity<List<String>> findAllSession() {
         List<String> roomList = new ArrayList<>();
 
         List<Session> sessions = openvidu.getActiveSessions();
