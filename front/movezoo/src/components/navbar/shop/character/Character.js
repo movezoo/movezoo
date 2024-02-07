@@ -232,7 +232,7 @@ import './Character.css';
 import axios from 'axios';
 import Modal from 'react-modal';
 
-function Character () {
+function Character ({ setCoin }) {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [images, setImages] = useState([]);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
