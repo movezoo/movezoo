@@ -174,4 +174,7 @@ public class OpenviduSessionController {
         return ResponseEntity.status(HttpStatus.OK).body(roomList);
     }
 
+
+    //--------------------------delete----------------------//
+
 }
