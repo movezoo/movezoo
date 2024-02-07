@@ -59,6 +59,7 @@
                     // 로그인 후 ?continue 가 붙는 것에 대한 해결
                     .requestCache((request) ->
                             request.requestCache(requestCache))
+
                     //  form 기반 로그인
                     .formLogin((formLogin) ->
                             formLogin
@@ -136,7 +137,7 @@
             http
                 .oauth2Login((oauth2Login) ->
                         oauth2Login
-                                .loginPage("/")
+//                                .loginPage("/")
                                 .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
                                         .userService(customOAuth2Service)))
                                 .defaultSuccessUrl("/main")
