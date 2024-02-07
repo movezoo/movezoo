@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import styles from "./MultiGame.module.css";
-import "./MultiGame.module.css";
+import styles from "./Game.module.css";
+import "./Game.module.css";
 // import Webcam from "react-webcam";
 import Back from "../../../components/single/game/Back";
 import Main from "../../../components/play/Main";
@@ -8,9 +8,8 @@ import Cam from "../../../components/play/Cam";
 
 import { useLocation } from "react-router-dom";
 
-function Game() {
-  
-  const { state } = useLocation()
+function Game(props) {
+  const { state } = useLocation();
   const { mySessionId, isGameStart } = state;
 
   return (
@@ -29,28 +28,26 @@ function Game() {
           </div>
           {/*웹캠*/}
           {/* <div className={styles.webCam}> */}
-          <Cam mySessionId={mySessionId} isGameStart={isGameStart}/>
+          <Cam mySessionId={mySessionId} isGameStart={isGameStart} />
           multigame
           {/* </div> */}
           {/* <Webcam className={styles.webCam} mirrored={true} /> */}
           {/* 일단 결과창으로 넘어가는 버튼*/}
-          <Link to="/MultiResult">
-            <button
-              style={{
-                position: "relative",
-                textAlign: "center",
-                bottom: "50%",
-                width: 160,
-                height: 80,
-                color: "white",
-                backgroundColor: "tomato",
-              }}
-            >
-              넘어가기
-              <br />
-              (임시버튼)
-            </button>
-          </Link>
+          <button onClick={()=> props.setPage(4)}
+            style={{
+              position: "relative",
+              textAlign: "center",
+              bottom: "50%",
+              width: 160,
+              height: 80,
+              color: "white",
+              backgroundColor: "tomato",
+            }}
+          >
+            넘어가기
+            <br />
+            (임시버튼)
+          </button>
         </div>
 
         {/*오른쪽 화면*/}
