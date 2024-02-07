@@ -174,8 +174,8 @@ function Main() {
         
 
         setCoin(userCoin);
-        setUserimg(userImg); // 기존의 setUserimg를 setUserImage로 변경
-        setNickname(nickname); // 기존의 setNickname을 setUserNickname으로 변경
+        setUserImage(userImg); // 기존의 setUserimg를 setUserImage로 변경
+        setUserNickname(nickname); // 기존의 setNickname을 setUserNickname으로 변경
       }catch (error) {
         console.error('캐릭터 정보 요청 실패:', error);
       }
@@ -203,7 +203,7 @@ function Main() {
         <div className="main-header-info">
           <div className="header-info-user">
             <div>
-              <h1> {nickname} </h1>
+              <h1> {userNickname} </h1>
             </div>
             <div className="info-user-coin">
               <AiFillCopyrightCircle className="coinIcon" />

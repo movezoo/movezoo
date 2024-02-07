@@ -14,7 +14,6 @@ const Signup = ({ isOpen, onRequestClose }) => {
   const [emailError, setEmailError] = useState('');
   const navigate = useNavigate();
 
-
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
 
@@ -22,8 +21,10 @@ const Signup = ({ isOpen, onRequestClose }) => {
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (!emailPattern.test(newEmail)) {
       setEmailError('올바른 이메일 형식이 아닙니다.');
+      document.getElementById('emailErrorbox').innerText = '올바른 이메일 형식이 아닙니다.';
     } else {
       setEmailError('');
+      document.getElementById('emailErrorbox').innerText = '';
     }
 
     setEmail(newEmail);
@@ -37,11 +38,19 @@ const Signup = ({ isOpen, onRequestClose }) => {
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
 
-    // 비밀번호 길이 체크
-    if (newPassword.length < 8) {
-      setPasswordError('8글자 이상 입력해주세요');
+    // 비밀번호 조건 체크
+    const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
+    if (!passwordPattern.test(newPassword)) {
+      setPasswordError('');
+      document.getElementById('alertTxt').innerText = '사용불가';
+      document.getElementById('pswd1_img1').src = '/signup/m_icon_not_use.png';
+      document.getElementById('passwordErrorBox').innerText = '8글자 이상 16글자 미만, 대문자와 특수문자가 각각 1개 이상 포함되어야 합니다.';
     } else {
       setPasswordError('');
+      document.getElementById('alertTxt').innerText = '사용가능';
+      document.getElementById('alertTxt').style.color = 'green'
+      document.getElementById('pswd1_img1').src = '/signup/m_icon_safe.png';
+      document.getElementById('passwordErrorBox').innerText = '';
     }
 
     // 비밀번호가 입력될 때마다 비밀번호 상태 업데이트
@@ -55,7 +64,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
     }
 
     if (password !== confirmPassword) {
-      setPasswordError('비밀번호가 일치하지 않습니다.');
+      alert('비밀번호가 일치하지 않습니다.');
       return;
     }
 
@@ -94,14 +103,22 @@ const Signup = ({ isOpen, onRequestClose }) => {
       setConfirmPassword('');
       setNickname('');
       console.error('회원가입 요청 중 에러 발생:', error);
-      alert('회원가입 중 에러가 발생했습니다.');
+      alert('회원가입에 실패했습니다.');
     }
+  };
+
+  const handleCancel = () => {
+    onRequestClose();
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    setNickname('');
   };
 
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={onRequestClose}
+      onRequestClose={handleCancel}
       contentLabel="Signup Modal"
       style={{
         overlay: {
@@ -134,7 +151,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
               />
             </span>
             <span id="stepUrl" className="step_url"></span>
-            <span className="error_next_box"></span>
+            <span className="error_next_box" id='emailErrorbox'></span>
           </div>
 
           <div>
@@ -150,14 +167,10 @@ const Signup = ({ isOpen, onRequestClose }) => {
                 value={password}
                 onChange={handlePasswordChange}
               />
-              <span id="alertTxt" style={{ display: passwordError ? 'block' : 'none' }}>{passwordError || '사용불가'}</span>
-              <img src={
-                password === '' ? "/signup/m_icon_pass.png" :
-                  password.length < 8 ? "/signup/m_icon_not_use.png" :
-                    "/signup/m_icon_safe.png"
-              } id="pswd1_img1" className="pswdImg" alt="비밀번호 아이콘" />
+              <span id="alertTxt" ></span>
+              <img src='/images/signup/m_icon_pass.png' id="pswd1_img1" className="pswdImg" alt="비밀번호 아이콘" />
             </span>
-            <span className="error_next_box">{passwordError}</span>
+            <span className="error_next_box" id="passwordErrorBox"></span>
           </div>
 
           <div>
@@ -178,7 +191,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
               />
               <img src={!confirmPassword.trim() ? "/signup/m_icon_check_disable.png" : (password === confirmPassword ? "/signup/m_icon_check_enable.png" : "/signup/m_icon_check_disable.png")} id="pswd2_img1" className="pswdImg" alt="비밀번호 확인 아이콘" />
             </span>
-            <span className="error_next_box">{password !== confirmPassword ? '비밀번호가 일치하지 않습니다.' : ''}</span>
+            <span className="error_next_box" >{password !== confirmPassword ? '비밀번호가 일치하지 않습니다.' : ''}</span>
           </div>
 
           <div>
@@ -201,7 +214,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
             <button type="button" id="btnJoin" onClick={handleSignup}>
               <span> 가입하기 </span>
             </button>
-            <button type="button" id='btnClose' onClick={onRequestClose}>
+            <button type="button" id='btnClose' onClick={handleCancel}>
               <span > 가입취소 </span>
             </button>
           </div>

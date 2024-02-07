@@ -30,7 +30,7 @@
   height: 100%;
   justify-content: center;
   display: flex;
-  background-image: url('../main/sky1.jpg');
+  background-image: url('/public/images/mainbg/sky1.jpg');
 }
 
 .home-title {
