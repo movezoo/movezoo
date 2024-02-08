@@ -43,12 +43,10 @@ const Profile = ({ isProfileOpen, isProfileClose, setUserImage: updateImage, set
         });
         const UserId = loginUserId.data;
 
-        // console.log("UserId : ", UserId);
-
         const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
 
         // 임시 유저 데이터==
-        // const response = await axios.get('https://i10e204.p.ssafy.io/api/user/102');
+        // const response = await axios.get('https://i10e204.p.ssafy.io/api/user/2202');
 
         const user = response.data;
         setUser(user);

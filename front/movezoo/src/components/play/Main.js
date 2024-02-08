@@ -2,7 +2,7 @@
 // import io from "socket.io-client";
 import { useRef, useEffect } from 'react'
 import { Dom, Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
-import { MAX_FRAME_COUNT, PLAYER_SPRITE } from './gameConstants.js';
+import { MAX_FRAME_COUNT, PLAYER_SPRITE, SPRITE_FILE_NAME, SPRITE_SIZE } from './gameConstants.js';
 import { data, myGameData, playerGameDataList, playerCount, playerGameResetDataList } from './data.js';
 
 const localStorage = window.localStorage || {};
@@ -39,7 +39,7 @@ const Main = (props) => {
     // let canvas         = Dom.get('canvas');       // 우리의 캔버스...
     // let ctx            = canvas.getContext('2d'); // ...그리고 그림 컨텍스트
     let background     = {};                      // 배경 이미지 (아래에서 로드됨)
-    let sprites        = null;                    // 스프라이트 시트 (아래에서 로드됨)
+    let sprites        = null;                    // 스프라이트 시트 loadImages 객체
     let playerSprites  = {};
     let playerEnterDataList = [];
 
@@ -150,7 +150,7 @@ const Main = (props) => {
         // 스프라이트와의 충돌 확인
         for(let n = 0 ; n < playerSegment.sprites.length ; n++) {
           sprite  = playerSegment.sprites[n];
-          spriteW = sprite.source.w * SPRITES.SCALE;
+          spriteW = sprite.size.w * SPRITES.SCALE;
           if (Util.overlap(playerX, playerW, sprite.offset + spriteW/2 * (sprite.offset > 0 ? 1 : -1), spriteW)) {
             speed = maxSpeed/5;
             position = Util.increase(playerSegment.p1.world.z, -playerZ, trackLength); // 스프라이트 앞(세그먼트 앞)에서 멈춥니다
@@ -438,7 +438,7 @@ const Main = (props) => {
       for(let n = (drawDistance-1) ; n > 0 ; n--) {
         segment = segments[(baseSegment.index + n) % segments.length];
       
-        // 세그먼트에 있는 차량 렌더링
+        //************************* 세그먼트에 있는 차량 렌더링 *************************
         for(let i = 0 ; i < segment.cars.length ; i++) {
           // car = { offset, z, sprite, speed, playerId, character };
           car         = segment.cars[i];
@@ -467,19 +467,21 @@ const Main = (props) => {
           // Render.sprite(ctx, width, height, resolution, roadWidth, sprites, car.sprite, spriteScale, spriteX, spriteY, -0.5, -1, segment.clip);
           Render.sprite(ctx, width, height, resolution, roadWidth, curSpriteObj, sprite, spriteScale, spriteX, spriteY, -0.5, -1, segment.clip);
         }
+        //******************************************************************************
     
-        // 세그먼트에 있는 스프라이트 렌더링
+        // 세그먼트에 있는 스프라이트 렌더링 ********************************************
         for(let i = 0 ; i < segment.sprites.length ; i++) {
           sprite      = segment.sprites[i];
           spriteScale = segment.p1.screen.scale;
           spriteX     = segment.p1.screen.x + (spriteScale * sprite.offset * roadWidth * width/2);
           spriteY     = segment.p1.screen.y;
-
+          let curSpriteObj = sprites[sprite.spriteGroup][sprite.spriteName];
           // console.log(sprite);
-          // Render.sprite(ctx, width, height, resolution, roadWidth, sprites, sprite.source, spriteScale, spriteX, spriteY, (sprite.offset < 0 ? -1 : 0), -1, segment.clip);
+          Render.sprite(ctx, width, height, resolution, roadWidth, curSpriteObj, sprite.size, spriteScale, spriteX, spriteY, (sprite.offset < 0 ? -1 : 0), -1, segment.clip);
         }
+        //******************************************************************************
     
-        // 플레이어가 속한 세그먼트인 경우 플레이어 렌더링
+        // 플레이어가 속한 세그먼트인 경우 플레이어 렌더링 *******************************
         if (segment === playerSegment) {
           Render.player(ctx, width, height, resolution, roadWidth, playerSprites, speed/maxSpeed,
                         cameraDepth/playerZ,
@@ -488,6 +490,7 @@ const Main = (props) => {
                         speed * (keyLeft ? -1 : keyRight ? 1 : 0),
                         playerSegment.p2.world.y - playerSegment.p1.world.y);
         }
+        // ****************************************************************************
       }
     }
     
@@ -507,7 +510,7 @@ const Main = (props) => {
       segments.push({
           index: n,
               p1: { world: { y: lastY(), z:  n   *segmentLength }, camera: {}, screen: {} },
-              p2: { world: { y: y,       z: (n+1)*segmentLength }, camera: {}, screen: {} },
+              p2: { world: { y: y,       z: (n+1)* segmentLength }, camera: {}, screen: {} },
           curve: curve,
         sprites: [],
             cars: [],
@@ -516,8 +519,22 @@ const Main = (props) => {
     }
     
     // 세그먼트에 스프라이트 추가
-    const addSprite = (n, sprite, offset) => {
-      segments[n].sprites.push({ source: sprite, offset: offset });
+    /**
+     * 지정된 길이와 높이의 언덕을 추가합니다.
+     * @param {number} n - 세그먼트번호(z축위치)
+     * @param {string} spriteGroup - 스프라이트 그룹이름
+     * @param {string} spriteName - 스프라이트 이름
+     * @param {string} offset - 가로축(-1, 1)
+     */
+    const addSprite = (n, spriteGroup, spriteName, offset) => {
+      // addSprite(20,  SPRITES.BILLBOARD07, -1);
+      let size = SPRITE_SIZE['map1'][spriteGroup][spriteName];
+      segments[n].sprites.push({
+        spriteGroup: spriteGroup,
+        spriteName: spriteName,
+        size: size,
+        offset: offset
+      });
     }
     
     // 도로 추가
@@ -663,51 +680,103 @@ const Main = (props) => {
     }
     
     const resetSprites = () => {
+      // addSprite(z축위치, 스프라이트그룹, 스프라이트이름, x축위치)
+
+
       // 고정된 위치에 각종 스프라이트 추가
-      addSprite(20,  SPRITES.BILLBOARD07, -1);
-      addSprite(40,  SPRITES.BILLBOARD06, -1);
-      addSprite(60,  SPRITES.BILLBOARD08, -1);
-      addSprite(80,  SPRITES.BILLBOARD09, -1);
-      addSprite(100, SPRITES.BILLBOARD01, -1);
-      addSprite(120, SPRITES.BILLBOARD02, -1);
-      addSprite(140, SPRITES.BILLBOARD03, -1);
-      addSprite(160, SPRITES.BILLBOARD04, -1);
-      addSprite(180, SPRITES.BILLBOARD05, -1);
-    
-      addSprite(240,                  SPRITES.BILLBOARD07, -1.2);
-      addSprite(240,                  SPRITES.BILLBOARD06,  1.2);
-      addSprite(segments.length - 25, SPRITES.BILLBOARD07, -1.2);
-      addSprite(segments.length - 25, SPRITES.BILLBOARD06,  1.2);
-    
-      // 팜 트리 및 기둥, 나무 등 다양한 스프라이트를 추가
-      for(let n = 10 ; n < 200 ; n += 4 + Math.floor(n/100)) {
-        addSprite(n, SPRITES.PALM_TREE, 0.5 + Math.random()*0.5);
-        addSprite(n, SPRITES.PALM_TREE,   1 + Math.random()*2);
+      addSprite(20, 'BILLBOARD', 'billboard_ssafy', -1);
+      // addSprite(40, 'BILLBOARD', 'billboard_ssafy', -1);
+      addSprite(60, 'BILLBOARD', 'billboard', -1);
+      // addSprite(80, 'BILLBOARD', 'billboard_ssafy', -1);
+      addSprite(100, 'BILLBOARD', 'billboard_ssafy', -1);
+      // addSprite(120, 'BILLBOARD', 'billboard_ssafy', -1);
+      addSprite(140, 'BILLBOARD', 'billboard', -1);
+      addSprite(160, 'BILLBOARD', 'billboard_ssafy', -1);
+
+      // 반복문으로 생성
+      for(let n = 10; n < 200; n += 4 + Math.floor(n/100)) {
+        addSprite(n, 'TREE', 'tree1', 0.5 + Math.random()*0.5);
+        addSprite(n, 'TREE', 'tree1',   1 + Math.random()*2);
       }
-    
-      for(let n = 250 ; n < 1000 ; n += 5) {
-        addSprite(n,     SPRITES.COLUMN, 1.1);
-        addSprite(n + Util.randomInt(0,5), SPRITES.TREE1, -1 - (Math.random() * 2));
-        addSprite(n + Util.randomInt(0,5), SPRITES.TREE2, -1 - (Math.random() * 2));
+      for(let n = 250; n < 1000; n += 5) {
+        addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
+        addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
       }
-    
+
       // 다양한 위치에 랜덤하게 식물 스프라이트 추가
-      for(let n = 200 ; n < segments.length ; n += 3) {
-        addSprite(n, Util.randomChoice(SPRITES.PLANTS), Util.randomChoice([1,-1]) * (2 + Math.random() * 5));
+      for(let n = 200; n < segments.length; n += 3) {
+        addSprite(
+          n,
+          'TREE',
+          Util.randomChoice(SPRITE_FILE_NAME['map1'].TREE),
+          Util.randomChoice([1,-1]) * (2 + Math.random() * 5)
+        );
       }
     
       // 일정한 간격으로 랜덤한 방향으로 빌보드 및 식물 스프라이트 추가
       let side, sprite, offset;
-      for(let n = 1000 ; n < (segments.length-50) ; n += 100) {
-        side      = Util.randomChoice([1, -1]);
-        addSprite(n + Util.randomInt(0, 50), Util.randomChoice(SPRITES.BILLBOARDS), -side);
-        for(let i = 0 ; i < 20 ; i++) {
-          sprite = Util.randomChoice(SPRITES.PLANTS);
+      for(let n = 1000; n < (segments.length-50); n += 100) {
+        side = Util.randomChoice([1, -1]);
+        addSprite(
+          n + Util.randomInt(0, 50),
+          'BILLBOARD',
+          Util.randomChoice(SPRITE_FILE_NAME['map1'].BILLBOARD),
+          -side
+        );
+        for(let i = 0; i < 20; i++) {
+          sprite = Util.randomChoice(SPRITE_FILE_NAME['map1'].TREE);
           offset = side * (1.5 + Math.random());
-          addSprite(n + Util.randomInt(0, 50), sprite, offset);
+          addSprite(n + Util.randomInt(0, 50), 'TREE', sprite, offset);
         }
           
       }
+
+
+      // *************Legacy function**************
+      // addSprite(20,  SPRITES.BILLBOARD05, -1);
+      // addSprite(40,  SPRITES.BILLBOARD06, -1);
+      // addSprite(60,  SPRITES.BILLBOARD08, -1);
+      // addSprite(80,  SPRITES.BILLBOARD09, -1);
+      // addSprite(100, SPRITES.BILLBOARD01, -1);
+      // addSprite(120, SPRITES.BILLBOARD02, -1);
+      // addSprite(140, SPRITES.BILLBOARD03, -1);
+      // addSprite(160, SPRITES.BILLBOARD04, -1);
+      // addSprite(180, SPRITES.BILLBOARD05, -1);
+    
+      // addSprite(240,                  SPRITES.BILLBOARD07, -1.2);
+      // addSprite(240,                  SPRITES.BILLBOARD06,  1.2);
+      // addSprite(segments.length - 25, SPRITES.BILLBOARD07, -1.2);
+      // addSprite(segments.length - 25, SPRITES.BILLBOARD06,  1.2);
+    
+      // // 팜 트리 및 기둥, 나무 등 다양한 스프라이트를 추가
+      // for(let n = 10 ; n < 200 ; n += 4 + Math.floor(n/100)) {
+      //   addSprite(n, SPRITES.PALM_TREE, 0.5 + Math.random()*0.5);
+      //   addSprite(n, SPRITES.PALM_TREE,   1 + Math.random()*2);
+      // }
+    
+      // for(let n = 250 ; n < 1000 ; n += 5) {
+      //   addSprite(n,     SPRITES.COLUMN, 1.1);
+      //   addSprite(n + Util.randomInt(0,5), SPRITES.TREE1, -1 - (Math.random() * 2));
+      //   addSprite(n + Util.randomInt(0,5), SPRITES.TREE2, -1 - (Math.random() * 2));
+      // }
+    
+      // // 다양한 위치에 랜덤하게 식물 스프라이트 추가
+      // for(let n = 200 ; n < segments.length ; n += 3) {
+      //   addSprite(n, Util.randomChoice(SPRITES.PLANTS), Util.randomChoice([1,-1]) * (2 + Math.random() * 5));
+      // }
+    
+      // // 일정한 간격으로 랜덤한 방향으로 빌보드 및 식물 스프라이트 추가
+      // let side, sprite, offset;
+      // for(let n = 1000 ; n < (segments.length-50) ; n += 100) {
+      //   side      = Util.randomChoice([1, -1]);
+      //   addSprite(n + Util.randomInt(0, 50), Util.randomChoice(SPRITES.BILLBOARDS), -side);
+      //   for(let i = 0 ; i < 20 ; i++) {
+      //     sprite = Util.randomChoice(SPRITES.PLANTS);
+      //     offset = side * (1.5 + Math.random());
+      //     addSprite(n + Util.randomInt(0, 50), sprite, offset);
+      //   }
+          
+      // }
     
     }
     
@@ -730,7 +799,6 @@ const Main = (props) => {
       playerCount.value = playerEnterDataList.length
 
       console.log(playerEnterDataList);
-
     }
 
     const getPlayerFrameIndex = (playerId) => {
@@ -816,8 +884,8 @@ const Main = (props) => {
         PLAYER_SPRITE.NAMES.forEach(name => {
           playerSprites[name] = images[name];
         })
-        sprites    = {...images};
-        
+        sprites    = {...images}; // loadImage에서 불러온 객체
+        console.log(sprites);
         reset();
         localStorage.fast_lap_time = localStorage.fast_lap_time || 180;
         updateHud('fast_lap_time', formatTime(Util.toFloat(localStorage.fast_lap_time)));
