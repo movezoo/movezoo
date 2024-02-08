@@ -5,7 +5,8 @@
 
 
 .main-container {
-  background-image: url('/public/images/mainbg/sky1.jpg');
+  background-image: url('/public/images/mainbg/shibaBg.png');
+  background-size: cover;
   @apply select-none min-w-[1000px] min-h-screen flex flex-col justify-center items-center bg-blue-400
   cursor-default ;
 }
