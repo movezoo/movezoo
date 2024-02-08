@@ -8,6 +8,7 @@ import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import { myGameData, playerGameDataList } from "../../components/play/data.js";
 
+
 function Multi() {
   const APPLICATION_SERVER_URL =
     process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
@@ -25,6 +26,12 @@ function Multi() {
 
   const [page, setPage] = useState(1);
 
+  //창희 추가 start
+  const [connectionId, setConnectionId] = useState(null);
+  const [chatMessage, setChatMessage] = useState("");
+  const [chatMessages, setChatMessages] = useState([]);
+  //창희 추가 end
+
   let OV, currentVideoDevice;
   useEffect(() => {
     const onbeforeunload = () => {
@@ -34,10 +41,11 @@ function Multi() {
     return () => {
       window.removeEventListener("beforeunload", onbeforeunload);
     };
+
   }, []);
 
   const handleChangeSessionId = (e) => {
-    setMySessionId(e.target.value);
+    setMySessionId(e.target.value);  
   };
 
   const handleChangeUserName = (e) => {
@@ -76,9 +84,34 @@ function Multi() {
       deleteSubscriber(event.stream.streamManager);
     });
 
+
+    //창희 추가 start//
     newSession.on("exception", (exception) => {
       console.warn(exception);
     });
+
+    newSession.on('signal:my-chat', (event) => {
+
+      console.log();
+      // const { chatMessages } = this.state;
+      
+      const userName = JSON.parse(event.from.data).clientData;
+      const newMessage = {
+        id: event.from.connectionId, // 보낸 사람의 아이디
+        name: userName,
+        message: event.data, // 채팅 메시지 내용
+      };
+
+      // 기존 채팅 메시지 배열에 새로운 메시지 추가
+      const updatedMessages = [...chatMessages, newMessage];
+
+      console.log(updatedMessages);
+      // 상태 업데이트
+      setChatMessages((chatMessages)=>[...chatMessages,newMessage]);
+      // this.setState({ chatMessages: updatedMessages });
+    });
+
+    //창희 추가 end//
 
     try {
       const token = await getToken();
@@ -210,7 +243,7 @@ function Multi() {
     try {
       const response = await axios.post(
         APPLICATION_SERVER_URL +
-          `api/openvidu/sessions/${sessionId}/connections`,
+        `api/openvidu/sessions/${sessionId}/connections`,
         {},
         {
           headers: { "Content-Type": "application/json" },
@@ -251,7 +284,15 @@ function Multi() {
           setSubscribers={setSubscribers}
           publisher={publisher}
           mySessionId={mySessionId}
+<<<<<<< HEAD
           leaveSession={leaveSession}
+=======
+          connectionId = {connectionId}
+          chatMessage = {chatMessage}
+          setChatMessage={setChatMessage}
+          chatMessages={chatMessages}
+          setChatMessages={setChatMessages}
+>>>>>>> 542c5cb7e9a8e768e25070de867f2c442a0e8d69
         />
       ) : null}
       {page === 3 ? (
