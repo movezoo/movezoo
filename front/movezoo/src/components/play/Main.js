@@ -3,7 +3,7 @@
 import { useRef, useEffect } from 'react'
 import { Dom, Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
 import { MAX_FRAME_COUNT, PLAYER_SPRITE, SPRITE_FILE_NAME, SPRITE_SIZE } from './gameConstants.js';
-import { data, myGameData, playerGameDataList, playerCount, playerGameResetDataList } from './data.js';
+import { data, myGameData, playerGameDataList, playerCount } from './data.js';
 
 const localStorage = window.localStorage || {};
 
