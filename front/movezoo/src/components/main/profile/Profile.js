@@ -38,15 +38,15 @@ const Profile = ({ isProfileOpen, isProfileClose, setUserImage: updateImage, set
       try {
         // == 쿠키 사용해서 로그인한 유저 id 가져오기 ============
 
-        const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-          withCredentials: true, // 쿠키 허용
-        });
-        const UserId = loginUserId.data;
+        // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+        //   withCredentials: true, // 쿠키 허용
+        // });
+        // const UserId = loginUserId.data;
 
-        const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
+        // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
 
         // 임시 유저 데이터==
-        // const response = await axios.get('https://i10e204.p.ssafy.io/api/user/2202');
+        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/2403');
 
         const user = response.data;
         setUser(user);
