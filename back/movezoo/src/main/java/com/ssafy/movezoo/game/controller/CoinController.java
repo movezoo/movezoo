@@ -47,7 +47,8 @@ public class CoinController {
         //3. 맞다면 순위별로 재화지급
 
         Optional<User> findUser = userService.findByNickname(nickname);
-        if(findUser.isEmpty() || authentication.getName() != user.getUserId()) {
+
+        if(findUser.isEmpty() || Integer.parseInt(authentication.getName())!= findUser.get().getUserId()) {
             simpleResponseDto.setSuccess(false);
             simpleResponseDto.setMsg("사용자를 찯을 수 없습니다.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(simpleResponseDto);
