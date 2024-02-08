@@ -274,15 +274,15 @@ function Character ({ setuserCoin }) {
     try {
       // == 쿠키 사용해서 로그인한 유저 id 가져오기 ============
 
-      const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-        withCredentials: true, // 쿠키 허용
-      });
-      const UserId = loginUserId.data;
+      // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+      //   withCredentials: true, // 쿠키 허용
+      // });
+      // const UserId = loginUserId.data;
 
-      const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
+      // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
 
       // 임시 유저 데이터
-      // const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/2202');
+      const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/2403');
 
       // console.log(response.data);
 
@@ -354,12 +354,12 @@ function Character ({ setuserCoin }) {
       const userId = loginUserId.data;
   
       // 유저 코인 불러오기
-      const userCoinResponse = await axios.get(`https://i10e204.p.ssafy.io/api/user/${userId}`, {
-      }, { withCredentials: true });
+      // const userCoinResponse = await axios.get(`https://i10e204.p.ssafy.io/api/user/${userId}`, {
+      // }, { withCredentials: true });
 
       // 임시 유저 데이터
-      // const userCoinResponse = await axios.get(`https://i10e204.p.ssafy.io/api/user/2202`, {
-      // }, { withCredentials: true });
+      const userCoinResponse = await axios.get(`https://i10e204.p.ssafy.io/api/user/2403`, {
+      }, { withCredentials: true });
   
       setCoin(userCoinResponse.data.coin);
     } catch (error) {
