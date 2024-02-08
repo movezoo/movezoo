@@ -88,14 +88,14 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
 function Carousel() {
   const initialImages  = [
-    { id: 1, name: '퍼그', image: './shop/pug.png' },
-    { id: 2, name: '돼지', image: './shop/pig.png' },
-    { id: 3, name: '소', image: './shop/cow.png' },
-    { id: 4, name: '양', image: './shop/sheep.png' },
-    { id: 5, name: '라마', image: './shop/llama.png' },
-    { id: 6, name: '말', image: './shop/horse.png' },
-    { id: 7, name: '얼룩말', image: './shop/zebra.png' },
-    { id: 8, name: '미정', image: './shop/8.png' },
+    { id: 1, name: '퍼그', image: '/images/shop/pug.png' },
+    { id: 2, name: '돼지', image: '/images/shop/pig.png' },
+    { id: 3, name: '소', image: '/images/shop/cow.png' },
+    { id: 4, name: '양', image: '/images/shop/sheep.png' },
+    { id: 5, name: '라마', image: '/images/shop/llama.png' },
+    { id: 6, name: '말', image: '/images/shop/horse.png' },
+    { id: 7, name: '얼룩말', image: '/images/shop/zebra.png' },
+    { id: 8, name: '미정', image: '/images/shop/8.png' },
   ];
 
   const [images, setImages] = useState([]);
@@ -133,7 +133,7 @@ function Carousel() {
 
         
         // 임시 유저 데이터
-        // const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/102', {})
+        // const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/2202', {})
 
 
         console.log('===========')
