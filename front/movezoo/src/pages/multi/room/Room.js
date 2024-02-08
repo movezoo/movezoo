@@ -81,6 +81,8 @@ const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
 
 const Room = (props) => {
+  const {sessoin, connectionId, chatMessage, setChatMessage, chatMessages, setChatMessages } = props;
+
   // 게임시작관리(props로 념겨줌)
   const [isGameStart, setIsGameStart] = useState(false);
   const [myUserName, setMyUserName] = useState(
@@ -114,15 +116,15 @@ const Room = (props) => {
           ))}
         </div>
         {mainStreamManager !== undefined ? (
-            <div id="main-video" className={styles.userBox}>
-              <MyVideoComponent
-                streamManager={mainStreamManager}
-                mySession={session}
-              />
-            </div>
-          ) : "Loading..."}
+          <div id="main-video" className={styles.userBox}>
+            <MyVideoComponent
+              streamManager={mainStreamManager}
+              mySession={session}
+            />
+          </div>
+        ) : "Loading..."}
 
-          
+
         {/* <div className={styles.userSection}>
           {session === undefined ? (
             <div id="join">
@@ -186,8 +188,8 @@ const Room = (props) => {
                 />
               </div> */}
 
-              {/* 메인 비디오 */}
-              {/* {mainStreamManager !== undefined ? (
+        {/* 메인 비디오 */}
+        {/* {mainStreamManager !== undefined ? (
                 <div id="main-video" className={styles.userBox}>
                   <MyVideoComponent
                     streamManager={mainStreamManager}
@@ -196,8 +198,8 @@ const Room = (props) => {
                 </div>
               ) : null} */}
 
-              {/* 다른 사용자 비디오 */}
-              {/* <div id="video-container" className="col-md-6">
+        {/* 다른 사용자 비디오 */}
+        {/* <div id="video-container" className="col-md-6">
                 {subscribers.map((sub, i) => (
                   <div
                     key={sub.id}
@@ -230,11 +232,18 @@ const Room = (props) => {
         </div>
         {/* 채팅 */}
         <div className={styles.areaChat}>
-          <Chat />
+          <Chat
+            session={session}
+            connectionId={connectionId}
+            chatMessage={chatMessage}
+            setChatMessage={setChatMessage}
+            chatMessages={chatMessages}
+            setChatMessages={setChatMessages}
+          />
         </div>
         {/* 준비 버튼*/}
-        <div className={styles.btnReady} onClick={()=>{setIsGameStart(true);console.log(`game start!!!`)}}>
-          <Ready mySessionId={props.mySessionId} isGameStart={isGameStart} setPage={props.setPage}/>
+        <div className={styles.btnReady} onClick={() => { setIsGameStart(true); console.log(`game start!!!`) }}>
+          <Ready mySessionId={props.mySessionId} isGameStart={isGameStart} setPage={props.setPage} />
         </div>
       </div>
     </div>
