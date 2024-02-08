@@ -8,6 +8,7 @@ import MyVideoComponent from "../../../components/play/MyVideoComponent.js";
 import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
 
 function Game(props) {
+  const { isPlayingGame } = props;
   const session = props.session;
   const mainStreamManager = props.mainStreamManager;
   const subscribers = props.subscribers;
@@ -32,6 +33,7 @@ function Game(props) {
               <MyVideoComponent
                 streamManager={mainStreamManager}
                 mySession={session}
+                isPlayingGame={isPlayingGame}
               />
             </div>
           ) : "asdf"}
