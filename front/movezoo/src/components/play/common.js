@@ -197,7 +197,11 @@ const Game = {
         render();
         // stats.update();
         last = now;
-        requestAnimationFrame(frame);
+
+        // setTimeout(() => {
+          requestAnimationFrame(frame);
+        // }, 1000 / 70);
+        
       }
       frame(); // 파티 시작!
       // Game.playMusic();
