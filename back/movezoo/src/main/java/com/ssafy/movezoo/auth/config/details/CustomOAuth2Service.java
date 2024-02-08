@@ -5,6 +5,7 @@ import com.ssafy.movezoo.user.domain.User;
 import com.ssafy.movezoo.user.dto.UserResponseDto;
 import com.ssafy.movezoo.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,6 +24,7 @@ import java.util.Random;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class CustomOAuth2Service extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
     private final HttpSession session;
@@ -45,34 +47,40 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         User user = saveOrUpdate(attributes);
-
-        session.setAttribute("user", new UserResponseDto(user));
-
-        // 가입한 사용자가 아니라면
+//        String email = attributes.getEmail();
+//        String nickname = attributes.getNickname();
+//
+//        User user = new User(email, nickname);
+//
+//        Optional<User> optionalUser = userRepository.findByGoogleEmail(email);
+//        // 이전에 가입한 사용자가 아니라면
 //        if (optionalUser.isEmpty()) {
-//            while (userRepository.findByNickname(nickname).isPresent()){
+//            while (userRepository.findByNickname(nickname).isPresent()) {
 //                Random random = new Random(System.currentTimeMillis());
 //                int randVal = random.nextInt(999);
 //                nickname = nickname.concat(String.valueOf(randVal));
 //
-//                System.out.println("randVal : "+randVal);
+////                System.out.println("randVal : " + randVal);
 //            }
 //
 //            log.info("새로운 소셜 사용자 등록 성공");
-//            User user = new User(email, nickname);
+//            user.setNickname(nickname);
 //            userRepository.save(user);
 //        }
+
+        session.setAttribute("user", new UserResponseDto(user));
 
         log.info("OAuth2User loadUser - 로그인한 유저 attributes : " + oAuth2User.getAttributes().toString());
 
         return new CustomUserDetails(user);
     }
 
-    // 소셜로그인시 기존 회원이 존재하면 이메일만 업데이트 해 기존 데이터 보존
+        // 소셜로그인시 기존 회원이 존재하면 이메일만 업데이트 해 기존 데이터 보존
     private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.findByEmail(attributes.getEmail())
+        User user = userRepository.findByGoogleEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getEmail()))
                 .orElse(attributes.toEntity());
         return userRepository.save(user);
     }
+
 }
