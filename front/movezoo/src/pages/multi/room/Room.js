@@ -89,7 +89,12 @@ const Room = (props) => {
     setSubscribers,
     publisher,
     mySessionId,
-    leaveSession
+    leaveSession,
+    connectionId,
+    chatMessage,
+    setChatMessage,
+    chatMessages,
+    setChatMessages
   } = props
 
 
@@ -240,11 +245,18 @@ const Room = (props) => {
         </div>
         {/* 채팅 */}
         <div className={styles.areaChat}>
-          <Chat />
+          <Chat
+            session={session}
+            connectionId={connectionId}
+            chatMessage={chatMessage}
+            setChatMessage={setChatMessage}
+            chatMessages={chatMessages}
+            setChatMessages={setChatMessages}
+          />
         </div>
         {/* 준비 버튼*/}
-        <div className={styles.btnReady} onClick={()=>{setIsGameStart(true);console.log(`game start!!!`)}}>
-          <Ready mySessionId={props.mySessionId} isGameStart={isGameStart} setPage={props.setPage}/>
+        <div className={styles.btnReady} onClick={() => { setIsGameStart(true); console.log(`game start!!!`) }}>
+          <Ready mySessionId={props.mySessionId} isGameStart={isGameStart} setPage={props.setPage} />
         </div>
       </div>
     </div>
