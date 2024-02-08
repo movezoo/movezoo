@@ -37,13 +37,15 @@ const MyVideoComponent = (props) => {
     return JSON.parse(props.streamManager.stream.connection.data).clientData;
   };
 
+  const { streamManager, mySession, isPlayingGame } = props
   return (
     <div>
-      {props.streamManager !== undefined ? (
+      {streamManager !== undefined ? (
         <div className="streamcomponent">
           <MyOvVideo
-            streamManager={props.streamManager}
-            mySession={props.mySession}
+            streamManager={streamManager}
+            mySession={mySession}
+            isPlayingGame={isPlayingGame}
            />
           <div>
             <p>{getNicknameTag()}</p>
