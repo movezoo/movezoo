@@ -13,7 +13,7 @@ function Multi() {
     process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
 
   // 게임시작관리(props로 념겨줌)
-  const [isGameStart, setIsGameStart] = useState(false);
+  const [isPlayingGame, setIsPlayingGame] = useState(false);
   const [mySessionId, setMySessionId] = useState(null);
   const [myUserName, setMyUserName] = useState(
     "Participant" + Math.floor(Math.random() * 100)
@@ -122,6 +122,7 @@ function Multi() {
           });
           if (!existMyData) playerGameDataList.push(myGameData);
 
+          setIsPlayingGame(true)
           console.log(
             `joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`
           );
@@ -142,7 +143,7 @@ function Multi() {
     if (session) {
       session.disconnect();
     }
-    
+    setIsPlayingGame(false)
     setSession(undefined);
     setSubscribers([]);
     setMySessionId(null);
@@ -261,6 +262,7 @@ function Multi() {
           subscribers={subscribers}
           publisher={publisher}
           mySessionId={mySessionId}
+          isPlayingGame={isPlayingGame}
           leaveSession={leaveSession}
         />
       ) : null}
