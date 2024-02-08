@@ -89,7 +89,12 @@ const Room = (props) => {
     setSubscribers,
     publisher,
     mySessionId,
-    leaveSession
+    leaveSession,
+    connectionId,
+    chatMessage,
+    setChatMessage,
+    chatMessages,
+    setChatMessages
   } = props
 
 
