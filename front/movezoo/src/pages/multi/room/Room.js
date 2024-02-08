@@ -81,19 +81,26 @@ const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
 
 const Room = (props) => {
-  const {sessoin, connectionId, chatMessage, setChatMessage, chatMessages, setChatMessages } = props;
+  const {
+    setPage,
+    session,
+    mainStreamManager,
+    subscribers,
+    setSubscribers,
+    publisher,
+    mySessionId,
+    leaveSession
+  } = props
+
+
+
 
   // 게임시작관리(props로 념겨줌)
   const [isGameStart, setIsGameStart] = useState(false);
   const [myUserName, setMyUserName] = useState(
     "Participant" + Math.floor(Math.random() * 100)
   );
-  const session = props.session;
-  const mainStreamManager = props.mainStreamManager;
-  const subscribers = props.subscribers;
-  const [publisher, setPublisher] = useState(undefined);
-  // const [subscribers, setSubscribers] = useState([]);
-
+  
   console.log(props)
   return (
     <div className={styles.container}>
@@ -101,30 +108,31 @@ const Room = (props) => {
       <div className={styles.leftSection}>
         <div className={styles.infoSection}>
           <div className={styles.goBack}>
-            <Back />
+            <Back leaveSession={props.leaveSession}/>
           </div>
           <h1 style={{ margin: 10 }}>Multi Play</h1>
         </div>
         {/* User 영역 */}
         {/* 메인 비디오 */}
         <div className={styles.userSection}>
+          {mainStreamManager !== undefined ? (
+            <div id="main-video" className={styles.userBox}>
+              <MyVideoComponent
+                streamManager={mainStreamManager}
+                mySession={session}
+              />
+            </div>
+            ) : "Loading..."}
+
           {subscribers.map((sub, i) => (
             <div key={sub.id} className={styles.userBox}>
               <span>{sub.id}</span>
               <UserVideoComponent streamManager={sub} />
             </div>
           ))}
-        </div>
-        {mainStreamManager !== undefined ? (
-          <div id="main-video" className={styles.userBox}>
-            <MyVideoComponent
-              streamManager={mainStreamManager}
-              mySession={session}
-            />
+          
           </div>
-        ) : "Loading..."}
-
-
+          
         {/* <div className={styles.userSection}>
           {session === undefined ? (
             <div id="join">

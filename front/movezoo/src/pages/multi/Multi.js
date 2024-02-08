@@ -14,7 +14,7 @@ function Multi() {
     process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
 
   // 게임시작관리(props로 념겨줌)
-  const [isGameStart, setIsGameStart] = useState(false);
+  const [isPlayingGame, setIsPlayingGame] = useState(false);
   const [mySessionId, setMySessionId] = useState(null);
   const [myUserName, setMyUserName] = useState(
     "Participant" + Math.floor(Math.random() * 100)
@@ -58,6 +58,16 @@ function Multi() {
     }
   };
 
+  const deleteSubscriber = (streamManager) => {
+    setSubscribers((prevSubscribers) => {
+      // streamManager를 사용하여 삭제할 구독자를 찾아서 제외합니다.
+      const updatedSubscribers = prevSubscribers.filter(
+        (subscriber) => subscriber.stream.streamManager !== streamManager
+      );
+      return updatedSubscribers;
+    });
+  };
+
   const joinSession = async () => {
     OV = new OpenVidu();
     OV.enableProdMode();
@@ -71,7 +81,7 @@ function Multi() {
     });
 
     newSession.on("streamDestroyed", (event) => {
-      // deleteSubscriber(event.stream.streamManager);
+      deleteSubscriber(event.stream.streamManager);
     });
 
 
@@ -145,6 +155,7 @@ function Multi() {
           });
           if (!existMyData) playerGameDataList.push(myGameData);
 
+          setIsPlayingGame(true)
           console.log(
             `joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`
           );
@@ -165,13 +176,14 @@ function Multi() {
     if (session) {
       session.disconnect();
     }
-
+    setIsPlayingGame(false)
     setSession(undefined);
     setSubscribers([]);
     setMySessionId(null);
     setMyUserName("Participant" + Math.floor(Math.random() * 100));
     setMainStreamManager(undefined);
     setPublisher(undefined);
+    console.log("leave session complete!!!")
   };
 
   const switchCamera = async () => {
@@ -269,6 +281,7 @@ function Multi() {
           session={session}
           mainStreamManager={mainStreamManager}
           subscribers={subscribers}
+          setSubscribers={setSubscribers}
           publisher={publisher}
           mySessionId={mySessionId}
           connectionId = {connectionId}
@@ -286,6 +299,8 @@ function Multi() {
           subscribers={subscribers}
           publisher={publisher}
           mySessionId={mySessionId}
+          isPlayingGame={isPlayingGame}
+          leaveSession={leaveSession}
         />
       ) : null}
       {page === 4 ? (
@@ -295,6 +310,7 @@ function Multi() {
           session={session}
           mainStreamManager={mainStreamManager}
           setMySessionId={setMySessionId}
+          leaveSession={leaveSession}
         />
       ) : null}
     </div>

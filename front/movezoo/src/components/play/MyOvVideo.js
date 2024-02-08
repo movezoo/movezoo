@@ -8,7 +8,7 @@ import * as faceDetection from '@tensorflow-models/face-detection';
 import { data, myGameData, playerGameDataList } from "./data.js";
 
 const MyOvVideo = (props) => {
-  const { streamManager, mySession, isGameStart } = props;
+  const { streamManager, mySession, isPlayingGame } = props;
   const videoRef = useRef(null);
   const detector = useRef(null);
 
@@ -128,7 +128,7 @@ const MyOvVideo = (props) => {
       // console.log(playerGameDataList);
       sendData();
       // responseData();
-      requestAnimationFrame(sendDataStart)
+      if(isPlayingGame) requestAnimationFrame(sendDataStart)
     }
     
     
@@ -150,15 +150,16 @@ const MyOvVideo = (props) => {
       <header className="App-header">
         <video autoPlay={true} ref={videoRef}
           style={{
-            position: "absolute",
+            position: "relative",
+            display: "flex",
             marginLeft: "auto",
             marginRight: "auto",
             left: 0,
             right: 0,
             textAlign: "center",
             zIndex: 8,
-            width: 640,
-            height: 480,
+            // width: 640,
+            // height: 480,
             transform: "scale(-1,1)",
           }}
         />
