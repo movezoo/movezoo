@@ -133,7 +133,7 @@ function Carousel() {
 
         
         // 임시 유저 데이터
-        // const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/102', {})
+        // const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/2202', {})
 
 
         console.log('===========')

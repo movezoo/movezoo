@@ -12,9 +12,31 @@ const BACKGROUND_SPRITE_FILE_NAME = {
   sky: 'sky',           //.png
   faraway: 'faraway'    //.png
 };
-const SPRITE_FILE_NAMES = [
-  
-]
+const SPRITE_FILE_NAME = {
+  map1: {
+    BILLBOARD: ["billboard_ssafy", "billboard"],
+    TREE: ["dead_tree1", "dead_tree2", "dead_tree3", "stump1", "tree1", "tree2", "tree3"]
+  }
+}
+const SPRITE_SIZE = {
+  map1: {
+    BILLBOARD: {
+      billboard_ssafy:  { x:    0, y:    0, w:  1000, h:  766 },
+      billboard:        { x:    0, y:    0, w:  1000, h:  765 },
+    },
+    TREE: {
+      dead_tree1:       { x:    0, y:    0, w:  556, h:  995 },
+      dead_tree2:       { x:    0, y:    0, w:  872, h:  982 },
+      dead_tree3:       { x:    0, y:    0, w:  988, h:  296 },
+      stump1:           { x:    0, y:    0, w:  756, h:  960 },
+      tree1:            { x:    0, y:    0, w:  657, h:  992 },
+      tree2:            { x:    0, y:    0, w:  942, h:  992 },
+      tree3:            { x:    0, y:    0, w:  985, h:  875 },
+    }
+  }
+
+}
+
 
 
 const MAX_FRAME_COUNT = {
@@ -67,7 +89,8 @@ const BACKGROUND = {
 
 
 
-
+// 아이템전
+// 바나나, 섬광(햇빛), 폭탄, 번개, 똥, 그물, 마취총, 거센바람
 
 const SPRITES = {
   // PALM_TREE:              { x:    5, y:    5, w:  215, h:  540 },
@@ -142,4 +165,14 @@ SPRITES.CARS = [
 ];
 
 
-export { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME}
+export {
+  PLAYER_SPRITE,
+  KEY,
+  COLORS,
+  BACKGROUND,
+  SPRITES,
+  MAX_FRAME_COUNT,
+  BACKGROUND_SPRITE_FILE_NAME,
+  SPRITE_FILE_NAME,
+  SPRITE_SIZE
+}
