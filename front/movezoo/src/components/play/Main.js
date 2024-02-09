@@ -880,7 +880,11 @@ const Main = (props) => {
     }
 
     const resetItems = () => {
+      addItem(20, 0.8);
+      addItem(20, 0.4);
       addItem(20, 0);
+      addItem(20, -0.4);
+      addItem(20, -0.8);
     }
     
     
