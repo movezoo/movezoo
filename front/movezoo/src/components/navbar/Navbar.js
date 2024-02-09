@@ -6,13 +6,13 @@ import Setting from './setting/Setting';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 
-function Navbar({ setCoin }) {
+function Navbar() {
 
   return (  
     <div className="navbar-container">
       
       <div className='navbar-shop'>
-        <Shop setCoin={setCoin}/>
+        <Shop/>
       </div>
 
       <div className='navbar-ranking'>
