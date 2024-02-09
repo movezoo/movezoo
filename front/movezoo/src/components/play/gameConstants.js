@@ -36,6 +36,7 @@ const SPRITE_SIZE = {
   }
 
 }
+const ITEM_SPRITE = { x:    0, y:    0, w:  300, h:  277 }
 
 
 
@@ -174,5 +175,6 @@ export {
   MAX_FRAME_COUNT,
   BACKGROUND_SPRITE_FILE_NAME,
   SPRITE_FILE_NAME,
-  SPRITE_SIZE
+  SPRITE_SIZE,
+  ITEM_SPRITE
 }
