@@ -284,21 +284,11 @@ function Multi() {
           setSubscribers={setSubscribers}
           publisher={publisher}
           mySessionId={mySessionId}
-<<<<<<< HEAD
-<<<<<<< HEAD
-          leaveSession={leaveSession}
-=======
-=======
->>>>>>> origin/backend
           connectionId = {connectionId}
           chatMessage = {chatMessage}
           setChatMessage={setChatMessage}
           chatMessages={chatMessages}
           setChatMessages={setChatMessages}
-<<<<<<< HEAD
->>>>>>> 542c5cb7e9a8e768e25070de867f2c442a0e8d69
-=======
->>>>>>> origin/backend
         />
       ) : null}
       {page === 3 ? (
