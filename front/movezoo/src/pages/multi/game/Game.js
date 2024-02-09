@@ -21,7 +21,7 @@ function Game(props) {
           {/* <p style={{ textAlign: "center" }}>
             <strong>게임 화면</strong>
           </p> */}
-          <Main width={1150} height={700} />
+          <Main width={1366} height={768} />
           {/* 뒤로가면 메인 화면*/}
           <div className={styles.goBack}>
             <Back />
