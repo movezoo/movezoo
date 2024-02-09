@@ -4,11 +4,11 @@
 // import axios from 'axios';
 // import Modal from 'react-modal';
 
-// function Character () {
+// function Character ({ setuserCoin }) {
 //   const [selectedCharacter, setSelectedCharacter] = useState(null);
 //   const [images, setImages] = useState([]);
 //   const [buyModalOpen, setBuyModalOpen] = useState(false);
-//   const [userCoin, setUserCoin] = useState('');
+//   const [userCoin, setCoin] = useState('');
 //   const [characterPrice, setCharacterPrice] = useState(0);
 
 
@@ -54,7 +54,7 @@
 //       // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
 
 //       // 임시 유저 데이터
-//       const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/2202');
+//       const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/52');
 
 //       // console.log(response.data);
 
@@ -70,7 +70,11 @@
 //         }
 //       });
 //       setImages(userImages);
-//       // console.log(userImages);
+      
+//       if (selectedCharacter) {
+//         const updatedSelectedCharacter = userImages.find(image => image.id === selectedCharacter.id);
+//         setSelectedCharacter(updatedSelectedCharacter);
+//       }
 
 //       // 코인
 
@@ -114,7 +118,7 @@
 //     }
 //   };
 
-//   const fetchUserCoin = async () => {
+//   const fetchUserCoin = async (setuserCoin) => {
 //     try {
 //       const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
 //         withCredentials: true, // 쿠키 허용
@@ -126,17 +130,17 @@
 //       // }, { withCredentials: true });
 
 //       // 임시 유저 데이터
-//       const userCoinResponse = await axios.get(`https://i10e204.p.ssafy.io/api/user/2202`, {
+//       const userCoinResponse = await axios.get(`https://i10e204.p.ssafy.io/api/user/52`, {
 //       }, { withCredentials: true });
   
-//       setUserCoin(userCoinResponse.data.coin);
+//       setCoin(userCoinResponse.data.coin);
 //     } catch (error) {
 //       console.error('유저 코인 정보 요청 실패:', error);
 //     }
 //   }
   
 //   useEffect(() => {
-//     fetchUserCoin();
+//     fetchUserCoin(setCoin);
 //   }, []);
 
 
@@ -228,15 +232,17 @@
 
 import { useState, useEffect } from 'react';
 import React from 'react';
-import './Character.css';
 import axios from 'axios';
 import Modal from 'react-modal';
+import './Character.css';
+import { useRecoilState } from 'recoil';
+import { userCoin } from '../../../../components/state/state';
 
-function Character ({ setuserCoin }) {
+function Character () {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [images, setImages] = useState([]);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
-  const [userCoin, setCoin] = useState('');
+  const [coin, setCoin] = useRecoilState(userCoin);
   const [characterPrice, setCharacterPrice] = useState(0);
 
 
@@ -282,7 +288,7 @@ function Character ({ setuserCoin }) {
       // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
 
       // 임시 유저 데이터
-      const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/2403');
+      const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/52');
 
       // console.log(response.data);
 
@@ -331,14 +337,14 @@ function Character ({ setuserCoin }) {
         userId, racerId: selectedCharacter.id
       }, { withCredentials: true });
       
-  
-      
-      alert('캐릭터를 구매하였습니다.');
-      setBuyModalOpen(false);
-      // 캐릭터 목록을 다시 불러옵니다.
-      fetchUserCharacters();
-      // 코인 업데이트
-      fetchUserCoin();
+      if (response.status === 200 || response.data.success) { // 성공 응답 조건 확인
+        alert('캐릭터를 구매하였습니다.');
+        setBuyModalOpen(false);
+        // 캐릭터 목록을 다시 불러옵니다.
+        fetchUserCharacters();
+        // 코인 정보를 재조회합니다.ss
+        fetchUserCoin();
+      }
       
     } catch (error) {
       console.error('캐릭터 구매 실패:', error);
@@ -346,7 +352,7 @@ function Character ({ setuserCoin }) {
     }
   };
 
-  const fetchUserCoin = async (setuserCoin) => {
+  const fetchUserCoin = async () => {
     try {
       const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
         withCredentials: true, // 쿠키 허용
@@ -354,22 +360,15 @@ function Character ({ setuserCoin }) {
       const userId = loginUserId.data;
   
       // 유저 코인 불러오기
-      // const userCoinResponse = await axios.get(`https://i10e204.p.ssafy.io/api/user/${userId}`, {
-      // }, { withCredentials: true });
-
-      // 임시 유저 데이터
-      const userCoinResponse = await axios.get(`https://i10e204.p.ssafy.io/api/user/2403`, {
+      const userCoinResponse = await axios.get(`https://i10e204.p.ssafy.io/api/user/${userId}`, {
       }, { withCredentials: true });
   
-      setCoin(userCoinResponse.data.coin);
+      setCoin(userCoinResponse.data.coin); // Recoil 상태 업데이트
+      console.log(coin)
     } catch (error) {
       console.error('유저 코인 정보 요청 실패:', error);
     }
   }
-  
-  useEffect(() => {
-    fetchUserCoin(setCoin);
-  }, []);
 
 
   const fetchCharacterPrice = async (characterId) => {
@@ -437,7 +436,7 @@ function Character ({ setuserCoin }) {
             <p>정말 이 캐릭터를 구매하시겠습니까?</p>
           </div>
           <div className='buy-text'>
-            <p>coin : {userCoin} - {characterPrice} </p>
+            <p>coin : {coin} - {characterPrice} </p>
           </div>
           <div className='buy-yes-button'>
             <button className='profile-button' onClick={handleBuyConfirm}>예</button>
