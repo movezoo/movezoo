@@ -21,6 +21,14 @@ const Login = () => {
         withCredentials: true,
       });
 
+      console.log(response);
+      console.log("------------------------");
+      console.log(response.data);
+      console.log("------------------------");
+      console.log(response.data.success);
+      console.log("------------------------");
+      console.log(response.status);
+
       if (response.status === 200) {
         const newSession = {
           loggedIn: true,

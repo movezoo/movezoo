@@ -8,6 +8,7 @@ import { atom } from 'recoil';
 //   }
 // })
 
+// 코인 관련 상태를 관리하는 atom
 export const userCoin = atom({
   key: 'userCoin',
   default: 0,
