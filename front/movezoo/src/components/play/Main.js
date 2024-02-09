@@ -1,6 +1,6 @@
 /* eslint-disable */
 // import io from "socket.io-client";
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { Dom, Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
 import { MAX_FRAME_COUNT, PLAYER_SPRITE, SPRITE_FILE_NAME, SPRITE_SIZE } from './gameConstants.js';
 import { data, myGameData, playerGameDataList, playerCount } from './data.js';
@@ -8,6 +8,12 @@ import { data, myGameData, playerGameDataList, playerCount } from './data.js';
 const localStorage = window.localStorage || {};
 
 const Main = (props) => {
+  // 게임 플레이 정보
+  const [testSpeed, setTestSpeed] = useState(0);
+  const [testCurrentLapTime, setTestCurrentLapTime] = useState(0);
+  const [testLastLapTime, setTestLastLapTime] = useState(undefined);
+  const [testFastLapTime, setTestFastLapTime] = useState(undefined);
+
   const canvasRef = useRef(null)
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -134,18 +140,26 @@ const Main = (props) => {
       playerX = playerX - (dx * speedPercent * playerSegment.curve * centrifugal);
       
       // 가속, 감속 및 정지 등 속도 관리
-      if (keyFaster)
+      if (keyFaster) {
         speed = Util.accelerate(speed, accel, dt);
-      else if (keySlower)
+        setTestSpeed(Util.accelerate(testSpeed, accel, dt));
+      }
+      else if (keySlower) {
         speed = Util.accelerate(speed, breaking, dt);
-      else
+        setTestSpeed(Util.accelerate(testSpeed, breaking, dt));
+      }
+      else {
         speed = Util.accelerate(speed, decel, dt);
+        setTestSpeed(Util.accelerate(testSpeed, decel, dt));
+      }
     
       // 플레이어 위치가 경계를 벗어나면 처리
       if ((playerX < -1) || (playerX > 1)) {
     
-        if (speed > offRoadLimit)
+        if (speed > offRoadLimit) {
           speed = Util.accelerate(speed, offRoadDecel, dt);
+          setTestSpeed(Util.accelerate(testSpeed, offRoadDecel, dt));
+        }
     
         // 스프라이트와의 충돌 확인
         for(let n = 0 ; n < playerSegment.sprites.length ; n++) {
@@ -153,6 +167,7 @@ const Main = (props) => {
           spriteW = sprite.size.w * SPRITES.SCALE;
           if (Util.overlap(playerX, playerW, sprite.offset + spriteW/2 * (sprite.offset > 0 ? 1 : -1), spriteW)) {
             speed = maxSpeed/5;
+            setTestSpeed(maxSpeed/5)
             position = Util.increase(playerSegment.p1.world.z, -playerZ, trackLength); // 스프라이트 앞(세그먼트 앞)에서 멈춥니다
             break;
           }
@@ -166,6 +181,7 @@ const Main = (props) => {
         if (speed > car.speed) {
           if (Util.overlap(playerX, playerW, car.offset, carW, 0.8)) {
             speed    = car.speed * (car.speed/speed);
+            setTestSpeed(car.speed * (car.speed/testSpeed))
             position = Util.increase(car.z, -playerZ, trackLength);
             break;
           }
@@ -175,6 +191,7 @@ const Main = (props) => {
       // 플레이어 위치와 속도 제한
       playerX = Util.limit(playerX, -3, 3);     // 너무 멀리 나가지 않도록
       speed   = Util.limit(speed, 0, maxSpeed); // maxSpeed를 초과하지 않도록
+      setTestSpeed(Util.limit(speed, 0, maxSpeed));
     
       // 화면 스크롤 오프셋 조절
       skyOffset  = Util.increase(skyOffset,  skySpeed  * playerSegment.curve * (position-startPosition)/segmentLength, 1);
@@ -186,9 +203,14 @@ const Main = (props) => {
         if (currentLapTime && (startPosition < playerZ)) {
           lastLapTime    = currentLapTime;
           currentLapTime = 0;
+
+          // useState로 변경
+          setTestLastLapTime(testCurrentLapTime);
+          setTestCurrentLapTime(0);
           if (lastLapTime <= Util.toFloat(localStorage.fast_lap_time)) {
             localStorage.fast_lap_time = lastLapTime;
             updateHud('fast_lap_time', formatTime(lastLapTime));
+            setTestFastLapTime(testLastLapTime);
             Dom.addClassName('fast_lap_time', 'fastest');
             Dom.addClassName('last_lap_time', 'fastest');
           }
@@ -197,16 +219,21 @@ const Main = (props) => {
             Dom.removeClassName('last_lap_time', 'fastest');
           }
           updateHud('last_lap_time', formatTime(lastLapTime));
+          setTestLastLapTime(testLastLapTime);
           Dom.show('last_lap_time');
         }
         else {
           currentLapTime += dt;
+          setTestCurrentLapTime(currentLapTime);
         }
       }
     
       // HUD 업데이트
       updateHud('speed',            5 * Math.round(speed/500));
       updateHud('current_lap_time', formatTime(currentLapTime));
+      // Test
+
+      
     }
     
 
@@ -332,18 +359,7 @@ const Main = (props) => {
 
 
 
-    const formatTime = (dt) => {
-      let minutes = Math.floor(dt/60);
-      let seconds = Math.floor(dt - (minutes * 60));
-      let tenths  = Math.floor(10 * (dt - Math.floor(dt)));
-    
-      // 분이 0보다 크면 분, 초 및 십분의 일초를 반환
-      if (minutes > 0)
-        return minutes + "." + (seconds < 10 ? "0" : "") + seconds + "." + tenths;
-      // 그렇지 않으면 초 및 십분의 일초만 반환
-      else
-        return seconds + "." + tenths;
-    }
+
 
 
     const updatePlayerFrame = () => {
@@ -962,6 +978,25 @@ const Main = (props) => {
     
     //=========================================================================
   }, [])
+
+
+
+
+  const formatTime = (dt) => {
+    let minutes = Math.floor(dt/60);
+    let seconds = Math.floor(dt - (minutes * 60));
+    let tenths  = Math.floor(10 * (dt - Math.floor(dt)));
+  
+    // 분이 0보다 크면 분, 초 및 십분의 일초를 반환
+    if (minutes > 0)
+      return minutes + "." + (seconds < 10 ? "0" : "") + seconds + "." + tenths;
+    // 그렇지 않으면 초 및 십분의 일초만 반환
+    else
+      return seconds + "." + tenths;
+  }
+
+
+  
   
   return (
     <div>
@@ -1024,7 +1059,13 @@ const Main = (props) => {
 
         trackLength : <span id="trackLength">0</span><br/>
       </div> */}
-
+      <div>
+        속도 : {5 * Math.round(testSpeed/500)} <br/>
+        시간 : {Util.formatTime(testCurrentLapTime)} <br/>
+        {/* 현재랩타임 : {testTime} <br/> */}
+        방금기록 : { Util.formatTime(testLastLapTime) } { } <br/>
+        최고기록 : { Util.formatTime(Util.toFloat(localStorage.fast_lap_time)) } <br/>
+      </div>
       <div id="racer">
         <div id="hud">
           <span id="speed"            className="hud"><span id="speed_value" className="value">0</span> mph</span>
