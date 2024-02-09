@@ -10,11 +10,10 @@ import axios from 'axios';
 import { IoCloseSharp } from "react-icons/io5";
 
 
-const Profile = ({ isProfileOpen, isProfileClose, setUserImage: updateImage, setUserNickname: updateNickname }) => {
+const Profile = ({ isProfileOpen, isProfileClose }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [userImage, setUserImage] = useState(null);
-  const [nickname, setNickname] = useState(null);
 
     const openModal = () => {
       setIsOpen(true);
@@ -24,13 +23,7 @@ const Profile = ({ isProfileOpen, isProfileClose, setUserImage: updateImage, set
       setIsOpen(false);
     };
 
-    const handleImageChange = (newImage) => {
-      updateImage(newImage);
-    };
 
-    const handleNicknameChange = (newNickname) => {
-      updateNickname(newNickname);
-    };
 
 
   useEffect(() => {
@@ -46,11 +39,11 @@ const Profile = ({ isProfileOpen, isProfileClose, setUserImage: updateImage, set
         // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
 
         // 임시 유저 데이터==
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/52');
+        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/103');
 
         const user = response.data;
         setUser(user);
-        setNickname(user.nickname); 
+        // setNickname(user.nickname); 
 
         const userImage = response.data.profileImgUrl;
         setUserImage(userImage)
@@ -92,8 +85,8 @@ const Profile = ({ isProfileOpen, isProfileClose, setUserImage: updateImage, set
 
           <div className='profile-body'>
             <div className='body-change'>
-              <ImageChange onImageChange={handleImageChange} />
-              <NicknameChange onNicknameChange={handleNicknameChange}/>
+              <ImageChange/>
+              <NicknameChange/>
               <PasswordChange/>
               <LogoutModal/>
             </div>

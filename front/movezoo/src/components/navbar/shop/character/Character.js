@@ -278,22 +278,24 @@ function Character () {
 
   const fetchUserCharacters  = async () => {
     try {
-      // == 쿠키 사용해서 로그인한 유저 id 가져오기 ============
+      const storedUserData = localStorage.getItem('userData');
+        if (!storedUserData) {
+            throw new Error('사용자 정보를 찾을 수 없습니다.');
+        }
 
-      // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-      //   withCredentials: true, // 쿠키 허용
-      // });
-      // const UserId = loginUserId.data;
+      // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
+      const userData = JSON.parse(storedUserData);
 
-      // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
+      console.log(userData)
 
-      // 임시 유저 데이터
-      const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/52');
+      // 사용자 이메일을 변수에 저장
+      const userId = userData.userId;
 
-      // console.log(response.data);
+      console.log(userId)
+
+      const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${userId}`, {})
 
       const userCharacterIds = response.data.map(character => character.racerId);
-      // console.log(userCharacterIds);
 
       const userImages = chracterImages.map((image) => {
         if (userCharacterIds.includes(image.id)) {
@@ -327,10 +329,17 @@ function Character () {
   
   const handleBuyConfirm = async () => {
     try {
-      const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-        withCredentials: true, // 쿠키 허용
-      });
-      const userId = loginUserId.data;
+      const storedUserData = localStorage.getItem('userData');
+        if (!storedUserData) {
+            throw new Error('사용자 정보를 찾을 수 없습니다.');
+        }
+
+      // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
+      const userData = JSON.parse(storedUserData);
+
+      console.log(userData)
+
+      const userId = userData.userId;
 
       // 캐릭터 구매 요청
       const response = await axios.post(`https://i10e204.p.ssafy.io/api/racer`, {
@@ -342,8 +351,12 @@ function Character () {
         setBuyModalOpen(false);
         // 캐릭터 목록을 다시 불러옵니다.
         fetchUserCharacters();
-        // 코인 정보를 재조회합니다.
+        // 코인 정보를 재조회합니다.ss
         fetchUserCoin();
+
+        // 로컬 스토리지의 사용자 데이터 업데이트
+        const updatedUserData = { ...userData, coin: coin };
+        localStorage.setItem('userData', JSON.stringify(updatedUserData));
       }
       
     } catch (error) {
@@ -354,17 +367,27 @@ function Character () {
 
   const fetchUserCoin = async () => {
     try {
-      const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-        withCredentials: true, // 쿠키 허용
-      });
-      const userId = loginUserId.data;
-  
-      // 유저 코인 불러오기
-      const userCoinResponse = await axios.get(`https://i10e204.p.ssafy.io/api/user/${userId}`, {
-      }, { withCredentials: true });
-  
-      setCoin(userCoinResponse.data.coin); // Recoil 상태 업데이트
-      console.log(coin)
+      const storedUserData = localStorage.getItem('userData');
+        if (!storedUserData) {
+            throw new Error('사용자 정보를 찾을 수 없습니다.');
+        }
+
+      // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
+      const userData = JSON.parse(storedUserData);
+
+      // 코인 정보 조회 요청
+        const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${userData.userId}`, {
+            withCredentials: true
+        });
+
+        if (response.status === 200 && response.data) {
+            // Recoil 상태 및 로컬 스토리지 업데이트
+            const newCoinAmount = response.data.coin;
+            setCoin(newCoinAmount); // Recoil 상태 업데이트
+            const updatedUserData = { ...userData, coin: newCoinAmount };
+            localStorage.setItem('userData', JSON.stringify(updatedUserData));
+        }
+
     } catch (error) {
       console.error('유저 코인 정보 요청 실패:', error);
     }
