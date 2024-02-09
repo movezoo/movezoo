@@ -31,7 +31,7 @@ function Chat(props) {
 
           // 채팅 메시지를 보낸 후 텍스트 상자 비우기
           setChatMessage("");
-          console.log(chatMessage);
+          // console.log(chatMessage);
         })
         .catch((error) => {
           console.error(error);
@@ -40,7 +40,7 @@ function Chat(props) {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && !event.nativeEvent.isComposing) {
       sendChatMessage();
     }
   };
