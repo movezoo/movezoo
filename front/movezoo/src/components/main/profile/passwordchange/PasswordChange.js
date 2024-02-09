@@ -11,26 +11,6 @@ const ChangePasswordModal = () => {
   const [userEmail, setEmail] = useState('');
   const [confirmModal, setConfirmModal] = useState(false);
 
-  const fetchUser = async () => {
-    try {
-      const responseLoginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-          withCredentials: true, // 쿠키 허용
-        });
-
-      const loginUserId = responseLoginUserId.data;
-
-      const loginUserEmail = await axios.get(`https://i10e204.p.ssafy.io/api/user/${loginUserId}`, {
-        });
-
-      setEmail(loginUserEmail.data.userEmail);
-    } catch (error) {
-      console.error('유저 정보 가져오기 실패:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
   
   const openModal = () => {
     setIsOpen(true);
@@ -65,6 +45,21 @@ const ChangePasswordModal = () => {
 
   const handlePasswordChange = async () => {
     try {
+      const storedUserData = localStorage.getItem('userData');
+        if (!storedUserData) {
+            throw new Error('사용자 정보를 찾을 수 없습니다.');
+        }
+
+      // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
+      const userData = JSON.parse(storedUserData);
+
+      console.log(userData)
+
+      // 사용자 이메일을 변수에 저장
+      const userEmail = userData.userEmail;
+
+      console.log(userEmail)
+
       await axios.patch('https://i10e204.p.ssafy.io/api/user/password', {userEmail, password}, {
         withCredentials: true,
       });
