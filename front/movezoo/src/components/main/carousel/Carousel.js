@@ -23,11 +23,13 @@ function Carousel() {
   const [animationDirection, setAnimationDirection] = useState('right');
 
   const handlePrevious = () => {
+    if (images.length === 1) return; // 이미지가 하나만 있을 경우 아무 작업도 수행하지 않음
     setNextIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
     setAnimationDirection('right');
   };
 
   const handleNext = () => {
+    if (images.length === 1) return; // 이미지가 하나만 있을 경우 아무 작업도 수행하지 않음
     setNextIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
     setAnimationDirection('left');
   };
@@ -52,7 +54,7 @@ function Carousel() {
 
         
         // 임시 유저 데이터
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/52', {})
+        const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/103', {})
 
 
         console.log('===========')
