@@ -12,3 +12,9 @@ export const userCoin = atom({
   key: 'userCoin',
   default: 0,
 });
+
+
+export const nickName = atom({
+  key: 'nickName',
+  default: '',
+});

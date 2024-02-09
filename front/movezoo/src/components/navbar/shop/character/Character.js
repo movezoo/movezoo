@@ -288,7 +288,7 @@ function Character () {
       // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
 
       // 임시 유저 데이터
-      const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/52');
+      const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/103');
 
       // console.log(response.data);
 
