@@ -10,7 +10,7 @@ import axios from 'axios';
 import { IoCloseSharp } from "react-icons/io5";
 
 
-const Profile = ({ isProfileOpen, isProfileClose, setUserImage: updateImage}) => {
+const Profile = ({ isProfileOpen, isProfileClose }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [userImage, setUserImage] = useState(null);
@@ -23,9 +23,6 @@ const Profile = ({ isProfileOpen, isProfileClose, setUserImage: updateImage}) =>
       setIsOpen(false);
     };
 
-    const handleImageChange = (newImage) => {
-      updateImage(newImage);
-    };
 
 
 
@@ -88,7 +85,7 @@ const Profile = ({ isProfileOpen, isProfileClose, setUserImage: updateImage}) =>
 
           <div className='profile-body'>
             <div className='body-change'>
-              <ImageChange onImageChange={handleImageChange} />
+              <ImageChange/>
               <NicknameChange/>
               <PasswordChange/>
               <LogoutModal/>
