@@ -1,63 +1,53 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import Modal from 'react-modal';
 import './Signup.css';
+import { signUpState } from '../state/state';
 
 const Signup = ({ isOpen, onRequestClose }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [signedUp, setSignedUp] = useState(false);
-  const [passwordError, setPasswordError] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
   const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
-
-    // 이메일 형식 체크
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
     if (!emailPattern.test(newEmail)) {
-      setEmailError('올바른 이메일 형식이 아닙니다.');
-      document.getElementById('emailErrorbox').innerText = '올바른 이메일 형식이 아닙니다.';
+      setSignUpData((prevSignUpData) => ({ ...prevSignUpData, emailError: '올바른 이메일 형식이 아닙니다.' }));
     } else {
-      setEmailError('');
-      document.getElementById('emailErrorbox').innerText = '';
+      setSignUpData((prevSignUpData) => ({ ...prevSignUpData, emailError: '' }));
     }
 
-    setEmail(newEmail);
-    if (newEmail) {
-      document.getElementById('stepUrl').style.display = 'none';
-    } else {
-      document.getElementById('stepUrl').style.display = 'block';
-    }
+    setSignUpData((prevSignUpData) => ({ ...prevSignUpData, email: newEmail }));
   };
 
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
-
-    // 비밀번호 조건 체크
     const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
+
     if (!passwordPattern.test(newPassword)) {
-      setPasswordError('');
+      setSignUpData((prevSignUpData) => ({
+        ...prevSignUpData,
+        passwordError: '8글자 이상 16글자 미만, 대문자와 특수문자가 각각 1개 이상 포함되어야 합니다.',
+      }));
+      // 사용불가 이미지와 메세지 설정
       document.getElementById('alertTxt').innerText = '사용불가';
       document.getElementById('pswd1_img1').src = '/signup/m_icon_not_use.png';
-      document.getElementById('passwordErrorBox').innerText = '8글자 이상 16글자 미만, 대문자와 특수문자가 각각 1개 이상 포함되어야 합니다.';
     } else {
-      setPasswordError('');
+      setSignUpData((prevSignUpData) => ({ ...prevSignUpData, passwordError: '' }));
+      // 사용가능 이미지와 메세지 설정
       document.getElementById('alertTxt').innerText = '사용가능';
-      document.getElementById('alertTxt').style.color = 'green'
+      document.getElementById('alertTxt').style.color = 'green';
       document.getElementById('pswd1_img1').src = '/signup/m_icon_safe.png';
-      document.getElementById('passwordErrorBox').innerText = '';
     }
-
-    // 비밀번호가 입력될 때마다 비밀번호 상태 업데이트
-    setPassword(newPassword);
+    setSignUpData((prevSignUpData) => ({ ...prevSignUpData, password: newPassword }));
   };
 
   const handleSignup = async () => {
+    const { email, password, confirmPassword, nickname } = signUpData;
+
     if (!email || !password || !confirmPassword || !nickname) {
       alert('빈칸이 있습니다.');
       return;
@@ -68,7 +58,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
       return;
     }
 
-    if (emailError) {
+    if (signUpData.emailError) {
       alert('올바른 이메일 형식이 아닙니다.');
       return;
     }
@@ -77,31 +67,20 @@ const Signup = ({ isOpen, onRequestClose }) => {
       const response = await axios.post('https://i10e204.p.ssafy.io/api/user', {
         userEmail: email,
         password: password,
-        nickname: nickname
+        nickname: nickname,
       }, { withCredentials: true });
 
       if (response.data.success) {
-        setSignedUp(true);
+        setSignUpData({ email: '', password: '', confirmPassword: '', nickname: '', signedUp: true });
         onRequestClose();
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        setNickname('');
         navigate('/');
         alert('회원가입 성공!');
       } else {
         alert('회원가입 실패');
-        // 실패 시에 입력값 초기화
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        setNickname('');
+        setSignUpData({ email: '', password: '', confirmPassword: '', nickname: '', signedUp: false });
       }
     } catch (error) {
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-      setNickname('');
+      setSignUpData({ email: '', password: '', confirmPassword: '', nickname: '', signedUp: false });
       console.error('회원가입 요청 중 에러 발생:', error);
       alert('회원가입에 실패했습니다.');
     }
@@ -109,10 +88,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
 
   const handleCancel = () => {
     onRequestClose();
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
-    setNickname('');
+    setSignUpData({ email: '', password: '', confirmPassword: '', nickname: '', signedUp: false });
   };
 
   return (
@@ -145,13 +121,13 @@ const Signup = ({ isOpen, onRequestClose }) => {
                 id="id"
                 className="int"
                 maxLength="20"
-                value={email}
+                value={signUpData.email}
                 onChange={handleEmailChange}
                 placeholder='ex)MoveZoo@gmail.com'
               />
             </span>
             <span id="stepUrl" className="step_url"></span>
-            <span className="error_next_box" id='emailErrorbox'></span>
+            <span className="error_next_box" id='emailErrorbox'>{signUpData.emailError}</span>
           </div>
 
           <div>
@@ -164,13 +140,13 @@ const Signup = ({ isOpen, onRequestClose }) => {
                 id="pswd1"
                 className="int"
                 maxLength="20"
-                value={password}
+                value={signUpData.password}
                 onChange={handlePasswordChange}
               />
               <span id="alertTxt" ></span>
               <img src='/images/signup/m_icon_pass.png' id="pswd1_img1" className="pswdImg" alt="비밀번호 아이콘" />
             </span>
-            <span className="error_next_box" id="passwordErrorBox"></span>
+            <span className="error_next_box" id="passwordErrorBox">{signUpData.passwordError}</span>
           </div>
 
           <div>
@@ -183,15 +159,14 @@ const Signup = ({ isOpen, onRequestClose }) => {
                 id="pswd2"
                 className="int"
                 maxLength="20"
-                value={confirmPassword}
+                value={signUpData.confirmPassword}
                 onChange={(e) => {
-                  setConfirmPassword(e.target.value);
-                  setPasswordError('');
+                  setSignUpData({ ...signUpData, confirmPassword: e.target.value, passwordError: '' });
                 }}
               />
-              <img src={!confirmPassword.trim() ? "/signup/m_icon_check_disable.png" : (password === confirmPassword ? "/signup/m_icon_check_enable.png" : "/signup/m_icon_check_disable.png")} id="pswd2_img1" className="pswdImg" alt="비밀번호 확인 아이콘" />
+              <img src={!signUpData.confirmPassword.trim() ? "/signup/m_icon_check_disable.png" : (signUpData.password === signUpData.confirmPassword ? "/signup/m_icon_check_enable.png" : "/signup/m_icon_check_disable.png")} id="pswd2_img1" className="pswdImg" alt="비밀번호 확인 아이콘" />
             </span>
-            <span className="error_next_box" >{password !== confirmPassword ? '비밀번호가 일치하지 않습니다.' : ''}</span>
+            <span className="error_next_box" >{signUpData.password !== signUpData.confirmPassword ? '비밀번호가 일치하지 않습니다.' : ''}</span>
           </div>
 
           <div>
@@ -204,8 +179,8 @@ const Signup = ({ isOpen, onRequestClose }) => {
                 id="name"
                 className="int"
                 maxLength="20"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
+                value={signUpData.nickname}
+                onChange={(e) => setSignUpData({ ...signUpData, nickname: e.target.value })}
               />
             </span>
             <span className="error_next_box"></span>
