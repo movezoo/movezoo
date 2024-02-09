@@ -41,3 +41,4 @@ export const signUpState = atom({
 export const nickName = atom({
   key: 'nickName',
   default: '',
+});
