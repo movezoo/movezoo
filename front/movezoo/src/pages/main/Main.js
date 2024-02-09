@@ -136,14 +136,15 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { AiFillCopyrightCircle } from "react-icons/ai";
 import { useRecoilState } from 'recoil';
-import { userCoin, nickName as nickNameState } from '../../components/state/state';
+import { userCoin, nickName as nickNameState, sessionState as userDataState } from '../../components/state/state';
 
 Modal.setAppElement('#root');
 
 function Main() {
   const [volume, setVolume] = React.useState(80);
-  const [nickName, setNickName] = useRecoilState(nickNameState  );
+  const [nickName, setNickName] = useRecoilState(nickNameState);
   const [coin, setCoin] = useRecoilState(userCoin);
+  const [userData, setUserData] = useRecoilState(userDataState);
   const [userimg, setUserimg] = React.useState('');
   const [loading, setLoading] = React.useState(true);
   const [isProfileOpen, setIsProfileOpen] = React.useState(false);
@@ -217,6 +218,9 @@ function Main() {
           <div className="header-info-user">
             <div>
               <h1> {nickName} </h1>
+              { userData.userData.coin }
+              { userData.userData.userEmail }
+              { userData.userData.nickname }
             </div>
             <div className="info-user-coin">
               <AiFillCopyrightCircle className="coinIcon" />
