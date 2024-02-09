@@ -181,29 +181,39 @@ function Main() {
   
   // 페이지 로드 시 localStorage에서 userData 상태 로드
   useEffect(() => {
+    console.log(userData)
     const storedUserData = localStorage.getItem('userData');
+    console.log(storedUserData)
     if (storedUserData) {
+      console.log(storedUserData)
+
       const data = (JSON.parse(storedUserData));
       
-      console.log(data.userData)
+      console.log(data)
 
-      setUserData({ ...data});
-      setCoin(data.userData.coin);
-      setNickName(data.userData.nickname);
-      setProfileImgUrl(data.userData.profileImgUrl)
-
-      console.log(data.userData)
-      console.log(data.userData.coin)
-      console.log(data.userData.nickname)
-      console.log(data.userData.userEmail)
+      if (data && data.userData) {
+        setUserData({ ...data });
+        setCoin(data.userData.coin);
+        setNickName(data.userData.nickname);
+        setProfileImgUrl(data.userData.profileImgUrl);
+  
+        console.log(data.userData);
+        console.log(data.userData.coin);
+        console.log(data.userData.nickname);
+        console.log(data.userData.userEmail);
+      }
       
     }
   }, [setCoin, setNickName, setUserData, setProfileImgUrl]);
-  
+
+
   // userData 상태가 변경될 때마다 localStorage에 저장
   useEffect(() => {
     localStorage.setItem('userData', JSON.stringify(userData));
+    const storedData = localStorage.getItem('userData');
+    console.log('Stored userData in localStorage:', storedData);
   }, [userData]);
+  
 
   return (
     <div className="main-container">
