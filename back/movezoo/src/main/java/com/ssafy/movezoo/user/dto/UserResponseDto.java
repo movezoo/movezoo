@@ -31,4 +31,16 @@ public class UserResponseDto {
         this.profileImgUrl = user.getProfileImgUrl();
     }
 
+
+    @Override
+    public String toString() {
+        return "UserResponseDto{" +
+                "userId=" + userId +
+                ", userEmail='" + userEmail + '\'' +
+                ", googleUserEmail='" + googleUserEmail + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", coin=" + coin +
+                ", profileImgUrl='" + profileImgUrl + '\'' +
+                '}';
+    }
 }

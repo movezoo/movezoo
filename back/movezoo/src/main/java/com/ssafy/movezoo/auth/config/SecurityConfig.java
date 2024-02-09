@@ -1,7 +1,11 @@
 package com.ssafy.movezoo.auth.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.movezoo.auth.config.details.CustomOAuth2Service;
 import com.ssafy.movezoo.auth.config.details.CustomUserDetailsService;
+import com.ssafy.movezoo.user.domain.User;
+import com.ssafy.movezoo.user.dto.UserResponseDto;
+import com.ssafy.movezoo.user.sevice.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +30,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity  // security 활성화 후 기본 스프링 필터체인에 등록
@@ -36,6 +42,7 @@ public class SecurityConfig {
     private final CustomUserDetailsService UserDetailsServcie;
     private final CustomOAuth2Service customOAuth2Service;
     private final OAuthCustomSuccesHandler oAuthCustomSuccesHandler;
+    private final UserService userService;
 
     AuthenticationEntryPoint authenticationEntryPoint;
     AccessDeniedHandler accessDeniedHandler;
@@ -86,7 +93,16 @@ public class SecurityConfig {
                                                 UserDetails userDetails2 = (UserDetails) session.getAttribute("user");
                                                 log.info("session get {}", userDetails2.getUsername());
 
+                                                User findUser = userService.findById(Integer.parseInt(userDetails.getUsername()));
+                                                UserResponseDto userResponseDto = new UserResponseDto(findUser);
 
+                                                log.info("login find user {}", userResponseDto.toString());
+
+                                                Map<String, UserResponseDto> userMap = new HashMap<>();
+                                                userMap.put("loginUser", userResponseDto);
+
+                                                ObjectMapper objectMapper = new ObjectMapper();
+                                                response.getWriter().write(objectMapper.writeValueAsString(userMap));
                                                 // 성공 응답을 생성하거나 추가 작업 수행
                                                 response.setStatus(HttpServletResponse.SC_OK);
                                             }
@@ -144,9 +160,8 @@ public class SecurityConfig {
                                 .loginPage("/")
                                 .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig // OAuth2 로그인 성공 후 가져올 설정들
                                         .userService(customOAuth2Service))) // 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시
-                                .successHandler(successHandler())
-
-
+//                                .successHandler(successHandler())
+                                .successHandler(oAuthCustomSuccesHandler)
                 );
 
         return http.build();

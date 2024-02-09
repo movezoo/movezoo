@@ -127,34 +127,18 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import './NicknameChange.css';
 import { IoCloseSharp } from "react-icons/io5";
+import { useRecoilState } from 'recoil';
+import { nickName as nickNameState } from '../../../state/state';
 
-const ChangeNicknameModal = ({ onNicknameChange }) => {
+const ChangeNicknameModal = () => {
+  const [nickname, setNickName] = useRecoilState(nickNameState);
+  const [newNickName, setNewNickName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const [nickname, setNickname] = useState('');
   const [userEmail, setEmail] = useState('');
   const [confirmModal, setConfirmModal] = useState(false);
 
-  const fetchUser = async () => {
-    try {
-      const responseLoginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-          withCredentials: true, // 쿠키 허용
-        });
 
-      const loginUserId = responseLoginUserId.data;
-      
-      const loginUserEmail = await axios.get(`https://i10e204.p.ssafy.io/api/user/${loginUserId}`, {
-        });
 
-      setEmail(loginUserEmail.data.userEmail);
-    } catch (error) {
-      console.error('유저 정보 가져오기 실패:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-  
   const openModal = () => {
     setIsOpen(true);
   };
@@ -165,7 +149,7 @@ const ChangeNicknameModal = ({ onNicknameChange }) => {
   };
 
   const handleChangeNickname = (e) => {
-    setNickname(e.target.value);
+    setNickName(e.target.value);
   };
 
   const handleConfirm = () => {
@@ -174,12 +158,30 @@ const ChangeNicknameModal = ({ onNicknameChange }) => {
 
   const handleNicknameChange = async () => {
     try {
+      const storedUserData = localStorage.getItem('userData');
+        if (!storedUserData) {
+            throw new Error('사용자 정보를 찾을 수 없습니다.');
+        }
+
+      // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
+      const userData = JSON.parse(storedUserData);
+
+      console.log(userData)
+
+      // 사용자 이메일을 변수에 저장
+      const userEmail = userData.userEmail;
+
+      console.log(userEmail)
+
+      console.log(nickname)
+
       await axios.patch('https://i10e204.p.ssafy.io/api/user/nickname', {userEmail, nickname}, {
         withCredentials: true,
       });
 
-      setNickname(nickname);
-      onNicknameChange(nickname);
+      setNickName(nickname);
+
+      
       
       alert('닉네임 변경에 성공했습니다.');
       closeModal();
