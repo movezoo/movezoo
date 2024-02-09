@@ -1,5 +1,5 @@
 import Stats from './stats.js';
-import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, SPRITE_FILE_NAME } from './gameConstants.js';
+import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, SPRITE_FILE_NAME, ITEM_SPRITE } from './gameConstants.js';
 import { myGameData } from './data.js';
 
 
@@ -8,7 +8,7 @@ import { myGameData } from './data.js';
 // import mute from './images/mute.png';
 // import sprites from './images/sprites.png';
 
-const selectPlayer = "cow";
+const selectPlayer = "zebra";
 myGameData.playerCharacter = selectPlayer;  // 오픈비두 통신을 위한 데이터 설정
 const selectAction = "run";
 const selectMap = "map1";
@@ -232,6 +232,9 @@ const Game = {
     const result = {}; // 이미지 엘리먼트를 저장할 배열
     
     // let count = names.length + 3;
+
+
+    
     const setCount = () => {
       const getPlayerSpritesCount = () => {
         let tempCount = 0;
@@ -251,16 +254,13 @@ const Game = {
         return tempCount;
       }
       const backgroundCount = Object.keys(BACKGROUND_SPRITE_FILE_NAME).length
-      const SpritesCount = getSpritesCount();
+      const spritesCount = getSpritesCount();
       const playerSpritesCount = getPlayerSpritesCount();
+      const itemSpriteCount = 1
 
-      // Log
-      // console.log(`backgroundCount: ${backgroundCount}`)
-      // console.log(`SpritesCount: ${SpritesCount}`)
-      // console.log(`playerSpritesCount: ${playerSpritesCount}`)
-      // console.log(`countAll: ${backgroundCount + SpritesCount + playerSpritesCount}`)
-      return backgroundCount + SpritesCount + playerSpritesCount;
+      return backgroundCount + spritesCount + playerSpritesCount + itemSpriteCount;
     }
+    // 게임에 사용되는 이미지 개수 count
     let count = setCount();
 
 
@@ -275,7 +275,7 @@ const Game = {
     const onload = () => {
       // console.log(count)
       if (--count === 0) {
-        // console.log(`모든 이미지 로드 완료!!`)
+        console.log(`모든 이미지 로드 완료!!`)
         callback(result); // 이미지 로드 카운트를 감소시키고, 모든 이미지가 로드되었을 때 콜백 함수 호출
       }
     };
@@ -362,6 +362,13 @@ const Game = {
       // // result[name].src = "/images/" + name + ".png"; // 이미지의 소스 경로 설정
       
       // result[name].src = images[`${name}`]; // important!!!! : react는 빌드 후 src내의 경로가 변경된다!!! 이미지 같은거 import 해서 사용하면 빌드된 경로를 알 수 있다. (onerror 이벤트리스너로 찾았음)
+
+      
+
+      // 아이템 스프라이트 로딩
+      result['item'] = document.createElement('img');
+      Dom.on(result['item'], 'load', onload);
+      result['item'].src = `/images/sheets/itemBox.png`
     }
 
 
@@ -447,7 +454,7 @@ const Game = {
 
 }
 
-//=========================================================================
+//===============================================wl==========================
 // canvas rendering helpers
 //=========================================================================
 /*
