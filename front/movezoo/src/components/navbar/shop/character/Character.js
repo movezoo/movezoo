@@ -342,7 +342,7 @@ function Character () {
         setBuyModalOpen(false);
         // 캐릭터 목록을 다시 불러옵니다.
         fetchUserCharacters();
-        // 코인 정보를 재조회합니다.
+        // 코인 정보를 재조회합니다.ss
         fetchUserCoin();
       }
       
