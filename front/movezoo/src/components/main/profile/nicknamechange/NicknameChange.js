@@ -127,10 +127,12 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import './NicknameChange.css';
 import { IoCloseSharp } from "react-icons/io5";
+import { useRecoilState } from 'recoil';
+import { nickName as nickNameState } from '../../../state/state';
 
-const ChangeNicknameModal = ({ onNicknameChange }) => {
+const ChangeNicknameModal = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [nickname, setNickname] = useState('');
+  const [nickName, setNickName] = useRecoilState(nickName);
   const [userEmail, setEmail] = useState('');
   const [confirmModal, setConfirmModal] = useState(false);
 
@@ -165,7 +167,7 @@ const ChangeNicknameModal = ({ onNicknameChange }) => {
   };
 
   const handleChangeNickname = (e) => {
-    setNickname(e.target.value);
+    setNickName(e.target.value);
   };
 
   const handleConfirm = () => {
@@ -174,12 +176,11 @@ const ChangeNicknameModal = ({ onNicknameChange }) => {
 
   const handleNicknameChange = async () => {
     try {
-      await axios.patch('https://i10e204.p.ssafy.io/api/user/nickname', {userEmail, nickname}, {
+      await axios.patch('https://i10e204.p.ssafy.io/api/user/nickname', {userEmail, nickName}, {
         withCredentials: true,
       });
 
-      setNickname(nickname);
-      onNicknameChange(nickname);
+      setNickName(nickName);
       
       alert('닉네임 변경에 성공했습니다.');
       closeModal();
@@ -210,7 +211,7 @@ const ChangeNicknameModal = ({ onNicknameChange }) => {
 
           <div className='nicknamechange-body'>
             <div className='nickname-change'>
-              <input className='nickname-input' type="text" value={nickname} onChange={handleChangeNickname} />
+              <input className='nickname-input' type="text" value={nickName} onChange={handleChangeNickname} />
             </div>
 
             <div className='nickname-change-button'>
