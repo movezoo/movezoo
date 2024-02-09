@@ -45,7 +45,7 @@ singlegame-cam {
 /****************************************/
 /* common styles used for v1 through v4 */
 /****************************************/
-#stats {
+/* #stats {
   border: 2px solid black;
 }
 #controls {
@@ -77,8 +77,8 @@ singlegame-cam {
 #canvas {
   position: absolute;
   z-index: 0;
-  width: 640px;
-  height: 480px;
+  width: auto;
+  height: 70%;
   z-index: 0;
   background-color: #72d7ee;
 }
@@ -94,12 +94,12 @@ singlegame-cam {
 }
 #mute.on {
   background-position: -32px 0px;
-}
+} */
 
 /**************************************************/
 /* rudimentary heads up display (only used in v4) */
 /**************************************************/
-#hud {
+/* #hud {
   position: absolute;
   z-index: 1;
   width: 640px;
@@ -149,4 +149,4 @@ singlegame-cam {
 }
 #hud .fastest {
   background-color: rgba(255, 215, 0, 0.5);
-}
+} */
