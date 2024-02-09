@@ -324,8 +324,6 @@ const Game = {
           })
         })
       })
-      // console.log(PLAYER_SPRITE);
-      console.log(SPRITES);
     }
 
     const setBackground = () => {
