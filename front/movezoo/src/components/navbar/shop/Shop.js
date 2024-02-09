@@ -5,7 +5,7 @@ import './Shop.css';
 import { AiFillShop } from 'react-icons/ai';
 import { IoCloseSharp } from "react-icons/io5";
 
-function Shop ({ setCoin }) {
+function Shop () {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -48,7 +48,7 @@ function Shop ({ setCoin }) {
           </div> */}
 
           <div className='shop-chracter'>
-            <Character setuserCoin={setCoin}/>
+            <Character/>
           </div>
           <div className='shop-exit'>
             <IoCloseSharp className='exit-button' onClick={closeModal} />
