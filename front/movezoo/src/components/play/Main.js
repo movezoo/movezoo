@@ -11,8 +11,7 @@ const Main = (props) => {
   // 게임 플레이 정보
   const [testSpeed, setTestSpeed] = useState(0);
   const [testCurrentLapTime, setTestCurrentLapTime] = useState(0);
-  const [testLastLapTime, setTestLastLapTime] = useState(undefined);
-  const [testFastLapTime, setTestFastLapTime] = useState(undefined);
+  const [testLastLapTime, setTestLastLapTime] = useState(0);
   
   const canvasRef = useRef(null)
   useEffect(() => {
@@ -53,13 +52,14 @@ const Main = (props) => {
     let segmentLength  = 200;                     // 단일 세그먼트의 길이
     let rumbleLength   = 3;                       // 붉은색/흰색 럼블 스트립 당 세그먼트 수
     let trackLength    = null;                    // 전체 트랙의 z 길이 (계산됨)
-    let lanes          = 3;                       // 차선 수
+    let lanes          = 4;                       // 차선 수
     let cameraDepth    = null;                    // 화면으로부터 카메라까지의 z 거리 (계산됨)
     let playerX        = 0;                       // 도로 중심에서 플레이어 x 오프셋 (-1에서 1까지로 설정하여 roadWidth에 독립적으로 유지)
     let playerZ        = null;                    // 카메라로부터 플레이어의 상대적인 z 거리 (계산됨)
     let position       = 0;                       // 현재 카메라 Z 위치 (playerZ를 더하여 플레이어의 절대 Z 위치를 얻음)
     let speed          = 0;                       // 현재 속도
-    let maxSpeed       = segmentLength/step;      // 최대 속도 (충돌 감지를 쉽게 하기 위해 한 번에 1 세그먼트 이상 이동하지 않도록 함)
+    // let maxSpeed       = segmentLength/step - 4000;      // 최대 속도 (충돌 감지를 쉽게 하기 위해 한 번에 1 세그먼트 이상 이동하지 않도록 함) 200 / ( 1/60 ) = 12000
+    let maxSpeed       = 8000;
     let accel          =  maxSpeed/5;             // 가속률 - '그냥' 올바르게 느껴질 때까지 튜닝됨
     let breaking       = -maxSpeed;               // 감속률 (브레이킹할 때)
     let decel          = -maxSpeed/5;             // 가속 및 감속하지 않을 때 '자연스러운' 감속률
@@ -75,11 +75,17 @@ const Main = (props) => {
     let keySlower      = false;
     
     const hud = {
-      speed:            { value: null, dom: Dom.get('speed_value')            },
-      current_lap_time: { value: null, dom: Dom.get('current_lap_time_value') },
-      last_lap_time:    { value: null, dom: Dom.get('last_lap_time_value')    },
-      fast_lap_time:    { value: null, dom: Dom.get('fast_lap_time_value')    }
+      speed: null,
+      current_lap_time: null,
+      last_lap_time: null,
+      fast_lap_time: null
     }
+    // const hud = {
+    //   speed:            { value: null, dom: Dom.get('speed_value')            },
+    //   current_lap_time: { value: null, dom: Dom.get('current_lap_time_value') },
+    //   last_lap_time:    { value: null, dom: Dom.get('last_lap_time_value')    },
+    //   fast_lap_time:    { value: null, dom: Dom.get('fast_lap_time_value')    }
+    // }
     
 
 
@@ -97,17 +103,6 @@ const Main = (props) => {
 
       // 플레이어 캐릭터 애니메이션 프레임 업데이트
       updatePlayerFrame();
-      
-      // 데이터 보내기
-      // console.log("데이터 보냄!!")
-      // data.playerDataList[playerNumber].userX = playerX;
-      // data.playerDataList[playerNumber].userZ = position + playerZ;
-      // socketClient.emit("playerDataList", playerDataList);
-      // 데이터 받기
-      // socketClient.on("playerDataList", (data) => {
-      // // console.log("데이터 받음!!")
-      //   playerDataList = data;
-      // })
 
       
       for (let i = 0; i < playerCount.value; i++) {
@@ -229,26 +224,24 @@ const Main = (props) => {
       // 현재 랩 타임 업데이트 및 최고 랩 타임 확인
       if (position > playerZ) {
         if (currentLapTime && (startPosition < playerZ)) {
+          // useState로 변경
+          setTestLastLapTime(currentLapTime);
+          setTestCurrentLapTime(0);
           lastLapTime    = currentLapTime;
           currentLapTime = 0;
 
-          // useState로 변경
-          setTestLastLapTime(testCurrentLapTime);
-          setTestCurrentLapTime(0);
           if (lastLapTime <= Util.toFloat(localStorage.fast_lap_time)) {
             localStorage.fast_lap_time = lastLapTime;
             updateHud('fast_lap_time', formatTime(lastLapTime));
-            setTestFastLapTime(testLastLapTime);
-            Dom.addClassName('fast_lap_time', 'fastest');
-            Dom.addClassName('last_lap_time', 'fastest');
+            // Dom.addClassName('fast_lap_time', 'fastest');
+            // Dom.addClassName('last_lap_time', 'fastest');
           }
           else {
-            Dom.removeClassName('fast_lap_time', 'fastest');
-            Dom.removeClassName('last_lap_time', 'fastest');
+            // Dom.removeClassName('fast_lap_time', 'fastest');
+            // Dom.removeClassName('last_lap_time', 'fastest');
           }
           updateHud('last_lap_time', formatTime(lastLapTime));
-          setTestLastLapTime(testLastLapTime);
-          Dom.show('last_lap_time');
+          // Dom.show('last_lap_time');
         }
         else {
           currentLapTime += dt;
@@ -377,9 +370,9 @@ const Main = (props) => {
 
     const updateHud = (key, value) => {
       // DOM 접근은 느릴 수 있으므로 값이 변경되었을 때만 수행합니다.
-      if (hud[key].value !== value) {
-        hud[key].value = value;
-        Dom.set(hud[key].dom, value);
+      if (hud[key] !== value) {
+        hud[key] = value;
+        // Dom.set(hud[key].dom, value);
       }
     }
     
@@ -567,17 +560,23 @@ const Main = (props) => {
 
 
 
-
-
-
-
     }
     
+
+
+
+
+
     const findSegment = z => {
       // 현재 위치 z에 해당하는 세그먼트 반환
       return segments[Math.floor(z/segmentLength) % segments.length]; 
     }
     
+
+
+
+
+
     //=========================================================================
     // 도로 지오메트리 구축
     //=========================================================================
@@ -598,13 +597,9 @@ const Main = (props) => {
       });
     }
     
-    
-
-
-
 
     /**
-     * 지정된 길이의 직선 도로 세그먼트를 추가합니다.
+     * 세그먼트에 아이템 추가
      * @param {number} n - 세그먼트번호(z축위치)
      * @param {number} offset - 가로축(-1, 1)
      */
@@ -616,13 +611,13 @@ const Main = (props) => {
     }
 
 
-    // 세그먼트에 스프라이트 추가
+    // 
     /**
-     * 지정된 길이와 높이의 언덕을 추가합니다.
+     * 세그먼트에 스프라이트 추가
      * @param {number} n - 세그먼트번호(z축위치)
      * @param {string} spriteGroup - 스프라이트 그룹이름
      * @param {string} spriteName - 스프라이트 이름
-     * @param {string} offset - 가로축(-1, 1)
+     * @param {number} offset - 가로축(-1, 1)
      */
     const addSprite = (n, spriteGroup, spriteName, offset) => {
       // addSprite(20,  SPRITES.BILLBOARD07, -1);
@@ -880,11 +875,21 @@ const Main = (props) => {
     }
 
     const resetItems = () => {
-      addItem(20, 0.8);
-      addItem(20, 0.4);
-      addItem(20, 0);
-      addItem(20, -0.4);
-      addItem(20, -0.8);
+      
+      // z : 20
+      addItem(20, 0.75);
+      addItem(20, 0.25);
+      addItem(20, -0.25);
+      addItem(20, -0.75);
+
+      addItem(80, 0.75);
+      addItem(100, 0.25);
+      addItem(60, -0.25);
+      addItem(200, -0.75);
+      addItem(300, 0.75);
+      addItem(800, 0.25);
+      addItem(250, -0.25);
+      addItem(400, -0.75);
     }
     
     
@@ -1017,7 +1022,7 @@ const Main = (props) => {
       rumbleLength           = Util.toInt(options.rumbleLength,   rumbleLength);
       cameraDepth            = 1 / Math.tan((fieldOfView/2) * Math.PI/180);
       playerZ                = (cameraHeight * cameraDepth);
-      resolution             = height/480;
+      resolution             = height/1080;
       // refreshTweakUI();
     
       if ((segments.length === 0) || (options.segmentLength) || (options.rumbleLength))
@@ -1091,65 +1096,20 @@ const Main = (props) => {
   
   return (
     <div>
-      {/* <table id="controls">
-        <tbody>
-          <tr><td id="fps" colSpan="2" align="right"></td></tr>
-          <tr>
-            <th><label htmlFor="resolution">Resolution :</label></th>
-            <td>
-              <select defaultValue='high' id="resolution" style={{width:'100%'}}>
-                <option value='fine'>Fine (1280x960)</option>
-                <option value='high'>High (1024x768)</option>
-                <option value='medium'>Medium (640x480)</option>
-                <option value='low'>Low (480x360)</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <th><label htmlFor="lanes">Lanes :</label></th>
-            <td>
-              <select defaultValue='3' id="lanes">
-                <option value='1'>1</option>
-                <option value='2'>2</option>
-                <option value='3'>3</option>
-                <option value='4'>4</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <th><label htmlFor="roadWidth">Road Width (<span id="currentRoadWidth"></span>) :</label></th>
-            <td><input id="roadWidth" type='range' min='500' max='3000' title="integer (500-3000)"/></td>
-          </tr>
-          <tr>
-            <th><label htmlFor="cameraHeight">CameraHeight (<span id="currentCameraHeight"></span>) :</label></th>
-            <td><input id="cameraHeight" type='range' min='500' max='5000' title="integer (500-5000)"/></td>
-          </tr>
-          <tr>
-            <th><label htmlFor="drawDistance">Draw Distance (<span id="currentDrawDistance"></span>) :</label></th>
-            <td><input id="drawDistance" type='range' min='100' max='500' title="integer (100-500)"/></td>
-          </tr>
-          <tr>
-            <th><label htmlFor="fieldOfView">Field of View (<span id="currentFieldOfView"></span>) :</label></th>
-            <td><input id="fieldOfView" type='range' min='80' max='140' title="integer (80-140)"/></td>
-          </tr>
-          <tr>
-            <th><label htmlFor="fogDensity">Fog Density (<span id="currentFogDensity"></span>) :</label></th>
-            <td><input id="fogDensity" type='range' min='0' max='50' title="integer (0-50)"/></td>
-          </tr>
-        </tbody>
-      </table> */}
+      <div id="racer">
+        {/* <div id="hud">
+          <span id="speed"            className="hud"><span id="speed_value" className="value">0</span> mph</span>
+          <span id="current_lap_time" className="hud">Time: <span id="current_lap_time_value" className="value">0.0</span></span> 
+          <span id="last_lap_time"    className="hud">Last Lap: <span id="last_lap_time_value" className="value">0.0</span></span>
+          <span id="fast_lap_time"    className="hud">Fastest Lap: <span id="fast_lap_time_value" className="value"></span></span>
+        </div> */}
+        {/* <canvas id="canvas">
+          Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
+        </canvas> */}
 
-
-      {/* <div id='instructions'>
-        <p>Use the <b>arrow keys</b> to drive the car.</p>
-        내차 X 위치 : <span id="playerX">0</span><br/>
-        내차 Z 위치 : <span id="position">0</span><br/>
-
-        상대차 X 위치 : <span id="userX">0</span><br/>
-        상대차 Z 위치 : <span id="userZ">0</span><br/>
-
-        trackLength : <span id="trackLength">0</span><br/>
-      </div> */}
+        <canvas id="canvas" ref={canvasRef} {...props}>Loading...</canvas>
+        
+      </div>
       <div>
         속도 : {5 * Math.round(testSpeed/500)} <br/>
         시간 : {Util.formatTime(testCurrentLapTime)} <br/>
@@ -1157,22 +1117,6 @@ const Main = (props) => {
         방금기록 : { Util.formatTime(testLastLapTime) } { } <br/>
         최고기록 : { Util.formatTime(Util.toFloat(localStorage.fast_lap_time)) } <br/>
       </div>
-      <div id="racer">
-        <div id="hud">
-          <span id="speed"            className="hud"><span id="speed_value" className="value">0</span> mph</span>
-          <span id="current_lap_time" className="hud">Time: <span id="current_lap_time_value" className="value">0.0</span></span> 
-          <span id="last_lap_time"    className="hud">Last Lap: <span id="last_lap_time_value" className="value">0.0</span></span>
-          <span id="fast_lap_time"    className="hud">Fastest Lap: <span id="fast_lap_time_value" className="value"></span></span>
-        </div>
-        {/* <canvas id="canvas">
-          Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
-        </canvas> */}
-
-        <canvas id="canvas" ref={canvasRef} {...props}/>
-        Loading...
-      </div>
-
-      
     </div>
   )
 }
