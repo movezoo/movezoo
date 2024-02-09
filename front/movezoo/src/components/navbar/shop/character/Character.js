@@ -364,6 +364,7 @@ function Character () {
       }, { withCredentials: true });
   
       setCoin(userCoinResponse.data.coin); // Recoil 상태 업데이트
+      console.log(coin)
     } catch (error) {
       console.error('유저 코인 정보 요청 실패:', error);
     }
@@ -435,7 +436,7 @@ function Character () {
             <p>정말 이 캐릭터를 구매하시겠습니까?</p>
           </div>
           <div className='buy-text'>
-            <p>coin : {userCoin} - {characterPrice} </p>
+            <p>coin : {coin} - {characterPrice} </p>
           </div>
           <div className='buy-yes-button'>
             <button className='profile-button' onClick={handleBuyConfirm}>예</button>
