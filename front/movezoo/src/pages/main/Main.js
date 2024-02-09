@@ -49,7 +49,7 @@ function Main() {
         
 
         // 임시 데이터
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/2403', {})
+        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/52', {})
 
         const nickname = response.data.nickname;
         const userCoin = response.data.coin;

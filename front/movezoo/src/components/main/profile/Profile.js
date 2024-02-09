@@ -46,11 +46,11 @@ const Profile = ({ isProfileOpen, isProfileClose, setUserImage: updateImage, set
         // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
 
         // 임시 유저 데이터==
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/2403');
+        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/52');
 
         const user = response.data;
         setUser(user);
-        setNickname(user.nickname);
+        setNickname(user.nickname); 
 
         const userImage = response.data.profileImgUrl;
         setUserImage(userImage)
