@@ -37,6 +37,8 @@ const Login = () => {
         };
         setSession(newSession);
 
+        console.log(newSession)
+
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
         navigate('/main');
