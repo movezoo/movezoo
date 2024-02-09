@@ -37,3 +37,7 @@ export const signUpState = atom({
     emailError: '',
   },
 });
+
+export const nickName = atom({
+  key: 'nickName',
+  default: '',
