@@ -13,8 +13,31 @@ export const userCoin = atom({
   default: 0,
 });
 
+// 로그인 세션 관련 상태를 관리하는 atom
+export const sessionState = atom({
+  key: 'sessionState',
+  default: {
+    loggedIn: false,
+    sessionId: null,
+    userData: null, // 사용자 정보를 담을 필드 추가
+  },
+});
+
+
+// 회원가입 관련 상태를 관리하는 atom
+export const signUpState = atom({
+  key: 'signUpState',
+  default: {
+    email: '',
+    password: '',
+    confirmPassword: '',
+    nickname: '',
+    signedUp: false,
+    passwordError: '',
+    emailError: '',
+  },
+});
 
 export const nickName = atom({
   key: 'nickName',
   default: '',
-});
