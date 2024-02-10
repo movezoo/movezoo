@@ -1,19 +1,20 @@
 import Modal from "react-modal";
+import axios from 'axios';
 import { useRef, useState, useEffect } from "react";
 import "./Makeroom.css";
 
-function Makeroom() {
+function Makeroom(props) {
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
-  const [roomMode, setRoomMode] = useState(1);
+  const [roomMode, setRoomMode] = useState(0);
   const [isTeam, setIsTeam] = useState(false);
-  const onClickTeam = () => {setIsTeam(true); setRoomMode(isItem?4:3)};
-  const onClickSolo = () => {setIsTeam(false); setRoomMode(isItem?2:1)};
+  const onClickTeam = () => {setIsTeam(true); setRoomMode(isItem?3:2)};
+  const onClickSolo = () => {setIsTeam(false); setRoomMode(isItem?1:0)};
   const [isItem, setIsItem] = useState(false);
-  const onClickItem = () => {setIsItem(true); setRoomMode(isTeam?4:2)};
-  const onClickSpeed = () => {setIsItem(false); setRoomMode(isTeam?3:1)};
+  const onClickItem = () => {setIsItem(true); setRoomMode(isTeam?3:1)};
+  const onClickSpeed = () => {setIsItem(false); setRoomMode(isTeam?2:0)};
   const [maxUserCount, setMaxUserCount] = useState(4);
   const onClickPlus = (current) => { if (maxUserCount < 4) {
     setMaxUserCount((current) => current + 1);}};
@@ -23,11 +24,30 @@ function Makeroom() {
   const roomTitleRef = useRef(null);
   const secretRoomPasswordRef = useRef(null);
 
-  const onClickConfirm = () => {
+  const onClickConfirm = async () => {
     const roomTitle = roomTitleRef.current.value;
     const secretRoomPassword = secretRoomPasswordRef.current.value;
     const secretRoom = secretRoomPassword ? true : false;
-    console.log({ roomTitle, secretRoom, secretRoomPassword, roomMode, maxUserCount });
+
+    if (!roomTitle ) {
+      alert('방 제목을 입력해주세요.');
+      return;
+    }
+
+    try{
+      const response = await axios.post('https://i10e204.p.ssafy.io/api/room', {
+        roomMode: roomMode,
+        roomTitle: roomTitle,
+        secretRoom: secretRoom,
+        secretRoomPassword: secretRoomPassword,
+        maxUserCount: maxUserCount,
+      });
+      console.log(response.data);
+      props.func(response.data.roomSessionId);
+      props.setPage(2);
+    } catch (error) {
+      console.error('Error creating room:', error);
+    }
   };
 
   return (
