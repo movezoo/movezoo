@@ -56,7 +56,7 @@ const ChangePasswordModal = () => {
       console.log(userData)
 
       // 사용자 이메일을 변수에 저장
-      const userEmail = userData.userEmail;
+      const userEmail = userData.userData.userEmail;
 
       console.log(userEmail)
 
