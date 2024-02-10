@@ -1,5 +1,5 @@
 import Stats from './stats.js';
-import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, ITEM_SPRITE, MAP_SPRITE } from './gameConstants.js';
+import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, MAP_SPRITE } from './gameConstants.js';
 import { myGameData } from './data.js';
 
 
@@ -8,19 +8,31 @@ import { myGameData } from './data.js';
 // import mute from './images/mute.png';
 // import sprites from './images/sprites.png';
 
-const selectPlayer = "zebra";
+const selectPlayer = "deer";
 myGameData.playerCharacter = selectPlayer;  // 오픈비두 통신을 위한 데이터 설정
 const selectAction = "run";
 const selectMap = "map1";
-const frameIndex = {
-  pug: { run: 0 },
-  sheep: { run: 0 },
-  pig: { run: 0 },
-  cow: { run: 0 },
-  llama: { run: 0 },
-  horse: { run: 0 },
-  zebra: { run: 0 }
+
+const frameIndex = {}
+// frameIndex 초기화
+Object.keys(MAX_FRAME_COUNT).forEach(character => {
+  frameIndex[character] = {};
+  Object.keys(MAX_FRAME_COUNT[character]).forEach(action => {
+    frameIndex[character][action] = 0;
+  })
+})
+
+// 프레임 업데이트
+// 현재프레임 = (현재프레임+1) % 최대프레임
+const updateFrameIndex = () => {
+  frameIndex[selectPlayer][selectAction] =
+      (frameIndex[selectPlayer][selectAction] + 1)
+      % MAX_FRAME_COUNT[selectPlayer][selectAction];
 }
+
+let checkGameFrameCount = 0;
+let frameInterval = 2; // 프레임 간격(default: 1, 게임2프레임 마다 애니메이션프레임증가)
+
 // const totalsFrames = {
 //   run: 21
 // }
@@ -584,10 +596,12 @@ const Render = {
     //   selectAction = 'run' 
     // }
 
+    // 프레임 업데이트(프레임 간격조정포함)
     // 현재프레임 = (현재프레임+1) % 최대프레임
-    frameIndex[selectPlayer][selectAction] =
-      (frameIndex[selectPlayer][selectAction] + 1)
-      % MAX_FRAME_COUNT[selectPlayer][selectAction];
+    checkGameFrameCount%=frameInterval;
+    if(checkGameFrameCount++ === 0)
+      updateFrameIndex();
+    
 
 
 

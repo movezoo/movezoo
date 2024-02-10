@@ -4,20 +4,21 @@
 
 // 캐릭터 이름, 행동, 방향    (캐릭터파일명 : 이름_행동_방향)
 const PLAYER_SPRITE = {
-  NAMES:      [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra"],
+  NAMES:      [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra", "deer" ],
   ACTIONS:    [ { name: "run" } ],
   DIRECTIONS: [ "uphill_left", "uphill_straight", "uphill_right", "left", "straight", "right" ]
 }
 
 // 캐릭터 애니메이션 프레임 개수
 const MAX_FRAME_COUNT = {
-  pug:     { run: 21 },
-  sheep:   { run: 21 },
-  pig:     { run: 23 },
-  cow:     { run: 35 },
-  llama:   { run: 21 },
-  horse:   { run: 21 },
-  zebra:   { run: 21 }
+  pug:      { run: 21 },
+  sheep:    { run: 21 },
+  pig:      { run: 23 },
+  cow:      { run: 35 },
+  llama:    { run: 21 },
+  horse:    { run: 21 },
+  zebra:    { run: 21 },
+  deer:     { run: 18 }
 }
 
 // 맵 별 스프라이트 그룹 및 파일명, 사이즈정보
