@@ -2,7 +2,7 @@
 // import io from "socket.io-client";
 import { useRef, useEffect, useState } from 'react'
 import { Dom, Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
-import { MAX_FRAME_COUNT, PLAYER_SPRITE, SPRITE_FILE_NAME, SPRITE_SIZE, ITEM_SPRITE } from './gameConstants.js';
+import { MAX_FRAME_COUNT, PLAYER_SPRITE, MAP_SPRITE, ITEM_SPRITE } from './gameConstants.js';
 import { data, myGameData, playerGameDataList, playerCount } from './data.js';
 
 const localStorage = window.localStorage || {};
@@ -621,7 +621,7 @@ const Main = (props) => {
      */
     const addSprite = (n, spriteGroup, spriteName, offset) => {
       // addSprite(20,  SPRITES.BILLBOARD07, -1);
-      let size = SPRITE_SIZE['map1'][spriteGroup][spriteName];
+      let size = MAP_SPRITE['map1'][spriteGroup][spriteName];
       segments[n].sprites.push({
         spriteGroup: spriteGroup,
          spriteName: spriteName,
@@ -789,8 +789,8 @@ const Main = (props) => {
 
       // 반복문으로 생성
       for(let n = 10; n < 200; n += 4 + Math.floor(n/100)) {
-        addSprite(n, 'TREE', 'tree1', 0.5 + Math.random()*0.5);
-        addSprite(n, 'TREE', 'tree1',   1 + Math.random()*2);
+        addSprite(n, 'TREE', 'tree1', 0.8 + Math.random()*0.5);
+        addSprite(n, 'TREE', 'tree1',   1.3 + Math.random()*2);
       }
       for(let n = 250; n < 1000; n += 5) {
         addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
@@ -802,7 +802,7 @@ const Main = (props) => {
         addSprite(
           n,
           'TREE',
-          Util.randomChoice(SPRITE_FILE_NAME['map1'].TREE),
+          Util.randomChoice(Object.keys(MAP_SPRITE['map1'].TREE)),
           Util.randomChoice([1,-1]) * (2 + Math.random() * 5)
         );
       }
@@ -814,11 +814,11 @@ const Main = (props) => {
         addSprite(
           n + Util.randomInt(0, 50),
           'BILLBOARD',
-          Util.randomChoice(SPRITE_FILE_NAME['map1'].BILLBOARD),
+          Util.randomChoice(Object.keys(MAP_SPRITE['map1'].BILLBOARD)),
           -side
         );
         for(let i = 0; i < 20; i++) {
-          sprite = Util.randomChoice(SPRITE_FILE_NAME['map1'].TREE);
+          sprite = Util.randomChoice(Object.keys(MAP_SPRITE['map1'].TREE));
           offset = side * (1.5 + Math.random());
           addSprite(n + Util.randomInt(0, 50), 'TREE', sprite, offset);
         }

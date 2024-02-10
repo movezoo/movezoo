@@ -1,5 +1,5 @@
 import Stats from './stats.js';
-import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, SPRITE_FILE_NAME, ITEM_SPRITE } from './gameConstants.js';
+import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, ITEM_SPRITE, MAP_SPRITE } from './gameConstants.js';
 import { myGameData } from './data.js';
 
 
@@ -248,8 +248,8 @@ const Game = {
       }
       const getSpritesCount = () => {
         let tempCount = 0;
-        Object.keys(SPRITE_FILE_NAME[selectMap]).forEach(spriteGroup => {
-          tempCount += SPRITE_FILE_NAME[selectMap][spriteGroup].length;
+        Object.keys(MAP_SPRITE[selectMap]).forEach(spriteGroup => {
+          tempCount += Object.keys(MAP_SPRITE[selectMap][spriteGroup]).length;
         })
         return tempCount;
       }
@@ -340,13 +340,13 @@ const Game = {
     
     const setSprites = () => {
       // 객체 초기화
-      Object.keys(SPRITE_FILE_NAME[selectMap]).forEach(spriteGroup => {
+      Object.keys(MAP_SPRITE[selectMap]).forEach(spriteGroup => {
         // map은 한 게임에 무조건 1개이므로 굳이 구분하지 않는다.
         result[spriteGroup] = {};
       })
       // selectMap === 'map1'
-      Object.keys(SPRITE_FILE_NAME[selectMap]).forEach(spriteGroup => {
-        SPRITE_FILE_NAME[selectMap][spriteGroup].forEach(spriteName => {
+      Object.keys(MAP_SPRITE[selectMap]).forEach(spriteGroup => {
+        Object.keys(MAP_SPRITE[selectMap][spriteGroup]).forEach(spriteName => {
           result[spriteGroup][spriteName] = document.createElement('img');
           if(result[spriteGroup][spriteName] !== null) {
             Dom.on(result[spriteGroup][spriteName], 'load', onload);
