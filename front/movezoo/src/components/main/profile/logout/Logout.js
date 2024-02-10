@@ -24,6 +24,7 @@ const LogoutModal = () => {
         withCredentials: true,
       });
       document.cookie = 'JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; // 쿠키 삭제
+      localStorage.removeItem('userData');
       navigate('/');  // 홈 화면으로 이동
     } catch (error) {
       console.error('로그아웃 실패:', error);
