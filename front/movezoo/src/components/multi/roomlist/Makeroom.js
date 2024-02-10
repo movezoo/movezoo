@@ -38,9 +38,8 @@ function Makeroom(props) {
       const response = await axios.post('https://i10e204.p.ssafy.io/api/room', {
         roomMode: roomMode,
         roomTitle: roomTitle,
-        secretRoom: secretRoom,
-        secretRoomPassword: secretRoomPassword,
-        maxUserCount: maxUserCount,
+        roomPassword: secretRoomPassword,
+        maxRange: maxUserCount,
       });
       console.log(response.data);
       props.func(response.data.roomSessionId);
