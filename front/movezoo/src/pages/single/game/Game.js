@@ -30,7 +30,7 @@ function Game() {
           <strong>게임 화면</strong>
         </p> */}
         <div className="game">
-          <Main width={1920} height={1080} />
+          <Main width={1366} height={768} />
         </div>
         <div className="singlegame-cam">
           <Cam />
