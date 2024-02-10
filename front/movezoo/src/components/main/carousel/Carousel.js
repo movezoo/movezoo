@@ -43,19 +43,19 @@ function Carousel() {
   useEffect(() => {
     const fetchUserCharacters = async () => {
       try {
-        // == 쿠키 사용해서 로그인한 유저 id 가져오기 ============
-
-        // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-        //   withCredentials: true, // 쿠키 허용
-        // });
-        // const UserId = loginUserId.data;
-
-        // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
-
+        const storedUserData = localStorage.getItem('userData');
+        if (!storedUserData) {
+          throw new Error('사용자 정보를 찾을 수 없습니다.');
+        }
         
-        // 임시 유저 데이터
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/racer/103', {})
-
+        const userData = JSON.parse(storedUserData);
+        
+        
+        const userId = userData.userData.userId;
+        
+        console.log(userId);
+        
+        const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${userId}`, {})
 
         console.log('===========')
         console.log(response.data);
