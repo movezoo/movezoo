@@ -50,7 +50,7 @@ const ImageChangeModal = () => {
       console.log(userData)
 
       // 사용자 이메일을 변수에 저장
-      const userEmail = userData.userEmail;
+      const userEmail = userData.userData.userEmail;
 
       console.log(userEmail)
 
@@ -69,7 +69,8 @@ const ImageChangeModal = () => {
       setProfileImgUrl(profileImgUrl);
 
       // 로컬 스토리지에 저장
-      const updatedUserData = { ...userData, profileImgUrl };
+      let updatedUserData = { ...userData };
+      updatedUserData.userData.profileImgUrl = profileImgUrl;
       localStorage.setItem('userData', JSON.stringify(updatedUserData));
 
       alert('이미지가 변경되었습니다.');
