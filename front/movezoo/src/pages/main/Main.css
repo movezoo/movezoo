@@ -2,55 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 .main-container {
-  background-image: url('/public/images/mainbg/shibaBg.png');
+  /* background-image: url('/public/images/mainbg/shibaBg.png'); */
+  background-image: url('/public/images/carouselbg/carouselbg.png');
   background-size: cover;
-  @apply select-none min-w-[1000px] min-h-screen flex flex-row justify-center items-center bg-blue-400
+  @apply select-none min-w-[1000px] min-h-screen flex flex-col bg-blue-400
   cursor-default ;
 }
 
-/* 왼쪽 섹션 */
-.left-section {
-  @apply w-8/12
-}
-
 /* 메인 헤더 */
-.left-header {
-  @apply w-4/6 h-32 flex flex-row items-center justify-between;
+.main-header {
+  @apply ml-10 mt-10 mb-10 flex justify-between items-start;
 }
 
-.left-header-name {
-  @apply flex justify-start font-Pixel text-7xl text-white p-3 ml-2
+.main-headerName {
+  @apply flex justify-start items-start text-8xl text-white
 }
+
+.main-body {
+  @apply flex flex-row ;
+}
+
+/* 왼쪽 섹션 */
+.main-left-section {
+  @apply ml-10 mr-10 w-9/12 flex flex-col ;
+}
+
 
 /* 메인 캐러셀 */
-.left-carousel {
-  @apply w-4/6 h-96 flex bg-white rounded-3xl;
+.main-left-carousel {
+  /* background-image: url('/public/images/carouselbg/carouselbg.png');
+  background-size: cover;
+  background-position: 50% 80%; */
+  @apply m-10 h-5/6 flex ;
 }
 
 /* 메인 네브바 */
-.main-navbar {
-  @apply w-4/6 h-36 flex justify-center items-center mt-1;
+.main-left-navbar {
+  @apply ml-10 mr-10 mb-5 h-1/6 flex justify-center items-center;
 }
 
 
 /* 오른쪽 섹션 */
-.right-section {
-  @apply w-4/12 flex flex-col
+.main-right-section {
+  @apply w-3/12 mr-10 flex flex-col;
 }
 
-.main-header-info {
-  @apply flex flex-row justify-end bg-white rounded-2xl mr-2;
+.main-right-info {
+  @apply h-2/6 mb-10 flex flex-row justify-end bg-white rounded-3xl;
 
 }
 
-.header-info-user {
+.main-right-userProfile {
+  @apply items-center p-3 flex justify-center;
+}
+
+.profile-image {
+  @apply w-4/12 rounded-2xl hover:cursor-pointer hover:brightness-75
+  hover:scale-110 transition-all duration-300 ;
+}
+
+.main-right-userInfo {
   @apply flex flex-col justify-between p-3 pr-6 ml-2 pt-5 pb-5;  
 }
 
-.info-user-coin {
+.main-right-userCoin {
   @apply flex flex-row items-center;
 }
 
@@ -58,12 +74,10 @@
   @apply text-yellow-300 w-6 h-6 mr-2;
 }
 
-.header-info-profile {
-  @apply items-center p-3 flex justify-center;
+.main-right-single {
+  @apply h-2/6 mb-10 text-8xl text-white flex flex-row justify-center items-center ;
 }
 
-.profile-image {
-  @apply rounded-2xl w-[72px] h-[72px] hover:cursor-pointer hover:brightness-75
-  hover:scale-110 transition-all duration-300 ;
+.main-right-multi {
+  @apply h-2/6 text-8xl text-white flex flex-row justify-center items-center ;
 }
-

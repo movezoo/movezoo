@@ -77,50 +77,67 @@ function Main() {
   return (
     <div className="main-container">
 
-      <div className="left-section">
+      <div className="main-header">
 
-        <div className="left-header">
-          <div className="left-header-name">
-            <h1>MoveZoo</h1>
-          </div>
+        <div className="main-headerName">
+          <h1>MoveZoo</h1>
         </div>
 
-        <div className="left-carousel">
-          <Carousel/>
-        </div>
 
-        <div className="main-navbar">
-          <Navbar setCoin={setCoin}/>
-        </div>
+        <div className="main-right-info">
 
-      </div>
-
-      <div className="right-section">
-
-        <div className="main-header-info">
-          <div className="header-info-user">
-            <div>
-              <h1> {nickName} </h1>
-            </div>
-            <div className="info-user-coin">
-              <AiFillCopyrightCircle className="coinIcon" />
-              <h1> {coin} </h1>
-            </div>
+          <div className="main-left-navbar">
+              <Navbar setCoin={setCoin}/>
           </div>
 
-          <div className="header-info-profile">
+          <div className="main-right-userProfile">
             <img className="profile-image" src={profileImgUrl} alt="프로필 이미지" onClick={openProfileModal} />
             <Profile isProfileOpen={isProfileOpen} isProfileClose={closeProfileModal}/>
           </div>
+
+          <div className="main-right-userInfo">
+            <div>
+              <h1> {nickName} </h1>
+            </div>
+
+            <div className="main-right-userCoin">
+              <AiFillCopyrightCircle className="coinIcon" />
+              <h1> {coin} </h1>
+            </div>
+
+          </div>
+
+          </div>
+
+      </div>
+
+      <div className="main-body">
+
+        <div className="main-left-section">
+
+          <div className="main-left-carousel">
+            <Carousel/>
+          </div>
+
+        
+
         </div>
 
-        <Link className='navbar-single' to="/single">
-          <h1 className='single'>싱글</h1>
-        </Link>
-        
-        <Link className='navbar-multi' to="/multi">
-          <h1 className='multi'>멀티</h1>
-        </Link>
+        <div className="main-right-section">
+
+          <div className='main-right-single'>
+            <Link to="/single">
+              <h1>싱글</h1>
+            </Link>
+          </div>
+          
+          <div className='main-right-multi'>
+            <Link to="/multi">
+              <h1>멀티</h1>
+            </Link>
+          </div>
+
+        </div>
 
       </div>
 
