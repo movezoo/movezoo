@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .carousel-container {
-  @apply select-none flex flex-row justify-center items-center w-full
+  @apply h-[450px] select-none flex flex-row justify-center items-center w-full
 }
 
 .carousel-prev {
