@@ -1,5 +1,5 @@
 import Stats from './stats.js';
-import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, SPRITE_FILE_NAME, ITEM_SPRITE } from './gameConstants.js';
+import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, MAP_SPRITE } from './gameConstants.js';
 import { myGameData } from './data.js';
 
 
@@ -8,19 +8,31 @@ import { myGameData } from './data.js';
 // import mute from './images/mute.png';
 // import sprites from './images/sprites.png';
 
-const selectPlayer = "zebra";
+const selectPlayer = "deer";
 myGameData.playerCharacter = selectPlayer;  // 오픈비두 통신을 위한 데이터 설정
 const selectAction = "run";
 const selectMap = "map1";
-const frameIndex = {
-  pug: { run: 0 },
-  sheep: { run: 0 },
-  pig: { run: 0 },
-  cow: { run: 0 },
-  llama: { run: 0 },
-  horse: { run: 0 },
-  zebra: { run: 0 }
+
+const frameIndex = {}
+// frameIndex 초기화
+Object.keys(MAX_FRAME_COUNT).forEach(character => {
+  frameIndex[character] = {};
+  Object.keys(MAX_FRAME_COUNT[character]).forEach(action => {
+    frameIndex[character][action] = 0;
+  })
+})
+
+// 프레임 업데이트
+// 현재프레임 = (현재프레임+1) % 최대프레임
+const updateFrameIndex = () => {
+  frameIndex[selectPlayer][selectAction] =
+      (frameIndex[selectPlayer][selectAction] + 1)
+      % MAX_FRAME_COUNT[selectPlayer][selectAction];
 }
+
+let checkGameFrameCount = 0;
+let frameInterval = 2; // 프레임 간격(default: 1, 게임2프레임 마다 애니메이션프레임증가)
+
 // const totalsFrames = {
 //   run: 21
 // }
@@ -248,8 +260,8 @@ const Game = {
       }
       const getSpritesCount = () => {
         let tempCount = 0;
-        Object.keys(SPRITE_FILE_NAME[selectMap]).forEach(spriteGroup => {
-          tempCount += SPRITE_FILE_NAME[selectMap][spriteGroup].length;
+        Object.keys(MAP_SPRITE[selectMap]).forEach(spriteGroup => {
+          tempCount += Object.keys(MAP_SPRITE[selectMap][spriteGroup]).length;
         })
         return tempCount;
       }
@@ -340,13 +352,13 @@ const Game = {
     
     const setSprites = () => {
       // 객체 초기화
-      Object.keys(SPRITE_FILE_NAME[selectMap]).forEach(spriteGroup => {
+      Object.keys(MAP_SPRITE[selectMap]).forEach(spriteGroup => {
         // map은 한 게임에 무조건 1개이므로 굳이 구분하지 않는다.
         result[spriteGroup] = {};
       })
       // selectMap === 'map1'
-      Object.keys(SPRITE_FILE_NAME[selectMap]).forEach(spriteGroup => {
-        SPRITE_FILE_NAME[selectMap][spriteGroup].forEach(spriteName => {
+      Object.keys(MAP_SPRITE[selectMap]).forEach(spriteGroup => {
+        Object.keys(MAP_SPRITE[selectMap][spriteGroup]).forEach(spriteName => {
           result[spriteGroup][spriteName] = document.createElement('img');
           if(result[spriteGroup][spriteName] !== null) {
             Dom.on(result[spriteGroup][spriteName], 'load', onload);
@@ -584,10 +596,12 @@ const Render = {
     //   selectAction = 'run' 
     // }
 
+    // 프레임 업데이트(프레임 간격조정포함)
     // 현재프레임 = (현재프레임+1) % 최대프레임
-    frameIndex[selectPlayer][selectAction] =
-      (frameIndex[selectPlayer][selectAction] + 1)
-      % MAX_FRAME_COUNT[selectPlayer][selectAction];
+    checkGameFrameCount%=frameInterval;
+    if(checkGameFrameCount++ === 0)
+      updateFrameIndex();
+    
 
 
 
