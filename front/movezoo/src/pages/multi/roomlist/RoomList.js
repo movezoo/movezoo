@@ -59,27 +59,29 @@ function RoomList(props) {
             빠른 입장
           </button>
           <button className="room-make">
-            <Makeroom />
+            <Makeroom setPage={props.setPage} func={props.func} />
           </button>
         </div>
         <div className="room-list">
-          {rooms.map((room) => (
-            <div className="room-box" key={room.id}>
-              {
-                <Inforoom
-                  key={room.id}
-                  title={room.roomTitle}
-                  userCount={room.currentUserCount}
-                  userMaxCount={room.maxUserCount}
-                  mode={room.roomMode}
-                  track={room.trackId}
-                  session={room.roomSessionId}
-                  setPage={props.setPage}
-                  func={props.func} 
-                />
-              }
-            </div>
-          ))}
+          {rooms.length === 0 ? (
+    <div>로딩중...</div>
+  ) : (
+    rooms.map((room) => (
+      <div className="room-box" key={room.id}>
+        <Inforoom
+          key={room.id}
+          title={room.roomTitle}
+          userCount={room.currentUserCount}
+          userMaxCount={room.maxUserCount}
+          mode={room.roomMode}
+          track={room.trackId}
+          session={room.roomSessionId}
+          setPage={props.setPage}
+          func={props.func}
+        />
+      </div>
+    ))
+  )}
         </div>
       </div>
 
