@@ -7,17 +7,38 @@
 .main-container {
   background-image: url('/public/images/mainbg/shibaBg.png');
   background-size: cover;
-  @apply select-none min-w-[1000px] min-h-screen flex flex-col justify-center items-center bg-blue-400
+  @apply select-none min-w-[1000px] min-h-screen flex flex-row justify-center items-center bg-blue-400
   cursor-default ;
 }
 
+/* 왼쪽 섹션 */
+.left-section {
+  @apply w-8/12
+}
+
 /* 메인 헤더 */
-.main-header {
+.left-header {
   @apply w-4/6 h-32 flex flex-row items-center justify-between;
 }
 
-.main-header-name {
+.left-header-name {
   @apply flex justify-start font-Pixel text-7xl text-white p-3 ml-2
+}
+
+/* 메인 캐러셀 */
+.left-carousel {
+  @apply w-4/6 h-96 flex bg-white rounded-3xl;
+}
+
+/* 메인 네브바 */
+.main-navbar {
+  @apply w-4/6 h-36 flex justify-center items-center mt-1;
+}
+
+
+/* 오른쪽 섹션 */
+.right-section {
+  @apply w-4/12 flex flex-col
 }
 
 .main-header-info {
@@ -46,15 +67,3 @@
   hover:scale-110 transition-all duration-300 ;
 }
 
-
-
-
-/* 메인 캐러셀 */
-.main-carousel {
-  @apply w-4/6 h-96 flex bg-white rounded-3xl;
-}
-
-/* 메인 네브바 */
-.main-navbar {
-  @apply w-4/6 h-36 flex justify-center items-center mt-1;
-}
