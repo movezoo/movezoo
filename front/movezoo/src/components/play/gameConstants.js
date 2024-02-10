@@ -1,28 +1,31 @@
 //=============================================================================
 // 레이싱 게임 상수
 //=============================================================================
+
+// 캐릭터 이름, 행동, 방향    (캐릭터파일명 : 이름_행동_방향)
 const PLAYER_SPRITE = {
-  NAMES: [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra"],
-  ACTIONS: [ { name: "run" } ],
+  NAMES:      [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra"],
+  ACTIONS:    [ { name: "run" } ],
   DIRECTIONS: [ "uphill_left", "uphill_straight", "uphill_right", "left", "straight", "right" ]
 }
 
-const BACKGROUND_SPRITE_FILE_NAME = {
-  hills: 'hills',       //.png
-  sky: 'sky',           //.png
-  faraway: 'faraway'    //.png
-};
-const SPRITE_FILE_NAME = {
-  map1: {
-    BILLBOARD: ["billboard_ssafy", "billboard"],
-    TREE: ["dead_tree1", "dead_tree2", "dead_tree3", "stump1", "tree1", "tree2", "tree3"]
-  }
+// 캐릭터 애니메이션 프레임 개수
+const MAX_FRAME_COUNT = {
+  pug:     { run: 21 },
+  sheep:   { run: 21 },
+  pig:     { run: 23 },
+  cow:     { run: 35 },
+  llama:   { run: 21 },
+  horse:   { run: 21 },
+  zebra:   { run: 21 }
 }
-const SPRITE_SIZE = {
+
+// 맵 별 스프라이트 그룹 및 파일명, 사이즈정보
+const MAP_SPRITE = {
   map1: {
     BILLBOARD: {
-      billboard_ssafy:  { x:    0, y:    0, w:  1000, h:  766 },
-      billboard:        { x:    0, y:    0, w:  1000, h:  765 },
+      billboard_ssafy:  { x:    0, y:    0, w: 1000, h:  766 },
+      billboard:        { x:    0, y:    0, w: 1000, h:  765 },
     },
     TREE: {
       dead_tree1:       { x:    0, y:    0, w:  556, h:  995 },
@@ -34,21 +37,24 @@ const SPRITE_SIZE = {
       tree3:            { x:    0, y:    0, w:  985, h:  875 },
     }
   }
-
 }
+
 const ITEM_SPRITE = { x:    0, y:    0, w:  300, h:  277 }
 
 
 
-const MAX_FRAME_COUNT = {
-  pug: { run: 21 },
-  sheep: { run: 21 },
-  pig: { run: 23 },
-  cow: { run: 35 },
-  llama: { run: 21 },
-  horse: { run: 21 },
-  zebra: { run: 21 }
-}
+
+
+
+
+
+// 배경화면 파일 이름
+const BACKGROUND_SPRITE_FILE_NAME = {
+  hills: 'hills',       //.png
+  sky: 'sky',           //.png
+  faraway: 'faraway'    //.png
+};
+
 
 // 키보드 입력 상수
 const KEY = {
@@ -174,7 +180,6 @@ export {
   SPRITES,
   MAX_FRAME_COUNT,
   BACKGROUND_SPRITE_FILE_NAME,
-  SPRITE_FILE_NAME,
-  SPRITE_SIZE,
+  MAP_SPRITE,
   ITEM_SPRITE
 }
