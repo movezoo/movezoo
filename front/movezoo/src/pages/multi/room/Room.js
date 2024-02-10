@@ -113,7 +113,7 @@ const Room = (props) => {
       <div className={styles.leftSection}>
         <div className={styles.infoSection}>
           <div className={styles.goBack}>
-            <Back leaveSession={props.leaveSession}/>
+            <Back leaveSession={leaveSession}/>
           </div>
           <h1 style={{ margin: 10 }}>Multi Play</h1>
         </div>
