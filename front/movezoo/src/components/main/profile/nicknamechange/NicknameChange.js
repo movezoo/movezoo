@@ -1,4 +1,133 @@
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
+// import Modal from 'react-modal';
+// import axios from 'axios';
+// import './NicknameChange.css';
+// import { IoCloseSharp } from "react-icons/io5";
+// import { useRecoilState } from 'recoil';
+// import { nickName as nickNameState } from '../../../state/state';
+
+// const ChangeNicknameModal = () => {
+//   const [nickname, setNickName] = useRecoilState(nickNameState);
+//   const [newNickName, setNewNickName] = useState('');
+//   const [isOpen, setIsOpen] = useState(false);
+//   const [userEmail, setEmail] = useState('');
+//   const [confirmModal, setConfirmModal] = useState(false);
+
+
+
+//   const openModal = () => {
+//     setIsOpen(true);
+//   };
+
+//   const closeModal = () => {
+//     setIsOpen(false);
+//     setConfirmModal(false);
+//   };
+
+//   const handleChangeNickname = (e) => {
+//     setNickName(e.target.value);
+//   };
+
+//   const handleConfirm = () => {
+//     setConfirmModal(true);
+//   };
+
+//   const handleNicknameChange = async () => {
+//     try {
+//       const storedUserData = localStorage.getItem('userData');
+//         if (!storedUserData) {
+//             throw new Error('사용자 정보를 찾을 수 없습니다.');
+//         }
+
+//       // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
+//       const userData = JSON.parse(storedUserData);
+
+//       console.log(userData)
+
+//       // 사용자 이메일을 변수에 저장
+//       const userEmail = userData.userData.userEmail;
+
+//       console.log(userEmail)
+
+//       console.log(nickname)
+
+//       await axios.patch('https://i10e204.p.ssafy.io/api/user/nickname', {userEmail, nickname}, {
+//         withCredentials: true,
+//       });
+
+//       setNickName(nickname);
+
+      
+      
+//       alert('닉네임 변경에 성공했습니다.');
+//       closeModal();
+//     } catch (error) {
+//       console.error('닉네임 변경 실패:', error);
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <button className='profile-button' onClick={openModal}>닉네임 변경</button>
+
+//       <Modal 
+//         isOpen={isOpen}
+//         onRequestClose={closeModal}
+//         className="NicknameChangeModal">
+
+//         <div className='NicknameChange-container'>
+
+//           <div className='nicknamechange-header'>
+//             <div className='header-name'>
+//               <h3>닉네임 변경</h3>
+//             </div>
+//             <div className='header-exit'>
+//               <IoCloseSharp className='exit-button' onClick={closeModal} />
+//             </div>
+//           </div>
+
+//           <div className='nicknamechange-body'>
+//             <div className='nickname-change'>
+//               <input className='nickname-input' type="text" value={nickname} onChange={handleChangeNickname} />
+//             </div>
+
+//             <div className='nickname-change-button'>
+//               <div className='change-button'>
+//                 <button onClick={handleConfirm}>닉네임 변경</button>
+//               </div>
+//             </div>
+//           </div>
+
+//         </div>
+
+//       </Modal>
+
+//       <Modal 
+//         isOpen={confirmModal}
+//         onRequestClose={closeModal}
+//         className="NicknameChangeModal">
+//         <div className='NicknameChange-container'>
+//           <div className='nicknameconfirm-header'>
+//             <div className='nicknameconfirm-header-name'>
+//               <h3>정말 닉네임을 변경하시겠습니까?</h3>
+//             </div>
+//           </div>
+//           <div className='nicknameconfirm-body'>
+//             <button className='profile-button' onClick={handleNicknameChange}>예</button>
+//             <button className='profile-button' onClick={closeModal}>아니요</button>
+//           </div>
+//         </div>
+//       </Modal>
+//     </div>
+//   );
+// };
+
+// export default ChangeNicknameModal;
+
+
+
+// test
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 import './NicknameChange.css';
@@ -8,15 +137,13 @@ import { nickName as nickNameState } from '../../../state/state';
 
 const ChangeNicknameModal = () => {
   const [nickname, setNickName] = useRecoilState(nickNameState);
-  const [newNickName, setNewNickName] = useState('');
+  const [newNickName, setNewNickName] = useState(nickname);
   const [isOpen, setIsOpen] = useState(false);
-  const [userEmail, setEmail] = useState('');
   const [confirmModal, setConfirmModal] = useState(false);
-
-
 
   const openModal = () => {
     setIsOpen(true);
+    setNewNickName(nickname);
   };
 
   const closeModal = () => {
@@ -25,7 +152,7 @@ const ChangeNicknameModal = () => {
   };
 
   const handleChangeNickname = (e) => {
-    setNickName(e.target.value);
+    setNewNickName(e.target.value);
   };
 
   const handleConfirm = () => {
@@ -35,30 +162,21 @@ const ChangeNicknameModal = () => {
   const handleNicknameChange = async () => {
     try {
       const storedUserData = localStorage.getItem('userData');
-        if (!storedUserData) {
-            throw new Error('사용자 정보를 찾을 수 없습니다.');
-        }
+      if (!storedUserData) {
+          throw new Error('사용자 정보를 찾을 수 없습니다.');
+      }
 
-      // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
       const userData = JSON.parse(storedUserData);
-
-      console.log(userData)
-
-      // 사용자 이메일을 변수에 저장
       const userEmail = userData.userData.userEmail;
 
-      console.log(userEmail)
+      console.log(userEmail, newNickName);
 
-      console.log(nickname)
-
-      await axios.patch('https://i10e204.p.ssafy.io/api/user/nickname', {userEmail, nickname}, {
+      await axios.patch('https://i10e204.p.ssafy.io/api/user/nickname', {userEmail, nickname: newNickName}, {
         withCredentials: true,
       });
 
-      setNickName(nickname);
-
-      
-      
+      setNickName(newNickName);
+      console.log(newNickName)
       alert('닉네임 변경에 성공했습니다.');
       closeModal();
     } catch (error) {
@@ -88,7 +206,7 @@ const ChangeNicknameModal = () => {
 
           <div className='nicknamechange-body'>
             <div className='nickname-change'>
-              <input className='nickname-input' type="text" value={nickname} onChange={handleChangeNickname} />
+              <input className='nickname-input' type="text" value={newNickName} onChange={handleChangeNickname} />
             </div>
 
             <div className='nickname-change-button'>
