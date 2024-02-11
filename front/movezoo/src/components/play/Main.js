@@ -1,8 +1,8 @@
 /* eslint-disable */
 // import io from "socket.io-client";
 import { useRef, useEffect, useState } from 'react'
-import { Dom, Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
-import { MAX_FRAME_COUNT, PLAYER_SPRITE, MAP_SPRITE, ITEM_SPRITE } from './gameConstants.js';
+import { Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
+import { MAX_FRAME_COUNT, PLAYER_SPRITE, MAP_SPRITE, ITEM_SPRITE, EFFECT } from './gameConstants.js';
 import { data, myGameData, playerGameDataList, playerCount } from './data.js';
 
 const localStorage = window.localStorage || {};
@@ -14,9 +14,32 @@ const Main = (props) => {
   const [testLastLapTime, setTestLastLapTime] = useState(0);
   
   const canvasRef = useRef(null)
+
+  
+
+  
+
+
+
+
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
+    let checkGameFrameCount = 0;
+
+    // 이펙트를 위한 애니메이션 프레임 인덱스 초기화
+    const effectFrameIndex = {}
+    // effectFrameIndex 초기화
+    Object.keys(EFFECT).forEach(effectName => {
+      effectFrameIndex[effectName] = 0;
+    })
+    // 이펙트를 위한 애니메이션 프레임 증가 함수
+    const updateEffectFrameIndex = (effectName, frameInterval = 1) => {
+      if(checkGameFrameCount % frameInterval === 0)
+        effectFrameIndex[effectName] = (effectFrameIndex[effectName] + 1) % EFFECT[effectName].frameCount;
+    }
+
     
     // View 관련 설정 변수
     let roadWidth      = 2000;                    // 사실상 도로의 반폭, 도로가 -roadWidth에서 +roadWidth로 이어지면 수학이 더 간단해짐
@@ -44,6 +67,7 @@ const Main = (props) => {
     // let canvas         = Dom.get('canvas');       // 우리의 캔버스...
     // let ctx            = canvas.getContext('2d'); // ...그리고 그림 컨텍스트
     let background     = {};                      // 배경 이미지 (아래에서 로드됨)
+    let effect = {};
     let sprites        = null;                    // 스프라이트 시트 loadImages 객체
     let playerSprites  = {};
     let playerEnterDataList = [];
@@ -59,7 +83,7 @@ const Main = (props) => {
     let position       = 0;                       // 현재 카메라 Z 위치 (playerZ를 더하여 플레이어의 절대 Z 위치를 얻음)
     let speed          = 0;                       // 현재 속도
     // let maxSpeed       = segmentLength/step - 4000;      // 최대 속도 (충돌 감지를 쉽게 하기 위해 한 번에 1 세그먼트 이상 이동하지 않도록 함) 200 / ( 1/60 ) = 12000
-    let maxSpeed       = 8000;
+    let maxSpeed       = 12000;
     let accel          =  maxSpeed/5;             // 가속률 - '그냥' 올바르게 느껴질 때까지 튜닝됨
     let breaking       = -maxSpeed;               // 감속률 (브레이킹할 때)
     let decel          = -maxSpeed/5;             // 가속 및 감속하지 않을 때 '자연스러운' 감속률
@@ -404,6 +428,8 @@ const Main = (props) => {
     // RENDER THE GAME WORLD
     //=========================================================================
     const render = () => {
+      checkGameFrameCount++;
+      checkGameFrameCount %= fps;
       // 초기화
       let baseSegment   = findSegment(position);
       let basePercent   = Util.percentRemaining(position, segmentLength);
@@ -422,6 +448,8 @@ const Main = (props) => {
       Render.background(ctx, background.sky, width, height, BACKGROUND.SKY,   skyOffset,  resolution * skySpeed  * playerY);
       Render.background(ctx, background.hills, width, height, BACKGROUND.HILLS, hillOffset, resolution * hillSpeed * playerY);
       Render.background(ctx, background.faraway, width, height, BACKGROUND.FARAWAY, treeOffset, resolution * treeSpeed * playerY);
+
+      
     
       let segment, car, sprite, spriteScale, spriteX, spriteY, item, itemScale, itemX, itemY;
       
@@ -557,7 +585,13 @@ const Main = (props) => {
       }
 
 
-
+      // 이펙트 렌더링
+      if(speed > 8000) {
+        updateEffectFrameIndex('speedup', 15);
+        let speedupIndex = effectFrameIndex['speedup'];
+        // console.log(speedupIndex);
+        Render.effect(ctx, effect.speedup[speedupIndex], 0, 0, width, height)
+      }
 
 
     }
@@ -762,9 +796,9 @@ const Main = (props) => {
       resetCars();
       resetItems();
     
-      // 플레이어 현재 위치 다음 2개 세그먼트의 색을 START 색으로 설정
+      // 플레이어 현재 위치 + 2 세그먼트의 색을 START 색으로 설정
       segments[findSegment(playerZ).index + 2].color = COLORS.START;
-      // 플레이어 현재 위치 다음 3개 세그먼트의 색을 START 색으로 설정
+      // 플레이어 현재 위치 + 3 세그먼트의 색을 START 색으로 설정
       segments[findSegment(playerZ).index + 3].color = COLORS.START;
       // 룸블 길이만큼의 마지막 세그먼트부터 거꾸로 루프하며 색을 FINISH 색으로 설정
       for(let n = 0 ; n < rumbleLength ; n++)
@@ -775,7 +809,6 @@ const Main = (props) => {
     
     const resetSprites = () => {
       // addSprite(z축위치, 스프라이트그룹, 스프라이트이름, x축위치)
-
 
       // 고정된 위치에 각종 스프라이트 추가
       addSprite(20, 'BILLBOARD', 'billboard_ssafy', -1);
@@ -985,6 +1018,10 @@ const Main = (props) => {
         background.hills = images.hills;
         background.sky = images.sky;
         background.faraway = images.faraway;
+
+        // 스피드 효과 이미지 추가
+        effect.speedup = [...images.effect]; // 2개
+
         // console.log(`Game.ready() -> background : ${background}`)
         // console.log(background.sky.src)
         // 
