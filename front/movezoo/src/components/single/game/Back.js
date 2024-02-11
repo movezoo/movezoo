@@ -4,12 +4,15 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import "./Back.css";
 
-function Back() {
+function Back(props) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const cancelButtonRef = useRef(null);
 
-  const handleLeaveGame = () => navigate("/main");
+  const handleLeaveGame = () => {
+    props.leaveSession()
+    navigate("/main");
+  }
 
   return (
     <div className="">
