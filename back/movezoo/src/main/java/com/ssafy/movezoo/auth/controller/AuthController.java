@@ -78,7 +78,7 @@ public class AuthController {
         simpleResponseDto.setMsg("인증 성공");
         simpleResponseDto.setSuccess(true);
 
-        if(userService.compareAthNumber(userEmail,authNumber)){
+        if(userService.compareAuthNumber(userEmail,authNumber)){
             return ResponseEntity.status(HttpStatus.OK).body(simpleResponseDto);
         }
 
