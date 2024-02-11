@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Result.module.css";
 import Webcam from "react-webcam";
-import Back from "../../../components/single/result/Back";
+import Back from "../../../components/multi/result/Back";
 import Record from "../../../components/single/result/Record";
 
 function Result(props) {
   const [loading, setLoading] = useState(true);
+  const leaveSession = props.leaveSession;
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
       setLoading(false);
@@ -89,7 +90,7 @@ function Result(props) {
             </div>
             {/* 돌아가기 버튼*/}
             <div className={styles.btnStart}>
-              <Back />
+              <Back leaveSession={leaveSession}/>
             </div>
           </div>
         </div>
