@@ -12,8 +12,8 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  height: 25%;
-  background-color: yellowgreen;
+  height: 30%;
+  background-color: greenyellow;
   border-radius: 10px;
 }
 
@@ -22,8 +22,8 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  height: 25%;
-  background-color: greenyellow;
+  height: 30%;
+  background-color: yellowgreen;
   border-radius: 10px;
 }
 
@@ -38,9 +38,11 @@
 }
 
 .inforoom-body {
+  position: relative;
   display: flex;
   justify-content: space-between;
-  margin: 10px;
+  height: 75%;
+  padding: 10px;
 }
 
 .inforoom-mode {
