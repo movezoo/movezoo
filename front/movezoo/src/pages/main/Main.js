@@ -98,7 +98,7 @@ function Main() {
             </div>
 
             <div className="main-header-userInfo">
-              <div>
+              <div className="main-header-userNickname">
                 <h1> {nickName} </h1>
               </div>
 

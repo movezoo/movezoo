@@ -9,9 +9,13 @@
   bg-green-400 cursor-default;
 }
 
+.Back {
+  @apply flex flex-row items-center absolute bottom-10 left-10
+  text-white text-2xl;
+}
 
 .single-header {
-  @apply w-[1200px] flex justify-start items-start mb-5
+  @apply w-[1200px] flex justify-start items-start p-5
 }
 
 .single-name {
@@ -24,16 +28,12 @@
   rounded-3xl mb-10;
 }
 
-.Back {
-  @apply flex items-end justify-end mr-10 mt-4;
-}
-
 .single-back-button{
   @apply flex justify-end items-end
 }
 
 .single-body {
-  @apply flex flex-row justify-between ml-10 mr-10 mb-10 mt-5
+  @apply flex flex-row justify-between m-10
 }
 
 .single-body-cam {
