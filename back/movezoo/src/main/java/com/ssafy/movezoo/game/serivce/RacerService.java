@@ -6,7 +6,6 @@ import com.ssafy.movezoo.game.dto.RacerDto;
 import com.ssafy.movezoo.game.repository.MyRacerRepository;
 import com.ssafy.movezoo.game.repository.RacerRepository;
 import com.ssafy.movezoo.user.domain.User;
-import com.ssafy.movezoo.user.repository.UserRepository;
 import com.ssafy.movezoo.user.sevice.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -75,7 +74,7 @@ public class RacerService {
 
         //사용자의 보유 재화와 레이서 가격을 비교 하여 coin >= price일때만 구메
         //구매후 coin을 차감하고 MyRacer에 Racer를 넣는다
-        userService.useUserCoin(userId, buyRacer.getRacerPrice());
+        userService.useCoin(userId, buyRacer.getRacerPrice());
 
         MyRacer addMyRacer = new MyRacer();
         addMyRacer.setRacer(buyRacer);

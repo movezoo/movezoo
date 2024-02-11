@@ -58,7 +58,7 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-oauth2-client'
 
 
-	//변경사항시 자동 재시작
+	//변경사항 시 자동 재시작
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	//jackson

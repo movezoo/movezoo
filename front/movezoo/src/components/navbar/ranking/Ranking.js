@@ -20,12 +20,19 @@ const Ranking = () => {
         const topTenRankings = sortedRankings.slice(0, 10);
         setRankings(topTenRankings);
 
-        const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-        withCredentials: true });
-        const userId = loginUserId.data;
+        
+        const storedUserData = localStorage.getItem('userData');
+        if (!storedUserData) {
+            throw new Error('사용자 정보를 찾을 수 없습니다.');
+        }
 
-        // 임시 데이터
-        // const userId = 3;
+        const userData = JSON.parse(storedUserData);
+        
+
+        const userId = userData.userData.userId;
+
+        console.log(userId);
+        console.log(mapNumber);
 
         const userLaptime = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${userId}/${mapNumber}`);
         setUserLaptime(userLaptime.data);
@@ -66,10 +73,14 @@ const Ranking = () => {
         isOpen={isOpen} 
         onRequestClose={closeModal}
         style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.75)', // 투명도를 0.75로 설정한 검은색 배경
+          },
           content: {
             width: '500px',
             height: '500px',
             margin: 'auto',
+            borderRadius: '30px',
           }
         }}
       >

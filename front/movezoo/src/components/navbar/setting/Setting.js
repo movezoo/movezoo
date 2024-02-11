@@ -37,11 +37,14 @@ const Setting = () => {
       isOpen={isOpen} 
       onRequestClose={closeModal}
       style={{
+        overlay: {
+          backgroundColor: 'rgba(0, 0, 0, 0.75)', // 투명도를 0.75로 설정한 검은색 배경
+        },
         content: {
           width: '500px',
           height: '500px',
           margin: 'auto',
-          border: '2px solid black',
+          borderRadius: '30px',
         }
       }}
       >
