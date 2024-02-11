@@ -36,8 +36,6 @@
 //     { id: 8, name: '미정', image: '/images/shop/no8.png' },
 //   ];
 
-//   console.log(noCharacterImages);
-
 //   const handleCharacterClick = (character) => {
 //     setSelectedCharacter(character);
 //   };
@@ -57,7 +55,7 @@
 //       console.log(userData)
 
 //       // 사용자 이메일을 변수에 저장
-//       const userId = userData.userId;
+//       const userId = userData.userData.userId;
 
 //       console.log(userId)
 
@@ -107,7 +105,11 @@
 
 //       console.log(userData)
 
-//       const userId = userData.userId;
+//       const userId = userData.userData.userId;
+
+//       console.log(selectedCharacter.id)
+
+//       console.log(userId)
 
 //       // 캐릭터 구매 요청
 //       const response = await axios.post(`https://i10e204.p.ssafy.io/api/racer`, {
@@ -144,7 +146,7 @@
 //       const userData = JSON.parse(storedUserData);
 
 //       // 코인 정보 조회 요청
-//         const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${userData.userId}`, {
+//         const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${userData.userData.userId}`, {
 //             withCredentials: true
 //         });
 
@@ -152,7 +154,9 @@
 //             // Recoil 상태 및 로컬 스토리지 업데이트
 //             const newCoinAmount = response.data.coin;
 //             setCoin(newCoinAmount); // Recoil 상태 업데이트
-//             const updatedUserData = { ...userData, coin: newCoinAmount };
+           
+//             let updatedUserData = { ...userData };
+//             updatedUserData.userData.coin = newCoinAmount;
 //             localStorage.setItem('userData', JSON.stringify(updatedUserData));
 //         }
 
@@ -179,6 +183,25 @@
 //     }
 //   }, [selectedCharacter]);
 
+
+//   // 캐릭터 선택 시 로컬 스토리지에 저장
+//   const handleSelectClick = () => {
+//     if (selectedCharacter) {
+//       // 'userData'를 로컬 스토리지에서 가져옵니다.
+//       const userData = JSON.parse(localStorage.getItem('userData'));
+  
+//       // 새로운 값을 추가합니다.
+//       userData.selectedCharacterId = selectedCharacter.id;
+  
+//       // 변경된 객체를 다시 로컬 스토리지에 저장합니다.
+//       localStorage.setItem('userData', JSON.stringify(userData));
+
+//       alert(`'${selectedCharacter.name}'을(를) 선택되었습니다.`);
+//     } else {
+//       alert('선택된 캐릭터가 없습니다.');
+//     }
+//   };
+
 //   return (
 //     <div className='Character-container'>
 
@@ -199,7 +222,12 @@
 //               <div className='body-select-name'>
 //                 <p className='image-name'>{selectedCharacter.name}</p>
 //               </div>
-//               <div className='body-select-button'>
+//               <div className='body-select-chooseButton'>
+//                 {chracterImages.some(image => image.id === selectedCharacter.id && image.image === selectedCharacter.image) && 
+//                   <button className='character-choose-button' onClick={handleSelectClick}>선택하기</button>
+//                 }
+//               </div>
+//               <div className='body-select-buyButton'>
 //                 {noCharacterImages.some(image => image.id === selectedCharacter.id && image.image === selectedCharacter.image) && 
 //                 <button className='character-buy-button' onClick={handleBuyClick}>구매하기</button>}
 //               </div>
@@ -246,7 +274,7 @@
 // export default Character;
 
 
-
+// test
 import { useState, useEffect } from 'react';
 import React from 'react';
 import axios from 'axios';
@@ -255,7 +283,7 @@ import './Character.css';
 import { useRecoilState } from 'recoil';
 import { userCoin } from '../../../../components/state/state';
 
-function Character () {
+function Character ({ closeModal }) {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [images, setImages] = useState([]);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
@@ -432,12 +460,37 @@ function Character () {
     }
   }, [selectedCharacter]);
 
+
+  // 캐릭터 선택 시 로컬 스토리지에 저장
+  const handleSelectClick = () => {
+    if (selectedCharacter) {
+      // 'userData'를 로컬 스토리지에서 가져옵니다.
+      const userData = JSON.parse(localStorage.getItem('userData'));
+  
+      // 새로운 값을 추가합니다.
+      userData.selectedCharacterId = selectedCharacter.id;
+  
+      // 변경된 객체를 다시 로컬 스토리지에 저장합니다.
+      localStorage.setItem('userData', JSON.stringify(userData));
+
+      alert(`'${selectedCharacter.name}'을(를) 선택되었습니다.`);
+
+      closeModal();
+    } else {
+      alert('선택된 캐릭터가 없습니다.');
+    }
+  };
+
   return (
     <div className='Character-container'>
 
       <div className='Character-list'>
         {images.map((character) => (
-          <div className='character-images-wrapper' key={character.id} onClick={() => handleCharacterClick(character)}>
+          <div 
+            className={`character-images-wrapper ${selectedCharacter && selectedCharacter.id === character.id ? 'selected' : ''}`} 
+            key={character.id} 
+            onClick={() => handleCharacterClick(character)}
+          >
             <img className='character-image' src={character.image} alt={character.name} />
           </div>
         ))}
@@ -452,7 +505,12 @@ function Character () {
               <div className='body-select-name'>
                 <p className='image-name'>{selectedCharacter.name}</p>
               </div>
-              <div className='body-select-button'>
+              <div className='body-select-chooseButton'>
+                {chracterImages.some(image => image.id === selectedCharacter.id && image.image === selectedCharacter.image) && 
+                  <button className='character-choose-button' onClick={handleSelectClick}>선택하기</button>
+                }
+              </div>
+              <div className='body-select-buyButton'>
                 {noCharacterImages.some(image => image.id === selectedCharacter.id && image.image === selectedCharacter.image) && 
                 <button className='character-buy-button' onClick={handleBuyClick}>구매하기</button>}
               </div>

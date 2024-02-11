@@ -1,9 +1,7 @@
 import React from 'react';
 import Shop from './shop/Shop';
 import Ranking from './ranking/Ranking';
-import Friend from './friend/Friend';
 import Setting from './setting/Setting';
-import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 function Navbar() {
@@ -17,10 +15,6 @@ function Navbar() {
 
       <div className='navbar-ranking'>
         <Ranking/>
-      </div>
-      
-      <div className='navbar-friend'>
-        <Friend/>
       </div>
 
       <div className='navbar-setting'>
