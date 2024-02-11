@@ -15,7 +15,7 @@
 }
 
 .rankingButton {
-  @apply w-7 h-7 transition
+  @apply w-10 h-10 transition
 }
 
 .map-button{
