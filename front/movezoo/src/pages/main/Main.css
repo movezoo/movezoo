@@ -6,7 +6,7 @@
   /* background-image: url('/public/images/mainbg/shibaBg.png'); */
   background-image: url('/public/images/mainbg/mainbg.png');
   background-size: cover;
-  @apply select-none min-w-[1000px] min-h-screen flex flex-col
+  @apply select-none min-w-[1500px] min-h-screen flex flex-col
   bg-blue-400 cursor-default ;
 }
 
