@@ -5,7 +5,7 @@ import Map2 from "../../components/single/Map2";
 import Back from "../../components/single/Back";
 import Start from "../../components/single/Start";
 import Select from "../../components/select/Select";
-import { IoCloseSharp } from "react-icons/io5";
+import { FaAnglesLeft } from "react-icons/fa6";
 import "./Single.css";
 
 function Single() {
@@ -18,20 +18,19 @@ function Single() {
   return (
     <div className="single-container">
       
+      <Link className="Back" to="/main">
+        <FaAnglesLeft className="mr-2" />   <p>뒤로가기</p>
+      </Link>
+      
       {/* header */}
       <div className="single-header">
         <div>
-          <h1 className="single-name">Single Play!</h1>
+          <h1 className="single-name">Single Play</h1>
         </div>
       </div>
 
       {/*body*/}
       <div className="single-body-card">
-        <div className="Back">
-          <Link to="/main">
-            <IoCloseSharp className='exit-button'/>
-          </Link>
-        </div>
 
         <div className="single-body">
 
