@@ -36,10 +36,13 @@ function Carousel() {
       </div>
 
       <div className="map-body">
-        <p className="map-record">
+        <p className="map-record-name">
           BEST LAP
         </p>
-        <strong>00:00:00</strong>
+        <p className="best-map-record">
+          00:00:00
+        </p>
+        
       </div>
     </div>
   );
