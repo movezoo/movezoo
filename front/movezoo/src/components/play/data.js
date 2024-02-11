@@ -1,8 +1,8 @@
 const data = {
   isLeftKeyPressed: false,
   isRightKeyPressed: false,
-  isSpacebarKeyPressed : false,
-  // 실시간 멀티통신을 위한 플레이어 데이터
+  isBreak : false,
+  isRun: true // Test중... false로 바꿔야됨
 };
 
 const playerCount = { value: 1 };

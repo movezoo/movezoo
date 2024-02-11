@@ -51,7 +51,21 @@ const MyOvVideo = (props) => {
           // 화면 기준 - 화면의 중앙을 기준으로 코의 좌표의 위치에 따른 진행 방향 결정, 민감도 설정 가능
           const centerX = videoWidth / 2;
           let sensitivity = 50;
-          const noseX = faces[0]?.keypoints[2]?.x;
+          // const noseX = faces[0]?.keypoints[2]?.x;
+          // const noseY = faces[0]?.keypoints[2]?.y;
+          // console.log(faces[0]);
+          // console.log(faces[0]?.keypoints);
+          let noseX, noseY, rightEarTragionY, leftEarTragionY;
+          faces[0]?.keypoints.forEach((obj) => {
+            if(obj.name === 'noseTip') {
+              noseX = obj.x;
+              noseY = obj.y;
+            }
+            else if(obj.name === 'rightEarTragion') rightEarTragionY = obj.y;
+            else if(obj.name === 'leftEarTragion') leftEarTragionY = obj.y;
+          })
+          // const rightEarTragionY = faces[0]?.keypoints[4]?.y;
+          // const leftEarTragionY = faces[0]?.keypoints[5]?.y;
 
           // 결과에 따라 콘솔에 출력
           if (noseX < centerX - sensitivity) {
@@ -65,6 +79,15 @@ const MyOvVideo = (props) => {
           } else {
             data.isRightKeyPressed = false;
             data.isLeftKeyPressed = false;
+          }
+
+          if ( rightEarTragionY > noseY && leftEarTragionY > noseY) {
+            data.isRun = false;
+            data.isBreak = true;
+            // console.log(`break!!!`)
+          } else {
+            data.isRun = true;
+            data.isBreak = false;
           }
 
         } catch (error) {
