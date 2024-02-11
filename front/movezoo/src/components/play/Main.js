@@ -83,7 +83,7 @@ const Main = (props) => {
     let position       = 0;                       // 현재 카메라 Z 위치 (playerZ를 더하여 플레이어의 절대 Z 위치를 얻음)
     let speed          = 0;                       // 현재 속도
     // let maxSpeed       = segmentLength/step - 4000;      // 최대 속도 (충돌 감지를 쉽게 하기 위해 한 번에 1 세그먼트 이상 이동하지 않도록 함) 200 / ( 1/60 ) = 12000
-    let maxSpeed       = 12000;
+    let maxSpeed       = 8000;
     let accel          =  maxSpeed/5;             // 가속률 - '그냥' 올바르게 느껴질 때까지 튜닝됨
     let breaking       = -maxSpeed;               // 감속률 (브레이킹할 때)
     let decel          = -maxSpeed/5;             // 가속 및 감속하지 않을 때 '자연스러운' 감속률
@@ -95,8 +95,8 @@ const Main = (props) => {
     
     let keyLeft        = data.isLeftKeyPressed;
     let keyRight       = data.isRightKeyPressed;
-    let keyFaster      = false;
-    let keySlower      = false;
+    // let keyFaster      = data.isRun;
+    // let keySlower      = data.isBreak;
     
     const hud = {
       speed: null,
@@ -159,11 +159,13 @@ const Main = (props) => {
       playerX = playerX - (dx * speedPercent * playerSegment.curve * centrifugal);
       
       // 가속, 감속 및 정지 등 속도 관리
-      if (keyFaster) {
+      // if (keyFaster) {
+      if (data.isRun) {
         speed = Util.accelerate(speed, accel, dt);
         setTestSpeed(Util.accelerate(testSpeed, accel, dt));
       }
-      else if (keySlower) {
+      // else if (keySlower) {
+      else if (data.isBreak) {
         speed = Util.accelerate(speed, breaking, dt);
         setTestSpeed(Util.accelerate(testSpeed, breaking, dt));
       }
@@ -1004,12 +1006,12 @@ const Main = (props) => {
         // { keys: [KEY.RIGHT, KEY.D], mode: 'down', action: function() { keyRight  = true;  } },
         // { keys: [KEY.UP,    KEY.W], mode: 'down', action: function() { keyFaster = true;  } },
         // { keys: [KEY.DOWN,  KEY.S], mode: 'down', action: function() { keySlower = true;  } },
-        { keys: [KEY.SPACEBAR],     mode: 'down', action: () => { keyFaster = false; keySlower = true }},
+        // { keys: [KEY.SPACEBAR],     mode: 'down', action: () => { keyFaster = false; keySlower = true }},
         // { keys: [KEY.LEFT,  KEY.A], mode: 'up',   action: function() { keyLeft   = false; } },
         // { keys: [KEY.RIGHT, KEY.D], mode: 'up',   action: function() { keyRight  = false; } },
         // { keys: [KEY.UP,    KEY.W], mode: 'up',   action: function() { keyFaster = false; } },
         // { keys: [KEY.DOWN,  KEY.S], mode: 'up',   action: function() { keySlower = false; } },
-        { keys: [KEY.SPACEBAR],     mode: 'up',   action: () => { keyFaster = true; keySlower = false }}
+        // { keys: [KEY.SPACEBAR],     mode: 'up',   action: () => { keyFaster = true; keySlower = false }}
       ],
       ready: images => { // images === loadImages의 result
         // ==> images[spriteName][action.name][direction] === <img>
