@@ -5,6 +5,7 @@ import Map2 from "../../components/single/Map2";
 import Back from "../../components/single/Back";
 import Start from "../../components/single/Start";
 import Select from "../../components/select/Select";
+import { IoCloseSharp } from "react-icons/io5";
 import "./Single.css";
 
 function Single() {
@@ -16,9 +17,6 @@ function Single() {
   }, []);
   return (
     <div className="single-container">
-      <div className="Back">
-        <Back />
-      </div>
       
       {/* header */}
       <div className="single-header">
@@ -28,31 +26,41 @@ function Single() {
       </div>
 
       {/*body*/}
-      <div className="single-body">
+      <div className="single-body-card">
+        <div className="Back">
+          <Link to="/main">
+            <IoCloseSharp className='exit-button'/>
+          </Link>
+        </div>
 
-        <div className="single-body-cam">
-          
-            {loading ? (
-              <h1 className="txtLoading">Loading...</h1>
-            ) : (
-              <Webcam className="single-webCam" mirrored={true} />
-            )}
-          
+        <div className="single-body">
+
+          <div className="single-body-cam">
+            
+              {loading ? (
+                <h1 className="txtLoading">Loading...</h1>
+              ) : (
+                <Webcam className="single-webCam" mirrored={true} />
+              )}
+            
+          </div>
+
+          <div className="body-selects">
+
+            <div className="map-select">
+              <Map2 />
+            </div>
+            <div className="charact-select">
+              <Select />
+            </div>
+            {/* 시작 버튼*/}
+            <div className="start-select">
+              <Start />
+            </div>
+          </div>
+
         </div>
         
-        <div className="body-selects">
-
-          <div className="map-select">
-            <Map2 />
-          </div>
-          <div className="charact-select">
-            <Select />
-          </div>
-          {/* 시작 버튼*/}
-          <div className="start-select">
-            <Start />
-          </div>
-        </div>
 
       </div>
     </div>
