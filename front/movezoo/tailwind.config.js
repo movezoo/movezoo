@@ -11,7 +11,8 @@ module.exports = {
         Beige: '#F0EDCF'
       },
       fontFamily:{
-        'Pixel':['DNFBitBitv2']
+        'Pixel':['DNFBitBitv2'],
+        'Pretendard':['Pretendard-Black']
       },
     },
   },

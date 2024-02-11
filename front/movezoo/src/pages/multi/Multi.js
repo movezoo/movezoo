@@ -176,6 +176,7 @@ function Multi() {
     if (session) {
       session.disconnect();
     }
+
     setIsPlayingGame(false)
     setSession(undefined);
     setSubscribers([]);
@@ -289,6 +290,7 @@ function Multi() {
           setChatMessage={setChatMessage}
           chatMessages={chatMessages}
           setChatMessages={setChatMessages}
+          leaveSession={leaveSession}
         />
       ) : null}
       {page === 3 ? (

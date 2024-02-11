@@ -8,10 +8,10 @@
 }
 
 @font-face {
-  font-family: 'DNFBitBitv2';
-  src: url(./fonts/DNFBitBitv2.otf);
+  font-family: 'Pretendard-Black';
+  src: url(./fonts/Pretendard-Black.otf);
 }
 
 body {
-  font-family: 'DNFBitBitv2', sans-serif;
+  font-family: 'Pretendard-Black', sans-serif;
 }

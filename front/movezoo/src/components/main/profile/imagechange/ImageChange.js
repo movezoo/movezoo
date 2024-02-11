@@ -2,6 +2,9 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import './ImageChange.css';
+import { useRecoilState } from 'recoil';
+import { profileImgUrl as profileImgUrlState } from '../../../state/state';
+
 
 const profileImages = [
   { id: 1, name: '프로필 1', image: '/images/profileImg/profile1.png' },
@@ -14,10 +17,10 @@ const profileImages = [
   { id: 8, name: '프로필 8', image: '/images/profileImg/profile8.png' },
 ]
 
-const ImageChangeModal = ({ onImageChange }) => {
+const ImageChangeModal = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [userEmail, setEmail] = useState('');
   const [selectedImage, setSelectedImage] = useState('');
+  const [profileImgUrl, setProfileImgUrl] = useRecoilState(profileImgUrlState)
 
   const openModal = () => {
     setIsOpen(true);
@@ -36,16 +39,20 @@ const ImageChangeModal = ({ onImageChange }) => {
 
   const onImageUpload = async () => {
     try {
-      const responseLoginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-        withCredentials: true, // 쿠키 허용
-      });
-      const loginUserId = responseLoginUserId.data;
+      const storedUserData = localStorage.getItem('userData');
+        if (!storedUserData) {
+            throw new Error('사용자 정보를 찾을 수 없습니다.');
+        }
 
+      // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
+      const userData = JSON.parse(storedUserData);
 
-      const loginUserEmail = await axios.get(`https://i10e204.p.ssafy.io/api/user/${loginUserId}`, {
-        });
-      // setEmail(loginUserEmail.data.userEmail);
-      const userEmail = loginUserEmail.data.userEmail;
+      console.log(userData)
+
+      // 사용자 이메일을 변수에 저장
+      const userEmail = userData.userData.userEmail;
+
+      console.log(userEmail)
 
       const profileImgUrl = selectedImage.image;
       console.log('====================================')
@@ -58,7 +65,13 @@ const ImageChangeModal = ({ onImageChange }) => {
 
       console.log('이미지 변경 성공:', response);
 
-      onImageChange(profileImgUrl);
+      // recoil 상태 업데이트
+      setProfileImgUrl(profileImgUrl);
+
+      // 로컬 스토리지에 저장
+      let updatedUserData = { ...userData };
+      updatedUserData.userData.profileImgUrl = profileImgUrl;
+      localStorage.setItem('userData', JSON.stringify(updatedUserData));
 
       alert('이미지가 변경되었습니다.');
       closeModal();

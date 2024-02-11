@@ -1,13 +1,18 @@
 /* eslint-disable */
 // import io from "socket.io-client";
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { Dom, Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
-import { MAX_FRAME_COUNT, PLAYER_SPRITE, SPRITE_FILE_NAME, SPRITE_SIZE } from './gameConstants.js';
+import { MAX_FRAME_COUNT, PLAYER_SPRITE, MAP_SPRITE, ITEM_SPRITE } from './gameConstants.js';
 import { data, myGameData, playerGameDataList, playerCount } from './data.js';
 
 const localStorage = window.localStorage || {};
 
 const Main = (props) => {
+  // 게임 플레이 정보
+  const [testSpeed, setTestSpeed] = useState(0);
+  const [testCurrentLapTime, setTestCurrentLapTime] = useState(0);
+  const [testLastLapTime, setTestLastLapTime] = useState(0);
+  
   const canvasRef = useRef(null)
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -47,13 +52,14 @@ const Main = (props) => {
     let segmentLength  = 200;                     // 단일 세그먼트의 길이
     let rumbleLength   = 3;                       // 붉은색/흰색 럼블 스트립 당 세그먼트 수
     let trackLength    = null;                    // 전체 트랙의 z 길이 (계산됨)
-    let lanes          = 3;                       // 차선 수
+    let lanes          = 4;                       // 차선 수
     let cameraDepth    = null;                    // 화면으로부터 카메라까지의 z 거리 (계산됨)
     let playerX        = 0;                       // 도로 중심에서 플레이어 x 오프셋 (-1에서 1까지로 설정하여 roadWidth에 독립적으로 유지)
     let playerZ        = null;                    // 카메라로부터 플레이어의 상대적인 z 거리 (계산됨)
     let position       = 0;                       // 현재 카메라 Z 위치 (playerZ를 더하여 플레이어의 절대 Z 위치를 얻음)
     let speed          = 0;                       // 현재 속도
-    let maxSpeed       = segmentLength/step;      // 최대 속도 (충돌 감지를 쉽게 하기 위해 한 번에 1 세그먼트 이상 이동하지 않도록 함)
+    // let maxSpeed       = segmentLength/step - 4000;      // 최대 속도 (충돌 감지를 쉽게 하기 위해 한 번에 1 세그먼트 이상 이동하지 않도록 함) 200 / ( 1/60 ) = 12000
+    let maxSpeed       = 8000;
     let accel          =  maxSpeed/5;             // 가속률 - '그냥' 올바르게 느껴질 때까지 튜닝됨
     let breaking       = -maxSpeed;               // 감속률 (브레이킹할 때)
     let decel          = -maxSpeed/5;             // 가속 및 감속하지 않을 때 '자연스러운' 감속률
@@ -69,11 +75,17 @@ const Main = (props) => {
     let keySlower      = false;
     
     const hud = {
-      speed:            { value: null, dom: Dom.get('speed_value')            },
-      current_lap_time: { value: null, dom: Dom.get('current_lap_time_value') },
-      last_lap_time:    { value: null, dom: Dom.get('last_lap_time_value')    },
-      fast_lap_time:    { value: null, dom: Dom.get('fast_lap_time_value')    }
+      speed: null,
+      current_lap_time: null,
+      last_lap_time: null,
+      fast_lap_time: null
     }
+    // const hud = {
+    //   speed:            { value: null, dom: Dom.get('speed_value')            },
+    //   current_lap_time: { value: null, dom: Dom.get('current_lap_time_value') },
+    //   last_lap_time:    { value: null, dom: Dom.get('last_lap_time_value')    },
+    //   fast_lap_time:    { value: null, dom: Dom.get('fast_lap_time_value')    }
+    // }
     
 
 
@@ -91,17 +103,6 @@ const Main = (props) => {
 
       // 플레이어 캐릭터 애니메이션 프레임 업데이트
       updatePlayerFrame();
-      
-      // 데이터 보내기
-      // console.log("데이터 보냄!!")
-      // data.playerDataList[playerNumber].userX = playerX;
-      // data.playerDataList[playerNumber].userZ = position + playerZ;
-      // socketClient.emit("playerDataList", playerDataList);
-      // 데이터 받기
-      // socketClient.on("playerDataList", (data) => {
-      // // console.log("데이터 받음!!")
-      //   playerDataList = data;
-      // })
 
       
       for (let i = 0; i < playerCount.value; i++) {
@@ -114,7 +115,7 @@ const Main = (props) => {
         // console.log(`${i}번의 데이터 갱신!!`)
       }
     
-      let car, carW, sprite, spriteW;
+      let car, carW, sprite, spriteW, item, itemW;
       let playerSegment = findSegment(position+playerZ);
       let playerW       = SPRITES.PLAYER_STRAIGHT.w * SPRITES.SCALE;
       let speedPercent  = speed/maxSpeed;
@@ -134,25 +135,36 @@ const Main = (props) => {
       playerX = playerX - (dx * speedPercent * playerSegment.curve * centrifugal);
       
       // 가속, 감속 및 정지 등 속도 관리
-      if (keyFaster)
+      if (keyFaster) {
         speed = Util.accelerate(speed, accel, dt);
-      else if (keySlower)
+        setTestSpeed(Util.accelerate(testSpeed, accel, dt));
+      }
+      else if (keySlower) {
         speed = Util.accelerate(speed, breaking, dt);
-      else
+        setTestSpeed(Util.accelerate(testSpeed, breaking, dt));
+      }
+      else {
         speed = Util.accelerate(speed, decel, dt);
+        setTestSpeed(Util.accelerate(testSpeed, decel, dt));
+      }
     
       // 플레이어 위치가 경계를 벗어나면 처리
       if ((playerX < -1) || (playerX > 1)) {
     
-        if (speed > offRoadLimit)
+        if (speed > offRoadLimit) {
           speed = Util.accelerate(speed, offRoadDecel, dt);
+          setTestSpeed(Util.accelerate(testSpeed, offRoadDecel, dt));
+        }
     
         // 스프라이트와의 충돌 확인
         for(let n = 0 ; n < playerSegment.sprites.length ; n++) {
-          sprite  = playerSegment.sprites[n];
-          spriteW = sprite.size.w * SPRITES.SCALE;
+          sprite  = playerSegment.sprites[n];      // 현재 선택된 스프라이트
+          spriteW = sprite.size.w * SPRITES.SCALE; // 스프라이트의 너비 계산
+
+          // 겹치는지 확인
           if (Util.overlap(playerX, playerW, sprite.offset + spriteW/2 * (sprite.offset > 0 ? 1 : -1), spriteW)) {
-            speed = maxSpeed/5;
+            speed = maxSpeed/5; // 플레이어의 속도를 최대 속도/5로 조정
+            setTestSpeed(maxSpeed/5)
             position = Util.increase(playerSegment.p1.world.z, -playerZ, trackLength); // 스프라이트 앞(세그먼트 앞)에서 멈춥니다
             break;
           }
@@ -166,15 +178,43 @@ const Main = (props) => {
         if (speed > car.speed) {
           if (Util.overlap(playerX, playerW, car.offset, carW, 0.8)) {
             speed    = car.speed * (car.speed/speed);
+            setTestSpeed(car.speed * (car.speed/testSpeed))
             position = Util.increase(car.z, -playerZ, trackLength);
             break;
           }
         }
       }
+
+
+      // segments[n].items.push({
+      //   size: ITEM_SPRITE,
+      //   offset: offset
+      // });
+      // 아이템과 충돌시
+      for(let n = 0; n < playerSegment.items.length; n++) {
+        item = playerSegment.items[n];
+        itemW = item.size.w * SPRITES.SCALE;
+        // 겹치는지 확인
+        if (Util.overlap(playerX, playerW, item.offset, itemW, 1)) {
+          // 아이템 제거
+          let z = playerSegment.index;
+          segments[z].items.splice(n, 1); // n번째 아이템 제거
+          console.log(`getItem!!!!!!!!!!!!!!!!!!!`);
+          break;
+        }
+      }
+      
+      
+      
+      
+
+
+
     
       // 플레이어 위치와 속도 제한
       playerX = Util.limit(playerX, -3, 3);     // 너무 멀리 나가지 않도록
       speed   = Util.limit(speed, 0, maxSpeed); // maxSpeed를 초과하지 않도록
+      setTestSpeed(Util.limit(speed, 0, maxSpeed));
     
       // 화면 스크롤 오프셋 조절
       skyOffset  = Util.increase(skyOffset,  skySpeed  * playerSegment.curve * (position-startPosition)/segmentLength, 1);
@@ -184,29 +224,37 @@ const Main = (props) => {
       // 현재 랩 타임 업데이트 및 최고 랩 타임 확인
       if (position > playerZ) {
         if (currentLapTime && (startPosition < playerZ)) {
+          // useState로 변경
+          setTestLastLapTime(currentLapTime);
+          setTestCurrentLapTime(0);
           lastLapTime    = currentLapTime;
           currentLapTime = 0;
+
           if (lastLapTime <= Util.toFloat(localStorage.fast_lap_time)) {
             localStorage.fast_lap_time = lastLapTime;
             updateHud('fast_lap_time', formatTime(lastLapTime));
-            Dom.addClassName('fast_lap_time', 'fastest');
-            Dom.addClassName('last_lap_time', 'fastest');
+            // Dom.addClassName('fast_lap_time', 'fastest');
+            // Dom.addClassName('last_lap_time', 'fastest');
           }
           else {
-            Dom.removeClassName('fast_lap_time', 'fastest');
-            Dom.removeClassName('last_lap_time', 'fastest');
+            // Dom.removeClassName('fast_lap_time', 'fastest');
+            // Dom.removeClassName('last_lap_time', 'fastest');
           }
           updateHud('last_lap_time', formatTime(lastLapTime));
-          Dom.show('last_lap_time');
+          // Dom.show('last_lap_time');
         }
         else {
           currentLapTime += dt;
+          setTestCurrentLapTime(currentLapTime);
         }
       }
     
       // HUD 업데이트
       updateHud('speed',            5 * Math.round(speed/500));
       updateHud('current_lap_time', formatTime(currentLapTime));
+      // Test
+
+      
     }
     
 
@@ -322,9 +370,9 @@ const Main = (props) => {
 
     const updateHud = (key, value) => {
       // DOM 접근은 느릴 수 있으므로 값이 변경되었을 때만 수행합니다.
-      if (hud[key].value !== value) {
-        hud[key].value = value;
-        Dom.set(hud[key].dom, value);
+      if (hud[key] !== value) {
+        hud[key] = value;
+        // Dom.set(hud[key].dom, value);
       }
     }
     
@@ -332,18 +380,7 @@ const Main = (props) => {
 
 
 
-    const formatTime = (dt) => {
-      let minutes = Math.floor(dt/60);
-      let seconds = Math.floor(dt - (minutes * 60));
-      let tenths  = Math.floor(10 * (dt - Math.floor(dt)));
-    
-      // 분이 0보다 크면 분, 초 및 십분의 일초를 반환
-      if (minutes > 0)
-        return minutes + "." + (seconds < 10 ? "0" : "") + seconds + "." + tenths;
-      // 그렇지 않으면 초 및 십분의 일초만 반환
-      else
-        return seconds + "." + tenths;
-    }
+
 
 
     const updatePlayerFrame = () => {
@@ -386,7 +423,7 @@ const Main = (props) => {
       Render.background(ctx, background.hills, width, height, BACKGROUND.HILLS, hillOffset, resolution * hillSpeed * playerY);
       Render.background(ctx, background.faraway, width, height, BACKGROUND.FARAWAY, treeOffset, resolution * treeSpeed * playerY);
     
-      let segment, car, sprite, spriteScale, spriteX, spriteY;
+      let segment, car, sprite, spriteScale, spriteX, spriteY, item, itemScale, itemX, itemY;
       
       // 루프를 통해 화면에 그려질 세그먼트 수만큼 반복
       for(let n = 0 ; n < drawDistance ; n++) {
@@ -434,11 +471,22 @@ const Main = (props) => {
       //     color: Math.floor(n/rumbleLength)%2 ? COLORS.DARK : COLORS.LIGHT
       // });
       
+
+
+
+
+
+
+
+
+
       // 세그먼트 데이터 렌더링
       for(let n = (drawDistance-1) ; n > 0 ; n--) {
         segment = segments[(baseSegment.index + n) % segments.length];
       
-        //************************* 세그먼트에 있는 차량 렌더링 *************************
+
+
+        // 세그먼트에 있는 차량 렌더링
         for(let i = 0 ; i < segment.cars.length ; i++) {
           // car = { offset, z, sprite, speed, playerId, character };
           car         = segment.cars[i];
@@ -467,9 +515,10 @@ const Main = (props) => {
           // Render.sprite(ctx, width, height, resolution, roadWidth, sprites, car.sprite, spriteScale, spriteX, spriteY, -0.5, -1, segment.clip);
           Render.sprite(ctx, width, height, resolution, roadWidth, curSpriteObj, sprite, spriteScale, spriteX, spriteY, -0.5, -1, segment.clip);
         }
-        //******************************************************************************
     
-        // 세그먼트에 있는 스프라이트 렌더링 ********************************************
+
+
+        // 세그먼트에 있는 스프라이트 렌더링 
         for(let i = 0 ; i < segment.sprites.length ; i++) {
           sprite      = segment.sprites[i];
           spriteScale = segment.p1.screen.scale;
@@ -479,9 +528,10 @@ const Main = (props) => {
           // console.log(sprite);
           Render.sprite(ctx, width, height, resolution, roadWidth, curSpriteObj, sprite.size, spriteScale, spriteX, spriteY, (sprite.offset < 0 ? -1 : 0), -1, segment.clip);
         }
-        //******************************************************************************
+        
     
-        // 플레이어가 속한 세그먼트인 경우 플레이어 렌더링 *******************************
+
+        // 플레이어가 속한 세그먼트인 경우 플레이어 렌더링 
         if (segment === playerSegment) {
           Render.player(ctx, width, height, resolution, roadWidth, playerSprites, speed/maxSpeed,
                         cameraDepth/playerZ,
@@ -490,15 +540,43 @@ const Main = (props) => {
                         speed * (keyLeft ? -1 : keyRight ? 1 : 0),
                         playerSegment.p2.world.y - playerSegment.p1.world.y);
         }
-        // ****************************************************************************
+
+
+
+        // 세그먼트에 있는 아이템 렌더링
+        for(let i = 0 ; i < segment.items.length ; i++) {
+          item      = segment.items[i];
+          itemScale = segment.p1.screen.scale;
+          itemX     = segment.p1.screen.x + (itemScale * item.offset * roadWidth * width/2);
+          itemY     = segment.p1.screen.y;
+          let curItemObj = sprites['item'];
+          // console.log(sprite);
+          Render.sprite(ctx, width, height, resolution, roadWidth, curItemObj, item.size, itemScale, itemX, itemY, -0.5, -1, segment.clip);
+        }
+        
       }
+
+
+
+
+
     }
     
+
+
+
+
+
     const findSegment = z => {
       // 현재 위치 z에 해당하는 세그먼트 반환
       return segments[Math.floor(z/segmentLength) % segments.length]; 
     }
     
+
+
+
+
+
     //=========================================================================
     // 도로 지오메트리 구축
     //=========================================================================
@@ -509,31 +587,46 @@ const Main = (props) => {
       let n = segments.length;
       segments.push({
           index: n,
-              p1: { world: { y: lastY(), z:  n   *segmentLength }, camera: {}, screen: {} },
-              p2: { world: { y: y,       z: (n+1)* segmentLength }, camera: {}, screen: {} },
+             p1: { world: { y: lastY(), z:  n   * segmentLength }, camera: {}, screen: {} },
+             p2: { world: { y: y,       z: (n+1)* segmentLength }, camera: {}, screen: {} },
           curve: curve,
         sprites: [],
-            cars: [],
-          color: Math.floor(n/rumbleLength)%2 ? COLORS.DARK : COLORS.LIGHT
+           cars: [],
+          color: Math.floor(n/rumbleLength)%2 ? COLORS.DARK : COLORS.LIGHT,
+           items: []
       });
     }
     
-    // 세그먼트에 스프라이트 추가
+
     /**
-     * 지정된 길이와 높이의 언덕을 추가합니다.
+     * 세그먼트에 아이템 추가
+     * @param {number} n - 세그먼트번호(z축위치)
+     * @param {number} offset - 가로축(-1, 1)
+     */
+    const addItem = (n, offset) => {
+      segments[n].items.push({
+        size: ITEM_SPRITE,
+        offset: offset
+      });
+    }
+
+
+    // 
+    /**
+     * 세그먼트에 스프라이트 추가
      * @param {number} n - 세그먼트번호(z축위치)
      * @param {string} spriteGroup - 스프라이트 그룹이름
      * @param {string} spriteName - 스프라이트 이름
-     * @param {string} offset - 가로축(-1, 1)
+     * @param {number} offset - 가로축(-1, 1)
      */
     const addSprite = (n, spriteGroup, spriteName, offset) => {
       // addSprite(20,  SPRITES.BILLBOARD07, -1);
-      let size = SPRITE_SIZE['map1'][spriteGroup][spriteName];
+      let size = MAP_SPRITE['map1'][spriteGroup][spriteName];
       segments[n].sprites.push({
         spriteGroup: spriteGroup,
-        spriteName: spriteName,
-        size: size,
-        offset: offset
+         spriteName: spriteName,
+               size: size,
+             offset: offset
       });
     }
     
@@ -667,6 +760,7 @@ const Main = (props) => {
     
       resetSprites();
       resetCars();
+      resetItems();
     
       // 플레이어 현재 위치 다음 2개 세그먼트의 색을 START 색으로 설정
       segments[findSegment(playerZ).index + 2].color = COLORS.START;
@@ -695,8 +789,8 @@ const Main = (props) => {
 
       // 반복문으로 생성
       for(let n = 10; n < 200; n += 4 + Math.floor(n/100)) {
-        addSprite(n, 'TREE', 'tree1', 0.5 + Math.random()*0.5);
-        addSprite(n, 'TREE', 'tree1',   1 + Math.random()*2);
+        addSprite(n, 'TREE', 'tree1', 0.8 + Math.random()*0.5);
+        addSprite(n, 'TREE', 'tree1',   1.3 + Math.random()*2);
       }
       for(let n = 250; n < 1000; n += 5) {
         addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
@@ -708,7 +802,7 @@ const Main = (props) => {
         addSprite(
           n,
           'TREE',
-          Util.randomChoice(SPRITE_FILE_NAME['map1'].TREE),
+          Util.randomChoice(Object.keys(MAP_SPRITE['map1'].TREE)),
           Util.randomChoice([1,-1]) * (2 + Math.random() * 5)
         );
       }
@@ -720,11 +814,11 @@ const Main = (props) => {
         addSprite(
           n + Util.randomInt(0, 50),
           'BILLBOARD',
-          Util.randomChoice(SPRITE_FILE_NAME['map1'].BILLBOARD),
+          Util.randomChoice(Object.keys(MAP_SPRITE['map1'].BILLBOARD)),
           -side
         );
         for(let i = 0; i < 20; i++) {
-          sprite = Util.randomChoice(SPRITE_FILE_NAME['map1'].TREE);
+          sprite = Util.randomChoice(Object.keys(MAP_SPRITE['map1'].TREE));
           offset = side * (1.5 + Math.random());
           addSprite(n + Util.randomInt(0, 50), 'TREE', sprite, offset);
         }
@@ -778,6 +872,24 @@ const Main = (props) => {
           
       // }
     
+    }
+
+    const resetItems = () => {
+      
+      // z : 20
+      addItem(20, 0.75);
+      addItem(20, 0.25);
+      addItem(20, -0.25);
+      addItem(20, -0.75);
+
+      addItem(80, 0.75);
+      addItem(100, 0.25);
+      addItem(60, -0.25);
+      addItem(200, -0.75);
+      addItem(300, 0.75);
+      addItem(800, 0.25);
+      addItem(250, -0.25);
+      addItem(400, -0.75);
     }
     
     
@@ -910,7 +1022,7 @@ const Main = (props) => {
       rumbleLength           = Util.toInt(options.rumbleLength,   rumbleLength);
       cameraDepth            = 1 / Math.tan((fieldOfView/2) * Math.PI/180);
       playerZ                = (cameraHeight * cameraDepth);
-      resolution             = height/480;
+      resolution             = height/1080;
       // refreshTweakUI();
     
       if ((segments.length === 0) || (options.segmentLength) || (options.rumbleLength))
@@ -962,85 +1074,49 @@ const Main = (props) => {
     
     //=========================================================================
   }, [])
+
+
+
+
+  const formatTime = (dt) => {
+    let minutes = Math.floor(dt/60);
+    let seconds = Math.floor(dt - (minutes * 60));
+    let tenths  = Math.floor(10 * (dt - Math.floor(dt)));
+  
+    // 분이 0보다 크면 분, 초 및 십분의 일초를 반환
+    if (minutes > 0)
+      return minutes + "." + (seconds < 10 ? "0" : "") + seconds + "." + tenths;
+    // 그렇지 않으면 초 및 십분의 일초만 반환
+    else
+      return seconds + "." + tenths;
+  }
+
+
+  
   
   return (
     <div>
-      {/* <table id="controls">
-        <tbody>
-          <tr><td id="fps" colSpan="2" align="right"></td></tr>
-          <tr>
-            <th><label htmlFor="resolution">Resolution :</label></th>
-            <td>
-              <select defaultValue='high' id="resolution" style={{width:'100%'}}>
-                <option value='fine'>Fine (1280x960)</option>
-                <option value='high'>High (1024x768)</option>
-                <option value='medium'>Medium (640x480)</option>
-                <option value='low'>Low (480x360)</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <th><label htmlFor="lanes">Lanes :</label></th>
-            <td>
-              <select defaultValue='3' id="lanes">
-                <option value='1'>1</option>
-                <option value='2'>2</option>
-                <option value='3'>3</option>
-                <option value='4'>4</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <th><label htmlFor="roadWidth">Road Width (<span id="currentRoadWidth"></span>) :</label></th>
-            <td><input id="roadWidth" type='range' min='500' max='3000' title="integer (500-3000)"/></td>
-          </tr>
-          <tr>
-            <th><label htmlFor="cameraHeight">CameraHeight (<span id="currentCameraHeight"></span>) :</label></th>
-            <td><input id="cameraHeight" type='range' min='500' max='5000' title="integer (500-5000)"/></td>
-          </tr>
-          <tr>
-            <th><label htmlFor="drawDistance">Draw Distance (<span id="currentDrawDistance"></span>) :</label></th>
-            <td><input id="drawDistance" type='range' min='100' max='500' title="integer (100-500)"/></td>
-          </tr>
-          <tr>
-            <th><label htmlFor="fieldOfView">Field of View (<span id="currentFieldOfView"></span>) :</label></th>
-            <td><input id="fieldOfView" type='range' min='80' max='140' title="integer (80-140)"/></td>
-          </tr>
-          <tr>
-            <th><label htmlFor="fogDensity">Fog Density (<span id="currentFogDensity"></span>) :</label></th>
-            <td><input id="fogDensity" type='range' min='0' max='50' title="integer (0-50)"/></td>
-          </tr>
-        </tbody>
-      </table> */}
-
-
-      {/* <div id='instructions'>
-        <p>Use the <b>arrow keys</b> to drive the car.</p>
-        내차 X 위치 : <span id="playerX">0</span><br/>
-        내차 Z 위치 : <span id="position">0</span><br/>
-
-        상대차 X 위치 : <span id="userX">0</span><br/>
-        상대차 Z 위치 : <span id="userZ">0</span><br/>
-
-        trackLength : <span id="trackLength">0</span><br/>
-      </div> */}
-
       <div id="racer">
-        <div id="hud">
+        {/* <div id="hud">
           <span id="speed"            className="hud"><span id="speed_value" className="value">0</span> mph</span>
           <span id="current_lap_time" className="hud">Time: <span id="current_lap_time_value" className="value">0.0</span></span> 
           <span id="last_lap_time"    className="hud">Last Lap: <span id="last_lap_time_value" className="value">0.0</span></span>
           <span id="fast_lap_time"    className="hud">Fastest Lap: <span id="fast_lap_time_value" className="value"></span></span>
-        </div>
+        </div> */}
         {/* <canvas id="canvas">
           Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
         </canvas> */}
 
-        <canvas id="canvas" ref={canvasRef} {...props}/>
-        Loading...
+        <canvas id="canvas" ref={canvasRef} {...props}>Loading...</canvas>
+        
       </div>
-
-      
+      <div>
+        속도 : {5 * Math.round(testSpeed/500)} <br/>
+        시간 : {Util.formatTime(testCurrentLapTime)} <br/>
+        {/* 현재랩타임 : {testTime} <br/> */}
+        방금기록 : { Util.formatTime(testLastLapTime) } { } <br/>
+        최고기록 : { Util.formatTime(Util.toFloat(localStorage.fast_lap_time)) } <br/>
+      </div>
     </div>
   )
 }
