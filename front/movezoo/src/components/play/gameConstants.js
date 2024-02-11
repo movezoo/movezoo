@@ -4,7 +4,7 @@
 
 // 캐릭터 이름, 행동, 방향    (캐릭터파일명 : 이름_행동_방향)
 const PLAYER_SPRITE = {
-  NAMES:      [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra", "deer" ],
+  NAMES:      [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra", "deer", "donkey", "fox", "husky", "shiba", "stag", "wolf" ],
   ACTIONS:    [ { name: "run" } ],
   DIRECTIONS: [ "uphill_left", "uphill_straight", "uphill_right", "left", "straight", "right" ]
 }
@@ -18,7 +18,13 @@ const MAX_FRAME_COUNT = {
   llama:    { run: 21 },
   horse:    { run: 21 },
   zebra:    { run: 21 },
-  deer:     { run: 18 }
+  deer:     { run: 18 },
+  donkey:   { run: 18 },
+  fox:      { run: 18 },
+  husky:    { run: 18 },
+  shiba:    { run: 18 },
+  stag:     { run: 18 },
+  wolf:     { run: 18 }
 }
 
 // 맵 별 스프라이트 그룹 및 파일명, 사이즈정보
@@ -36,6 +42,51 @@ const MAP_SPRITE = {
       tree1:            { x:    0, y:    0, w:  657, h:  992 },
       tree2:            { x:    0, y:    0, w:  942, h:  992 },
       tree3:            { x:    0, y:    0, w:  985, h:  875 },
+    }
+  },
+  map2: {
+    GRAVE: {
+      grave:                 { x:    0, y:    0, w:  1000, h:  300 },
+      grave_border:          { x:    0, y:    0, w:  1000, h:  300 },
+      gravestone_flat:       { x:    0, y:    0, w:  1000, h:  400 },
+      gravestone_bevel:      { x:    0, y:    0, w:  500, h:  500 },
+      gravestone_decorative: { x:    0, y:    0, w:  500, h:  600 },
+      gravestone_round:      { x:    0, y:    0, w:  500, h:  600 },
+      gravestone_roof:       { x:    0, y:    0, w:  500, h:  600 },
+      gravestone_wide:       { x:    0, y:    0, w:  800, h:  400 },
+      coffin:                { x:    0, y:    0, w:  800, h:  500 },
+      coffin_old:            { x:    0, y:    0, w:  800, h:  500 },
+      altar_wood:            { x:    0, y:    0, w:  800, h:  600 },
+      altar_stone:           { x:    0, y:    0, w:  800, h:  600 },
+      cross:                 { x:    0, y:    0, w:  500, h:  800 },
+      cross_wood:            { x:    0, y:    0, w:  500, h:  800 },
+      gravestone_cross:      { x:    0, y:    0, w:  500, h:  900 }
+    },
+    TREE: {
+      trunk:                 { x:    0, y:    0, w:  500, h:  200 },
+      pine_fall_crooked:     { x:    0, y:    0, w:  400, h:  600 },
+      pine_crooked:          { x:    0, y:    0, w:  400, h:  600 },
+      pine:                  { x:    0, y:    0, w:  400, h:  800 },
+      pine_fall:             { x:    0, y:    0, w:  400, h:  800 },
+      trunk_long:            { x:    0, y:    0, w:  500, h:  800 }
+    },
+    STUFF: {
+      pumpkin_tall:              { x:    0, y:    0, w:  500, h:  200 },
+      pumpkin:                   { x:    0, y:    0, w:  500, h:  200 },
+      pumpkin_tall_carved:       { x:    0, y:    0, w:  500, h:  200 },
+      pumpkin_carved:            { x:    0, y:    0, w:  500, h:  200 },
+      urn:                       { x:    0, y:    0, w:  500, h:  300 },
+      shovel:                    { x:    0, y:    0, w:  500, h:  200 },
+      shovel_dirt:               { x:    0, y:    0, w:  500, h:  500 },
+      rock_tall:                 { x:    0, y:    0, w:  800, h:  700 },
+      rock:                      { x:    0, y:    0, w:  1200, h:  700 },
+      debris_wood:               { x:    0, y:    0, w:  500, h:  300 },
+      debris:                    { x:    0, y:    0, w:  500, h: 300 }
+    },
+    LIGHTPOST: {
+      lightpost_single:          { x:    0, y:    0, w:  500, h:  900 },
+      lightpost_all:             { x:    0, y:    0, w:  600, h:  900 },
+      lightpost_double:          { x:    0, y:    0, w:  600, h:  900 }
     }
   }
 }

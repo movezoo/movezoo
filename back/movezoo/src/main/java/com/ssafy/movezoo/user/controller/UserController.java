@@ -75,7 +75,7 @@ public class UserController {
         simpleResponseDto.setSuccess(false);
 
         if (authentication == null || dto.getUserEmail()==null || dto.getNickname()==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(simpleResponseDto);
-
+        
         User findUser = userService.findById(Integer.parseInt(authentication.getName()));
         if (findUser == null || !findUser.getUserEmail().equals(dto.getUserEmail()))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(simpleResponseDto);

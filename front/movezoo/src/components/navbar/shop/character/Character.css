@@ -17,6 +17,10 @@
   hover:opacity-100 hover:scale-110;
 }
 
+.character-images-wrapper.selected {
+  @apply border-2 border-black
+}
+
 .character-image {
   @apply h-full
 }
@@ -37,7 +41,16 @@
   @apply mt-2;
 }
 
-.body-select-button {
+.body-select-chooseButton {
+  @apply flex justify-end
+}
+
+.character-choose-button {
+  @apply w-20 h-10 m-2 items-center justify-center p-2 text-white bg-blue-500 rounded-md
+  hover:bg-blue-700 hover:scale-125 transition duration-200;
+}
+
+.body-select-buyButton {
   @apply flex justify-end mt-2
 }
 
