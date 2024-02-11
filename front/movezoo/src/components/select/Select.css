@@ -8,11 +8,11 @@
 
 .select-button-container {
   @apply w-full h-full flex items-center justify-center text-xl
-  hover:cursor-pointer ;
+  hover:cursor-pointer;
 }
 
 .select-button-container:hover .selectButton {
-  @apply scale-150;
+  @apply scale-150 transition;
 }
 
 .select-container {
