@@ -9,7 +9,7 @@
 .navbar-shop, .navbar-ranking, .navbar-single, .navbar-multi, .navbar-friend, .navbar-setting {
   @apply w-[80px] h-[80px] flex flex-1 justify-center items-center text-lg
    m-2
-  hover:text-blue-100 hover:cursor-pointer 
+  hover:text-gray-200 hover:cursor-pointer 
 }
 
 .navbar-single:hover .single {

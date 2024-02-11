@@ -12,7 +12,7 @@
 
 .prevButton {
   @apply w-28 h-28 text-white hover:text-gray-300 active:scale-90
-  hover:cursor-pointer hover:scale-110 transition-all duration-200 ml-16 
+  hover:cursor-pointer hover:scale-110 transition-all duration-200 ml-48
 }
 
 .carousel-image {
@@ -57,5 +57,5 @@
 
 .nextButton {
   @apply w-28 h-28 text-white hover:text-gray-300 active:scale-90
-  hover:cursor-pointer hover:scale-110 transition-all duration-200 mr-16
+  hover:cursor-pointer hover:scale-110 transition-all duration-200 mr-48
 }
