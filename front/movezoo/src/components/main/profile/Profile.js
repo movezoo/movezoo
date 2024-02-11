@@ -70,7 +70,17 @@ const Profile = ({ isProfileOpen, isProfileClose }) => {
       <Modal 
       isOpen={isProfileOpen} 
       onRequestClose={isProfileClose}
-      className="pofileModal"
+      style={{
+        overlay: {
+          backgroundColor: 'rgba(0, 0, 0, 0.75)', // 투명도를 0.75로 설정한 검은색 배경
+        },
+        content: {
+          width: '300px',
+          height: '350px',
+          margin: 'auto',
+          borderRadius: '30px',
+        }
+      }}
       >
         <div className='modal-container'>
 
