@@ -75,6 +75,8 @@ function RoomList(props) {
           title={room.roomTitle}
           userCount={room.currentUserCount}
           userMaxCount={room.maxUserCount}
+          secretRoom={room.secretRoom}
+          secretRoomPassword={room.secretRoomPassword}
           mode={room.roomMode}
           track={room.trackId}
           session={room.roomSessionId}
