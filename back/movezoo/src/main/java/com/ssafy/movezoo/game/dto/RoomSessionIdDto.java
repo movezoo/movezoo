@@ -8,4 +8,5 @@
     public class RoomSessionIdDto {
         private String roomSessionId;
         private String nickname;
+        private int ranking;
     }

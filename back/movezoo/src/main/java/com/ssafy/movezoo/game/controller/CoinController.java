@@ -16,17 +16,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-//@RestController
-//@RequestMapping("/api/coin")
+@RestController
+@RequestMapping("/api/coin")
 @RequiredArgsConstructor
 public class CoinController {
     private final UserService userService;
-    private static int[] reward = {10,7,5,3};
+    private static int[] reward = { 0, 10, 7, 5, 3 };
 
     @GetMapping("/{userId}")
-    public ResponseEntity<CoinResponseDto> findUserCoin(@PathVariable Integer userId){
+    public ResponseEntity<CoinResponseDto> findUserCoin(@PathVariable("userId") Integer userId){
+//        System.out.println("findUserCoin!! "+ userId);
+
         User user = userService.findById(userId);
 
+        // 사용자 아이디(PK)와 보유 코인 dto
         CoinResponseDto coinResponseDto = new CoinResponseDto();
         coinResponseDto.setUserId(user.getUserId());
         coinResponseDto.setCoin(user.getCoin());
@@ -34,92 +37,52 @@ public class CoinController {
         return ResponseEntity.status(HttpStatus.OK).body(coinResponseDto);
     }
 
-    @PostMapping
-    public ResponseEntity<SimpleResponseDto> gameReward(Authentication authentication, @RequestBody RoomSessionIdDto dto){
+    @PatchMapping
+    // 방 세션 id, 닉네임 받아와서 보상 지급
+    public ResponseEntity<SimpleResponseDto> getRewardCoin(Authentication authentication, @RequestBody RoomSessionIdDto dto){
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
-        String roomSessionId = dto.getRoomSessionId();    // roomId: Long
+
+//        String roomSessionId = dto.getRoomSessionId();    // roomSessionId: String
         String nickname = dto.getNickname();
-        int ranking= 0; //dto.getNickname;
+        int ranking= dto.getRanking();
 
-        //별별별 다른 페이지로 이동하는거 막아 화이트에이블뜨게, 아무것도 안뜨는거 에바"
-        //1. 닉네임으로 사용자를 입력받는다
-        //2. 사용자를 검증한다
-        //3. 맞다면 순위별로 재화지급
+        Optional<User> findUser = userService.findByNickname(nickname); // 닉네임으로 사용자 찾기
 
-        Optional<User> findUser = userService.findByNickname(nickname);
-
-        if(findUser.isEmpty() || Integer.parseInt(authentication.getName())!= findUser.get().getUserId()) {
+        // 사용자 검증
+        if (findUser.isEmpty() || Integer.parseInt(authentication.getName())!= findUser.get().getUserId()) {
             simpleResponseDto.setSuccess(false);
             simpleResponseDto.setMsg("사용자를 찯을 수 없습니다.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(simpleResponseDto);
         }
 
-        User user = findUser.get();
-
-        userService.addUserCoin(user.getUserId(),reward[ranking]);
+        userService.addCoin(findUser.get().getUserId(), reward[ranking]);   // 순위에 따른 재화 지급
 
         simpleResponseDto.setSuccess(true);
-        simpleResponseDto.setMsg("순위별 재화 지급 완료");
+        simpleResponseDto.setMsg("재화 지급 완료");
         return ResponseEntity.status(HttpStatus.OK).body(simpleResponseDto);
     }
-    
-//    @PostMapping
-//    public ResponseEntity<SimpleResponseDto> gameReward(@RequestBody RoomSessionIdDto dto){
-//        String roomSessionId = dto.getRoomSessionId();    // roomId: Long
+
+
+//    private List<SessionUserInfo> findSessionUserList(String roomSessionId) {
+//        // 해당 방에 들어있는 유저에 대해서 처리하는 코드 필요
+//        List<SessionUserInfo> result = new ArrayList<>();
 //
-//        List<SessionUserInfo> sessionUserList = findSessionUserList(roomSessionId);
+//        result.add(new SessionUserInfo(1,90.5));
+//        result.add(new SessionUserInfo(2,33.45));
+//        result.add(new SessionUserInfo(3,34.12));
+//        result.add(new SessionUserInfo(4,60.35));
 //
-//        for(int i = 0 ;i<sessionUserList.size(); i++){
-//            SessionUserInfo sessionUserInfo = sessionUserList.get(i);
-//            userService.addUserCoin(sessionUserInfo.getUserId(),reward[i]);
-//        }
+//        Collections.sort(result, new Comparator<SessionUserInfo>() {
+//            @Override
+//            public int compare(SessionUserInfo o1, SessionUserInfo o2) {
+//                int val1 = (int) (o1.getRecord()*10000);
+//                int val2 = (int) (o2.getRecord()*10000);
+//                return val1-val2;
+//            }
+//        });
 //
-//        SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
-//        simpleResponseDto.setSuccess(true);
-//        simpleResponseDto.setMsg("순위별 재화 지급 완료");
-//        return ResponseEntity.status(HttpStatus.OK).body(simpleResponseDto);
+//        return result;
 //    }
-
-
-//    @PostMapping
-//    public ResponseEntity<SimpleResponseDto> gameReward(@RequestBody RoomSessionIdDto dto){
-//        String roomSessionId = dto.getRoomSessionId();    // roomId: Long
-//
-//        List<SessionUserInfo> sessionUserList = findSessionUserList(roomSessionId);
-//
-//        for(int i = 0 ;i<sessionUserList.size(); i++){
-//            SessionUserInfo sessionUserInfo = sessionUserList.get(i);
-//            userService.addUserCoin(sessionUserInfo.getUserId(),reward[i]);
-//        }
-//
-//        SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
-//        simpleResponseDto.setSuccess(true);
-//        simpleResponseDto.setMsg("순위별 재화 지급 완료");
-//        return ResponseEntity.status(HttpStatus.OK).body(simpleResponseDto);
-//    }
-
-
-    private List<SessionUserInfo> findSessionUserList(String roomSessionId) {
-        // 해당 방에 들어있는 유저에 대해서 처리하는 코드 필요
-
-        List<SessionUserInfo> result = new ArrayList<>();
-
-        result.add(new SessionUserInfo(1,90.5));
-        result.add(new SessionUserInfo(2,33.45));
-        result.add(new SessionUserInfo(3,34.12));
-        result.add(new SessionUserInfo(4,60.35));
-
-        Collections.sort(result, new Comparator<SessionUserInfo>() {
-            @Override
-            public int compare(SessionUserInfo o1, SessionUserInfo o2) {
-                int val1 = (int) (o1.getRecord()*10000);
-                int val2 = (int) (o2.getRecord()*10000);
-                return val1-val2;
-            }
-        });
-
-        return result;
-    }
 
     @Getter
     @Setter
