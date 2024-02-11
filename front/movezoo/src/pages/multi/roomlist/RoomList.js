@@ -7,6 +7,7 @@ import Modal from "react-modal";
 import "./RoomList.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { IoCloseSharp } from "react-icons/io5";
 import { search } from "@tensorflow/tfjs-core/dist/io/composite_array_buffer";
 
 Modal.setAppElement("#root");
@@ -43,8 +44,8 @@ function RoomList(props) {
     <div className="room-container">
       {/* 홈으로, 프로필 */}
       <div className="room-header">
-        <div className="room-header-name">
-          <h1>MoveZoo!</h1>
+        <div>
+          <h1 className="room-header-name">Multi Play!</h1>
         </div>
       </div>
 
@@ -63,29 +64,32 @@ function RoomList(props) {
           <button className="room-make">
             <Makeroom setPage={props.setPage} func={props.func} />
           </button>
+          <Link to="/main">
+            <IoCloseSharp className='exit-button'/>
+          </Link>
+        </div>
+        <div className="room-info">
         </div>
         <div className="room-list">
-          {rooms.length === 0 ? (
-    <div>로딩중...</div>
-  ) : (
-    rooms.map((room) => (
-      <div className="room-box" key={room.id}>
-        <Inforoom
-          key={room.id}
-          title={room.roomTitle}
-          userCount={room.currentUserCount}
-          userMaxCount={room.maxUserCount}
-          secretRoom={room.secretRoom}
-          secretRoomPassword={room.secretRoomPassword}
-          mode={room.roomMode}
-          track={room.trackId}
-          session={room.roomSessionId}
-          setPage={props.setPage}
-          func={props.func}
-        />
-      </div>
-    ))
-  )}
+          {rooms.length === 0 ? (<div>로딩중...</div>) : (
+            rooms.map((room) => (
+              <div className="room-box" key={room.id}>
+                <Inforoom
+                  key={room.id}
+                  title={room.roomTitle}
+                  userCount={room.currentUserCount}
+                  userMaxCount={room.maxUserCount}
+                  secretRoom={room.secretRoom}
+                  secretRoomPassword={room.secretRoomPassword}
+                  mode={room.roomMode}
+                  track={room.trackId}
+                  session={room.roomSessionId}
+                  setPage={props.setPage}
+                  func={props.func}
+                />
+              </div>
+            ))
+          )}
         </div>
       </div>
 
