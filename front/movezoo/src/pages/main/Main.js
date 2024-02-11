@@ -84,32 +84,37 @@ function Main() {
         </div>
 
 
-        <div className="main-right-info">
+        <div className="main-header-info">
 
-          <div className="main-left-navbar">
+          <div className="main-header-navbar">
               <Navbar setCoin={setCoin}/>
           </div>
 
-          <div className="main-right-userProfile">
-            <img className="profile-image" src={profileImgUrl} alt="프로필 이미지" onClick={openProfileModal} />
-            <Profile isProfileOpen={isProfileOpen} isProfileClose={closeProfileModal}/>
-          </div>
+          <div className="main-header-profile">
 
-          <div className="main-right-userInfo">
-            <div>
-              <h1> {nickName} </h1>
+            <div className="main-header-userProfile" >
+              <img className="profile-image" src={profileImgUrl} alt="프로필 이미지" onClick={openProfileModal} />
+              <Profile isProfileOpen={isProfileOpen} isProfileClose={closeProfileModal}/>
             </div>
 
-            <div className="main-right-userCoin">
-              <AiFillCopyrightCircle className="coinIcon" />
-              <h1> {coin} </h1>
+            <div className="main-header-userInfo">
+              <div>
+                <h1> {nickName} </h1>
+              </div>
+
+              <div className="main-header-userCoin">
+                <AiFillCopyrightCircle className="coinIcon" />
+                <h1> {coin} </h1>
+              </div>
+
             </div>
 
           </div>
 
-          </div>
+        </div>
 
       </div>
+
 
       <div className="main-body">
 
@@ -119,21 +124,19 @@ function Main() {
             <Carousel/>
           </div>
 
-        
-
         </div>
 
         <div className="main-right-section">
 
           <div className='main-right-single'>
             <Link to="/single">
-              <h1>싱글</h1>
+              <h1>Single</h1>
             </Link>
           </div>
           
           <div className='main-right-multi'>
             <Link to="/multi">
-              <h1>멀티</h1>
+              <h1>Multi</h1>
             </Link>
           </div>
 

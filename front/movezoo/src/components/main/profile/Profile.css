@@ -13,11 +13,11 @@
 }
 
 .modal-container {
-  @apply w-[300px] h-[350px] max-w-lg mx-auto rounded-xl shadow-lg bg-white overflow-hidden;
+  @apply flex flex-col justify-center;
 }
 
 .profile-header {
-  @apply flex flex-row p-4
+  @apply flex flex-row mb-4
 }
 
 .header-name {
