@@ -41,7 +41,7 @@ function Inforoom( props ) {
     // state에 필요한 데이터 객체 전달
     <div>
       <div className="inforoom-container" onClick={enterRoom}>
-        <div className={props.secretRoom ? "inforoom-head" : "inforoom-head-secret"}>
+        <div className={props.secretRoom ? "inforoom-head-secret" : "inforoom-head"}>
           <div className="inforoom-title">{props.title}</div>
           <div className="inforoom-user">
             {props.secretRoom ? <img src="/images/signup/m_icon_pass.png" width="25px" /> : null}
