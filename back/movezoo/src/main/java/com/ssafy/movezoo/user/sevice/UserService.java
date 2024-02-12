@@ -30,13 +30,13 @@ public class UserService {
     }
 
     // 닉네임 변경
-    public int changeNickname(String userEmail, String nickname){
-        return userRepository.updateNickname(userEmail, nickname);
+    public int changeNickname(int userId, String nickname){
+        return userRepository.updateNickname(userId, nickname);
     }
 
     // 프로필 이미지 변경
-    public int changeProfileImg(String userEmail, String profileImgUrl) {
-        return userRepository.updateProfileImg(userEmail, profileImgUrl);
+    public int changeProfileImg(int userId, String profileImgUrl) {
+        return userRepository.updateProfileImg(userId, profileImgUrl);
     }
 
     // 설정 변경
