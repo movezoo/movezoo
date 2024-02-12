@@ -36,7 +36,23 @@ function RoomList(props) {
 
   console.log(rooms);
 
-  function enterRoom() {
+  
+  async function fastEnterRoom() {
+    const response = await axios.get(
+      "https://i10e204.p.ssafy.io/api/room/fast-enter-room-session",
+      {},
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    console.log("fast enter ", response);
+    if (response.data == "") {
+      alert("참가가능한 방이 없음");
+      return;
+    }
+
+    const fastSessionId = response.data.roomSessionId;
+    props.enterRoom(fastSessionId);
     props.setPage(2);
   }
 
@@ -58,11 +74,16 @@ function RoomList(props) {
               검색
             </button>
           </div>
-          <button className="room-match" onClick={enterRoom}>
+          <button className="room-match" onClick={fastEnterRoom}>
             빠른 입장
           </button>
           <button className="room-make">
-            <Makeroom setPage={props.setPage} func={props.func} />
+            <Makeroom
+              createRoom={props.createRoom}
+              enterRoom={props.enterRoom}
+              setPage={props.setPage}
+              // func={props.func}
+            />
           </button>
           <Link to="/main">
             <IoCloseSharp className='exit-button'/>
@@ -85,7 +106,8 @@ function RoomList(props) {
                   track={room.trackId}
                   session={room.roomSessionId}
                   setPage={props.setPage}
-                  func={props.func}
+                  // func={props.func}
+                  enterRoom={props.enterRoom}
                 />
               </div>
             ))
