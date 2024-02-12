@@ -3,8 +3,16 @@ package com.ssafy.movezoo.game.serivce;
 import com.ssafy.movezoo.game.domain.Room;
 import com.ssafy.movezoo.game.dto.CreateRoomRequestDto;
 import com.ssafy.movezoo.game.repository.RedisRepository;
+import io.openvidu.java.client.OpenVidu;
+import io.openvidu.java.client.Session;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +25,45 @@ public class RedisService {
 
     private final RedisRepository redisRepository;
 
-//    private final int LIMIT_TIME=3*60;  //3분
+    @Value("${OPENVIDU_URL}")
+    private String OPENVIDU_URL;
+
+    @Value("${OPENVIDU_SECRET}")
+    private String OPENVIDU_SECRET;
+
+    private OpenVidu openvidu;
+
+    @PostConstruct
+    public void init() {
+        this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
+    }
+
+    public OpenVidu getOpenvidu() {
+        return openvidu;
+    }
+
+    //    private final int LIMIT_TIME=3*60;  //3분
+
+//    @Scheduled(fixedRate = 10000L)
+    public void updateOpenViduSession(){
+        try {
+            openvidu.fetch();
+        } catch (Exception e) {
+            log.error(e.toString());
+        }
+        log.info("openvidu session cleaning...");
+        List<Room> roomList = getRoomList();
+        for (Room room : roomList) {
+            String sessionId = room.getRoomSessionId();
+            // 해당 세션ID로 유효한 세션이 없으면 방 제거
+            Session session = openvidu.getActiveSession(sessionId);
+            if (session == null) {
+                log.info("starvation session close{}",sessionId);
+                deleteRoom(room.getId());
+            }
+        }
+        log.info("openvidu session clean complete");
+    }
 
     // 방 만들기
     public Room createRoom(int userId, CreateRoomRequestDto dto) {
@@ -31,9 +77,13 @@ public class RedisService {
     }
 
     // 방 정보 가져오기
-    public Optional<Room> getRoomInfoBySessionId(String roomSessionId){
-        return redisRepository.findByRoomSessionId(roomSessionId);
+    public Optional<Room> findByRoomSessionId(String roomSessionId){
+        return redisRepository.findRoomByRoomSessionId(roomSessionId);
     }
+//    public Optional<Room> findByRoomSessionId(String roomSessionId) {
+//        ValueOperations<String, Room> ops = redisTemplate.opsForValue();
+//        return Optional.ofNullable(ops.get(roomSessionId));
+//    }
 
     // 전체 방 목록 가져오기
     public List<Room> getRoomList() {
@@ -41,12 +91,12 @@ public class RedisService {
     }
 
     public boolean isPlay(String roomSessionId){
-        Optional<Room> findRoom = redisRepository.findByRoomSessionId(roomSessionId);
+        Optional<Room> findRoom = redisRepository.findRoomByRoomSessionId(roomSessionId);
         return findRoom.map(Room::isRoomStatus).orElse(false);
     }
 
     public void changRoomStatus(String roomSessionId){
-        Optional<Room> findRoom = redisRepository.findByRoomSessionId(roomSessionId);
+        Optional<Room> findRoom = redisRepository.findRoomByRoomSessionId(roomSessionId);
         if(findRoom.isPresent()){
             Room room = findRoom.get();
             room.setRoomStatus(true);
@@ -57,7 +107,10 @@ public class RedisService {
 
     // 방 입장 (현재 방 참가 인원 +1)
     public boolean enterRoom(String roomSessionId) {
-        Room room = redisRepository.findByRoomSessionId(roomSessionId).get();
+
+        Room room = redisRepository.findRoomByRoomSessionId(roomSessionId).get();
+        log.info("enter room {}", room.toString());
+
 
         try {
             int maxUser = room.getMaxUserCount();

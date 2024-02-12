@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 // import "./Game.module.css";
 // import * as tf from'@tensorflow/tfjs-core';
 import '@mediapipe/face_detection';
@@ -175,7 +175,12 @@ const MyOvVideo = (props) => {
 
     const sendDataStart = () => {
       // console.log(playerGameDataList);
+      if(!mySession) {
+        console.log(`error!!!!!!!!!!!!!!!!!!!`) 
+        return;
+      }
       sendData();
+
       // responseData();
       if(isPlayingGame) requestAnimationFrame(sendDataStart)
     }
