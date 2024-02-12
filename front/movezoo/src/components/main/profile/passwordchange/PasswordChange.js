@@ -207,19 +207,30 @@ const ChangePasswordModal = () => {
       <Modal 
         isOpen={isOpen}
         onRequestClose={closeModal}
-        className="passwordchangemodal">
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0)', // 투명도를 0.75로 설정한 검은색 배경
+          },
+          content: {
+            width: '300px',
+            height: '350px',
+            margin: 'auto',
+            borderRadius: '30px',
+          }
+        }}
+        >
         <div className='passwordchange-container'>
           
           <div className='passwordchange-header'>
-            <div className='header-name'>
-              <h3>비밀번호 변경</h3>
-            </div>
             <div className='header-exit'>
               <IoCloseSharp className='exit-button' onClick={closeModal} />
             </div>
           </div>
 
           <div className='passwordchange-body'>
+            <div className='password-change-name'>
+              <h3>비밀번호 변경</h3>
+            </div>
             <div className='password-change'>
               <input className='passwordchange-input' type="password" value={password} onChange={handleChangePassword} placeholder="새 비밀번호" />
               {passwordError && <p className="error-message">{passwordError}</p>}

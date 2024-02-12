@@ -7,12 +7,12 @@
 }
 
 .select-button-container {
-  @apply w-full h-full flex items-center justify-center text-xl
-  hover:cursor-pointer;
+  @apply w-full h-full flex items-center justify-center text-xl text-black
+  hover:cursor-pointer hover:bg-lime-200 hover:rounded-2xl;
 }
 
 .select-button-container:hover .selectButton {
-  @apply scale-150 transition;
+  @apply scale-150 transition duration-300;
 }
 
 .select-container {
