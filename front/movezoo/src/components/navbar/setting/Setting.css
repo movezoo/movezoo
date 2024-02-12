@@ -31,11 +31,11 @@
 }
 
 .setting-body {
-  @apply flex flex-col items-center
+  @apply flex flex-col items-center justify-center
 }
 
 .setting-sound {
-  @apply flex flex-row items-center mt-10
+  @apply flex flex-row items-center mt-5
 }
 
 .sound-image {
