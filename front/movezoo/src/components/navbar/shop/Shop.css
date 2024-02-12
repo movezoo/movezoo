@@ -15,7 +15,7 @@
 }
 
 .shopButton {
-  @apply transition w-7 h-7
+  @apply transition w-10 h-10
 }
 
 .shop-container {

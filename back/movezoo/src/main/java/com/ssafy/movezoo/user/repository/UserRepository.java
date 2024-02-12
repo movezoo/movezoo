@@ -72,10 +72,10 @@ public class UserRepository {
                 .executeUpdate();
     }
 
-    public int updateNickname(String userEmail, String nickname) {
-        return em.createQuery("update User u set u.nickname = :nickname where u.userEmail = :userEmail")
+    public int updateNickname(int userId, String nickname) {
+        return em.createQuery("update User u set u.nickname = :nickname where u.userId = :userId")
                 .setParameter("nickname", nickname)
-                .setParameter("userEmail", userEmail)
+                .setParameter("userId", userId)
                 .executeUpdate();
     }
 
@@ -88,10 +88,10 @@ public class UserRepository {
                 .executeUpdate();
     }
 
-    public int updateProfileImg(String userEmail, String profileImgUrl) {
-        return em.createQuery("update User u set u.profileImgUrl = :profileImgUrl where u.userEmail = :userEmail")
+    public int updateProfileImg(int userId, String profileImgUrl) {
+        return em.createQuery("update User u set u.profileImgUrl = :profileImgUrl where u.userId = :userId")
                 .setParameter("profileImgUrl", profileImgUrl)
-                .setParameter("userEmail", userEmail)
+                .setParameter("userId", userId)
                 .executeUpdate();
     }
 

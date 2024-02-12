@@ -14,7 +14,7 @@ function App() {
     <RecoilRoot>
       <Router>
         <Routes>
-          <Route path="/hello" element={<h1>Hello</h1>} />
+          {/* <Route path="/hello" element={<h1>Hello</h1>} /> */}
           <Route path="/home" element={<Home />} />
           <Route path="/main" element={<Main />} />
           <Route path="/single" element={<Single />} />

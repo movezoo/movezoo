@@ -38,6 +38,11 @@ const Login = () => {
         setSession(newSession);
 
         console.log(newSession)
+        
+        // 로그인 성공 시 localStorage에 userData 저장
+        localStorage.setItem('userData', JSON.stringify(newSession));
+
+        console.log(localStorage.getItem('userData'));
 
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
