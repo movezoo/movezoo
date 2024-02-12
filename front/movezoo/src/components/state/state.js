@@ -47,3 +47,22 @@ export const profileImgUrl = atom({
   default: '',
 })
 
+export const gameCurrentTimeState = atom({
+  key: 'gameState',
+  default: 0
+});
+
+export const gameMyItemLeftState = atom({
+  key: 'gameMyItemLeftState',
+  default: ''
+})
+
+export const gameMyItemRightState = atom({
+  key: 'gameMyItemRightState',
+  default: ''
+})
+
+export const gameStartCountState = atom({
+  key: 'gameStartCountState',
+  default: 0
+})
