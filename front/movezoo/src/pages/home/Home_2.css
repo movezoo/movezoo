@@ -1,0 +1,52 @@
+/* Home.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.home-container {
+  background-image: url('/public/images/mainbg/mainbg.png');
+  background-size: cover;
+  @apply
+  flex
+  h-screen
+  m-auto
+  justify-center
+  items-center
+}
+
+.home-title {
+  width: 500px;
+  height: 400px;
+  font-style: italic;
+  @apply flex justify-center items-center text-8xl text-white;
+}
+
+.home-logincontainer {
+  width: 500px;
+  height: 600px;
+  border-radius: 30px;
+  /* background-image: url('/public/images/mainbg/sky1.jpg'); */
+  @apply flex justify-center items-center;
+}
+
+.home-loginbox {
+  @apply
+  pt-[50px]
+  flex-col
+  justify-center
+  items-center
+  w-[300px]
+  h-[350px];
+}
+
+.signupbt {
+  margin: 5px 0px;
+  width: 100%;
+  color: black;
+  border-radius: 10px;
+}
+
+h3#or {
+  text-align: center;
+  margin: 10px 0px;
+}

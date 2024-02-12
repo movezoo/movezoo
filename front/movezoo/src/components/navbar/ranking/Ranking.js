@@ -8,7 +8,7 @@ import { IoCloseSharp } from "react-icons/io5";
 const Ranking = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [rankings, setRankings] = useState([]);
-  const [selectedMap, setSelectedMap] = useState(null);
+  const [selectedMap, setSelectedMap] = useState(1);
   const [userLaptime, setUserLaptime] = useState(null);
   const [userRank, setUserRank] = useState(null);
 
@@ -74,13 +74,14 @@ const Ranking = () => {
         onRequestClose={closeModal}
         style={{
           overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.75)', // 투명도를 0.75로 설정한 검은색 배경
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // 투명도를 0.75로 설정한 검은색 배경
           },
           content: {
             width: '500px',
             height: '500px',
             margin: 'auto',
             borderRadius: '30px',
+            backgroundColor: 'rgba(247, 254, 231, 0.8)',
           }
         }}
       >
@@ -93,8 +94,8 @@ const Ranking = () => {
             </div>
 
             <div className='ranking-header-map'>
-              <button className='map-button' onClick={() => handleMapButtonClick(1)}>1번 맵</button>
-              <button className='map-button' onClick={() => handleMapButtonClick(2)}>2번 맵</button>
+              <button className='ranking-map-button' onClick={() => handleMapButtonClick(1)}>1번 맵</button>
+              <button className='ranking-map-button' onClick={() => handleMapButtonClick(2)}>2번 맵</button>
             </div>
 
           </div>
@@ -105,10 +106,9 @@ const Ranking = () => {
                 <div>
                   {rankings.map((ranking, index) => (
                     <div className='ranking-user' key={index}>
-                      <p>{index + 1}위</p>
-                      <p>{ranking.nickName}</p>
-                      <p>{ranking.record}</p>
-                      <hr />
+                      <p className='w-40'>{index + 1}위</p>
+                      <p className='w-80'>{ranking.nickName}</p>
+                      <p className='w-40'>{ranking.record}</p>
                     </div>
                   ))}
 
@@ -116,12 +116,14 @@ const Ranking = () => {
               )}
             </div>
 
+            <hr className=''/>
+            
             <div className='ranking-my'>
             {userLaptime && (
               <div className='ranking-user'>
-                <p>{userRank}위</p>
-                <p>{userLaptime.nickName}</p>
-                <p>{userLaptime.record}</p>
+                <p className='w-40'>{userRank}위</p>
+                <p className='w-80'>{userLaptime.nickName}</p>
+                <p className='w-40'>{userLaptime.record}</p>
                 <hr />
               </div>
             )}

@@ -3,7 +3,7 @@ import Room from "./room/Room";
 import Game from "./game/Game";
 import Result from "./result/Result";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import { myGameData, playerGameDataList } from "../../components/play/data.js";
@@ -30,19 +30,26 @@ function Multi() {
   const [connectionId, setConnectionId] = useState(null);
   const [chatMessage, setChatMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
+  const [myRoom, setMyRoom] = useState({});
+  const navigate = useNavigate();
   //창희 추가 end
 
   let OV, currentVideoDevice;
   useEffect(() => {
-    const onbeforeunload = () => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+      console.log("exiting test", mySessionId, connectionId);
+      console.log("Exiting page");
       leaveSession();
     };
-    window.addEventListener("beforeunload", onbeforeunload);
-    return () => {
-      window.removeEventListener("beforeunload", onbeforeunload);
-    };
 
-  }, []);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [mySessionId, connectionId]);
 
   const handleChangeSessionId = (e) => {
     setMySessionId(e.target.value);  
@@ -68,7 +75,7 @@ function Multi() {
     });
   };
 
-  const joinSession = async () => {
+  const createRoom = async (roomInfo) => {
     OV = new OpenVidu();
     OV.enableProdMode();
 
@@ -84,17 +91,14 @@ function Multi() {
       deleteSubscriber(event.stream.streamManager);
     });
 
-
     //창희 추가 start//
     newSession.on("exception", (exception) => {
       console.warn(exception);
     });
 
-    newSession.on('signal:my-chat', (event) => {
-
+    newSession.on("signal:my-chat", (event) => {
       console.log();
-      // const { chatMessages } = this.state;
-      
+
       const userName = JSON.parse(event.from.data).clientData;
       const newMessage = {
         id: event.from.connectionId, // 보낸 사람의 아이디
@@ -107,17 +111,26 @@ function Multi() {
 
       console.log(updatedMessages);
       // 상태 업데이트
-      setChatMessages((chatMessages)=>[...chatMessages,newMessage]);
+      setChatMessages((chatMessages) => [...chatMessages, newMessage]);
       // this.setState({ chatMessages: updatedMessages });
     });
 
+    newSession.on("signal:master-out", (event) => {
+      console.log("받다 마스터");
+      leaveSession();
+      alert("방장이 방을 나갔습니다.");
+
+      // 상태 업데이트
+      setMyRoom({});
+    });
     //창희 추가 end//
 
     try {
-      const token = await getToken();
+      const token = await getToken(roomInfo);
       newSession
         .connect(token, { clientData: myUserName })
         .then(async () => {
+          setConnectionId(newSession.connection.connectionId);
           let newPublisher = await OV.initPublisherAsync(undefined, {
             audioSource: undefined,
             videoSource: undefined,
@@ -155,7 +168,7 @@ function Multi() {
           });
           if (!existMyData) playerGameDataList.push(myGameData);
 
-          setIsPlayingGame(true)
+          setIsPlayingGame(true);
           console.log(
             `joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`
           );
@@ -172,19 +185,200 @@ function Multi() {
     }
   };
 
-  const leaveSession = () => {
+  const enterRoom = async (enterSessionId) => {
+    OV = new OpenVidu();
+    OV.enableProdMode();
+
+    const newSession = OV.initSession();
+    setSession(newSession);
+
+    newSession.on("streamCreated", (event) => {
+      const subscriber = newSession.subscribe(event.stream, undefined);
+      setSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
+    });
+
+    newSession.on("streamDestroyed", (event) => {
+      deleteSubscriber(event.stream.streamManager);
+    });
+
+    //창희 추가 start//
+    newSession.on("exception", (exception) => {
+      console.warn(exception);
+    });
+
+    newSession.on("signal:my-chat", (event) => {
+      console.log();
+      // const { chatMessages } = this.state;
+
+      const userName = JSON.parse(event.from.data).clientData;
+      const newMessage = {
+        id: event.from.connectionId, // 보낸 사람의 아이디
+        name: userName,
+        message: event.data, // 채팅 메시지 내용
+      };
+
+      // 기존 채팅 메시지 배열에 새로운 메시지 추가
+      const updatedMessages = [...chatMessages, newMessage];
+
+      console.log(updatedMessages);
+      // 상태 업데이트
+      setChatMessages((chatMessages) => [...chatMessages, newMessage]);
+      // this.setState({ chatMessages: updatedMessages });
+    });
+
+    newSession.on("signal:master-out", (event) => {
+      console.log("받다 마스터");
+
+      leaveSession();
+
+      // 상태 업데이트
+      setMyRoom({});
+      alert("방장이 방을 나갔습니다.");
+    });
+    //창희 추가 end//
+
+    try {
+      const token = await createToken(enterSessionId);
+      newSession
+        .connect(token, { clientData: myUserName })
+        .then(async () => {
+          setConnectionId(newSession.connection.connectionId);
+
+          let newPublisher = await OV.initPublisherAsync(undefined, {
+            audioSource: undefined,
+            videoSource: undefined,
+            publishAudio: true,
+            publishVideo: true,
+            resolution: "640x480",
+            frameRate: 30,
+            insertMode: "APPEND",
+            mirror: false,
+          });
+
+          newSession.publish(newPublisher);
+
+          const devices = await OV.getDevices();
+          const videoDevices = devices.filter(
+            (device) => device.kind === "videoinput"
+          );
+          const currentVideoDeviceId = newPublisher.stream
+            .getMediaStream()
+            .getVideoTracks()[0]
+            .getSettings().deviceId;
+          currentVideoDevice = videoDevices.find(
+            (device) => device.deviceId === currentVideoDeviceId
+          );
+
+          setMainStreamManager(newPublisher);
+          setPublisher(newPublisher);
+
+          myGameData.playerId = myUserName;
+          let existMyData = false;
+          playerGameDataList.forEach((item) => {
+            if (item === myGameData.playerId) {
+              existMyData = true;
+            }
+          });
+          if (!existMyData) playerGameDataList.push(myGameData);
+
+          setIsPlayingGame(true);
+          console.log(
+            `joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`
+          );
+
+          // //발급받은 토큰으로 연결 완료 되면 sessionId set
+          // setMySessionId(enterSessionId);
+        })
+        .catch((error) => {
+          console.log(
+            "세션에 연결 중 오류가 발생했습니다:",
+            error.code,
+            error.message
+          );
+        });
+    } catch (error) {
+      console.error("Error joining session:", error);
+    }
+  };
+  
+  const exitRoom = async () => {
+    await axios.patch(
+      APPLICATION_SERVER_URL + "api/room/exit",
+      {
+        roomSessionId: mySessionId,
+        connectionId: connectionId,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  };
+
+  const deleteRoom = async () => {
+    console.log("delete room", APPLICATION_SERVER_URL + `api/room/delete/${mySessionId}`);
+    await axios.delete(
+      APPLICATION_SERVER_URL + `api/room/delete/${mySessionId}`,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  };
+
+  const leaveSession = async () => {
+    //1.mySessionId로 룸을 들고온다
+    const masterId = myRoom.roomMasterId;
+    const storedUserData = localStorage.getItem('userData');
+    const data = (JSON.parse(storedUserData));
+
+    console.log("Exit ", mySessionId, masterId);
+
+    //방장일 경우
+    //signal을 보내 모든 유저의 세션을 닫도록한다. 또한 redis에서 방을 삭제한다
+
+    //문제!!!! 방장이 아닌애들ㅇ alert이 안나온다
+    //마스터구별을 어떻게 하는지 모르겟다
+    if (masterId === data.userData.userId) {
+      console.log("out? ", connectionId);
+      //레디스에서 방삭제
+      await deleteRoom();
+
+      //시그널
+      if (session) {
+        session
+          .signal({
+            type: "master-out",
+          })
+          .then(() => {
+            console.log("master out signal sned");
+            if (mainStreamManager) {
+              mainStreamManager.stream.disposeWebRtcPeer();
+            }
+            if (publisher) {
+              publisher.stream.disposeWebRtcPeer();
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    } else {
+      console.log("exitroom direct")
+      await exitRoom();
+    }
+
     if (session) {
       session.disconnect();
     }
 
-    setIsPlayingGame(false)
+    setIsPlayingGame(false);
     setSession(undefined);
     setSubscribers([]);
     setMySessionId(null);
     setMyUserName("Participant" + Math.floor(Math.random() * 100));
     setMainStreamManager(undefined);
     setPublisher(undefined);
-    console.log("leave session complete!!!")
+    console.log("leave session complete!!!");
+    navigate("/main");
   };
 
   const switchCamera = async () => {
@@ -219,37 +413,62 @@ function Multi() {
     }
   };
 
-  const getToken = async () => {
-    const sessionId = await createSession(mySessionId);
+  const getToken = async (roomInfo) => {
+    const sessionId = await createSession(roomInfo);
     return await createToken(sessionId);
   };
 
-  const createSession = async (sessionId) => {
+  //방 만들기(사용자가 입력한 방정보를 넣는다, 세션아이디는 서버에서 만들어 반환)
+  const createSession = async (roomInfo) => {
+    console.log(roomInfo)
     try {
       const response = await axios.post(
-        APPLICATION_SERVER_URL + "api/openvidu/sessions",
-        { customSessionId: sessionId },
+        APPLICATION_SERVER_URL + "api/room",
+        { roomMode : roomInfo.roomMode,
+          roomTitle : roomInfo.roomTitle,
+          roomPassword : roomInfo.roomPassword,
+          maxRange : roomInfo.maxRange },
         {
           headers: { "Content-Type": "application/json" },
         }
       );
-      return response.data;
+      console.log("make room ", response.data);
+      return response.data.roomSessionId;
     } catch (error) {
       console.error("Error creating session:", error);
       throw error;
     }
   };
 
+  //방 입장을 위한 토큰 발급받기(백에서 발급된 세션아이디로 join)
   const createToken = async (sessionId) => {
+    console.log("createToken ", sessionId, myUserName);
     try {
       const response = await axios.post(
-        APPLICATION_SERVER_URL +
-        `api/openvidu/sessions/${sessionId}/connections`,
-        {},
+        APPLICATION_SERVER_URL + "api/room/enter",
+        {
+          roomSessionId: sessionId,
+          nickname: myUserName,
+        },
         {
           headers: { "Content-Type": "application/json" },
         }
       );
+
+      const roomInfo = await axios.post(
+        APPLICATION_SERVER_URL + "api/room/find-sessionId",
+        {
+          roomSessionId: sessionId,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      // console.log("roomInfo ", roomInfo.data)
+      setMyRoom(roomInfo.data);
+      setMySessionId(roomInfo.data.roomSessionId);
+
       return response.data;
     } catch (error) {
       console.error("Error creating token:", error);
@@ -257,12 +476,12 @@ function Multi() {
     }
   };
 
-  useEffect(() => {
-    joinSession();
-    console.log(mainStreamManager);
-    console.log(session);
-    // console.log(`mySessionId: ${mySessionId}`)
-  }, [mySessionId]);
+  // useEffect(() => {
+  //   joinSession();
+  //   console.log(mainStreamManager);
+  //   console.log(session);
+  //   // console.log(`mySessionId: ${mySessionId}`)
+  // }, [mySessionId]);
 
   const func = (sessionId) => {
     console.log(`sessionId: ${sessionId}`);
@@ -275,7 +494,14 @@ function Multi() {
 
   return (
     <div>
-      {page === 1 ? <RoomList setPage={setPage} func={func} /> : null}
+      {page === 1 ? 
+        <RoomList 
+          setPage={setPage} 
+          func={func} 
+          createRoom={createRoom}
+          enterRoom={enterRoom}
+          mySessionId={mySessionId}
+        /> : null}
       {page === 2 ? (
         <Room
           setPage={setPage}
