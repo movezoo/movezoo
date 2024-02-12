@@ -16,7 +16,9 @@ public interface RedisRepository extends CrudRepository<Room, Long> {
     @Override
     Optional<Room> findById(Long roomId);
 
-    Optional<Room> findByRoomSessionId(String roomSessionId);
+
+
+    Optional<Room> findRoomByRoomSessionId(String roomSessionId);
 
 //    List<Room> findByRoomTitleAndRoomMode(String roomTitle, int roomMode);
 
