@@ -44,7 +44,7 @@ public class RedisService {
 
     //    private final int LIMIT_TIME=3*60;  //3분
 
-    @Scheduled(fixedRate = 10000L)
+    @Scheduled(fixedRate = 6000L)
     public void updateOpenViduSession(){
         try {
             openvidu.fetch();
@@ -57,8 +57,9 @@ public class RedisService {
             String sessionId = room.getRoomSessionId();
             // 해당 세션ID로 유효한 세션이 없으면 방 제거
             Session session = openvidu.getActiveSession(sessionId);
-            if (session == null) {
-                log.info("starvation session close{}",sessionId);
+
+            if (session == null || session.getConnections().size()==0) {
+                log.info("starvation session close {}",sessionId);
                 deleteRoom(room.getId());
             }
         }
