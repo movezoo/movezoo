@@ -3,20 +3,24 @@
 @tailwind utilities;
 
 .carousel-container {
-  @apply h-[450px] select-none flex flex-row justify-center items-center w-full
+  @apply  select-none flex flex-row justify-center items-center w-full
 }
 
 .carousel-prev {
-  @apply flex flex-1 items-center justify-start 
+  @apply flex items-center justify-start 
 }
 
 .prevButton {
   @apply w-28 h-28 text-white hover:text-gray-300 active:scale-90
-  hover:cursor-pointer hover:scale-110 transition-all duration-200 ml-48
+  hover:cursor-pointer hover:scale-110 transition-all duration-200 ml-48 mt-40
 }
 
 .carousel-image {
-  @apply flex flex-1 justify-center items-center
+  @apply flex justify-center items-center
+}
+
+.carousel-choose-image {
+
 }
 
 .slide-right-enter {
@@ -52,10 +56,10 @@
 }
 
 .carousel-next {
-  @apply flex flex-1 items-center justify-end
+  @apply flex items-center justify-end
 }
 
 .nextButton {
   @apply w-28 h-28 text-white hover:text-gray-300 active:scale-90
-  hover:cursor-pointer hover:scale-110 transition-all duration-200 mr-48
+  hover:cursor-pointer hover:scale-110 transition-all duration-200 mr-48 mt-40
 }
