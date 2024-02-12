@@ -42,12 +42,12 @@
 }
 
 .body-select-chooseButton {
-  @apply flex justify-end
+  @apply flex justify-center mt-2
 }
 
 .character-choose-button {
-  @apply w-20 h-10 m-2 items-center justify-center p-2 text-white bg-blue-500 rounded-md
-  hover:bg-blue-700 hover:scale-125 transition duration-200;
+  @apply w-40 h-10 m-4 items-center justify-center p-2 text-white bg-green-400 rounded-md
+  hover:bg-green-600 hover:scale-125 transition duration-200;
 }
 
 .body-select-buyButton {
