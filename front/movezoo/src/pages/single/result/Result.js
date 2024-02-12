@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Webcam from "react-webcam";
-import Back from "../../../components/single/result/Back";
+import ResultBack from "../../../components/single/result/ResultBack";
 import Record from "../../../components/single/result/Record";
 import "./Result.css";
 
@@ -17,7 +17,7 @@ function Result() {
 
         <div className="result-header">
           <div>
-            <h1 className="result-name">Result</h1>
+            <h1 className="result-name">RESULT</h1>
           </div>
         </div>
 
@@ -41,12 +41,12 @@ function Result() {
               </div>
               
               <div className="result-reward">
-                <p className="reward-alarm">획득!</p>
-                <p className="reward-coin">10G</p>
+                {/* <p className="reward-alarm">획득!</p> */}
+                <p className="reward-coin">+10G</p>
               </div>
               
               <div className="result-back-button">
-                <Back />
+                <ResultBack />
               </div>
               
             </div>
