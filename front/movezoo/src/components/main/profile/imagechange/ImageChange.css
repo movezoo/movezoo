@@ -7,14 +7,28 @@
 }
 
 .imagechange-container {
-  @apply w-[300px] h-[350px] max-w-lg mx-auto rounded-xl shadow-lg bg-white
-  overflow-auto;
+  @apply flex flex-col justify-center
+}
+
+.imagechange-body {
+  @apply flex flex-wrap justify-center overflow-y-auto mt-5;
 }
 
 .selectImg {
-  @apply p-2;
+  @apply w-[60px] m-2 rounded-xl
+  hover:scale-125 transition duration-300 ease-in-out;
 }
 
 .selectImg.selected {
-  @apply border-2 border-blue-500;
+  @apply border-2 border-green-300;
 }
+
+.imagechange-button {
+  @apply mt-5 flex justify-center items-center
+}
+
+.imagechangeButton {
+  @apply w-[200px] h-[50px] bg-green-400 rounded-xl text-white
+  hover:bg-green-600 hover:scale-125 transition duration-300 ease-in-out;
+}
+
