@@ -63,11 +63,8 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1 className="login">Login</h1>
+    <div className='login-container'>
       <form>
-        <label className="id">
-          아이디:
           <input
             className="logininput"
             type="text"
@@ -76,10 +73,7 @@ const Login = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-        </label>
         <br />
-        <label className="password">
-          비밀번호:
           <input
             className="logininput"
             type="password"
@@ -88,9 +82,8 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             onKeyDown={handleKeyPress}
           />
-        </label>
         <br />
-        <button className="loginbt" type="button" onClick={handleLogin}>
+        <button className="loginbt" onClick={handleLogin}>
           로그인
         </button>
       </form>
