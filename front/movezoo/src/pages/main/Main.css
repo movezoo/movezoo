@@ -7,20 +7,20 @@
   background-image: url('/public/images/mainbg/mainbg.png');
   background-size: cover;
   @apply select-none min-w-[1500px] min-h-screen flex flex-col
-  bg-blue-400 cursor-default ;
+  bg-blue-400 cursor-default;
 }
 
 /* 메인 헤더 */
 .main-header {
-  @apply m-10 flex justify-between items-start;
+  @apply mt-10 mr-10 ml-10 flex justify-between items-start;
 }
 
 .main-headerName {
-  @apply flex justify-start items-start text-8xl text-white
+  @apply flex justify-start items-start text-8xl text-white ml-10
 }
 
 .main-header-info {
-  @apply w-2/6 flex flex-row justify-end ;
+  @apply w-2/6 flex flex-row justify-end mr-5;
 }
 
 .main-header-navbar {
@@ -28,7 +28,7 @@
 }
 
 .main-header-profile {
-  @apply w-[300px] h-[120px] ml-20 flex flex-row justify-between items-center 
+  @apply w-[240px] h-[120px] ml-20 flex flex-row justify-between items-center 
   bg-white rounded-2xl;
 }
 
@@ -42,7 +42,7 @@
 }
 
 .main-header-userInfo {
-  @apply p-4 flex flex-col justify-between items-center space-y-2;  
+  @apply w-[120px] mr-1 flex flex-col justify-between items-center space-y-2;  
 }
 
 .main-header-userNickname {
@@ -54,19 +54,19 @@
 }
 
 .coinIcon {
-  @apply text-yellow-300 w-6 h-6 mr-2;
+  @apply text-yellow-300 w-6 h-6 mr-1
 }
 
 
 
 /* 메인 바디 */
 .main-body {
-  @apply flex flex-row;
+  @apply flex flex-row
 }
 
 /* 왼쪽 섹션 */
 .main-left-section {
-  @apply w-8/12 flex flex-col mt-10 ml-10;
+  @apply w-8/12 flex flex-col ml-10;
 }
 
 
@@ -83,18 +83,18 @@
 
 /* 오른쪽 섹션 */
 .main-right-section {
-  @apply w-4/12 flex flex-col items-center justify-center;
+  @apply w-4/12  mt-20 mr-10 flex flex-col items-center justify-center;
 }
 
 
 
 
 .main-right-single {
-  @apply mb-20 text-8xl text-white flex flex-row justify-center items-center
+  @apply mb-20 mr-40 text-8xl text-white flex flex-row justify-center items-center
   hover:cursor-pointer hover:brightness-75 hover:scale-110 transition-all duration-300;
 }
 
 .main-right-multi {
-  @apply text-8xl text-white flex flex-row justify-center items-center 
+  @apply mr-40 text-8xl text-white flex flex-row justify-center items-center 
   hover:cursor-pointer hover:brightness-75 hover:scale-110 transition-all duration-300;
 }
