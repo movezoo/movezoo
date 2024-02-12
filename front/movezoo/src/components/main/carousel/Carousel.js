@@ -7,14 +7,14 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
 function Carousel() {
   const initialImages  = [
-    { id: 1, name: '퍼그', image: '/images/shop/pug.png' },
-    { id: 2, name: '돼지', image: '/images/shop/pig.png' },
-    { id: 3, name: '소', image: '/images/shop/cow.png' },
-    { id: 4, name: '양', image: '/images/shop/sheep.png' },
-    { id: 5, name: '라마', image: '/images/shop/llama.png' },
-    { id: 6, name: '말', image: '/images/shop/horse.png' },
-    { id: 7, name: '얼룩말', image: '/images/shop/zebra.png' },
-    { id: 8, name: '미정', image: '/images/shop/8.png' },
+    { id: 1, name: '시바', image: '/images/shop/shiba.png' },
+    { id: 2, name: '당나귀', image: '/images/shop/donkey.png' },
+    { id: 3, name: '여우', image: '/images/shop/fox.png' },
+    { id: 4, name: '사슴', image: '/images/shop/deer.png' },
+    { id: 5, name: '허스키', image: '/images/shop/husky.png' },
+    { id: 6, name: '늑대', image: '/images/shop/wolf.png' },
+    { id: 7, name: '말', image: '/images/shop/horse.png' },
+    { id: 8, name: '순록', image: '/images/shop/stag.png' },
   ];
 
   const [images, setImages] = useState([]);
@@ -83,7 +83,7 @@ function Carousel() {
               timeout={300}
               classNames={`slide-${animationDirection}`}
             >
-              <img src={images[currentIndex].image} alt="carousel-image" />
+              <img className='carousel-choose-image' src={images[currentIndex].image} alt="carousel-image" />
             </CSSTransition>
           </SwitchTransition>
         }

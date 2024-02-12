@@ -66,7 +66,7 @@
 
 /* 왼쪽 섹션 */
 .main-left-section {
-  @apply w-8/12 flex flex-col mt-40;
+  @apply w-8/12 flex flex-col mt-10 ml-10;
 }
 
 
