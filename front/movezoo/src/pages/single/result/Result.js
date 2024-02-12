@@ -21,34 +21,37 @@ function Result() {
           </div>
         </div>
 
-        <div className="result-body">
+        <div className="result-body-card">
 
-          <div className="result-body-cam">
-            {loading ? (
-              <h1>Loading...</h1>
-            ) : (
-              <Webcam className="result-webcam" mirrored={true} />
-            )}
+          <div className="result-body">
+
+            <div className="result-body-cam">
+              {loading ? (
+                <h1>Loading...</h1>
+              ) : (
+                <Webcam className="result-webcam" mirrored={true} />
+              )}
+            </div>
+
+            {/*오른쪽 화면*/}
+            <div className="result-select">
+              
+              <div className="result-record">
+                <Record />
+              </div>
+              
+              <div className="result-reward">
+                <p className="reward-alarm">획득!</p>
+                <p className="reward-coin">10G</p>
+              </div>
+              
+              <div className="result-back-button">
+                <Back />
+              </div>
+              
+            </div>
+
           </div>
-
-          {/*오른쪽 화면*/}
-          <div className="result-select">
-            
-            <div className="result-record">
-              <Record />
-            </div>
-            
-            <div className="result-reward">
-              <p className="reward-alarm">획득!</p>
-              <p className="reward-coin">10G</p>
-            </div>
-            
-            <div className="result-back-button">
-              <Back />
-            </div>
-            
-          </div>
-
         </div>
 
 
