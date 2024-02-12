@@ -1,6 +1,6 @@
 import Stats from './stats.js';
 import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, MAP_SPRITE, EFFECT } from './gameConstants.js';
-import { myGameData } from './data.js';
+import { myGameData, gameStartData } from './data.js';
 
 
 // 이미지 불러오기
@@ -8,10 +8,9 @@ import { myGameData } from './data.js';
 // import mute from './images/mute.png';
 // import sprites from './images/sprites.png';
 
-const selectPlayer = "husky";
-myGameData.playerCharacter = selectPlayer;  // 오픈비두 통신을 위한 데이터 설정
+const selectCharacter = gameStartData.selectCharacter;
 const selectAction = "run";
-const selectMap = "map1";
+const selectMap = gameStartData.selectMap;
 
 const frameIndex = {}
 // frameIndex 초기화
@@ -25,9 +24,9 @@ Object.keys(MAX_FRAME_COUNT).forEach(character => {
 // 프레임 업데이트
 // 현재프레임 = (현재프레임+1) % 최대프레임
 const updateFrameIndex = () => {
-  frameIndex[selectPlayer][selectAction] =
-      (frameIndex[selectPlayer][selectAction] + 1)
-      % MAX_FRAME_COUNT[selectPlayer][selectAction];
+  frameIndex[selectCharacter][selectAction] =
+      (frameIndex[selectCharacter][selectAction] + 1)
+      % MAX_FRAME_COUNT[selectCharacter][selectAction];
 }
 
 let checkGameFrameCount = 0;
@@ -582,7 +581,7 @@ const Render = {
   //---------------------------------------------------------------------------
   // 플레이어 차량 그리기 (단일 이미지 사용 가능하게 변경했음)
   player: (ctx, width, height, resolution, roadWidth, playerSprites, speedPercent, scale, destX, destY, steer, updown) => {
-    // playerSprites[selectPlayer][action.name][direction] === <img></img>
+    // playerSprites[selectCharacter][action.name][direction] === <img></img>
     // 플레이어 차량이 움직일 때 바운스 효과 추가
     // let bounce = (1.5 * Math.random() * speedPercent * resolution) * Util.randomChoice([-1,1]);
     let bounce = 0;
@@ -594,7 +593,7 @@ const Render = {
     // SPRITES.동물이름.액션이름.방향 : [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}]
     // SPRITES.spriteName[action.name].direction: [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}]
 
-    // playerSprites[selectPlayer][action.name][direction] === <img></img>
+    // playerSprites[selectCharacter][action.name][direction] === <img></img>
 
     // frameIndex[selectAction] = (frameIndex[selectAction] + 1) % totalsFrames[selectAction]; // 프레임idx 증가(최대 값 넘으면 0으로)
 
@@ -629,8 +628,8 @@ const Render = {
       if(updown > 0) direction = "uphill_straight"
       else direction = "straight"
     }
-    imageObj = playerSprites[selectPlayer][selectAction][direction]; // 이미지객체
-    sprite   = SPRITES[selectPlayer][selectAction][direction][frameIndex[selectPlayer][selectAction]] // 좌표 정보(잘라내기정보)
+    imageObj = playerSprites[selectCharacter][selectAction][direction]; // 이미지객체
+    sprite   = SPRITES[selectCharacter][selectAction][direction][frameIndex[selectCharacter][selectAction]] // 좌표 정보(잘라내기정보)
     // console.log(imageObj)
     // console.log(sprite)
     // 스프라이트 렌더링

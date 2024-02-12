@@ -3,11 +3,12 @@
 import { useRef, useEffect, useState } from 'react'
 import { Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
 import { MAX_FRAME_COUNT, PLAYER_SPRITE, MAP_SPRITE, ITEM_SPRITE, EFFECT } from './gameConstants.js';
-import { data, myGameData, playerGameDataList, playerCount } from './data.js';
+import { data, myGameData, playerGameDataList, playerCount, gameStartData } from './data.js';
 
 const localStorage = window.localStorage || {};
 
 const Main = (props) => {
+
   // 게임 플레이 정보
   const [testSpeed, setTestSpeed] = useState(0);
   const [testCurrentLapTime, setTestCurrentLapTime] = useState(0);
@@ -15,18 +16,14 @@ const Main = (props) => {
   
   const canvasRef = useRef(null)
 
-  
-
-  
-
-
-
 
 
   useEffect(() => {
-    const selectMap = 'map1';
+    const selectMap = gameStartData.selectMap;
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
+
     let checkGameFrameCount = 0;
 
     // 이펙트를 위한 애니메이션 프레임 인덱스 초기화
@@ -116,9 +113,9 @@ const Main = (props) => {
 
 
 
-    //=========================================================================
+    // =========================================================================
     // UPDATE THE GAME WORLD
-    //=========================================================================
+    // =========================================================================
     const update = (dt) => {
       keyLeft        = data.isLeftKeyPressed;
       keyRight       = data.isRightKeyPressed;
@@ -776,10 +773,9 @@ const Main = (props) => {
     
 
     const resetMap = () => {
+      segments = [];
       MapData[selectMap]();
-
       resetCars();
-      resetItems();
     
       // 플레이어 현재 위치 + 2 세그먼트의 색을 START 색으로 설정
       segments[findSegment(playerZ).index + 2].color = COLORS.START;
@@ -797,7 +793,6 @@ const Main = (props) => {
     const MapData = {
       map1: () => {
         // 길 세팅 Start ******************************************************************
-        segments = [];
         addStraight(ROAD.LENGTH.LONG);
         addLowRollingHills();
         addSCurves();
@@ -871,6 +866,21 @@ const Main = (props) => {
         // 스프라이트 세팅 End ********************************************************************************************************
 
 
+        // 아이템 세팅 Start *******************************************************************************
+        addItem(20, 0.75);
+        addItem(20, 0.25);
+        addItem(20, -0.25);
+        addItem(20, -0.75);
+
+        addItem(80, 0.75);
+        addItem(100, 0.25);
+        addItem(60, -0.25);
+        addItem(200, -0.75);
+        addItem(300, 0.75);
+        addItem(800, 0.25);
+        addItem(250, -0.25);
+        addItem(400, -0.75);
+        // 아이템 세팅 End *******************************************************************************
       }
     }
 
@@ -927,23 +937,6 @@ const Main = (props) => {
     
     // }
 
-    const resetItems = () => {
-      
-      // z : 20
-      addItem(20, 0.75);
-      addItem(20, 0.25);
-      addItem(20, -0.25);
-      addItem(20, -0.75);
-
-      addItem(80, 0.75);
-      addItem(100, 0.25);
-      addItem(60, -0.25);
-      addItem(200, -0.75);
-      addItem(300, 0.75);
-      addItem(800, 0.25);
-      addItem(250, -0.25);
-      addItem(400, -0.75);
-    }
     
     
       
