@@ -1,5 +1,5 @@
 import Stats from './stats.js';
-import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, MAP_SPRITE } from './gameConstants.js';
+import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, MAP_SPRITE, EFFECT } from './gameConstants.js';
 import { myGameData } from './data.js';
 
 
@@ -8,7 +8,7 @@ import { myGameData } from './data.js';
 // import mute from './images/mute.png';
 // import sprites from './images/sprites.png';
 
-const selectPlayer = "deer";
+const selectPlayer = "husky";
 myGameData.playerCharacter = selectPlayer;  // 오픈비두 통신을 위한 데이터 설정
 const selectAction = "run";
 const selectMap = "map1";
@@ -31,7 +31,7 @@ const updateFrameIndex = () => {
 }
 
 let checkGameFrameCount = 0;
-let frameInterval = 2; // 프레임 간격(default: 1, 게임2프레임 마다 애니메이션프레임증가)
+let frameInterval = 3; // 프레임 간격(default: 1, 2: 게임2프레임 마다 애니메이션프레임증가)
 
 // const totalsFrames = {
 //   run: 21
@@ -273,7 +273,7 @@ const Game = {
       return backgroundCount + spritesCount + playerSpritesCount + itemSpriteCount;
     }
     // 게임에 사용되는 이미지 개수 count
-    let count = setCount();
+    let count = setCount()   +    2; // 이펙트 테스트 이미지 2개
 
 
     // names => ["background", "sprites", "playerSpriteNames"]
@@ -379,6 +379,17 @@ const Game = {
       result['item'] = document.createElement('img');
       Dom.on(result['item'], 'load', onload);
       result['item'].src = `/images/sheets/itemBox.png`
+
+      // effect Imgae 로딩
+      result['effect'] = [];
+      result['effect'].push(document.createElement('img'));
+      Dom.on(result['effect'][0], 'load', onload);
+      result['effect'][0].src = `/images/sheets/speed_effect_1.png`
+
+      result['effect'].push(document.createElement('img'));
+      Dom.on(result['effect'][1], 'load', onload);
+      result['effect'][1].src = `/images/sheets/speed_effect_2.png`
+      console.log(result['effect']);
     }
 
 
@@ -636,6 +647,11 @@ const Render = {
       ctx.fillRect(x, y, width, height);
       ctx.globalAlpha = 1;
     }
+  },
+
+  // 이펙트 그리기
+  effect: (ctx, image, x, y, width, height) => {
+    ctx.drawImage(image, x, y, width, height);
   },
 
   // 럼블 스트립 너비 계산

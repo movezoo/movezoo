@@ -47,9 +47,9 @@ const MAP_SPRITE = {
   },
   map2: {
     GRAVE: {
-      grave:                 { x:    0, y:    0, w:  1000, h:  300 },
-      grave_border:          { x:    0, y:    0, w:  1000, h:  300 },
-      gravestone_flat:       { x:    0, y:    0, w:  1000, h:  400 },
+      grave:                 { x:    0, y:    0, w: 1000, h:  300 },
+      grave_border:          { x:    0, y:    0, w: 1000, h:  300 },
+      gravestone_flat:       { x:    0, y:    0, w: 1000, h:  400 },
       gravestone_bevel:      { x:    0, y:    0, w:  500, h:  500 },
       gravestone_decorative: { x:    0, y:    0, w:  500, h:  600 },
       gravestone_round:      { x:    0, y:    0, w:  500, h:  600 },
@@ -80,9 +80,9 @@ const MAP_SPRITE = {
       shovel:                    { x:    0, y:    0, w:  500, h:  200 },
       shovel_dirt:               { x:    0, y:    0, w:  500, h:  500 },
       rock_tall:                 { x:    0, y:    0, w:  800, h:  700 },
-      rock:                      { x:    0, y:    0, w:  1200, h:  700 },
+      rock:                      { x:    0, y:    0, w: 1200, h:  700 },
       debris_wood:               { x:    0, y:    0, w:  500, h:  300 },
-      debris:                    { x:    0, y:    0, w:  500, h: 300 }
+      debris:                    { x:    0, y:    0, w:  500, h:  300 }
     },
     LIGHTPOST: {
       lightpost_single:          { x:    0, y:    0, w:  500, h:  900 },
@@ -93,6 +93,12 @@ const MAP_SPRITE = {
 }
 
 const ITEM_SPRITE = { x:    0, y:    0, w:  300, h:  277 }
+const ITEM = {
+  SPEED: { x:    0, y:    0, w:  300, h:  277 }
+}
+const EFFECT = {
+  speedup: { x:    0, y:    0, w:  1200, h:  675, frameCount: 2 }
+}
 
 
 
@@ -234,5 +240,6 @@ export {
   MAX_FRAME_COUNT,
   BACKGROUND_SPRITE_FILE_NAME,
   MAP_SPRITE,
-  ITEM_SPRITE
+  ITEM_SPRITE,
+  EFFECT
 }

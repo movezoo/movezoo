@@ -12,18 +12,37 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  height: 25%;
+  height: 30%;
   background-color: greenyellow;
+  border-radius: 10px;
+}
+
+.inforoom-head-secret {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  height: 30%;
+  background-color: yellowgreen;
   border-radius: 10px;
 }
 
 .inforoom-title {
 }
 
+.inforoom-user {
+  display: flex;
+}
+.inforoom-user img {
+  margin-right: 10px;
+}
+
 .inforoom-body {
+  position: relative;
   display: flex;
   justify-content: space-between;
-  margin: 10px;
+  height: 75%;
+  padding: 10px;
 }
 
 .inforoom-mode {
@@ -36,4 +55,43 @@
 .inforoom-track img {
   position: relative;
   height: 100px;
+}
+
+.secretroom-container {
+
+}
+
+.secretroom-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 25px;
+  height: 25px;
+  background-color: black;
+  color: white;
+  font-size: 15px;
+  text-align: center;
+}
+
+.secretroom-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 35px;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
+.secretroom-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  border: solid black 1px;
+  border-radius: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  text-align: center;
+  overflow: hidden;
 }
