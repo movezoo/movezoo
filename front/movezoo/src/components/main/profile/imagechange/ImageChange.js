@@ -4,17 +4,18 @@ import Modal from 'react-modal';
 import './ImageChange.css';
 import { useRecoilState } from 'recoil';
 import { profileImgUrl as profileImgUrlState } from '../../../state/state';
+import { IoCloseSharp } from "react-icons/io5";
 
 
 const profileImages = [
-  { id: 1, name: '프로필 1', image: '/images/profileImg/profile1.png' },
-  { id: 2, name: '프로필 2', image: '/images/profileImg/profile2.png' },
-  { id: 3, name: '프로필 3', image: '/images/profileImg/profile3.png' },
-  { id: 4, name: '프로필 4', image: '/images/profileImg/profile4.png' },
-  { id: 5, name: '프로필 5', image: '/images/profileImg/profile5.png' },
-  { id: 6, name: '프로필 6', image: '/images/profileImg/profile6.png' },
-  { id: 7, name: '프로필 7', image: '/images/profileImg/profile7.png' },
-  { id: 8, name: '프로필 8', image: '/images/profileImg/profile8.png' },
+  { id: 1, name: '사슴', image: '/images/profileImg/profile1.png' },
+  { id: 2, name: '당나귀', image: '/images/profileImg/profile2.png' },
+  { id: 3, name: '여우', image: '/images/profileImg/profile3.png' },
+  { id: 4, name: '허스키', image: '/images/profileImg/profile4.png' },
+  { id: 5, name: '시바견', image: '/images/profileImg/profile5.png' },
+  { id: 6, name: '순록', image: '/images/profileImg/profile6.png' },
+  { id: 7, name: '말', image: '/images/profileImg/profile7.png' },
+  { id: 8, name: '늑대', image: '/images/profileImg/profile8.png' },
 ]
 
 const ImageChangeModal = () => {
@@ -50,7 +51,7 @@ const ImageChangeModal = () => {
       console.log(userData)
 
       // 사용자 이메일을 변수에 저장
-      const userEmail = userData.userEmail;
+      const userEmail = userData.userData.userEmail;
 
       console.log(userEmail)
 
@@ -69,7 +70,8 @@ const ImageChangeModal = () => {
       setProfileImgUrl(profileImgUrl);
 
       // 로컬 스토리지에 저장
-      const updatedUserData = { ...userData, profileImgUrl };
+      let updatedUserData = { ...userData };
+      updatedUserData.userData.profileImgUrl = profileImgUrl;
       localStorage.setItem('userData', JSON.stringify(updatedUserData));
 
       alert('이미지가 변경되었습니다.');
@@ -87,18 +89,32 @@ const ImageChangeModal = () => {
       <Modal 
         isOpen={isOpen} 
         onRequestClose={closeModal}
-        className="ImageChangeModal"
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0)', // 투명도를 0.75로 설정한 검은색 배경
+          },
+          content: {
+            width: '400px',
+            height: '350px',
+            margin: 'auto',
+            borderRadius: '30px',
+          }
+        }}
       >
         <div className='imagechange-container'>
-          <h3>이미지 변경</h3>
-          <button className='exit-button' onClick={closeModal}>닫기</button>
-          {profileImages.map((img) => (
-            <div key={img.id} onClick={() => onImageSelect(img)}>
-              <img  className={`selectImg ${selectedImage && selectedImage.id === img.id ? 'selected' : ''}`} src={img.image} alt={img.name} />
-              <p>{img.name}</p>
-            </div>
-          ))}
-          <button onClick={onImageUpload}>변경</button>
+          <div className='header-exit'>
+            <IoCloseSharp className='exit-button' onClick={closeModal} />
+          </div>
+          <div className='imagechange-body'>
+            {profileImages.map((img) => (
+              <div key={img.id} onClick={() => onImageSelect(img)}>
+                <img  className={`selectImg ${selectedImage && selectedImage.id === img.id ? 'selected' : ''}`} src={img.image} alt={img.name} />
+              </div>
+            ))}
+          </div>
+          <div className='imagechange-button'>
+            <button className='imagechangeButton' onClick={onImageUpload}>변경</button>
+          </div>
         </div>
       </Modal>
     </div>

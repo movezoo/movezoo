@@ -1,28 +1,39 @@
 //=============================================================================
 // 레이싱 게임 상수
 //=============================================================================
+
+// 캐릭터 이름, 행동, 방향    (캐릭터파일명 : 이름_행동_방향)
 const PLAYER_SPRITE = {
-  NAMES: [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra"],
-  ACTIONS: [ { name: "run" } ],
+  NAMES:      [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra", "deer", "donkey", "fox", "husky", "shiba", "stag", "wolf" ],
+  ACTIONS:    [ { name: "run" } ],
   DIRECTIONS: [ "uphill_left", "uphill_straight", "uphill_right", "left", "straight", "right" ]
 }
 
-const BACKGROUND_SPRITE_FILE_NAME = {
-  hills: 'hills',       //.png
-  sky: 'sky',           //.png
-  faraway: 'faraway'    //.png
-};
-const SPRITE_FILE_NAME = {
-  map1: {
-    BILLBOARD: ["billboard_ssafy", "billboard"],
-    TREE: ["dead_tree1", "dead_tree2", "dead_tree3", "stump1", "tree1", "tree2", "tree3"]
-  }
+// 캐릭터 애니메이션 프레임 개수
+const MAX_FRAME_COUNT = {
+  pug:      { run: 21 },
+  sheep:    { run: 21 },
+  pig:      { run: 23 },
+  cow:      { run: 35 },
+  llama:    { run: 21 },
+  horse:    { run: 21 },
+  zebra:    { run: 21 },
+  deer:     { run: 18 },
+  donkey:   { run: 17 },
+  fox:      { run: 18 },
+  husky:    { run: 17 },
+  shiba:    { run: 17 },
+  stag:     { run: 17 },
+  wolf:     { run: 18 },
+  whitehorse: { run: 17 }
 }
-const SPRITE_SIZE = {
+
+// 맵 별 스프라이트 그룹 및 파일명, 사이즈정보
+const MAP_SPRITE = {
   map1: {
     BILLBOARD: {
-      billboard_ssafy:  { x:    0, y:    0, w:  1000, h:  766 },
-      billboard:        { x:    0, y:    0, w:  1000, h:  765 },
+      billboard_ssafy:  { x:    0, y:    0, w: 1000, h:  766 },
+      billboard:        { x:    0, y:    0, w: 1000, h:  765 },
     },
     TREE: {
       dead_tree1:       { x:    0, y:    0, w:  556, h:  995 },
@@ -33,22 +44,76 @@ const SPRITE_SIZE = {
       tree2:            { x:    0, y:    0, w:  942, h:  992 },
       tree3:            { x:    0, y:    0, w:  985, h:  875 },
     }
+  },
+  map2: {
+    GRAVE: {
+      grave:                 { x:    0, y:    0, w: 1000, h:  300 },
+      grave_border:          { x:    0, y:    0, w: 1000, h:  300 },
+      gravestone_flat:       { x:    0, y:    0, w: 1000, h:  400 },
+      gravestone_bevel:      { x:    0, y:    0, w:  500, h:  500 },
+      gravestone_decorative: { x:    0, y:    0, w:  500, h:  600 },
+      gravestone_round:      { x:    0, y:    0, w:  500, h:  600 },
+      gravestone_roof:       { x:    0, y:    0, w:  500, h:  600 },
+      gravestone_wide:       { x:    0, y:    0, w:  800, h:  400 },
+      coffin:                { x:    0, y:    0, w:  800, h:  500 },
+      coffin_old:            { x:    0, y:    0, w:  800, h:  500 },
+      altar_wood:            { x:    0, y:    0, w:  800, h:  600 },
+      altar_stone:           { x:    0, y:    0, w:  800, h:  600 },
+      cross:                 { x:    0, y:    0, w:  500, h:  800 },
+      cross_wood:            { x:    0, y:    0, w:  500, h:  800 },
+      gravestone_cross:      { x:    0, y:    0, w:  500, h:  900 }
+    },
+    TREE: {
+      trunk:                 { x:    0, y:    0, w:  500, h:  200 },
+      pine_fall_crooked:     { x:    0, y:    0, w:  400, h:  600 },
+      pine_crooked:          { x:    0, y:    0, w:  400, h:  600 },
+      pine:                  { x:    0, y:    0, w:  400, h:  800 },
+      pine_fall:             { x:    0, y:    0, w:  400, h:  800 },
+      trunk_long:            { x:    0, y:    0, w:  500, h:  800 }
+    },
+    STUFF: {
+      pumpkin_tall:              { x:    0, y:    0, w:  500, h:  200 },
+      pumpkin:                   { x:    0, y:    0, w:  500, h:  200 },
+      pumpkin_tall_carved:       { x:    0, y:    0, w:  500, h:  200 },
+      pumpkin_carved:            { x:    0, y:    0, w:  500, h:  200 },
+      urn:                       { x:    0, y:    0, w:  500, h:  300 },
+      shovel:                    { x:    0, y:    0, w:  500, h:  200 },
+      shovel_dirt:               { x:    0, y:    0, w:  500, h:  500 },
+      rock_tall:                 { x:    0, y:    0, w:  800, h:  700 },
+      rock:                      { x:    0, y:    0, w: 1200, h:  700 },
+      debris_wood:               { x:    0, y:    0, w:  500, h:  300 },
+      debris:                    { x:    0, y:    0, w:  500, h:  300 }
+    },
+    LIGHTPOST: {
+      lightpost_single:          { x:    0, y:    0, w:  500, h:  900 },
+      lightpost_all:             { x:    0, y:    0, w:  600, h:  900 },
+      lightpost_double:          { x:    0, y:    0, w:  600, h:  900 }
+    }
   }
-
 }
+
 const ITEM_SPRITE = { x:    0, y:    0, w:  300, h:  277 }
-
-
-
-const MAX_FRAME_COUNT = {
-  pug: { run: 21 },
-  sheep: { run: 21 },
-  pig: { run: 23 },
-  cow: { run: 35 },
-  llama: { run: 21 },
-  horse: { run: 21 },
-  zebra: { run: 21 }
+const ITEM = {
+  SPEED: { x:    0, y:    0, w:  300, h:  277 }
 }
+const EFFECT = {
+  speedup: { x:    0, y:    0, w:  1200, h:  675, frameCount: 2 }
+}
+
+
+
+
+
+
+
+
+// 배경화면 파일 이름
+const BACKGROUND_SPRITE_FILE_NAME = {
+  hills: 'hills',       //.png
+  sky: 'sky',           //.png
+  faraway: 'faraway'    //.png
+};
+
 
 // 키보드 입력 상수
 const KEY = {
@@ -174,7 +239,7 @@ export {
   SPRITES,
   MAX_FRAME_COUNT,
   BACKGROUND_SPRITE_FILE_NAME,
-  SPRITE_FILE_NAME,
-  SPRITE_SIZE,
-  ITEM_SPRITE
+  MAP_SPRITE,
+  ITEM_SPRITE,
+  EFFECT
 }

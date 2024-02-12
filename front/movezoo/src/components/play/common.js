@@ -1,6 +1,6 @@
 import Stats from './stats.js';
-import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, SPRITE_FILE_NAME, ITEM_SPRITE } from './gameConstants.js';
-import { myGameData } from './data.js';
+import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, MAP_SPRITE, EFFECT } from './gameConstants.js';
+import { myGameData, gameStartData } from './data.js';
 
 
 // 이미지 불러오기
@@ -8,19 +8,30 @@ import { myGameData } from './data.js';
 // import mute from './images/mute.png';
 // import sprites from './images/sprites.png';
 
-const selectPlayer = "zebra";
-myGameData.playerCharacter = selectPlayer;  // 오픈비두 통신을 위한 데이터 설정
+const selectCharacter = gameStartData.selectCharacter;
 const selectAction = "run";
-const selectMap = "map1";
-const frameIndex = {
-  pug: { run: 0 },
-  sheep: { run: 0 },
-  pig: { run: 0 },
-  cow: { run: 0 },
-  llama: { run: 0 },
-  horse: { run: 0 },
-  zebra: { run: 0 }
+const selectMap = gameStartData.selectMap;
+
+const frameIndex = {}
+// frameIndex 초기화
+Object.keys(MAX_FRAME_COUNT).forEach(character => {
+  frameIndex[character] = {};
+  Object.keys(MAX_FRAME_COUNT[character]).forEach(action => {
+    frameIndex[character][action] = 0;
+  })
+})
+
+// 프레임 업데이트
+// 현재프레임 = (현재프레임+1) % 최대프레임
+const updateFrameIndex = () => {
+  frameIndex[selectCharacter][selectAction] =
+      (frameIndex[selectCharacter][selectAction] + 1)
+      % MAX_FRAME_COUNT[selectCharacter][selectAction];
 }
+
+let checkGameFrameCount = 0;
+let frameInterval = 3; // 프레임 간격(default: 1, 2: 게임2프레임 마다 애니메이션프레임증가)
+
 // const totalsFrames = {
 //   run: 21
 // }
@@ -248,8 +259,8 @@ const Game = {
       }
       const getSpritesCount = () => {
         let tempCount = 0;
-        Object.keys(SPRITE_FILE_NAME[selectMap]).forEach(spriteGroup => {
-          tempCount += SPRITE_FILE_NAME[selectMap][spriteGroup].length;
+        Object.keys(MAP_SPRITE[selectMap]).forEach(spriteGroup => {
+          tempCount += Object.keys(MAP_SPRITE[selectMap][spriteGroup]).length;
         })
         return tempCount;
       }
@@ -261,7 +272,7 @@ const Game = {
       return backgroundCount + spritesCount + playerSpritesCount + itemSpriteCount;
     }
     // 게임에 사용되는 이미지 개수 count
-    let count = setCount();
+    let count = setCount()   +    2; // 이펙트 테스트 이미지 2개
 
 
     // names => ["background", "sprites", "playerSpriteNames"]
@@ -340,13 +351,13 @@ const Game = {
     
     const setSprites = () => {
       // 객체 초기화
-      Object.keys(SPRITE_FILE_NAME[selectMap]).forEach(spriteGroup => {
+      Object.keys(MAP_SPRITE[selectMap]).forEach(spriteGroup => {
         // map은 한 게임에 무조건 1개이므로 굳이 구분하지 않는다.
         result[spriteGroup] = {};
       })
       // selectMap === 'map1'
-      Object.keys(SPRITE_FILE_NAME[selectMap]).forEach(spriteGroup => {
-        SPRITE_FILE_NAME[selectMap][spriteGroup].forEach(spriteName => {
+      Object.keys(MAP_SPRITE[selectMap]).forEach(spriteGroup => {
+        Object.keys(MAP_SPRITE[selectMap][spriteGroup]).forEach(spriteName => {
           result[spriteGroup][spriteName] = document.createElement('img');
           if(result[spriteGroup][spriteName] !== null) {
             Dom.on(result[spriteGroup][spriteName], 'load', onload);
@@ -367,6 +378,17 @@ const Game = {
       result['item'] = document.createElement('img');
       Dom.on(result['item'], 'load', onload);
       result['item'].src = `/images/sheets/itemBox.png`
+
+      // effect Imgae 로딩
+      result['effect'] = [];
+      result['effect'].push(document.createElement('img'));
+      Dom.on(result['effect'][0], 'load', onload);
+      result['effect'][0].src = `/images/sheets/speed_effect_1.png`
+
+      result['effect'].push(document.createElement('img'));
+      Dom.on(result['effect'][1], 'load', onload);
+      result['effect'][1].src = `/images/sheets/speed_effect_2.png`
+      console.log(result['effect']);
     }
 
 
@@ -559,7 +581,7 @@ const Render = {
   //---------------------------------------------------------------------------
   // 플레이어 차량 그리기 (단일 이미지 사용 가능하게 변경했음)
   player: (ctx, width, height, resolution, roadWidth, playerSprites, speedPercent, scale, destX, destY, steer, updown) => {
-    // playerSprites[selectPlayer][action.name][direction] === <img></img>
+    // playerSprites[selectCharacter][action.name][direction] === <img></img>
     // 플레이어 차량이 움직일 때 바운스 효과 추가
     // let bounce = (1.5 * Math.random() * speedPercent * resolution) * Util.randomChoice([-1,1]);
     let bounce = 0;
@@ -571,7 +593,7 @@ const Render = {
     // SPRITES.동물이름.액션이름.방향 : [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}]
     // SPRITES.spriteName[action.name].direction: [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}]
 
-    // playerSprites[selectPlayer][action.name][direction] === <img></img>
+    // playerSprites[selectCharacter][action.name][direction] === <img></img>
 
     // frameIndex[selectAction] = (frameIndex[selectAction] + 1) % totalsFrames[selectAction]; // 프레임idx 증가(최대 값 넘으면 0으로)
 
@@ -584,10 +606,12 @@ const Render = {
     //   selectAction = 'run' 
     // }
 
+    // 프레임 업데이트(프레임 간격조정포함)
     // 현재프레임 = (현재프레임+1) % 최대프레임
-    frameIndex[selectPlayer][selectAction] =
-      (frameIndex[selectPlayer][selectAction] + 1)
-      % MAX_FRAME_COUNT[selectPlayer][selectAction];
+    checkGameFrameCount%=frameInterval;
+    if(checkGameFrameCount++ === 0)
+      updateFrameIndex();
+    
 
 
 
@@ -604,8 +628,8 @@ const Render = {
       if(updown > 0) direction = "uphill_straight"
       else direction = "straight"
     }
-    imageObj = playerSprites[selectPlayer][selectAction][direction]; // 이미지객체
-    sprite   = SPRITES[selectPlayer][selectAction][direction][frameIndex[selectPlayer][selectAction]] // 좌표 정보(잘라내기정보)
+    imageObj = playerSprites[selectCharacter][selectAction][direction]; // 이미지객체
+    sprite   = SPRITES[selectCharacter][selectAction][direction][frameIndex[selectCharacter][selectAction]] // 좌표 정보(잘라내기정보)
     // console.log(imageObj)
     // console.log(sprite)
     // 스프라이트 렌더링
@@ -622,6 +646,11 @@ const Render = {
       ctx.fillRect(x, y, width, height);
       ctx.globalAlpha = 1;
     }
+  },
+
+  // 이펙트 그리기
+  effect: (ctx, image, x, y, width, height) => {
+    ctx.drawImage(image, x, y, width, height);
   },
 
   // 럼블 스트립 너비 계산

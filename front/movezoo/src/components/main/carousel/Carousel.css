@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .carousel-container {
-  @apply select-none flex flex-row justify-center items-center w-full
+  @apply h-[450px] select-none flex flex-row justify-center items-center w-full
 }
 
 .carousel-prev {
@@ -11,8 +11,8 @@
 }
 
 .prevButton {
-  @apply w-28 h-28 text-CelestialBlue hover:text-GreenBlue active:scale-90 active:text-blue-900
-  hover:cursor-pointer ml-16
+  @apply w-28 h-28 text-white hover:text-gray-300 active:scale-90
+  hover:cursor-pointer hover:scale-110 transition-all duration-200 ml-48
 }
 
 .carousel-image {
@@ -56,6 +56,6 @@
 }
 
 .nextButton {
-  @apply w-28 h-28 text-CelestialBlue hover:text-GreenBlue active:scale-90 active:text-blue-900
-  hover:cursor-pointer mr-16
+  @apply w-28 h-28 text-white hover:text-gray-300 active:scale-90
+  hover:cursor-pointer hover:scale-110 transition-all duration-200 mr-48
 }
