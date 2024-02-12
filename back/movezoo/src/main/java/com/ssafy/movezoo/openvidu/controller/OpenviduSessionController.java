@@ -2,7 +2,6 @@ package com.ssafy.movezoo.openvidu.controller;
 
 import com.ssafy.movezoo.game.domain.Room;
 import com.ssafy.movezoo.game.serivce.RedisService;
-import com.ssafy.movezoo.openvidu.dto.ExitRoomDto;
 import io.openvidu.java.client.*;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 //@CrossOrigin(origins = "*")
-@RestController
+//@RestController
 @RequiredArgsConstructor
 @Slf4j
 public class OpenviduSessionController {
@@ -34,7 +33,7 @@ public class OpenviduSessionController {
 
     private final RedisService redisService;
 
-    @PostConstruct
+    //    @PostConstruct
     public void init() {
         this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
     }
@@ -81,7 +80,7 @@ public class OpenviduSessionController {
         /**
          * 방을 만들어서 접속시 이미 redis에 생성을 했으므로 sessionId로 찾기 가능
          */
-        redisService.getRoomInfoBySessionId(sessionId);
+        redisService.findByRoomSessionId(sessionId);
 
         //openvidu session에 연결생성
         Connection connection = session.createConnection(properties);
@@ -118,7 +117,7 @@ public class OpenviduSessionController {
         log.info("api/openvidu/session {} {}", sessionId,connectionId);
 
 
-        Optional<Room> findRoom = redisService.getRoomInfoBySessionId(sessionId);
+        Optional<Room> findRoom = redisService.findByRoomSessionId(sessionId);
         if (findRoom.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not exist room");
         }
