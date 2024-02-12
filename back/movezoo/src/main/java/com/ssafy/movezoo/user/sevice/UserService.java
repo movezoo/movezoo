@@ -81,22 +81,22 @@ public class UserService {
         return true;
     }
 
-    public void addUserCoin(int userId, int coin){
+    public void addCoin(int userId, int coin){
         User user = userRepository.findById(userId);
-        user.setCoin(user.getCoin()+coin);
+        user.setCoin(user.getCoin() + coin);
     }
 
-    public void useUserCoin(int userId, int coin){
+    public void useCoin(int userId, int coin){
         User user = userRepository.findById(userId);
-        user.setCoin(user.getCoin()-coin);
+        user.setCoin(user.getCoin() - coin);
     }
 
-    public void updateUserAuthCode(String userEmail, String code){
+    public void updateAuthCode(String userEmail, String code){
         Optional<User> findUser = userRepository.findByEmail(userEmail);
         findUser.ifPresent(user -> user.setAuthNumber(code));
     }
 
-    public boolean compareAthNumber(String userEmail, String authNumber){
+    public boolean compareAuthNumber(String userEmail, String authNumber){
         Optional<User> findUser = userRepository.findByEmail(userEmail);
         return findUser.isPresent() && findUser.get().getAuthNumber().equals(authNumber);
 
