@@ -51,7 +51,7 @@ public class RedisService {
         } catch (Exception e) {
             log.error(e.toString());
         }
-        log.info("openvidu session cleaning...");
+//        log.info("openvidu session cleaning...");
         List<Room> roomList = getRoomList();
         for (Room room : roomList) {
             String sessionId = room.getRoomSessionId();
@@ -59,11 +59,11 @@ public class RedisService {
             Session session = openvidu.getActiveSession(sessionId);
 
             if (session == null || session.getConnections().size()==0) {
-                log.info("starvation session close {}",sessionId);
+//                log.info("starvation session close {}",sessionId);
                 deleteRoom(room.getId());
             }
         }
-        log.info("openvidu session clean complete");
+//        log.info("openvidu session clean complete");
     }
 
     // 방 만들기
