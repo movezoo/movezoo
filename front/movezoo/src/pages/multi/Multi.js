@@ -327,6 +327,8 @@ function Multi() {
   const leaveSession = async () => {
     //1.mySessionId로 룸을 들고온다
     const masterId = myRoom.roomMasterId;
+    const storedUserData = localStorage.getItem('userData');
+    const data = (JSON.parse(storedUserData));
 
     console.log("Exit ", mySessionId, masterId);
 
@@ -335,7 +337,7 @@ function Multi() {
 
     //문제!!!! 방장이 아닌애들ㅇ alert이 안나온다
     //마스터구별을 어떻게 하는지 모르겟다
-    if (masterId === 1) {
+    if (masterId === data.userData.userId) {
       console.log("out? ", connectionId);
       //레디스에서 방삭제
       await deleteRoom();
