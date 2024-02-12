@@ -27,7 +27,6 @@ function Makeroom(props) {
   const onClickConfirm = async () => {
     const roomTitle = roomTitleRef.current.value;
     const secretRoomPassword = secretRoomPasswordRef.current.value;
-    const secretRoom = secretRoomPassword ? true : false;
 
     if (!roomTitle ) {
       alert('방 제목을 입력해주세요.');
@@ -35,14 +34,18 @@ function Makeroom(props) {
     }
 
     try{
-      const response = await axios.post('https://i10e204.p.ssafy.io/api/room', {
+      var roomInfo = {
         roomMode: roomMode,
         roomTitle: roomTitle,
         roomPassword: secretRoomPassword,
         maxRange: maxUserCount,
-      });
-      console.log(response.data);
-      props.func(response.data.roomSessionId);
+      }
+      console.log(roomInfo)
+
+      await props.createRoom(roomInfo)
+
+      // console.log(props.session);
+      // props.func(props.session);
       props.setPage(2);
     } catch (error) {
       console.error('Error creating room:', error);
