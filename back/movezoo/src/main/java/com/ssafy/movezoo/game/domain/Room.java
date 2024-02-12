@@ -54,7 +54,7 @@ public class Room {
         this.secretRoom = false;
         this.secretRoomPassword = null;
         this.roomStatus = false;    // 시작 x
-        this.trackId = 1;           // 1번 맵
+        this.trackId = 0;           // 1번 맵
         this.roomMode = roomMode;
         this.roomMasterId = userId;
         this.roomTitle = roomTitle;
