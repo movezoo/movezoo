@@ -6,7 +6,7 @@
   /* background-image: url('/public/images/mainbg/shibaBg.png'); */
   background-image: url('/public/images/mainbg/mainbg.png');
   background-size: cover;
-  @apply select-none min-w-[1000px] min-h-screen flex flex-col
+  @apply select-none min-w-[1500px] min-h-screen flex flex-col
   bg-blue-400 cursor-default ;
 }
 
@@ -28,21 +28,25 @@
 }
 
 .main-header-profile {
-  @apply w-[300px] h-[120px] ml-20 flex flex-row justify-center items-center 
+  @apply w-[300px] h-[120px] ml-20 flex flex-row justify-between items-center 
   bg-white rounded-2xl;
 }
 
 .main-header-userProfile {
-  @apply w-5/12 items-center p-3 flex justify-center;
+  @apply w-[120px] p-2 items-center flex justify-center;
 }
 
 .profile-image {
-  @apply rounded-3xl hover:cursor-pointer hover:brightness-75
+  @apply rounded-2xl hover:cursor-pointer hover:brightness-75
   hover:scale-110 transition-all duration-300 ;
 }
 
 .main-header-userInfo {
-  @apply flex flex-col justify-between items-center p-3 pr-6 ml-2 pt-5 pb-5;  
+  @apply p-4 flex flex-col justify-between items-center space-y-2;  
+}
+
+.main-header-userNickname {
+  @apply text-xl
 }
 
 .main-header-userCoin {
@@ -62,7 +66,7 @@
 
 /* 왼쪽 섹션 */
 .main-left-section {
-  @apply w-8/12 flex flex-col mt-80;
+  @apply w-8/12 flex flex-col mt-40;
 }
 
 
