@@ -19,10 +19,12 @@ const LogoutModal = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('https://i10e204.p.ssafy.io/api/logout', {}, {
+      await axios.post('https://i10e204.p.ssafy.io/api/logout', {}, 
+      {
         withCredentials: true,
       });
       document.cookie = 'JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; // 쿠키 삭제
+      localStorage.removeItem('userData');
       navigate('/');  // 홈 화면으로 이동
     } catch (error) {
       console.error('로그아웃 실패:', error);
