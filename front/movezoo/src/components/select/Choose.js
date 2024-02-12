@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import React from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
-import './Character.css';
+import './Choose.css';
 import { useRecoilState } from 'recoil';
-import { userCoin } from '../../../../components/state/state';
+import { userCoin } from '../state/state';
 
 function Character ({ closeModal }) {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
@@ -32,7 +32,7 @@ function Character ({ closeModal }) {
     { id: 4, name: '사슴', image: '/images/shop/deerlock.png' },
     { id: 5, name: '허스키', image: '/images/shop/huskylock.png' },
     { id: 6, name: '늑대', image: '/images/shop/wolflock.png' },
-    { id: 7, name: '말', image: '/images/shop/horselock.png' },
+    { id: 7, name: '말', image: '/images/shop/whitehorselock.png' },
     { id: 8, name: '순록', image: '/images/shop/staglock.png' },
   ];
 
@@ -228,11 +228,11 @@ function Character ({ closeModal }) {
               <div className='body-select-name'>
                 <p className='image-name'>{selectedCharacter.name}</p>
               </div>
-              {/* <div className='body-select-chooseButton'>
+              <div className='body-select-chooseButton'>
                 {chracterImages.some(image => image.id === selectedCharacter.id && image.image === selectedCharacter.image) && 
                   <button className='character-choose-button' onClick={handleSelectClick}>선택하기</button>
                 }
-              </div> */}
+              </div>
               <div className='body-select-buyButton'>
                 {noCharacterImages.some(image => image.id === selectedCharacter.id && image.image === selectedCharacter.image) && 
                 <button className='character-buy-button' onClick={handleBuyClick}>구매하기</button>}
