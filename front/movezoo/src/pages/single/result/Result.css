@@ -41,21 +41,21 @@
 }
 
 .result-record {
-  @apply w-[250px] h-[250px] flex justify-center items-center 
-  bg-white rounded-2xl
+  @apply w-[300px] h-[340px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
+  cursor-default;
 }
 
 .result-reward {
-  @apply w-[300px] h-[100px] flex justify-center items-center 
+  @apply w-[300px] h-[100px] flex flex-col justify-center items-center 
   bg-lime-50 rounded-2xl
 }
 
-.reward-alarm {
-  @apply text-3xl pt-5
-}
+/* .reward-alarm {
+  @apply text-3xl
+} */
 
 .reward-coin {
-  @apply text-xl pb-14
+  @apply text-3xl
 }
 
 .result-back-button {
