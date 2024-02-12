@@ -19,12 +19,13 @@ const MAX_FRAME_COUNT = {
   horse:    { run: 21 },
   zebra:    { run: 21 },
   deer:     { run: 18 },
-  donkey:   { run: 18 },
+  donkey:   { run: 17 },
   fox:      { run: 18 },
-  husky:    { run: 18 },
-  shiba:    { run: 18 },
-  stag:     { run: 18 },
-  wolf:     { run: 18 }
+  husky:    { run: 17 },
+  shiba:    { run: 17 },
+  stag:     { run: 17 },
+  wolf:     { run: 18 },
+  whitehorse: { run: 17 }
 }
 
 // 맵 별 스프라이트 그룹 및 파일명, 사이즈정보

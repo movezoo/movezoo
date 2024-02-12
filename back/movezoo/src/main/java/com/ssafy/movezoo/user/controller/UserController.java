@@ -41,7 +41,11 @@ public class UserController {
             userService.join(new User(dto.getUserEmail(), passwordEncoder.encode(dto.getPassword()), dto.getNickname()));
 
             Optional<User> findUser = userService.findByEmail(dto.getUserEmail());
-            findUser.ifPresent(user -> racerService.addMyRacer(user.getUserId(), 1));
+            if (findUser.isPresent()) {
+                for (int i = 1; i <= 4; i++) {
+                    racerService.addMyRacer(findUser.get().getUserId(), i);
+                }
+            }
 
             simpleResponseDto.setSuccess(true);
             simpleResponseDto.setMsg(msg);
