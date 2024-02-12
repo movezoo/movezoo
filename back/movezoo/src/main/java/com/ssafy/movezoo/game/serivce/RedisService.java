@@ -44,7 +44,7 @@ public class RedisService {
 
     //    private final int LIMIT_TIME=3*60;  //3분
 
-//    @Scheduled(fixedRate = 10000L)
+    @Scheduled(fixedRate = 10000L)
     public void updateOpenViduSession(){
         try {
             openvidu.fetch();
