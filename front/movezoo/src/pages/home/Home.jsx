@@ -93,13 +93,15 @@ function Home() {
 
   return (
     <div className='home-container'>
+      <div className='home-title'>
+        <h1 className='titlename'>MoveZoo</h1>
+      </div>
       <div className='home-logincontainer'>
-        <div>
+        <div className='home-loginbox'>
           <Login />
           {/* 회원가입 버튼 추가 */}
-          <button className='signupbt' onClick={handleSignUpClick}> 회원가입 </button>
-          <h3 id='or'> --------  소셜 로그인 --------</h3>
           <GoogleLoginButton />
+          <button className='signupbt' onClick={handleSignUpClick}> 회원가입 </button>
         </div>
       </div>
       {/* 회원가입 모달 */}
