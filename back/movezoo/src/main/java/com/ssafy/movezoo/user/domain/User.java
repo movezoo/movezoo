@@ -71,7 +71,7 @@ public class User {
 
 
     // 회원가입 용 Constructor
-    public User(String userEmail, String password, String nickname, String profileImgUrl) {
+    public User(String userEmail, String password, String nickname) {
         this.userEmail = userEmail;
         this.password = password;
         this.nickname = nickname;
@@ -80,7 +80,8 @@ public class User {
         this.volume = 50;
         this.mic = 50;
         this.cameraSensitivity = 50;
-        this.role=UserRole.USER;
+        this.role = UserRole.USER;
+        this.profileImgUrl = "./profileImg/profile1.png";
     }
 
     // 친구 추가 메서드
@@ -114,7 +115,8 @@ public class User {
         this.volume = 50;
         this.mic = 50;
         this.cameraSensitivity = 50;
-        this.role=UserRole.USER;
+        this.role = UserRole.USER;
+        this.profileImgUrl = "./profileImg/profile1.png";
     }
 
     // 소셜 회원인 경우 update만 하자
