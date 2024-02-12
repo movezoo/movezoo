@@ -19,7 +19,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 460px;
-  
 }
 
 .signup_title {
@@ -64,21 +63,25 @@ input {
 .box.int_id {
   padding-right: 70px;
   border-radius: 15px;
+  margin-bottom: 10px;
 }
 
 .box.int_pass {
   padding-right: 100px;
   border-radius: 15px;
+  margin-bottom: 10px;
 }
 
 .box.int_pass_check {
   padding-right: 100px;
   border-radius: 15px;
+  margin-bottom: 10px;
 }
 
 .box.int_name {
   padding-right: 40px;
   border-radius: 15px;
+  margin-bottom: 10px;
 }
 
 .step_url {
