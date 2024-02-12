@@ -149,6 +149,7 @@ const MyOvVideo = (props) => {
 
     const sendDataStart = () => {
       // console.log(playerGameDataList);
+      if (!mySession) return;
       sendData();
       // responseData();
       if(isPlayingGame) requestAnimationFrame(sendDataStart)
