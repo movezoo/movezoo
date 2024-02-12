@@ -38,7 +38,7 @@ function Game(props) {
         };
 
         try {
-          const video = videoRef.current;
+          const video = videoRef.current.video;
           const videoWidth = video.videoWidth;
           const videoHeight = video.videoHeight;
           video.width = videoWidth;
@@ -140,26 +140,6 @@ function Game(props) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   return (
     <div className="singlegame-container">
       {/* 뒤로가면 메인 화면*/}
@@ -177,7 +157,15 @@ function Game(props) {
         </div>
         <div className="singlegame-cam">
           {/* <Cam /> */}
-          <Webcam className="single-webCam" mirrored={true} ref={videoRef}/>
+          <Webcam
+            className="single-webCam"
+            mirrored={true}
+            ref={videoRef}
+            videoConstraints={{ //비디오 품질 해상도
+              width: 640,
+              height: 480
+            }}
+          />
         </div>
       </div>
 
