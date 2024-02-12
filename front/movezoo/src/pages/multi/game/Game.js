@@ -8,10 +8,7 @@ import MyVideoComponent from "../../../components/play/MyVideoComponent.js";
 import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
 
 function Game(props) {
-  const { isPlayingGame } = props;
-  const session = props.session;
-  const mainStreamManager = props.mainStreamManager;
-  const subscribers = props.subscribers;
+  const { isPlayingGame, session, mainStreamManager, subscribers, leaveSession } = props;
   return (
     <div>
       {/*일단 축소 화면*/}
@@ -21,13 +18,13 @@ function Game(props) {
           {/* <p style={{ textAlign: "center" }}>
             <strong>게임 화면</strong>
           </p> */}
-          <Main width={1150} height={700} />
+          <Main width={1130} height={700} />
           {/* 뒤로가면 메인 화면*/}
           <div className={styles.goBack}>
-            <Back />
+            <Back leaveSession={leaveSession}/>
           </div>
           {/*웹캠*/}
-          {/* <div className={styles.webCam}> */}
+          <div className={styles.webCam}>
           {mainStreamManager !== undefined ? (
             <div id="main-video" className="col-md-6">
               <MyVideoComponent
@@ -37,7 +34,7 @@ function Game(props) {
               />
             </div>
           ) : "asdf"}
-          {/* </div> */}
+          </div>
           {/* <Webcam className={styles.webCam} mirrored={true} /> */}
           {/* 일단 결과창으로 넘어가는 버튼*/}
           <button onClick={()=> props.setPage(4)}

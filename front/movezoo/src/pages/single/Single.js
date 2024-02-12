@@ -4,6 +4,7 @@ import Webcam from "react-webcam";
 import Map2 from "../../components/single/Map2";
 import Back from "../../components/single/Back";
 import Start from "../../components/single/Start";
+import Select from "../../components/select/Select";
 import "./Single.css";
 
 function Single() {
@@ -45,7 +46,7 @@ function Single() {
             <Map2 />
           </div>
           <div className="charact-select">
-            <button className="charact-select-button">캐릭터 고르기</button>
+            <Select />
           </div>
           {/* 시작 버튼*/}
           <div className="start-select">

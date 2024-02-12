@@ -30,13 +30,13 @@ public class UserService {
     }
 
     // 닉네임 변경
-    public int changeNickname(String userEmail, String nickname){
-        return userRepository.updateNickname(userEmail, nickname);
+    public int changeNickname(int userId, String nickname){
+        return userRepository.updateNickname(userId, nickname);
     }
 
     // 프로필 이미지 변경
-    public int changeProfileImg(String userEmail, String profileImgUrl) {
-        return userRepository.updateProfileImg(userEmail, profileImgUrl);
+    public int changeProfileImg(int userId, String profileImgUrl) {
+        return userRepository.updateProfileImg(userId, profileImgUrl);
     }
 
     // 설정 변경
@@ -81,22 +81,22 @@ public class UserService {
         return true;
     }
 
-    public void addUserCoin(int userId, int coin){
+    public void addCoin(int userId, int coin){
         User user = userRepository.findById(userId);
-        user.setCoin(user.getCoin()+coin);
+        user.setCoin(user.getCoin() + coin);
     }
 
-    public void useUserCoin(int userId, int coin){
+    public void useCoin(int userId, int coin){
         User user = userRepository.findById(userId);
-        user.setCoin(user.getCoin()-coin);
+        user.setCoin(user.getCoin() - coin);
     }
 
-    public void updateUserAuthCode(String userEmail, String code){
+    public void updateAuthCode(String userEmail, String code){
         Optional<User> findUser = userRepository.findByEmail(userEmail);
         findUser.ifPresent(user -> user.setAuthNumber(code));
     }
 
-    public boolean compareAthNumber(String userEmail, String authNumber){
+    public boolean compareAuthNumber(String userEmail, String authNumber){
         Optional<User> findUser = userRepository.findByEmail(userEmail);
         return findUser.isPresent() && findUser.get().getAuthNumber().equals(authNumber);
 
