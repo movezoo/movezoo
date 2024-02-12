@@ -1,4 +1,4 @@
-// import React, { useState, useEffect } from 'react';
+// import React, { useState } from 'react';
 // import Modal from 'react-modal';
 // import axios from 'axios';
 // import './NicknameChange.css';
@@ -8,15 +8,13 @@
 
 // const ChangeNicknameModal = () => {
 //   const [nickname, setNickName] = useRecoilState(nickNameState);
-//   const [newNickName, setNewNickName] = useState('');
+//   const [newNickName, setNewNickName] = useState(nickname);
 //   const [isOpen, setIsOpen] = useState(false);
-//   const [userEmail, setEmail] = useState('');
 //   const [confirmModal, setConfirmModal] = useState(false);
-
-
 
 //   const openModal = () => {
 //     setIsOpen(true);
+//     setNewNickName(nickname);
 //   };
 
 //   const closeModal = () => {
@@ -25,7 +23,7 @@
 //   };
 
 //   const handleChangeNickname = (e) => {
-//     setNickName(e.target.value);
+//     setNewNickName(e.target.value);
 //   };
 
 //   const handleConfirm = () => {
@@ -35,30 +33,21 @@
 //   const handleNicknameChange = async () => {
 //     try {
 //       const storedUserData = localStorage.getItem('userData');
-//         if (!storedUserData) {
-//             throw new Error('사용자 정보를 찾을 수 없습니다.');
-//         }
+//       if (!storedUserData) {
+//           throw new Error('사용자 정보를 찾을 수 없습니다.');
+//       }
 
-//       // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
 //       const userData = JSON.parse(storedUserData);
-
-//       console.log(userData)
-
-//       // 사용자 이메일을 변수에 저장
 //       const userEmail = userData.userData.userEmail;
 
-//       console.log(userEmail)
+//       console.log(userEmail, newNickName);
 
-//       console.log(nickname)
-
-//       await axios.patch('https://i10e204.p.ssafy.io/api/user/nickname', {userEmail, nickname}, {
+//       await axios.patch('https://i10e204.p.ssafy.io/api/user/nickname', {userEmail, nickname: newNickName}, {
 //         withCredentials: true,
 //       });
 
-//       setNickName(nickname);
-
-      
-      
+//       setNickName(newNickName);
+//       console.log(newNickName)
 //       alert('닉네임 변경에 성공했습니다.');
 //       closeModal();
 //     } catch (error) {
@@ -73,22 +62,33 @@
 //       <Modal 
 //         isOpen={isOpen}
 //         onRequestClose={closeModal}
-//         className="NicknameChangeModal">
+//         style={{
+//           overlay: {
+//             backgroundColor: 'rgba(0, 0, 0, 0)', // 투명도를 0.75로 설정한 검은색 배경
+//           },
+//           content: {
+//             width: '300px',
+//             height: '350px',
+//             margin: 'auto',
+//             borderRadius: '30px',
+//           }
+//         }}
+//         >
 
 //         <div className='NicknameChange-container'>
 
 //           <div className='nicknamechange-header'>
-//             <div className='header-name'>
-//               <h3>닉네임 변경</h3>
-//             </div>
 //             <div className='header-exit'>
 //               <IoCloseSharp className='exit-button' onClick={closeModal} />
 //             </div>
 //           </div>
 
 //           <div className='nicknamechange-body'>
+//             <div className='nicknamechange-body-name'>
+//               <h3>닉네임 변경</h3>
+//             </div>
 //             <div className='nickname-change'>
-//               <input className='nickname-input' type="text" value={nickname} onChange={handleChangeNickname} />
+//               <input className='nickname-input' type="text" value={newNickName} onChange={handleChangeNickname} />
 //             </div>
 
 //             <div className='nickname-change-button'>
@@ -105,8 +105,19 @@
 //       <Modal 
 //         isOpen={confirmModal}
 //         onRequestClose={closeModal}
-//         className="NicknameChangeModal">
-//         <div className='NicknameChange-container'>
+//         style={{
+//           overlay: {
+//             backgroundColor: 'rgba(0, 0, 0, 0)', // 투명도를 0.75로 설정한 검은색 배경
+//           },
+//           content: {
+//             width: '300px',
+//             height: '350px',
+//             margin: 'auto',
+//             borderRadius: '30px',
+//           }
+//         }}
+//         >
+//         <div className='Nicknameconfirm-container'>
 //           <div className='nicknameconfirm-header'>
 //             <div className='nicknameconfirm-header-name'>
 //               <h3>정말 닉네임을 변경하시겠습니까?</h3>
@@ -125,8 +136,8 @@
 // export default ChangeNicknameModal;
 
 
-
 // test
+
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
@@ -137,18 +148,18 @@ import { nickName as nickNameState } from '../../../state/state';
 
 const ChangeNicknameModal = () => {
   const [nickname, setNickName] = useRecoilState(nickNameState);
-  const [newNickName, setNewNickName] = useState(nickname);
+  const [newNickName, setNewNickName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
 
   const openModal = () => {
     setIsOpen(true);
-    setNewNickName(nickname);
   };
 
   const closeModal = () => {
     setIsOpen(false);
     setConfirmModal(false);
+    setNewNickName('');
   };
 
   const handleChangeNickname = (e) => {
@@ -191,20 +202,31 @@ const ChangeNicknameModal = () => {
       <Modal 
         isOpen={isOpen}
         onRequestClose={closeModal}
-        className="NicknameChangeModal">
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0)', // 투명도를 0.75로 설정한 검은색 배경
+          },
+          content: {
+            width: '300px',
+            height: '350px',
+            margin: 'auto',
+            borderRadius: '30px',
+          }
+        }}
+        >
 
         <div className='NicknameChange-container'>
 
           <div className='nicknamechange-header'>
-            <div className='header-name'>
-              <h3>닉네임 변경</h3>
-            </div>
             <div className='header-exit'>
               <IoCloseSharp className='exit-button' onClick={closeModal} />
             </div>
           </div>
 
           <div className='nicknamechange-body'>
+            <div className='nicknamechange-body-name'>
+              <h3>닉네임 변경</h3>
+            </div>
             <div className='nickname-change'>
               <input className='nickname-input' type="text" value={newNickName} onChange={handleChangeNickname} />
             </div>
@@ -223,8 +245,19 @@ const ChangeNicknameModal = () => {
       <Modal 
         isOpen={confirmModal}
         onRequestClose={closeModal}
-        className="NicknameChangeModal">
-        <div className='NicknameChange-container'>
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0)', // 투명도를 0.75로 설정한 검은색 배경
+          },
+          content: {
+            width: '300px',
+            height: '350px',
+            margin: 'auto',
+            borderRadius: '30px',
+          }
+        }}
+        >
+        <div className='Nicknameconfirm-container'>
           <div className='nicknameconfirm-header'>
             <div className='nicknameconfirm-header-name'>
               <h3>정말 닉네임을 변경하시겠습니까?</h3>

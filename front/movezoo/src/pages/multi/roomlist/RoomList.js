@@ -7,6 +7,7 @@ import Modal from "react-modal";
 import "./RoomList.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { IoCloseSharp } from "react-icons/io5";
 import { search } from "@tensorflow/tfjs-core/dist/io/composite_array_buffer";
 
 Modal.setAppElement("#root");
@@ -35,7 +36,23 @@ function RoomList(props) {
 
   console.log(rooms);
 
-  function enterRoom() {
+  
+  async function fastEnterRoom() {
+    const response = await axios.get(
+      "https://i10e204.p.ssafy.io/api/room/fast-enter-room-session",
+      {},
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    console.log("fast enter ", response);
+    if (response.data == "") {
+      alert("참가가능한 방이 없음");
+      return;
+    }
+
+    const fastSessionId = response.data.roomSessionId;
+    props.enterRoom(fastSessionId);
     props.setPage(2);
   }
 
@@ -43,8 +60,8 @@ function RoomList(props) {
     <div className="room-container">
       {/* 홈으로, 프로필 */}
       <div className="room-header">
-        <div className="room-header-name">
-          <h1>MoveZoo!</h1>
+        <div>
+          <h1 className="room-header-name">Multi Play!</h1>
         </div>
       </div>
 
@@ -57,33 +74,44 @@ function RoomList(props) {
               검색
             </button>
           </div>
-          <button className="room-match" onClick={enterRoom}>
+          <button className="room-match" onClick={fastEnterRoom}>
             빠른 입장
           </button>
           <button className="room-make">
-            <Makeroom setPage={props.setPage} func={props.func} />
+            <Makeroom
+              createRoom={props.createRoom}
+              enterRoom={props.enterRoom}
+              setPage={props.setPage}
+              // func={props.func}
+            />
           </button>
+          <Link to="/main">
+            <IoCloseSharp className='exit-button'/>
+          </Link>
+        </div>
+        <div className="room-info">
         </div>
         <div className="room-list">
-          {rooms.length === 0 ? (
-    <div>로딩중...</div>
-  ) : (
-    rooms.map((room) => (
-      <div className="room-box" key={room.id}>
-        <Inforoom
-          key={room.id}
-          title={room.roomTitle}
-          userCount={room.currentUserCount}
-          userMaxCount={room.maxUserCount}
-          mode={room.roomMode}
-          track={room.trackId}
-          session={room.roomSessionId}
-          setPage={props.setPage}
-          func={props.func}
-        />
-      </div>
-    ))
-  )}
+          {rooms.length === 0 ? (<div>로딩중...</div>) : (
+            rooms.map((room) => (
+              <div className="room-box" key={room.id}>
+                <Inforoom
+                  key={room.id}
+                  title={room.roomTitle}
+                  userCount={room.currentUserCount}
+                  userMaxCount={room.maxUserCount}
+                  secretRoom={room.secretRoom}
+                  secretRoomPassword={room.secretRoomPassword}
+                  mode={room.roomMode}
+                  track={room.trackId}
+                  session={room.roomSessionId}
+                  setPage={props.setPage}
+                  // func={props.func}
+                  enterRoom={props.enterRoom}
+                />
+              </div>
+            ))
+          )}
         </div>
       </div>
 

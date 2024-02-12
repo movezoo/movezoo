@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 import './PasswordChange.css';
@@ -10,6 +10,8 @@ const ChangePasswordModal = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [userEmail, setEmail] = useState('');
   const [confirmModal, setConfirmModal] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
   
   const openModal = () => {
@@ -26,12 +28,19 @@ const ChangePasswordModal = () => {
   };
 
   const handleChangeConfirmPassword = (e) => {
-    setConfirmPassword(e.target.value);
+    const newConfirmPassword = e.target.value;
+    setConfirmPassword(newConfirmPassword);
+
+    if (password !== newConfirmPassword) {
+      setConfirmPasswordError('비밀번호가 일치하지 않습니다.');
+    } else {
+      setConfirmPasswordError('');
+    }
   };
 
   const handleConfirm = () => {
     if (password !== confirmPassword) {
-      alert('비밀번호가 일치하지 않습니다.');
+      setConfirmPasswordError('비밀번호가 일치하지 않습니다.');
       return;
     }
 
@@ -78,22 +87,34 @@ const ChangePasswordModal = () => {
       <Modal 
         isOpen={isOpen}
         onRequestClose={closeModal}
-        className="passwordchangemodal">
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0)', // 투명도를 0.75로 설정한 검은색 배경
+          },
+          content: {
+            width: '400px',
+            height: '370px',
+            margin: 'auto',
+            borderRadius: '30px',
+          }
+        }}
+        >
         <div className='passwordchange-container'>
           
           <div className='passwordchange-header'>
-            <div className='header-name'>
-              <h3>비밀번호 변경</h3>
-            </div>
             <div className='header-exit'>
               <IoCloseSharp className='exit-button' onClick={closeModal} />
             </div>
           </div>
 
           <div className='passwordchange-body'>
+            <div className='password-change-name'>
+              <h3>비밀번호 변경</h3>
+            </div>
             <div className='password-change'>
               <input className='passwordchange-input' type="password" value={password} onChange={handleChangePassword} placeholder="새 비밀번호" />
               <input className='passwordchange-input' type="password" value={confirmPassword} onChange={handleChangeConfirmPassword} placeholder="비밀번호 확인" />
+              {confirmPasswordError && <p className="error-message">{confirmPasswordError}</p>}
             </div>
             <div className='password-change-button'>
               <button className='change-button' onClick={handleConfirm}>비밀번호 변경</button>
