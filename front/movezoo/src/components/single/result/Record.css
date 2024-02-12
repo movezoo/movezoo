@@ -2,8 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.Record-body {
+  @apply flex flex-col justify-center items-center space-y-4
+}
+
 .title {
-  @apply text-3xl pb-2 pt-2
+  @apply text-4xl pb-2 pt-2
 }
 
 .time {
