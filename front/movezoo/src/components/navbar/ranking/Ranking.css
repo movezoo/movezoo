@@ -18,19 +18,6 @@
   @apply w-10 h-10 transition
 }
 
-.map-button{
-  @apply w-40 h-8 flex flex-1 items-center justify-center p-2 text-white bg-blue-500 rounded-md
-  hover:bg-blue-700 m-1;
-}
-
-.ranking-topTen {
-  @apply flex flex-wrap;
-}
-
-.ranking-user {
-  @apply grid grid-cols-3;
-}
-
 .ranking-container {
   @apply flex flex-col;
 }
@@ -39,14 +26,31 @@
   @apply flex flex-col;
 }
 
-.ranking-header-exit {
-  @apply flex justify-end
-}
-
 .ranking-header-map {
   @apply flex justify-center mb-10;
 }
 
+.ranking-header-exit {
+  @apply flex justify-end
+}
+
+.ranking-map-button{
+  @apply w-32 h-12 ml-6 mr-6  flex items-center justify-center p-2 text-white bg-blue-500 rounded-md
+  hover:bg-blue-700;
+}
+
 .ranking-body {
-  @apply flex flex-col justify-center items-center;
+  @apply flex flex-col items-center justify-center;
+}
+
+.ranking-topTen {
+  @apply w-[400px] mb-4 ml-10 
+}
+
+.ranking-my {
+  @apply w-[400px] ml-10
+}
+
+.ranking-user {
+  @apply flex items-center justify-start;
 }
