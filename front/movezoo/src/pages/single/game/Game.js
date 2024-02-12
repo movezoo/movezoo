@@ -1,5 +1,4 @@
 import { useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Webcam from "react-webcam";
 import Back from "../../../components/single/game/Back";
 import Main from "../../../components/play/Main";
@@ -10,13 +9,25 @@ import { data } from "../../../components/play/data.js";
 import '@mediapipe/face_detection';
 import '@tensorflow/tfjs-backend-webgl';
 import * as faceDetection from '@tensorflow-models/face-detection';
+import { Util } from '../../../components/play/common.js';
+import { useRecoilState } from 'recoil';
+import { gameCurrentTimeState, gameMyItemLeftState, gameMyItemRightState, gameStartCountState } from '../../../components/state/state.js'
 
 
-
-function Game(props) {
+function Game() {
+  const [testCurrentLapTime] = useRecoilState(gameCurrentTimeState);
+  const [gameMyItemLeft, setGameMyItemLeft] = useRecoilState(gameMyItemLeftState);
+  const [gameMyItemRight, setGameMyItemRight] = useRecoilState(gameMyItemRightState);
+  const [gameStartCount, setGameStartCount] = useRecoilState(gameStartCountState);
 
   const videoRef = useRef(null);
   const detector = useRef(null);
+
+  // 디버깅
+  useEffect(() => {
+    console.log(`gameMyItemLeft : ${gameMyItemLeft}`);
+    console.log(`gameMyItemRight : ${gameMyItemRight}`);
+  }, [gameMyItemLeft, gameMyItemRight])
 
   useEffect(() => {
 
@@ -79,37 +90,44 @@ function Game(props) {
           // const rightEarTragionY = faces[0]?.keypoints[4]?.y;
           // const leftEarTragionY = faces[0]?.keypoints[5]?.y;
 
-          // 좌우 이동 detect
-          if (noseX < centerX - sensitivity) {
-            data.isLeftKeyPressed = false;
-            data.isRightKeyPressed = true;
-            // console.log("Right");
-          } else if (noseX > centerX + sensitivity) {
-            data.isRightKeyPressed = false;
-            data.isLeftKeyPressed = true;
-            // console.log("Left");
-          } else {
-            data.isRightKeyPressed = false;
-            data.isLeftKeyPressed = false;
+          // 게임이 시작됐을 때 detect
+          if(data.isGameStart) {
+
+            // 좌우 이동 detect
+            if (noseX < centerX - sensitivity) {
+              data.isLeftKeyPressed = false;
+              data.isRightKeyPressed = true;
+              // console.log("Right");
+            } else if (noseX > centerX + sensitivity) {
+              data.isRightKeyPressed = false;
+              data.isLeftKeyPressed = true;
+              // console.log("Left");
+            } else {
+              data.isRightKeyPressed = false;
+              data.isLeftKeyPressed = false;
+            }
+
+            // 고개들기(뒤로젖히기) detect
+            if ( rightEarTragionY > noseY && leftEarTragionY > noseY) {
+              data.isRun = false;
+              data.isBreak = true;
+              // console.log(`break!!!`)
+            } else {
+              data.isRun = true;
+              data.isBreak = false;
+            }
+
+            // 고개 왼쪽으로 돌리기 detect(귀와 코를 기준으로)
+            if (rightEarTragionX < noseX) data.isLeftItemUse = true;
+            // 오른쪽으로 돌리기
+            else if(leftEarTragionX > noseX) data.isRightItemUse = true;
+            else {
+              data.isLeftItemUse = false;
+              data.isRightItemUse = false;
+            }
+
           }
-
-          // 고개들기(뒤로젖히기) detect
-          if ( rightEarTragionY > noseY && leftEarTragionY > noseY) {
-            data.isRun = false;
-            data.isBreak = true;
-            // console.log(`break!!!`)
-          } else {
-            data.isRun = true;
-            data.isBreak = false;
-          }
-
-          // 고개 왼쪽으로 돌리기 detect(귀와 코를 기준으로)
-          if (rightEarTragionX < noseX) console.log(`turn left: 왼쪽 아이템 사용`)
-          // if (rightEarTragionX < leftEyeX) console.log(`turn left: 왼쪽 아이템 사용`)
-          // 오른쪽으로 돌리기
-          else if(leftEarTragionX > noseX) console.log(`turn right: 오른쪽 아이템 사용`)
-          // else if(leftEarTragionX > rightEyeX) console.log(`turn right: 오른쪽 아이템 사용`)
-
+          
         } catch (error) {
           console.error('Error detecting faces:', error);
         }
@@ -142,21 +160,54 @@ function Game(props) {
 
   return (
     <div className="singlegame-container">
-      {/* 뒤로가면 메인 화면*/}
-      <div className="Back">
-        <Back />
+
+
+      <div className="game">
+        <Main width={1920} height={1080} />
       </div>
 
+      <div className="current-time">카운트다운 : {gameStartCount}</div>
+      <div className="current-time">시간 : {Util.formatTime(testCurrentLapTime)}</div>
+      <div className="over-contents">
+        <Webcam
+          className="single-webCam"
+          mirrored={true}
+          ref={videoRef}
+          videoConstraints={{ //비디오 품질 해상도
+            width: 640,
+            height: 480
+          }}
+        />
+        <div className="my-item-list"> 
+          <div className="my-item">{gameMyItemLeft}</div>
+          <div className="my-item">{gameMyItemRight}</div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+      {/* 뒤로가면 메인 화면*/}
+      {/* <div className="goBack">
+        <Back />
+      </div> */}
+
       {/*왼쪽 화면, 게임 화면*/}
-      <div className="singlegame-body">
+      {/* <div className="singlegame-body"> */}
+
+
+
+
         {/* <p style={{ textAlign: "center" }}>
           <strong>게임 화면</strong>
         </p> */}
-        <div className="game">
-          <Main width={1280} height={720} />
+        {/* <div className="game">
+          <Main width={1920} height={1080} />
         </div>
         <div className="singlegame-cam">
-          {/* <Cam /> */}
           <Webcam
             className="single-webCam"
             mirrored={true}
@@ -166,15 +217,20 @@ function Game(props) {
               height: 480
             }}
           />
-        </div>
-      </div>
+        </div> */}
+
+
+
+
+
+      {/* </div> */}
 
       {/*오른쪽 화면*/}
-      <div className="singlegame-select">
+      {/* <div className="singlegame-select">
         <div>
           <Link to="/Result">넘어가기</Link>
         </div>
-      </div>
+      </div> */}
 
     </div>
   );

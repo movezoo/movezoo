@@ -2,21 +2,48 @@
 // import io from "socket.io-client";
 import { useRef, useEffect, useState } from 'react'
 import { Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
-import { MAX_FRAME_COUNT, PLAYER_SPRITE, MAP_SPRITE, ITEM_SPRITE, EFFECT } from './gameConstants.js';
+import { MAX_FRAME_COUNT, PLAYER_SPRITE, MAP_SPRITE, ITEM_SPRITE, EFFECT, ITEM } from './gameConstants.js';
 import { data, myGameData, playerGameDataList, playerCount, gameStartData } from './data.js';
+import { useRecoilState } from 'recoil';
+
+import { gameCurrentTimeState, gameMyItemLeftState, gameMyItemRightState, gameStartCountState } from '../state/state.js'
 
 const localStorage = window.localStorage || {};
 
 const Main = (props) => {
 
-  // 게임 플레이 정보
+  // useState
   const [testSpeed, setTestSpeed] = useState(0);
-  const [testCurrentLapTime, setTestCurrentLapTime] = useState(0);
   const [testLastLapTime, setTestLastLapTime] = useState(0);
-  
+
+
+  // useRecoilState
+  const [testCurrentLapTime, setTestCurrentLapTime] = useRecoilState(gameCurrentTimeState);
+  const [gameMyItemLeft, setGameMyItemLeft] = useRecoilState(gameMyItemLeftState);
+  const [gameMyItemRight, setGameMyItemRight] = useRecoilState(gameMyItemRightState);
+  const [gameStartCount, setGameStartCount] = useRecoilState(gameStartCountState);
+
+
   const canvasRef = useRef(null)
 
 
+
+  // 게임 시작신호
+  useEffect(() => {
+    let count = 4; // 실제로 3초부터 출력함
+    // setGameStartCount(count);
+
+    const playCount = setInterval(() => {
+      count-=1;
+      setGameStartCount(count);
+      if(count === 0) data.isGameStart = true;    
+    }, 1000);
+    setTimeout(() => {
+      clearInterval(playCount)
+    }, 4000)
+
+    
+  },[])
 
   useEffect(() => {
     const selectMap = gameStartData.selectMap;
@@ -39,6 +66,9 @@ const Main = (props) => {
     }
 
     
+    let itemLeft = '';
+    let itemRight = '';
+
     // View 관련 설정 변수
     let roadWidth      = 2000;                    // 사실상 도로의 반폭, 도로가 -roadWidth에서 +roadWidth로 이어지면 수학이 더 간단해짐
     let cameraHeight   = 1000;                    // 카메라의 z 높이
@@ -223,7 +253,18 @@ const Main = (props) => {
           // 아이템 제거
           let z = playerSegment.index;
           segments[z].items.splice(n, 1); // n번째 아이템 제거
-          console.log(`getItem!!!!!!!!!!!!!!!!!!!`);
+          
+          // 아이템칸이 비어있을 때 랜덤 아이템 획득
+          if(itemLeft === '') {
+            itemLeft = Util.randomChoice(Object.keys(ITEM));
+            setGameMyItemLeft(itemLeft)
+          } else {
+            if(itemRight === '') {
+              itemRight = Util.randomChoice(Object.keys(ITEM));
+              setGameMyItemRight(itemRight)
+            }
+          }
+
           break;
         }
       }
@@ -278,12 +319,23 @@ const Main = (props) => {
       updateHud('current_lap_time', formatTime(currentLapTime));
       // Test
 
-      
+
+      updateUseItem();
     }
     
 
 
-
+    const updateUseItem = () => {
+      if (data.isLeftItemUse) {
+        // console.log(`useItem Left`);
+        itemLeft = ''
+        setGameMyItemLeft(itemLeft);
+      } else if(data.isRightItemUse) {
+        // console.log(`useItem Right`);
+        itemRight = ''
+        setGameMyItemRight(itemRight);
+      }
+    }
 
 
 
@@ -1161,11 +1213,10 @@ const Main = (props) => {
         
       </div>
       <div>
-        속도 : {5 * Math.round(testSpeed/500)} <br/>
+        {/* 속도 : {5 * Math.round(testSpeed/500)} <br/>
         시간 : {Util.formatTime(testCurrentLapTime)} <br/>
-        {/* 현재랩타임 : {testTime} <br/> */}
         방금기록 : { Util.formatTime(testLastLapTime) } { } <br/>
-        최고기록 : { Util.formatTime(Util.toFloat(localStorage.fast_lap_time)) } <br/>
+        최고기록 : { Util.formatTime(Util.toFloat(localStorage.fast_lap_time)) } <br/> */}
       </div>
     </div>
   )

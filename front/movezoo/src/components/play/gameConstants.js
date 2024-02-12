@@ -94,10 +94,10 @@ const MAP_SPRITE = {
 
 const ITEM_SPRITE = { x:    0, y:    0, w:  300, h:  277 }
 const ITEM = {
-  SPEED: { x:    0, y:    0, w:  300, h:  277 }
+  SPEED:            { x:    0, y:    0, w:  300, h:  277 }
 }
 const EFFECT = {
-  speedup: { x:    0, y:    0, w:  1200, h:  675, frameCount: 2 }
+  speedup:          { x:    0, y:    0, w: 1200, h:  675, frameCount:  2 }
 }
 
 
@@ -241,5 +241,6 @@ export {
   BACKGROUND_SPRITE_FILE_NAME,
   MAP_SPRITE,
   ITEM_SPRITE,
-  EFFECT
+  EFFECT,
+  ITEM
 }

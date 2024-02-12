@@ -85,36 +85,43 @@ const MyOvVideo = (props) => {
           // const rightEarTragionY = faces[0]?.keypoints[4]?.y;
           // const leftEarTragionY = faces[0]?.keypoints[5]?.y;
 
-          // 좌우 이동 detect
-          if (noseX < centerX - sensitivity) {
-            data.isLeftKeyPressed = false;
-            data.isRightKeyPressed = true;
-            // console.log("Right");
-          } else if (noseX > centerX + sensitivity) {
-            data.isRightKeyPressed = false;
-            data.isLeftKeyPressed = true;
-            // console.log("Left");
-          } else {
-            data.isRightKeyPressed = false;
-            data.isLeftKeyPressed = false;
-          }
+          // 게임이 시작됐을 때 detect
+          if(data.isGameStart) {
 
-          // 고개들기(뒤로젖히기) detect
-          if ( rightEarTragionY > noseY && leftEarTragionY > noseY) {
-            data.isRun = false;
-            data.isBreak = true;
-            // console.log(`break!!!`)
-          } else {
-            data.isRun = true;
-            data.isBreak = false;
-          }
+            // 좌우 이동 detect
+            if (noseX < centerX - sensitivity) {
+              data.isLeftKeyPressed = false;
+              data.isRightKeyPressed = true;
+              // console.log("Right");
+            } else if (noseX > centerX + sensitivity) {
+              data.isRightKeyPressed = false;
+              data.isLeftKeyPressed = true;
+              // console.log("Left");
+            } else {
+              data.isRightKeyPressed = false;
+              data.isLeftKeyPressed = false;
+            }
 
-          // 고개 왼쪽으로 돌리기 detect(귀와 코를 기준으로)
-          if (rightEarTragionX < noseX) console.log(`turn left: 왼쪽 아이템 사용`)
-          // if (rightEarTragionX < leftEyeX) console.log(`turn left: 왼쪽 아이템 사용`)
-          // 오른쪽으로 돌리기
-          else if(leftEarTragionX > noseX) console.log(`turn right: 오른쪽 아이템 사용`)
-          // else if(leftEarTragionX > rightEyeX) console.log(`turn right: 오른쪽 아이템 사용`)
+            // 고개들기(뒤로젖히기) detect
+            if ( rightEarTragionY > noseY && leftEarTragionY > noseY) {
+              data.isRun = false;
+              data.isBreak = true;
+              // console.log(`break!!!`)
+            } else {
+              data.isRun = true;
+              data.isBreak = false;
+            }
+
+            // 고개 왼쪽으로 돌리기 detect(귀와 코를 기준으로)
+            if (rightEarTragionX < noseX) data.isLeftItemUse = true;
+            // 오른쪽으로 돌리기
+            else if(leftEarTragionX > noseX) data.isRightItemUse = true;
+            else {
+              data.isLeftItemUse = false;
+              data.isRightItemUse = false;
+            }
+
+          }
 
         } catch (error) {
           console.error('Error detecting faces:', error);

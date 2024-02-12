@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.singlegame-container {
+/* .singlegame-container {
   background-image:url('/public/images/singlebg/Summer6.png');
   background-size: cover;
   @apply min-w-[1000px] min-h-screen flex flex-row justify-center 
@@ -15,30 +15,80 @@
 
 .singlegame-select {
   @apply flex bg-white
-}
+} */
 
-.game {
-  position: relative;
+/* .game {
   width: 100%;
   height: 100%;
 }
 
-singlegame-cam {
-  
-}
 
 .goBack {
   position: absolute;
   top: 0;
   left: 0;
   padding: 10px;
+  z-index: 999;
 }
 
 .webCam {
   position: absolute;
   bottom: 0%;
   height: 20%;
+} */
+
+
+/* 현민 CSS!! */
+.singlegame-container {
+  /* display: flex;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: flex-start; */
+  height: 100vh;
 }
+
+.game {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.over-contents {
+  z-index: 999;
+  width: 100%;
+  max-width: 400px; /* Limit width to 400px */
+}
+.current-time {
+  z-index: 999;
+  position: relative;
+}
+.my-item-list {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.my-item {
+  color: rgba(255, 255, 255, 255);
+  font-size: 40px;
+  margin: 50px;
+  padding: 15px;
+  height: 150px;
+  width: 150px;
+  background-color: rgba(0, 0, 0, 70%);
+  border-radius: 30px;
+
+}
+
+.single-webCam {
+  width: 100%;
+  max-width: 400px; /* Limit width to 400px */
+  height: auto; /* Maintain aspect ratio */
+  @apply
+  opacity-80
+}
+
 
 /* Game */
 
