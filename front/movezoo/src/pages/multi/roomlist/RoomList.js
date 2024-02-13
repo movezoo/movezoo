@@ -72,24 +72,23 @@ function RoomList(props) {
             <div className="roomlist-search">
               <input className="roomlist-search-input" value={searchRooms} onChange={onChange} placeholder="방 찾기" />
             </div>
-            <div className="roomlist-search-button">
-              <button onClick={fetchRoomList}>검색</button>
+            <div className="roomlist-search-button" onClick={fetchRoomList}>
+              <button>검색</button>
             </div>
-            <div className="roomlist-match">
-              <button className="roomlist-match-button" onClick={fastEnterRoom}>
+            <div className="roomlist-match" onClick={fastEnterRoom}>
+              <button className="roomlist-match-button">
                 빠른 입장
               </button>
             </div>
-            <div className="roomlist-make">
-              <button>
+            
                 <Makeroom
+                  className="roomlist-make"
                   createRoom={props.createRoom}
                   enterRoom={props.enterRoom}
                   setPage={props.setPage}
                   // func={props.func}
                 />
-              </button>
-            </div>
+              
           </div>
 
           <Link to="/main">
