@@ -32,17 +32,23 @@ const MAX_FRAME_COUNT = {
 const MAP_SPRITE = {
   map1: {
     BILLBOARD: {
-      billboard_ssafy:  { x:    0, y:    0, w: 1000, h:  766 },
-      billboard:        { x:    0, y:    0, w: 1000, h:  765 },
+      billboard_ssafy10:  { x:    0, y:    0, w: 1000, h:  1000 },
+      billboard_ssafy11:  { x:    0, y:    0, w: 1000, h:  1000 },
+      billboard_news:     { x:    0, y:    0, w: 1000, h:  1000 },
     },
     TREE: {
       dead_tree1:       { x:    0, y:    0, w:  556, h:  995 },
       dead_tree2:       { x:    0, y:    0, w:  872, h:  982 },
-      dead_tree3:       { x:    0, y:    0, w:  988, h:  296 },
-      stump1:           { x:    0, y:    0, w:  756, h:  960 },
       tree1:            { x:    0, y:    0, w:  657, h:  992 },
       tree2:            { x:    0, y:    0, w:  942, h:  992 },
       tree3:            { x:    0, y:    0, w:  985, h:  875 },
+      tree4:            { x:    0, y:    0, w:  400, h:  800 },
+      tree5:            { x:    0, y:    0, w:  400, h:  800 },
+      tree6:            { x:    0, y:    0, w:  400, h:  800 }
+    },
+    STUFF: {
+      house:            { x:    0, y:    0, w:  1200, h:  1200 },
+      well:             { x:    0, y:    0, w:  400, h:  400 }
     }
   },
   
@@ -147,18 +153,18 @@ const COLORS = {
 // 게임 배경 이미지 위치 및 크기
 
 // for map1
-// const BACKGROUND = {
-//   HILLS: { x:   0, y:   0, w: 1280, h: 2480 },
-//   SKY:   { x:   0, y: 0, w: 1280, h: 420 },
-//   FARAWAY: { x:   0, y: 0, w: 1280, h: 370 }
-// };
+const BACKGROUND = {
+  HILLS: { x:   0, y:   0, w: 1280, h: 480 },
+  SKY:   { x:   0, y: 0, w: 1280, h: 420 },
+  FARAWAY: { x:   0, y: 0, w: 1280, h: 370 }
+};
 
 // for map2
-const BACKGROUND = {
-  HILLS:    { x:   0, y: 0, w: 1280, h: 720 },
-  SKY:      { x:   0, y: 0, w: 1280, h: 720 },
-  FARAWAY:  { x:   0, y: 0, w: 1920, h: 840 }
-};
+// const BACKGROUND = {
+//   HILLS:    { x:   0, y: 0, w: 1280, h: 720 },
+//   SKY:      { x:   0, y: 0, w: 1280, h: 720 },
+//   FARAWAY:  { x:   0, y: 0, w: 1920, h: 840 }
+// };
 // 게임 스프라이트 정보
 
 // SPRITES.동물이름.액션[이름].방향 : [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}] // 프레임별로 있음
