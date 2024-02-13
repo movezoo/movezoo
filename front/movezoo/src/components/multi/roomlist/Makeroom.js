@@ -54,7 +54,7 @@ function Makeroom(props) {
 
   return (
     <div>
-      <div onClick={openModal}>방 만들기</div>
+      <div className="roomlist-make" onClick={openModal}>방 만들기</div>
 
       <Modal
         isOpen={isOpen}

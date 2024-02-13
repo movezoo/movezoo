@@ -32,7 +32,7 @@
 }
 
 .roomlist-info {
-  @apply flex items-center justify-between mt-5 ml-5 mr-10 mb-4;
+  @apply flex items-center justify-between mt-8 ml-8 mr-8 mb-4;
 }
 
 .roomlist-info-choose {
@@ -58,13 +58,13 @@
 .roomlist-search-button {
   @apply w-20 h-10 mr-40 flex items-center justify-center rounded-lg
   bg-black text-white
-  hover:scale-110 transition duration-300
+  hover:scale-110 transition duration-300 active:bg-gray-800 cursor-pointer
 }
 
 .roomlist-match{
-  @apply w-[120px] h-12 flex items-center justify-center rounded-lg mr-4 bg-green-500 text-white
+  @apply w-[120px] h-12 flex items-center justify-center rounded-lg ml-10 mr-4 bg-green-500 text-white
   text-xl
-  hover:scale-110 transition duration-300
+  hover:scale-110 transition duration-300 hover:bg-green-600 cursor-pointer
 }
 
 
@@ -72,7 +72,7 @@
 .roomlist-make{
   @apply w-[120px] h-12 flex items-center justify-center rounded-lg mr-4 bg-green-500 text-white
   text-xl
-  hover:scale-110 transition duration-300
+  hover:scale-110 transition duration-300 hover:bg-green-600 cursor-pointer
 }
 
 .roomlist-table{
