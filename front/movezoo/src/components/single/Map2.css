@@ -8,7 +8,7 @@
 }
 
 .map-header {
-  @apply  w-[300px] flex flex-row items-center justify-center mt-5
+  @apply  w-[228px] flex flex-row items-center justify-center mt-5
   mb-5 cursor-default
 }
 
