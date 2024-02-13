@@ -819,6 +819,7 @@ const Main = (props) => {
      * 지정된 길이 및 높이의 저 롤링 언덕 시퀀스를 추가합니다.
      * @param {number} num - 언덕 시퀀스의 길이.
      * @param {number} height - 언덕의 높이.
+     * 450
      */
     const addLowRollingHills = (num, height) => {
       num    = num    || ROAD.LENGTH.SHORT;
@@ -985,18 +986,16 @@ const Main = (props) => {
       // *************************************** map 2 *************************************** 
       map2: () => {
         // 길 세팅 Start ******************************************************************
+        addLowRollingHills();
         addStraight(ROAD.LENGTH.SHORT);
-        addLowRollingHills();
         addSCurves();
-        addCurve(ROAD.LENGTH.LONG, -ROAD.CURVE.HARD, ROAD.HILL.LOW);
+        addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.HARD, ROAD.HILL.LOW);
         addBumps();
-        addLowRollingHills();
-        addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
+        addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
         addStraight();
         addSCurves();
         addHill(ROAD.LENGTH.SHORT, ROAD.HILL.MEDIUM);
         addStraight();
-        addLowRollingHills();
         addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
         addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
         addStraight();
@@ -1016,53 +1015,60 @@ const Main = (props) => {
 
         let sideRandNum = Util.randomChoice([0.5, 1]);
         for(let n = 10; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
-          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(1, 5) + sideRandNum);
-          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(-1, -5) - sideRandNum);
-          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'vampire', Util.randomInt(1, 5) + sideRandNum);
-          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'vampire', Util.randomInt(-1, -5) - sideRandNum);
-          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'zombie', Util.randomInt(1, 5) + sideRandNum);
-          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'zombie', Util.randomInt(-1, -5) - sideRandNum);
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(1, 5) + Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'vampire', Util.randomInt(1, 5) + Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'vampire', Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'zombie', Util.randomInt(1, 5) + Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'zombie', Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1]));
         }
 
         // 랜덤 위치에 나무 생성
-        sideRandNum = Util.randomChoice([0.2, 1]);
         for(let n = 10; n < (segments.length-50); n ++) {
           addSprite(n + Util.randomInt(0,5), 'TREE',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
-            Util.randomInt(1, 5) + sideRandNum
+            Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
           );
           addSprite(n + Util.randomInt(0,5), 'TREE',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
-            Util.randomInt(-1, -5) - sideRandNum
+            Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
           );
         }
 
         // 먼 곳 비어보일까봐 나무
-        for(let n = 10; n < (segments.length-50); n += 5) {
+        for(let n = 10; n < (segments.length-50); n += 3) {
           addSprite(n + Util.randomInt(0,5), 'TREE',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
-            Util.randomInt(-5, -8) - sideRandNum
+            Util.randomInt(-5, -8) - Util.randomChoice([0.2, 1])
           );
           addSprite(n + Util.randomInt(0,5), 'TREE',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
-            Util.randomInt(5, 8) - sideRandNum
+            Util.randomInt(5, 8) - Util.randomChoice([0.2, 1])
           );
         }
 
         // 다양한 위치에 랜덤하게 스프라이트(무덤, 전등, 호박등) 추가
         for(let n = 0; n < (segments.length-50); n += 5) {
-          addSprite(n + Util.randomInt(0, 50), 'GRAVE', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].GRAVE)), Util.randomInt(-1, -7) - sideRandNum);
-          addSprite(n + Util.randomInt(0, 50), 'GRAVE', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].GRAVE)), Util.randomInt(1, 7) + sideRandNum);
+          addSprite(n + Util.randomInt(0, 50), 'GRAVE', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].GRAVE)), Util.randomInt(-1, -7) - Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'GRAVE', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].GRAVE)), Util.randomInt(1, 7) + Util.randomChoice([0.2, 1]));
         }
 
         for(let n = 0; n < (segments.length-50); n += 10) {
-          addSprite(n + Util.randomInt(0, 50), 'LIGHTPOST', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].LIGHTPOST)), Util.randomInt(-1, -7) - sideRandNum);
-          addSprite(n + Util.randomInt(0, 50), 'LIGHTPOST', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].LIGHTPOST)), Util.randomInt(1, 7) + sideRandNum);
+          addSprite(n + Util.randomInt(0, 50), 'LIGHTPOST', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].LIGHTPOST)), Util.randomInt(-1, -7) - Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'LIGHTPOST', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].LIGHTPOST)), Util.randomInt(1, 7) + Util.randomChoice([0.2, 1]));
         }
 
         for(let n = 0; n < (segments.length-50); n += 3) {  
-          addSprite(n + Util.randomInt(0, 50), 'STUFF', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)), Util.randomInt(-1, -7) - sideRandNum);
-          addSprite(n + Util.randomInt(0, 50), 'STUFF', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)), Util.randomInt(1, 7) + sideRandNum);
+          addSprite(n + Util.randomInt(0, 50), 'STUFF', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)), Util.randomInt(-1, -7) -Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'STUFF', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)), Util.randomInt(1, 7) + Util.randomChoice([0.2, 1]));
         }
       
         // 일정한 간격으로 랜덤한 방향으로 물건 및 전등 스프라이트 추가
@@ -1085,19 +1091,31 @@ const Main = (props) => {
 
 
         // 아이템 세팅 Start *******************************************************************************
-        addItem(20, 0.75);
-        addItem(20, 0.25);
-        addItem(20, -0.25);
-        addItem(20, -0.75);
+        addItem(50, 0.75);
+        addItem(50, 0.25);
+        addItem(50, -0.25);
+        addItem(50, -0.75);
 
-        addItem(80, 0.75);
-        addItem(100, 0.25);
-        addItem(60, -0.25);
-        addItem(200, -0.75);
-        addItem(300, 0.75);
-        addItem(800, 0.25);
-        addItem(250, -0.25);
-        addItem(400, -0.75);
+        for(let n = 50; n < (segments.length-450); n += 300) {
+          addItem(n, 0.75);
+          addItem(n, 0.25);
+          addItem(n, -0.25);
+          addItem(n, -0.75);
+        }
+
+        // addItem(20, 0.75);
+        // addItem(20, 0.25);
+        // addItem(20, -0.25);
+        // addItem(20, -0.75);
+
+        // addItem(80, 0.75);
+        // addItem(100, 0.25);
+        // addItem(60, -0.25);
+        // addItem(200, -0.75);
+        // addItem(300, 0.75);
+        // addItem(800, 0.25);
+        // addItem(250, -0.25);
+        // addItem(400, -0.75);
         // 아이템 세팅 End *******************************************************************************
       }
     }
