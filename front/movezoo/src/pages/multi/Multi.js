@@ -36,21 +36,21 @@ function Multi() {
   //창희 추가 end
 
   let OV, currentVideoDevice;
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      event.preventDefault();
-      event.returnValue = "";
-      console.log("exiting test", mySessionId, connectionId);
-      console.log("Exiting page");
-      leaveSession();
-    };
+  // useEffect(() => {
+  //   const handleBeforeUnload = (event) => {
+  //     event.preventDefault();
+  //     event.returnValue = "";
+  //     console.log("exiting test", mySessionId, connectionId);
+  //     console.log("Exiting page");
+  //     leaveSession();
+  //   };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
 
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [mySessionId, connectionId]);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, [mySessionId, connectionId]);
 
 
 
@@ -124,6 +124,14 @@ function Multi() {
       // 상태 업데이트
       setMyRoom({});
     });
+
+    newSession.on("signal:game-start", (event) => {
+      console.log("game start : ", data.userData.userId);
+      console.log("start start session Id", mySessionId);
+      roomGameStart(mySessionId);
+      setPage(3);
+    });
+
     //창희 추가 end//
 
     try {
@@ -248,6 +256,12 @@ function Multi() {
       // 상태 업데이트
       setMyRoom({});
 
+    });
+
+    newSession.on("signal:game-start", (event) => {
+      console.log("game start : ", data.userData.userId);
+      
+      setPage(3);
     });
     //창희 추가 end//
 
@@ -459,7 +473,19 @@ function Multi() {
       throw error;
     }
   };
+const roomGameStart = async(sessionId)=>{
+  const response = await axios.post(
+    APPLICATION_SERVER_URL + "api/room/start",
+    {
+      roomSessionId: sessionId,
+    },
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 
+  console.log("roomGameStart result : ",response.data)
+}
   //방 입장을 위한 토큰 발급받기(백에서 발급된 세션아이디로 join)
   const createToken = async (sessionId) => {
     console.log("createToken ", sessionId, myUserName);
@@ -526,6 +552,7 @@ function Multi() {
         <Room
           setPage={setPage}
           session={session}
+          myRoom={myRoom}
           mainStreamManager={mainStreamManager}
           subscribers={subscribers}
           setSubscribers={setSubscribers}

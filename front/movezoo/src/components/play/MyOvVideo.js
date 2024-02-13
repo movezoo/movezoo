@@ -298,7 +298,7 @@ const MyOvVideo = (props) => {
             left: 0,
             right: 0,
             textAlign: "center",
-            zIndex: 8,
+            // zIndex: 8,
             // width: 640,
             // height: 480,
             transform: "scale(-1,1)",
