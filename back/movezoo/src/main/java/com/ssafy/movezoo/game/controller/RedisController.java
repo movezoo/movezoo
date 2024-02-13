@@ -178,10 +178,10 @@ public class RedisController {
         });
 
         for(Room room : roomList){
-            if(!room.isRoomStatus() && room.getMaxUserCount()>room.getCurrentUserCount() && room.getSecretRoomPassword()!=null){
+            if(!room.isRoomStatus() && room.getMaxUserCount()>room.getCurrentUserCount() && room.getSecretRoomPassword()==null){
 
                 Session session = openvidu.getActiveSession(room.getRoomSessionId());
-                if(session==null || session.getConnections().size()==0) continue;
+                if(session==null || session.getConnections().isEmpty()) continue;
 
                 RoomResponseDto roomResponseDto = RoomResponseDto.builder()
                         .roomSessionId(room.getRoomSessionId())
