@@ -19,7 +19,7 @@ function Single() {
     <div className="single-container">
       
       <Link className="Back" to="/main">
-        <FaAnglesLeft className="mr-2" />   <p>뒤로가기</p>
+        <FaAnglesLeft className="mr-2" /><p>뒤로가기</p>
       </Link>
       
       {/* header */}
@@ -39,7 +39,7 @@ function Single() {
               {loading ? (
                 <h1 className="txtLoading">Loading...</h1>
               ) : (
-                <Webcam className="single-webCam" mirrored={true} />
+                <Webcam className="single-body-webCam" mirrored={true} />
               )}
             
           </div>
