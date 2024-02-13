@@ -10,7 +10,7 @@
 }
 
 .room-header {
-  @apply w-[1200px] flex justify-start items-start p-5
+  @apply w-[1000px] relative flex justify-start items-start mb-5 mt-3
 }
 
 .room-name {
@@ -19,7 +19,7 @@
 
 .room-body-card {
   background-color: rgba(247, 254, 231, 0.6);
-  @apply w-[1200px] min-w-[1200px] max-h-[525px] flex flex-col
+  @apply w-[1000px] min-w-[1000px] max-h-[525px] flex flex-col
   rounded-3xl mb-10;
 }
 
@@ -32,34 +32,34 @@
 }
 
 .room-body-cam {
-  @apply w-[700px] flex flex-wrap items-center justify-between ;
+  @apply w-full flex flex-wrap items-center justify-between ;
 }
 
 .room-webCam {
-  @apply w-[300px] flex items-center justify-center
+  @apply w-[225px] flex items-center justify-center
   rounded-3xl overflow-hidden;
 }
 
 .room-option {
-  @apply w-[500px] flex flex-col items-center justify-between ml-10
-}
-
-.room-select {
-  @apply w-[500px] flex
-}
-
-.room-map-select {
-  @apply w-[250px] flex flex-col
+  @apply w-[450px] flex flex-row justify-center ml-5
 }
 
 .room-chat {
-  @apply w-[250px] h-[250px] flex justify-center items-center mt-5 mb-5
+  @apply w-[225px] h-[450px] flex justify-center items-center
   bg-lime-50 rounded-2xl
 }
 
+.room-select {
+  @apply w-[200px] flex flex-col justify-between ml-5
+}
+
+.room-map-select {
+  @apply w-[200px] flex
+}
 
 .room-charact-select-button {
-  @apply text-2xl
+  @apply w-[200px] h-[100px] flex justify-center items-center 
+  bg-lime-50 rounded-2xl
 }
 
 .room-start-select {
