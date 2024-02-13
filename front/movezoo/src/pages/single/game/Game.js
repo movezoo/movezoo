@@ -29,13 +29,13 @@ function Game() {
 
   // 디버깅
   useEffect(() => {
-    console.log(`gameMyItemLeft : ${gameMyItemLeft}`);
-    console.log(`gameMyItemRight : ${gameMyItemRight}`);
+    // console.log(`gameMyItemLeft : ${gameMyItemLeft}`);
+    // console.log(`gameMyItemRight : ${gameMyItemRight}`);
   }, [gameMyItemLeft, gameMyItemRight])
 
   useEffect(() => {
 
-    setIsLoading(true); // 로딩 시작
+    // setIsLoading(true); // 로딩 시작
 
     const initializeFaceDetector = async () => {
       const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
@@ -47,151 +47,153 @@ function Game() {
         runtime: 'tfjs', // or 'tfjs'
         modelType: 'lite'
       };
-      // const faceDetector = await faceDetection.createDetector(model, detectorConfig);
       detector.current = await faceDetection.createDetector(model, detectorConfig);
       handDetector.current = await handPoseDetection.createDetector(handModel, handDetectorConfig);
-      // setDetector(faceDetector);
     };
     initializeFaceDetector();
 
 
     const detect = async () => {
-      if (detector.current && videoRef.current) {
-        const estimationConfig = { flipHorizontal: false };
+      const estimationConfig = { flipHorizontal: false };
 
-        // hand detect
-        try {
-          const video = videoRef.current.video;
-          const videoWidth = video.videoWidth;
-          const videoHeight = video.videoHeight;
-          video.width = videoWidth;
-          video.height = videoHeight;
-          const hands = await handDetector.current.estimateHands(video, estimationConfig);
-          const centerX = videoWidth / 2;
-          const leftX = videoWidth; 
-          const rightX = 0;
+      // VideoRef가 null이 아닐때 실행
+      if(!!videoRef.current) {
+        const video = videoRef.current.video;
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
+        video.width = videoWidth;
+        video.height = videoHeight;
+        // 손 디텍트 Start ***********
+        if(!!handDetector.current) {
+          try {
+            const hands = await handDetector.current.estimateHands(video, estimationConfig);
+            const centerX = videoWidth / 2;
+            const leftX = videoWidth; 
+            const rightX = 0;
 
-          // 손을 인식 성공했다면
-          if(!!hands) {
-            let isLeftTouch = false;
-            let isRightTouch = false;
-            hands.forEach(hand => {
-              hand.keypoints.forEach(point => {
-                // 왼쪽              
-                if (point.x > leftX - centerX/2) {
-                  isLeftTouch = true;
-                // 오른쪽
-                } else if(point.x < rightX + centerX/2) { 
-                  isRightTouch = true;
-                }
+            // 손을 인식 성공했다면
+            if(!!hands) {
+              let isLeftTouch = false;
+              let isRightTouch = false;
+              hands.forEach(hand => {
+                hand.keypoints.forEach(point => {
+                  // 왼쪽              
+                  if (point.x > leftX - centerX/2) {
+                    isLeftTouch = true;
+                  // 오른쪽
+                  } else if(point.x < rightX + centerX/2) { 
+                    isRightTouch = true;
+                  }
+                })
+                // console.log(hand.keypoints[0].x)
+                // console.log(hands)
               })
-              // console.log(hand.keypoints[0].x)
-              // console.log(hands)
+              
+
+              if (isLeftTouch) {
+                data.isLeftItemUse = true;
+                // console.log(`왼쪽 아이템 사용`)
+              } else if(isRightTouch) {
+                data.isRightItemUse = true;
+                // console.log(`오른쪽 아이템 사용`)
+              } else {
+                data.isLeftItemUse = false;
+                data.isRightItemUse = false;
+              }
+            }
+
+          } catch(error) {
+            // console.log(error);
+          }
+        }
+        // 손 디텍트 End ***********
+
+        // 얼굴 디텍트 Start ***********
+        if (!!detector.current) {
+          try {
+            const faces = await detector.current.estimateFaces(video, estimationConfig);
+
+            if( faces.length === 0 ) console.log(`no face`);
+            // console.log(faces);
+            // 화면 기준 - 화면의 중앙을 기준으로 코의 좌표의 위치에 따른 진행 방향 결정, 민감도 설정 가능
+            const centerX = videoWidth / 2;
+            let sensitivity = 50; // 민감도
+
+
+            let noseX, noseY, rightEarTragionX, rightEarTragionY, leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX;
+            faces[0]?.keypoints.forEach((obj) => {
+              if(obj.name === 'noseTip') {
+                noseX = obj.x;
+                noseY = obj.y;
+                // 캠 반전때문에 방향을 반대로 값을 넣어줌
+              } else if(obj.name === 'rightEarTragion') {
+                leftEarTragionX = obj.x;
+                leftEarTragionY = obj.y;
+              } else if(obj.name === 'leftEarTragion') {
+                rightEarTragionX = obj.x
+                rightEarTragionY = obj.y;
+              } else if(obj.name === 'rightEye') {
+                leftEyeX = obj.x;
+              } else if(obj.name === 'leftEye') {
+                rightEyeX = obj.x;
+              }
+
+
+              // noseTip
+              // rightEarTragion
+              // leftEarTragion
+              // leftEye
+              // rightEye
+              // mouthCenter
             })
-            
+            // const rightEarTragionY = faces[0]?.keypoints[4]?.y;
+            // const leftEarTragionY = faces[0]?.keypoints[5]?.y;
 
-            if (isLeftTouch) {
-              data.isLeftItemUse = true;
-              // console.log(`왼쪽 아이템 사용`)
-            } else if(isRightTouch) {
-              data.isRightItemUse = true;
-              // console.log(`오른쪽 아이템 사용`)
-            } else {
-              data.isLeftItemUse = false;
-              data.isRightItemUse = false;
+            // 게임이 시작됐을 때 detect
+            if(data.isGameStart) {
+
+              // 좌우 이동 detect
+              if (noseX < centerX - sensitivity) {
+                data.isLeftKeyPressed = false;
+                data.isRightKeyPressed = true;
+                // console.log("Right");
+              } else if (noseX > centerX + sensitivity) {
+                data.isRightKeyPressed = false;
+                data.isLeftKeyPressed = true;
+                // console.log("Left");
+              } else {
+                data.isRightKeyPressed = false;
+                data.isLeftKeyPressed = false;
+              }
+
+              // 고개들기(뒤로젖히기) detect
+              if ( rightEarTragionY > noseY && leftEarTragionY > noseY) {
+                data.isRun = false;
+                data.isBreak = true;
+                // console.log(`break!!!`)
+              } else {
+                data.isRun = true;
+                data.isBreak = false;
+              }
+
+              // // 고개 왼쪽으로 돌리기 detect(귀와 코를 기준으로)
+              // if (rightEarTragionX < noseX) data.isLeftItemUse = true;
+              // // 오른쪽으로 돌리기
+              // else if(leftEarTragionX > noseX) data.isRightItemUse = true;
+              // else {
+              //   data.isLeftItemUse = false;
+              //   data.isRightItemUse = false;
+              // }
+
             }
+          } catch (error) {
+            // console.error('Error detecting faces:', error);
           }
-
-        } catch(error) {
-          // console.log(error);
         }
-
-        try {
-          const video = videoRef.current.video;
-          const videoWidth = video.videoWidth;
-          const videoHeight = video.videoHeight;
-          video.width = videoWidth;
-          video.height = videoHeight;
-          const faces = await detector.current.estimateFaces(video, estimationConfig);
-
-          if( faces.length === 0 ) console.log(`no face`);
-          // console.log(faces);
-          // 화면 기준 - 화면의 중앙을 기준으로 코의 좌표의 위치에 따른 진행 방향 결정, 민감도 설정 가능
-          const centerX = videoWidth / 2;
-          let sensitivity = 50; // 민감도
-
-
-          let noseX, noseY, rightEarTragionX, rightEarTragionY, leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX;
-          faces[0]?.keypoints.forEach((obj) => {
-            if(obj.name === 'noseTip') {
-              noseX = obj.x;
-              noseY = obj.y;
-              // 캠 반전때문에 방향을 반대로 값을 넣어줌
-            } else if(obj.name === 'rightEarTragion') {
-              leftEarTragionX = obj.x;
-              leftEarTragionY = obj.y;
-            } else if(obj.name === 'leftEarTragion') {
-              rightEarTragionX = obj.x
-              rightEarTragionY = obj.y;
-            } else if(obj.name === 'rightEye') {
-              leftEyeX = obj.x;
-            } else if(obj.name === 'leftEye') {
-              rightEyeX = obj.x;
-            }
-
-
-            // noseTip
-            // rightEarTragion
-            // leftEarTragion
-            // leftEye
-            // rightEye
-            // mouthCenter
-          })
-          // const rightEarTragionY = faces[0]?.keypoints[4]?.y;
-          // const leftEarTragionY = faces[0]?.keypoints[5]?.y;
-
-          // 게임이 시작됐을 때 detect
-          if(data.isGameStart) {
-
-            // 좌우 이동 detect
-            if (noseX < centerX - sensitivity) {
-              data.isLeftKeyPressed = false;
-              data.isRightKeyPressed = true;
-              // console.log("Right");
-            } else if (noseX > centerX + sensitivity) {
-              data.isRightKeyPressed = false;
-              data.isLeftKeyPressed = true;
-              // console.log("Left");
-            } else {
-              data.isRightKeyPressed = false;
-              data.isLeftKeyPressed = false;
-            }
-
-            // 고개들기(뒤로젖히기) detect
-            if ( rightEarTragionY > noseY && leftEarTragionY > noseY) {
-              data.isRun = false;
-              data.isBreak = true;
-              // console.log(`break!!!`)
-            } else {
-              data.isRun = true;
-              data.isBreak = false;
-            }
-
-            // // 고개 왼쪽으로 돌리기 detect(귀와 코를 기준으로)
-            // if (rightEarTragionX < noseX) data.isLeftItemUse = true;
-            // // 오른쪽으로 돌리기
-            // else if(leftEarTragionX > noseX) data.isRightItemUse = true;
-            // else {
-            //   data.isLeftItemUse = false;
-            //   data.isRightItemUse = false;
-            // }
-
-          }
-          
-        } catch (error) {
-          console.error('Error detecting faces:', error);
-        }
+        // 얼굴 디텍트 End ***********
       }
+
+
     };
 
 
