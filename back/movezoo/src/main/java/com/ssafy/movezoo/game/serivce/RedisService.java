@@ -58,7 +58,7 @@ public class RedisService {
             // 해당 세션ID로 유효한 세션이 없으면 방 제거
             Session session = openvidu.getActiveSession(sessionId);
 
-            if (session == null || session.getConnections().size()==0) {
+            if (session == null || session.getConnections().isEmpty()) {
 //                log.info("starvation session close {}",sessionId);
                 deleteRoom(room.getId());
             }
