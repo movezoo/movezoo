@@ -35,21 +35,23 @@ function Main() {
   };
 
   useEffect(() => {
-    if (!userData.userData) {
+    if (userData.userData === null) {
       axios.get('/api/current-user')
         .then(response => {
-          const userDataFromServer = response.data;
-          console.log(userDataFromServer)
-          setUserData(userDataFromServer);
-          setCoin(userDataFromServer.coin);
-          setNickName(userDataFromServer.nickname);
-          setProfileImgUrl(userDataFromServer.profileImgUrl);
+          // const userDataFromServer = response.data;
+          // console.log(userDataFromServer)
+          const newSession = {
+            loggedIn: true,
+            sessionId: response.data.sessionId,
+            userData: response.data, // 받아온 사용자 정보를 userData에 저장
+          };
+          setUserData(newSession);
         })
         .catch(error => {
           console.error('Error fetching user data:', error);
         });
     }
-  }, [userData, setCoin, setNickName, setUserData, setProfileImgUrl]);
+  }, [setUserData]);
 
   // 페이지 로드 시 localStorage에서 userData 상태 로드
   useEffect(() => {
