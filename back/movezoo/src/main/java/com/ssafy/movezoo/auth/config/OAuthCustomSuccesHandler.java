@@ -41,6 +41,9 @@ public class OAuthCustomSuccesHandler extends SimpleUrlAuthenticationSuccessHand
 
         setDefaultTargetUrl("/main");
 
+        log.info(authentication.getPrincipal().toString());
+        log.info(authentication.getName());
+
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
         log.info("소셜 로그인 성공 - 사용자명: {}", userDetails.getUsername());
