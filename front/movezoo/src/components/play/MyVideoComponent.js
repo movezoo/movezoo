@@ -48,7 +48,7 @@ const MyVideoComponent = (props) => {
             isPlayingGame={isPlayingGame}
            />
           <div>
-            <p>{getNicknameTag()}</p>
+            <p style={{ textAlign: "center" }}>{getNicknameTag()}</p>
           </div>
         </div>
       ) : null}

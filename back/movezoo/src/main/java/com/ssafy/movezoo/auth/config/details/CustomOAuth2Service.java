@@ -1,6 +1,7 @@
 package com.ssafy.movezoo.auth.config.details;
 
 import com.ssafy.movezoo.auth.config.OAuthAttributes;
+import com.ssafy.movezoo.game.serivce.RacerService;
 import com.ssafy.movezoo.user.domain.User;
 import com.ssafy.movezoo.user.dto.UserResponseDto;
 import com.ssafy.movezoo.user.repository.UserRepository;
@@ -28,6 +29,7 @@ import java.util.Random;
 public class CustomOAuth2Service extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
     private final HttpSession session;
+    private final RacerService racerService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -77,10 +79,24 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
 
         // 소셜로그인시 기존 회원이 존재하면 이메일만 업데이트 해 기존 데이터 보존
     private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.findByGoogleEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getEmail()))
-                .orElse(attributes.toEntity());
-        return userRepository.save(user);
+//        User user = userRepository.findByGoogleEmail(attributes.getEmail())
+//                .map(entity -> entity.update(attributes.getEmail()))
+//                .orElse(attributes.toEntity());
+        User user = attributes.toEntity();
+
+        Optional<User> findUser = userRepository.findByGoogleEmail(attributes.getEmail());
+        if (!findUser.isPresent()){
+            User saveUser = userRepository.save(user);
+
+            for (int i = 1; i <= 4; i++){
+                racerService.addMyRacer(saveUser.getUserId(), i);
+            }
+
+            user.setUserEmail(user.getGoogleUserEmail());
+            log.info("소셜 로그인 회원가입 : {}", user.toString());
+        }
+
+        return user;
     }
 
 }
