@@ -126,10 +126,8 @@ function Multi() {
     });
 
     newSession.on("signal:game-start", (event) => {
-      console.log("방장입니다. 난 함수 실행 안해요", data.userData.userId);
-      // changeSession();
-      // 상태 업데이트
-      setMyRoom({});
+      console.log("game start : ", data.userData.userId);
+      setPage(3);
     });
 
     //창희 추가 end//

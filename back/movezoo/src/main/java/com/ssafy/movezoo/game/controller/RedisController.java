@@ -267,19 +267,23 @@ public class RedisController {
 
     // 방 나가기 (방장 -> 방 폭파 / 방장 X -> 방 퇴장)
     @PatchMapping("/room/exit")
-    public ResponseEntity<String> exitRoom(Authentication authentication, @RequestBody(required = true) Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException {
+    public ResponseEntity<Map<String,Integer>> exitRoom(Authentication authentication, @RequestBody(required = true) Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException {
         String sessionId = (String) params.get("roomSessionId");
         String connectionId = (String) params.get("connectionId");
+        String resultKey = "userCount";
+
+        Map<String ,Integer> result = new HashMap<>();
+        result.put(resultKey,-1);
 
         log.info("room exit {} {}", sessionId, connectionId);
         if(sessionId == null || connectionId == null){
-            return ResponseEntity.status(HttpStatus.OK).body("already out user");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
 
         Optional<Room> findRoom = redisService.findByRoomSessionId(sessionId);
         if (findRoom.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body("not exist room");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }
 
         Room room = findRoom.get();
@@ -288,7 +292,7 @@ public class RedisController {
         // 나가려는 사용자가 방장 X -> 퇴장, 세션에서도 제외한다.(프론트에서 보이지 않아도 백엔드쪽에는 정보가 남아있다, connectionId 제거)
         redisService.exitRoom(room.getId());
         Session session = openvidu.getActiveSession(sessionId);
-        if (session == null) return ResponseEntity.status(HttpStatus.OK).body("not exist session " + sessionId);
+        if (session == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         List<Connection> connections = session.getConnections();
 
 //        String result = "";
@@ -300,8 +304,13 @@ public class RedisController {
             }
         }
 
+        Optional<Room> updateRoom = redisService.findByRoomSessionId(sessionId);
+        if(updateRoom.isPresent()){
+            result.put(resultKey,updateRoom.get().getCurrentUserCount());
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }
         //세션에 연결된 connection이 0명이면 session close해야한다 -> 방장이 나가는 경우 세션을 close한다
-        return ResponseEntity.status(HttpStatus.OK).body(connectionId + " out");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
 
 
