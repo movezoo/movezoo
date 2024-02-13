@@ -73,7 +73,7 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
         session.setAttribute("user", new UserResponseDto(user));
 
         log.info("OAuth2User loadUser - 로그인한 유저 attributes : " + oAuth2User.getAttributes().toString());
-
+        log.info("OAuth2User loadUser - 넣을 유저 : "+user.toString());
         return new CustomUserDetails(user);
     }
 
@@ -94,9 +94,11 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
 
             user.setUserEmail(user.getGoogleUserEmail());
             log.info("소셜 로그인 회원가입 : {}", user.toString());
+
+            return saveUser;
         }
 
-        return user;
+        return findUser.get();
     }
 
 }
