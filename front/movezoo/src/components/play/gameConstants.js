@@ -157,9 +157,9 @@ const COLORS = {
 
 // for map2
 const BACKGROUND = {
-  HILLS: { x:   0, y:   0, w: 1280, h: 960 },
-  SKY:   { x:   0, y: 0, w: 1280, h: 720 },
-  FARAWAY: { x:   0, y: 0, w: 5120, h: 960 }
+  HILLS:    { x:   0, y:   0, w: 640, h: 960 },
+  SKY:      { x:   0, y: 0, w: 1280, h: 960 },
+  FARAWAY:  { x:   0, y: 0, w: 2560, h: 960 }
 };
 // 게임 스프라이트 정보
 
