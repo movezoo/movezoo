@@ -30,7 +30,7 @@ const updateFrameIndex = () => {
 }
 
 let checkGameFrameCount = 0;
-let frameInterval = 3; // 프레임 간격(default: 1, 2: 게임2프레임 마다 애니메이션프레임증가)
+let frameInterval = 1; // 프레임 간격(default: 1, 2: 게임2프레임 마다 애니메이션프레임증가)
 
 // const totalsFrames = {
 //   run: 21
