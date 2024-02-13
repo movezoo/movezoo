@@ -53,7 +53,7 @@ function Multi() {
   }, [mySessionId, connectionId]);
 
   const handleChangeSessionId = (e) => {
-    setMySessionId(e.target.value);  
+    setMySessionId(e.target.value);
   };
 
   const handleChangeUserName = (e) => {
@@ -118,7 +118,7 @@ function Multi() {
 
     newSession.on("signal:master-out", (event) => {
       console.log("받다 마스터");
-      leaveSession();
+      disconnectionStream();
       alert("방장이 방을 나갔습니다.");
 
       // 상태 업데이트
@@ -230,7 +230,7 @@ function Multi() {
     newSession.on("signal:master-out", (event) => {
       console.log("받다 마스터");
 
-      leaveSession();
+      disconnectionStream();
 
       // 상태 업데이트
       setMyRoom({});
@@ -301,7 +301,7 @@ function Multi() {
       console.error("Error joining session:", error);
     }
   };
-  
+
   const exitRoom = async () => {
     await axios.patch(
       APPLICATION_SERVER_URL + "api/room/exit",
@@ -326,19 +326,13 @@ function Multi() {
   };
 
   const leaveSession = async () => {
-    //1.mySessionId로 룸을 들고온다
     const masterId = myRoom.roomMasterId;
 
 
     console.log("Exit ", mySessionId, masterId);
 
-    //방장일 경우
-    //signal을 보내 모든 유저의 세션을 닫도록한다. 또한 redis에서 방을 삭제한다
-
-    //문제!!!! 방장이 아닌애들ㅇ alert이 안나온다
-    //마스터구별을 어떻게 하는지 모르겟다
     if (masterId === data.userData.userId) {
-      console.log("out? ", connectionId);
+      console.log("master out[ masterId, userId]", masterId, data.userData.userId);
       //레디스에서 방삭제
       await deleteRoom();
 
@@ -350,27 +344,25 @@ function Multi() {
           })
           .then(() => {
             console.log("master out signal sned");
-            if (mainStreamManager) {
-              mainStreamManager.stream.disposeWebRtcPeer();
-            }
-            if (publisher) {
-              publisher.stream.disposeWebRtcPeer();
-            }
+            disconnectionStream();
           })
           .catch((error) => {
             console.error(error);
           });
       }
     } else {
-      console.log("exitroom direct")
       await exitRoom();
+      disconnectionStream();
     }
 
     //방장이 나가면서 세션을 없에기때문에 캠이 계속 켜져있다
-    if (session) {
-      session.disconnect();
-    }
+    // if (session) {
+    //   session.disconnect();
+    // }
+  };
 
+
+  const leaveSessionSetInfo = () => {
     setIsPlayingGame(false);
     setSession(undefined);
     setSubscribers([]);
@@ -380,8 +372,18 @@ function Multi() {
     setPublisher(undefined);
     console.log("leave session complete!!!");
     navigate("/main");
-  };
+  }
+  const disconnectionStream = () => {
+    if (mainStreamManager) {
+      mainStreamManager.stream.disposeWebRtcPeer();
+    }
+    if (publisher) {
+      publisher.stream.disposeWebRtcPeer();
+    }
+    leaveSessionSetInfo();
+  }
 
+  //disconnectionSession
   const switchCamera = async () => {
     try {
       const devices = await OV.getDevices();
@@ -425,10 +427,12 @@ function Multi() {
     try {
       const response = await axios.post(
         APPLICATION_SERVER_URL + "api/room",
-        { roomMode : roomInfo.roomMode,
-          roomTitle : roomInfo.roomTitle,
-          roomPassword : roomInfo.roomPassword,
-          maxRange : roomInfo.maxRange },
+        {
+          roomMode: roomInfo.roomMode,
+          roomTitle: roomInfo.roomTitle,
+          roomPassword: roomInfo.roomPassword,
+          maxRange: roomInfo.maxRange
+        },
         {
           headers: { "Content-Type": "application/json" },
         }
@@ -495,10 +499,10 @@ function Multi() {
 
   return (
     <div>
-      {page === 1 ? 
-        <RoomList 
-          setPage={setPage} 
-          func={func} 
+      {page === 1 ?
+        <RoomList
+          setPage={setPage}
+          func={func}
           createRoom={createRoom}
           enterRoom={enterRoom}
           mySessionId={mySessionId}
@@ -512,8 +516,8 @@ function Multi() {
           setSubscribers={setSubscribers}
           publisher={publisher}
           mySessionId={mySessionId}
-          connectionId = {connectionId}
-          chatMessage = {chatMessage}
+          connectionId={connectionId}
+          chatMessage={chatMessage}
           setChatMessage={setChatMessage}
           chatMessages={chatMessages}
           setChatMessages={setChatMessages}
