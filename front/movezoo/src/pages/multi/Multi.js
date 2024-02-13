@@ -36,21 +36,21 @@ function Multi() {
   //창희 추가 end
 
   let OV, currentVideoDevice;
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      event.preventDefault();
-      event.returnValue = "";
-      console.log("exiting test", mySessionId, connectionId);
-      console.log("Exiting page");
-      leaveSession();
-    };
+  // useEffect(() => {
+  //   const handleBeforeUnload = (event) => {
+  //     event.preventDefault();
+  //     event.returnValue = "";
+  //     console.log("exiting test", mySessionId, connectionId);
+  //     console.log("Exiting page");
+  //     leaveSession();
+  //   };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
 
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [mySessionId, connectionId]);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, [mySessionId, connectionId]);
 
 
 
