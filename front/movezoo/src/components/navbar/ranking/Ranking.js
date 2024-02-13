@@ -116,7 +116,7 @@ const Ranking = () => {
               )}
             </div>
 
-            <hr className=''/>
+            <hr className='ranking-line'/>
             
             <div className='ranking-my'>
             {userLaptime && (
