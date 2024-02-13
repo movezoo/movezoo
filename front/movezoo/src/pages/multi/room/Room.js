@@ -171,7 +171,7 @@ const Room = (props) => {
               </div>
               <div className="room-start-select">
                 {myRoom.roomMasterId === data.userData.userId?
-                <Start setPage={setPage}/>:<Ready />
+                <Start setPage={setPage} session={session}/>:<Ready />
                 }
               </div>
             </div>
