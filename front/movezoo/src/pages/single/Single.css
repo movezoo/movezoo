@@ -40,7 +40,7 @@
   @apply w-full flex items-center justify-center ;
 }
 
-.single-webCam {
+.single-body-webCam {
   @apply w-full flex items-center justify-center
   rounded-3xl;
 }

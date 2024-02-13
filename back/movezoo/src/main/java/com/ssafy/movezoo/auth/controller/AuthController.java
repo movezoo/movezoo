@@ -244,9 +244,9 @@ public class AuthController {
             UserResponseDto userResponseDto = new UserResponseDto(user);
             return ResponseEntity.ok().body(userResponseDto);
         } else {
-            System.out.println("authentication 없음");
+            log.info("authentication 없음");
             
-            return null;
+            return ResponseEntity.badRequest().body(null);
         }
     }
 }

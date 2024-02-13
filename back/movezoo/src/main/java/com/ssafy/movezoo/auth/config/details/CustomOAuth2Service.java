@@ -68,6 +68,8 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
 //            userRepository.save(user);
 //        }
 
+        user.setUserEmail(user.getGoogleUserEmail());
+
         session.setAttribute("user", new UserResponseDto(user));
 
         log.info("OAuth2User loadUser - 로그인한 유저 attributes : " + oAuth2User.getAttributes().toString());
