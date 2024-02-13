@@ -238,7 +238,8 @@ public class AuthController {
         } else if (authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             User user = userService.findById(Integer.parseInt(userDetails.getUsername()));
-            System.out.println("AuthController currentUser : " + user.getUserEmail());
+
+            log.info("AuthController currentUser : {}", user.toString() );
 
             UserResponseDto userResponseDto = new UserResponseDto(user);
             return ResponseEntity.ok().body(userResponseDto);
