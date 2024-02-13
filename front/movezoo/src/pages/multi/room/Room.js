@@ -73,6 +73,7 @@ import Back from "../../../components/multi/room/Back.js";
 import Map from "../../../components/multi/room/Map.js";
 import Chat from "../../../components/multi/room/Chat.js";
 import Start from "../../../components/multi/room/Start.js";
+import Select from "../../../components/select/Select";
 import Cam from "../../../components/play/Cam.js";
 import MyVideoComponent from "../../../components/play/MyVideoComponent.js";
 import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
@@ -115,7 +116,9 @@ const Room = (props) => {
         <div>
           <h1 className="room-name">Multi Play</h1>
         </div>
-        <Back style={{ right: "0px", bottom: "0px" }} leaveSession={leaveSession} />
+        <div style={{ position: "absolute", right: "0", bottom: "0" }}>
+          <Back leaveSession={leaveSession} />
+        </div>
       </div>
 
       {/*body*/}
@@ -141,11 +144,7 @@ const Room = (props) => {
           
           </div>
 
-          <div className="room-selects">
-
-            <div className="room-map-select">
-              <Map />
-            </div>
+          <div className="room-option">
             <div className="room-chat">
               <Chat
               session={session}
@@ -154,11 +153,18 @@ const Room = (props) => {
               setChatMessage={setChatMessage}
               chatMessages={chatMessages}
               setChatMessages={setChatMessages}
-            />
+              />
             </div>
-            {/* 시작 버튼*/}
-            <div className="start-select">
-              <Start setPage={setPage}/>
+            <div className="room-select">
+              <div className="room-map-select">
+                <Map />
+              </div>
+              <div className="room-charact-select-button">
+                <Select />
+              </div>
+              <div className="room-start-select">
+                <Start setPage={setPage}/>
+              </div>
             </div>
           </div>
 
