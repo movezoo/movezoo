@@ -2,6 +2,7 @@ import Modal from "react-modal";
 import axios from 'axios';
 import { useRef, useState, useEffect } from "react";
 import "./Makeroom.css";
+import { IoCloseSharp } from "react-icons/io5";
 
 function Makeroom(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,75 +61,77 @@ function Makeroom(props) {
         isOpen={isOpen}
         // onRequestClose={closeModal}
         style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.75)', // 투명도를 0.75로 설정한 검은색 배경
+          },
           content: {
-            width: "500px",
-            height: "550px",
+            width: "400px",
+            height: "450px",
             margin: "auto",
-            border: "2px solid black",
+            borderRadius: '30px',
           },
         }}
       >
         <div className="makeroom-container">
-          <div className="makeroom-close" onClick={closeModal}>
-            X
+          <div className='makeroom-header'>
+            <IoCloseSharp className='exit-button' onClick={closeModal} />
           </div>
-          <div className="makeroom-title">방 만들기</div>
-          <div className="makeroom-name">
-            <p>방 제목</p>
-            <input
-              ref={roomTitleRef}
-              style={{ width: "70%", border: "solid black 1px" }}
-            />
-          </div>
-          <div className="makeroom-password">
-            <p>비밀번호</p>
-            <input
-              ref={secretRoomPasswordRef}
-              style={{ width: "70%", border: "solid black 1px" }}
-            />
-          </div>
-          <div className="makeroom-people">인원수
-            <div className="makeroom-people-btn">
-              <div className="makeroom-people-minus" onClick={onClickMinus}>-</div>
-              <div className="makeroom-people-num">{maxUserCount}</div>
-              <div className="makeroom-people-plus" onClick={onClickPlus}>+</div>
+
+          <div className="makeroom-body">
+            <div className="makeroom-title">
+              <p>방 만들기</p>
             </div>
-          </div>
-          <div className="makeroom-type">
-            <div className="makeroom-option">
-              <div
-                className={isTeam ? "makeroom-option-not" : "makeroom-option-selected"}
-                onClick={onClickSolo}
-              >
-                개인전
+
+            <div className="makeroom-name">
+              <div>
+                <p>방 제목</p>
               </div>
-              <div
-                className={isTeam ? "makeroom-option-selected" : "makeroom-option-not"}
-                onClick={onClickTeam}
-              >
-                팀전
+              <div>
+                <input className="makeroom-name-input" ref={roomTitleRef}/>
               </div>
             </div>
-            <div className="makeroom-option">
-              <div
-                className={isItem ? "makeroom-option-not" : "makeroom-option-selected"}
-                onClick={onClickSpeed}
-              >
-                스피드
+
+            <div className="makeroom-password">
+              <p>비밀번호</p>
+              <input className="makeroom-password-input" ref={secretRoomPasswordRef}/>
+            </div>
+
+            <div className="makeroom-people">
+              <div>
+                <p>인원수</p>
               </div>
-              <div
-                className={isItem ? "makeroom-option-selected" : "makeroom-option-not"}
-                onClick={onClickItem}
-              >
-                아이템
+              <div className="makeroom-people-btn">
+                <div className="makeroom-people-minus" onClick={onClickMinus}>-</div>
+                <div className="makeroom-people-num">{maxUserCount}</div>
+                <div className="makeroom-people-plus" onClick={onClickPlus}>+</div>
               </div>
             </div>
-          </div>
-          <div className="makeroom-check">
-            <div className="makeroom-confirm" onClick={onClickConfirm}>
-              확인
+
+            <div className="makeroom-type">
+              <div className="makeroom-option">
+                <div
+                  className={isItem ? "makeroom-option-not" : "makeroom-option-selected"}
+                  onClick={onClickSpeed}
+                >
+                  <p>스피드</p>
+                </div>
+                <div
+                  className={isItem ? "makeroom-option-selected" : "makeroom-option-not"}
+                  onClick={onClickItem}
+                >
+                  <p>아이템</p>
+                </div>
+              </div>
             </div>
+            
+            <div className="makeroom-check">
+              <div className="makeroom-confirm" onClick={onClickConfirm}>
+                <p>확인</p>
+              </div>
+            </div>
+
           </div>
+
         </div>
       </Modal>
     </div>
