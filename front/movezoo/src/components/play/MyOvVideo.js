@@ -14,7 +14,7 @@ import {
   gameMyItemRightState,
   gameStartCountState,
   gameEndCountState
-} from '../state/state.js'
+} from '../state/gameState.js'
 
 const MyOvVideo = (props) => {
   const { streamManager, mySession, isPlayingGame } = props;
