@@ -1,6 +1,7 @@
 import "./Inforoom.css";
 import Modal from "react-modal";
 import { useRef, useState } from "react";
+import { FaLock } from "react-icons/fa";
 
 
 
@@ -45,21 +46,30 @@ function Inforoom( props ) {
     // state에 필요한 데이터 객체 전달
     <div>
       <div className="inforoom-container" onClick={enterRoom}>
+
         <div className={props.secretRoom ? "inforoom-head-secret" : "inforoom-head"}>
-          <div className="inforoom-title">{props.title}</div>
-          <div className="inforoom-user">
-            {props.secretRoom ? <img src="/images/signup/m_icon_pass.png" width="25px" /> : null}
-            {props.userCount}/{props.userMaxCount}</div>
+          <div className="inforoom-title">
+            {props.title}
+          </div>
+          <div className="inforoom-room-state">
+            <div className="inforoom-secret-icon">
+              {props.secretRoom ? <FaLock /> : null}
+            </div>
+            <div className="inforoom-user-count">
+              {props.userCount}/{props.userMaxCount}
+            </div>
+          </div>
         </div>
+
         <div className="inforoom-body">
+          <div className="inforoom-track">
+            <img src={`/minimap/${images[props.track]}`} alt="mini-map" />
+          </div>
           <div className="inforoom-mode">
             {props.mode === 0 && <>개인전<br/>스피드</>}
             {props.mode === 1 && <>팀전<br/>스피드</>}
             {props.mode === 2 && <>개인전<br/>아이템</>}
             {props.mode === 3 && <>팀전<br/>아이템</>}
-          </div>
-          <div className="inforoom-track">
-            <img src={`/minimap/${images[props.track]}`} alt="mini-map" />
           </div>
         </div>
       </div>
