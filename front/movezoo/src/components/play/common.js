@@ -1,6 +1,6 @@
 import Stats from './stats.js';
 import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKGROUND_SPRITE_FILE_NAME, MAP_SPRITE, EFFECT } from './gameConstants.js';
-import { myGameData, gameStartData } from './data.js';
+import { gameStartData } from './data.js';
 
 
 // 이미지 불러오기

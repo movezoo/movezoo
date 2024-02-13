@@ -11,6 +11,7 @@
     "@mediapipe/face_detection": "^0.4.1646425229",
     "@react-oauth/google": "^0.12.1",
     "@tensorflow-models/face-detection": "^1.0.2",
+    "@tensorflow-models/hand-pose-detection": "^2.0.1",
     "@tensorflow/tfjs-backend-wasm": "^4.16.0",
     "@tensorflow/tfjs-core": "^4.16.0",
     "@testing-library/jest-dom": "^5.17.0",
