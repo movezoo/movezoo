@@ -141,23 +141,26 @@ const Room = (props) => {
           
           </div>
 
-          <div className="room-selects">
+          <div className="room-option">
+            <div className="room-select">
 
-            <div className="room-map-select">
-              <Map />
-            </div>
-            <div className="room-chat">
-              <Chat
-              session={session}
-              connectionId={connectionId}
-              chatMessage={chatMessage}
-              setChatMessage={setChatMessage}
-              chatMessages={chatMessages}
-              setChatMessages={setChatMessages}
-            />
+              <div className="room-map-select">
+                <Map />
+                <Map />
+              </div>
+              <div className="room-chat">
+                <Chat
+                session={session}
+                connectionId={connectionId}
+                chatMessage={chatMessage}
+                setChatMessage={setChatMessage}
+                chatMessages={chatMessages}
+                setChatMessages={setChatMessages}
+                />
+              </div>
             </div>
             {/* 시작 버튼*/}
-            <div className="start-select">
+            <div className="room-start-select">
               <Start setPage={setPage}/>
             </div>
           </div>
