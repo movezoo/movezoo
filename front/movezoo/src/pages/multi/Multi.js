@@ -552,6 +552,7 @@ const roomGameStart = async(sessionId)=>{
         <Room
           setPage={setPage}
           session={session}
+          myRoom={myRoom}
           mainStreamManager={mainStreamManager}
           subscribers={subscribers}
           setSubscribers={setSubscribers}
