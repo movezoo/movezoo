@@ -18,7 +18,7 @@ import {
   gameMyItemRightState,
   gameStartCountState,
   gameEndCountState
-} from '../../../components/state/state.js'
+} from '../../../components/state/gameState.js'
 
 
 function Game() {

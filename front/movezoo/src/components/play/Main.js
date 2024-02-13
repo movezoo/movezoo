@@ -14,7 +14,7 @@ import {
   gameStartCountState, 
   gameEndCountState, 
   singleResultState
-} from '../state/state.js'
+} from '../state/gameState.js'
 
 const localStorage = window.localStorage || {};
 
@@ -32,6 +32,7 @@ const Main = (props) => {
   const [gameStartCount, setGameStartCount] = useRecoilState(gameStartCountState);
   const [gameEndCount, setGameEndCount] = useRecoilState(gameEndCountState);
   const [singleResult, setSingleResult] = useRecoilState(singleResultState);
+  
 
 
   const navigate = useNavigate();
