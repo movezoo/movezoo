@@ -1,4 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .container {
+  width: 300px;
   height: 100%;
   padding: 10px;
   /* border: purple 1px solid; */

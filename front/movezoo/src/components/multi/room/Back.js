@@ -21,7 +21,7 @@ function Back(props) {
         className="inline-flex w-full rounded-md bg-red-600 px-5 py-4 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
         onClick={() => setOpen(true)}
       >
-        나가기
+        X
       </button>
 
       <Transition.Root show={open} as={Fragment}>
