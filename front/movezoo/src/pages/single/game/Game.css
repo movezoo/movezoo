@@ -2,27 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-<<<<<<< HEAD
 /* .singlegame-container {
   background-image:url('/public/images/singlebg/Summer6.png');
-=======
-.singlegame-container {
-  background-color: rgba(0, 0, 0, 0.7);
-  @apply min-w-[1200px] min-h-screen flex justify-center 
-  items-center cursor-default;
-}
-
-.singlegame-container:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('/public/images/mainbg/mainbg.png');
->>>>>>> e100da3a974ed5d3ef3b83ddf0375c7089daecee
   background-size: cover;
-  opacity: 0.7; /* 투명도 조절 */
+  opacity: 0.7; /* 투명도 조절 
   z-index: -1;
 }
 
@@ -39,18 +22,6 @@
   height: 100%;
 }
 
-<<<<<<< HEAD
-=======
-.singlegame-cam-card {
-  background-color: rgba(247, 254, 231, 0.6);
-  @apply absolute top-20 bg-green-200 flex justify-center items-center
-  p-2 rounded-3xl opacity-90
-}
-
-.singlegame-cam {
-  @apply cursor-default
-}
->>>>>>> e100da3a974ed5d3ef3b83ddf0375c7089daecee
 
 .goBack {
   position: absolute;
@@ -76,7 +47,6 @@
   height: 100vh;
 }
 
-<<<<<<< HEAD
 .game {
   position: absolute;
   height: 100%;
@@ -120,19 +90,6 @@
 }
 
 
-=======
-.loading-container {
-  background-image: url('/public/images/mainbg/mainbg.png');
-  background-size: cover;
-  @apply w-full h-screen bg-opacity-80
-}
-
-.loading-body {
-  @apply w-full h-full flex flex-col justify-center items-center
-  text-9xl text-white
-}
-
->>>>>>> e100da3a974ed5d3ef3b83ddf0375c7089daecee
 /* Game */
 
 /****************************************/
