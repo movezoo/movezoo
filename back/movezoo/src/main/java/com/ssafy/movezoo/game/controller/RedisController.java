@@ -79,7 +79,7 @@ public class RedisController {
         try {
             if (dto.getRoomPassword() != null && !dto.getRoomPassword().isEmpty()) {     // 비밀방일 경우
                 Room room = redisService.createSecretRoom(userId, dto);
-                log.info("make s room {}", room);
+                log.info("make secret room {}", room);
                 simpleResponseDto.setMsg("비밀방 생성 성공");
 
                 RoomResponseDto roomResponseDto = RoomResponseDto.builder()
@@ -178,10 +178,10 @@ public class RedisController {
         });
 
         for(Room room : roomList){
-            if(!room.isRoomStatus() && room.getMaxUserCount()>room.getCurrentUserCount()){
+            if(!room.isRoomStatus() && room.getMaxUserCount()>room.getCurrentUserCount() && room.getSecretRoomPassword()!=null){
 
                 Session session = openvidu.getActiveSession(room.getRoomSessionId());
-                if(session==null) continue;
+                if(session==null || session.getConnections().size()==0) continue;
 
                 RoomResponseDto roomResponseDto = RoomResponseDto.builder()
                         .roomSessionId(room.getRoomSessionId())
