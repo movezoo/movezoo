@@ -31,19 +31,31 @@ const Main = (props) => {
   // 게임 시작신호
   useEffect(() => {
     let count = 4; // 실제로 3초부터 출력함
-    // setGameStartCount(count);
-
-    const playCount = setInterval(() => {
-      count-=1;
-      setGameStartCount(count);
-      if(count === 0) data.isGameStart = true;    
-    }, 1000);
     setTimeout(() => {
-      clearInterval(playCount)
-    }, 4000)
-
-    
+      const playCount = setInterval(() => {
+        count-=1;
+        setGameStartCount(count);
+        if(count === 0) {
+          clearInterval(playCount)
+          data.isGameStart = true;    
+        }
+      }, 1000);
+    }, 3000);
   },[])
+
+  // useEffect(() => {
+  //   let count = 10; // 실제로 3초부터 출력함
+  //   // setGameStartCount(count);
+
+  //   const endCount = setInterval(() => {
+  //     setGameStartCount(count);
+  //     count-=1;
+  //     if(count === 0) data.isGameEnd = true;    
+  //   }, 1000);
+  //   setTimeout(() => {
+  //     clearInterval(endCount)
+  //   }, 4000);
+  // })
 
   useEffect(() => {
     const selectMap = gameStartData.selectMap;
@@ -347,13 +359,16 @@ const Main = (props) => {
       if(item === 'speedup') {
         // maxSpeed를 12000으로 증가 후
         maxSpeed = 12000;
-        console.log(`maxSpeed : ${maxSpeed}`)
+        // console.log(`maxSpeed : ${maxSpeed}`)
         // 5초 뒤에 서서히 8000으로 줄어 들게 한다.
         setTimeout(() => {
           const returnSpeed = setInterval(() => {
             maxSpeed -= 500;
-            console.log(`maxSpeed : ${maxSpeed}`)
-            if(maxSpeed === 8000) clearInterval(returnSpeed);
+            // console.log(`maxSpeed : ${maxSpeed}`)
+            if(maxSpeed <= 8000) {
+              maxSpeed = 8000;
+              clearInterval(returnSpeed);
+            }
           }, 500);
         }, 5000);
       }
@@ -600,7 +615,7 @@ const Main = (props) => {
           car         = segment.cars[i];
           // sprite      = car.sprite;
           if(car.playerId === '') continue; // playerId가 아직 갱신이 되지 않았다면 continue
-          console.log(sprites);
+          // console.log(sprites);
           let playerFrameIndex = getPlayerFrameIndex(car.playerId);
           // console.log(`${car.playerCharacter}'s Frame : ${playerFrameIndex}`)
           // try {

@@ -57,44 +57,49 @@ function RoomList(props) {
   }
 
   return (
-    <div className="room-container">
+    <div className="roomlist-container">
       {/* 홈으로, 프로필 */}
-      <div className="room-header">
+      <div className="roomlist-header">
         <div>
-          <h1 className="room-header-name">Multi Play!</h1>
+          <h1 className="roomlist-header-name">Multi Play!</h1>
         </div>
       </div>
 
       {/* 방목록 */}
-      <div className="room-main">
-        <div className="room-info">
-          <div className="room-search">
-            <input value={searchRooms} onChange={onChange} placeholder="방 찾기" style={{ width: "80%" }} />
-            <button style={{ width: "20%", backgroundColor: "burlywood" }} onClick={fetchRoomList}>
-              검색
-            </button>
+      <div className="roomlist-body">
+        <div className="roomlist-info">
+          <div className="roomlist-info-choose">
+            <div className="roomlist-search">
+              <input value={searchRooms} onChange={onChange} placeholder="방 찾기" style={{ width: "80%" }} />
+              <button style={{ width: "20%", backgroundColor: "burlywood" }} onClick={fetchRoomList}>검색</button>
+            </div>
+            <div className="roomlist-match">
+              <button onClick={fastEnterRoom}>
+                빠른 입장
+              </button>
+            </div>
+            <div className="roomlist-make">
+              <button>
+                <Makeroom
+                  createRoom={props.createRoom}
+                  enterRoom={props.enterRoom}
+                  setPage={props.setPage}
+                  // func={props.func}
+                />
+              </button>
+            </div>
           </div>
-          <button className="room-match" onClick={fastEnterRoom}>
-            빠른 입장
-          </button>
-          <button className="room-make">
-            <Makeroom
-              createRoom={props.createRoom}
-              enterRoom={props.enterRoom}
-              setPage={props.setPage}
-              // func={props.func}
-            />
-          </button>
+
           <Link to="/main">
             <IoCloseSharp className='exit-button'/>
           </Link>
+
         </div>
-        <div className="room-info">
-        </div>
-        <div className="room-list">
+
+        <div className="roomlist-table">
           {rooms.length === 0 ? (<div>로딩중...</div>) : (
             rooms.map((room) => (
-              <div className="room-box" key={room.id}>
+              <div className="roomlist-table-box" key={room.id}>
                 <Inforoom
                   key={room.id}
                   title={room.roomTitle}
@@ -113,11 +118,6 @@ function RoomList(props) {
             ))
           )}
         </div>
-      </div>
-
-      {/* 네브바 */}
-      <div className="room-navbar">
-        <Navbar />
       </div>
 
       {/* 백그라운드 음악 */}
