@@ -118,9 +118,7 @@ function Multi() {
 
     newSession.on("signal:master-out", (event) => {
       console.log("받다 마스터");
-      disconnectionStream();
-      alert("방장이 방을 나갔습니다.");
-
+      changeSession();
       // 상태 업데이트
       setMyRoom({});
     });
@@ -229,12 +227,10 @@ function Multi() {
 
     newSession.on("signal:master-out", (event) => {
       console.log("받다 마스터");
-
-      disconnectionStream();
-
+      changeSession();
       // 상태 업데이트
       setMyRoom({});
-      alert("방장이 방을 나갔습니다.");
+
     });
     //창희 추가 end//
 
@@ -326,14 +322,20 @@ function Multi() {
   };
 
   const leaveSession = async () => {
+    //1.mySessionId로 룸을 들고온다
     const masterId = myRoom.roomMasterId;
 
 
     console.log("Exit ", mySessionId, masterId);
 
+    //방장일 경우
+    //signal을 보내 모든 유저의 세션을 닫도록한다. 또한 redis에서 방을 삭제한다
+
+    //문제!!!! 방장이 아닌애들ㅇ alert이 안나온다
+    //마스터구별을 어떻게 하는지 모르겟다
     if (masterId === data.userData.userId) {
-      console.log("master out[ masterId, userId]", masterId, data.userData.userId);
-      //레디스에서 방삭제
+      console.log("out? ", connectionId);
+
       await deleteRoom();
 
       //시그널
@@ -344,25 +346,32 @@ function Multi() {
           })
           .then(() => {
             console.log("master out signal sned");
-            disconnectionStream();
+            // if (mainStreamManager) {
+            //   mainStreamManager.stream.disposeWebRtcPeer();
+            // }
+            // if (publisher) {
+            //   publisher.stream.disposeWebRtcPeer();
+            // }
+            changeSession();
           })
           .catch((error) => {
             console.error(error);
           });
+
+        alert("방이 삭제되었습니다.");
       }
+
     } else {
       await exitRoom();
-      disconnectionStream();
+      changeSession()
+      alert("방장이 나가 방이 삭제되었습니다.");
     }
-
-    //방장이 나가면서 세션을 없에기때문에 캠이 계속 켜져있다
-    // if (session) {
-    //   session.disconnect();
-    // }
   };
 
-
-  const leaveSessionSetInfo = () => {
+  const changeSession = async () => {
+    if (session) {
+      await session.disconnect();
+    }
     setIsPlayingGame(false);
     setSession(undefined);
     setSubscribers([]);
@@ -371,19 +380,9 @@ function Multi() {
     setMainStreamManager(undefined);
     setPublisher(undefined);
     console.log("leave session complete!!!");
-    navigate("/main");
-  }
-  const disconnectionStream = () => {
-    if (mainStreamManager) {
-      mainStreamManager.stream.disposeWebRtcPeer();
-    }
-    if (publisher) {
-      publisher.stream.disposeWebRtcPeer();
-    }
-    leaveSessionSetInfo();
+    // navigate("/main");
   }
 
-  //disconnectionSession
   const switchCamera = async () => {
     try {
       const devices = await OV.getDevices();
