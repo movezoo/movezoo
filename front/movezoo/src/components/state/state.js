@@ -64,10 +64,23 @@ export const gameMyItemRightState = atom({
 
 export const gameStartCountState = atom({
   key: 'gameStartCountState',
-  default: 0
+  default: 3
+})
+export const gameEndCountState = atom({
+  key: 'gameEndCountState',
+  default: 10
+})
+export const gameEndState = atom({
+  key: 'gameEndState',
+  default: false
 })
 
 export const startReadyUserCountState = atom({
   key: 'startReadyUserCountState',
   default: 0
+})
+
+export const singleResultState = atom({
+  key: 'singleResultState',
+  default: {}
 })
