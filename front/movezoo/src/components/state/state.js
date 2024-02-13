@@ -66,3 +66,8 @@ export const gameStartCountState = atom({
   key: 'gameStartCountState',
   default: 0
 })
+
+export const startReadyUserCountState = atom({
+  key: 'startReadyUserCountState',
+  default: 0
+})

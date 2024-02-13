@@ -9,6 +9,8 @@ import { data } from "../../../components/play/data.js";
 import '@mediapipe/face_detection';
 import '@tensorflow/tfjs-backend-webgl';
 import * as faceDetection from '@tensorflow-models/face-detection';
+import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
+
 import { Util } from '../../../components/play/common.js';
 import { useRecoilState } from 'recoil';
 import { gameCurrentTimeState, gameMyItemLeftState, gameMyItemRightState, gameStartCountState } from '../../../components/state/state.js'
@@ -22,6 +24,7 @@ function Game() {
 
   const videoRef = useRef(null);
   const detector = useRef(null);
+  const handDetector = useRef(null);
 
   // 디버깅
   useEffect(() => {
@@ -33,20 +36,72 @@ function Game() {
 
     const initializeFaceDetector = async () => {
       const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
+      const handModel = handPoseDetection.SupportedModels.MediaPipeHands;
       const detectorConfig = {
+        runtime: 'tfjs' // or 'tfjs'
+      };
+      const handDetectorConfig = {
         runtime: 'tfjs', // or 'tfjs'
+        modelType: 'lite'
       };
       // const faceDetector = await faceDetection.createDetector(model, detectorConfig);
       detector.current = await faceDetection.createDetector(model, detectorConfig);
+      handDetector.current = await handPoseDetection.createDetector(handModel, handDetectorConfig);
       // setDetector(faceDetector);
     };
     initializeFaceDetector();
 
-    const detectFaces = async () => {
+
+    const detect = async () => {
       if (detector.current && videoRef.current) {
-        const estimationConfig = { 
-          flipHorizontal: false
-        };
+        const estimationConfig = { flipHorizontal: false };
+
+        // hand detect
+        try {
+          const video = videoRef.current.video;
+          const videoWidth = video.videoWidth;
+          const videoHeight = video.videoHeight;
+          video.width = videoWidth;
+          video.height = videoHeight;
+          const hands = await handDetector.current.estimateHands(video, estimationConfig);
+          const centerX = videoWidth / 2;
+          const leftX = videoWidth; 
+          const rightX = 0;
+
+          // 손을 인식 성공했다면
+          if(!!hands) {
+            let isLeftTouch = false;
+            let isRightTouch = false;
+            hands.forEach(hand => {
+              hand.keypoints.forEach(point => {
+                // 왼쪽              
+                if (point.x > leftX - centerX/2) {
+                  isLeftTouch = true;
+                // 오른쪽
+                } else if(point.x < rightX + centerX/2) { 
+                  isRightTouch = true;
+                }
+              })
+              // console.log(hand.keypoints[0].x)
+              // console.log(hands)
+            })
+            
+
+            if (isLeftTouch) {
+              data.isLeftItemUse = true;
+              // console.log(`왼쪽 아이템 사용`)
+            } else if(isRightTouch) {
+              data.isRightItemUse = true;
+              // console.log(`오른쪽 아이템 사용`)
+            } else {
+              data.isLeftItemUse = false;
+              data.isRightItemUse = false;
+            }
+          }
+
+        } catch(error) {
+          // console.log(error);
+        }
 
         try {
           const video = videoRef.current.video;
@@ -55,12 +110,14 @@ function Game() {
           video.width = videoWidth;
           video.height = videoHeight;
           const faces = await detector.current.estimateFaces(video, estimationConfig);
+
           if( faces.length === 0 ) console.log(`no face`);
           // console.log(faces);
           // 화면 기준 - 화면의 중앙을 기준으로 코의 좌표의 위치에 따른 진행 방향 결정, 민감도 설정 가능
           const centerX = videoWidth / 2;
-          let sensitivity = 50;
-          
+          let sensitivity = 50; // 민감도
+
+
           let noseX, noseY, rightEarTragionX, rightEarTragionY, leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX;
           faces[0]?.keypoints.forEach((obj) => {
             if(obj.name === 'noseTip') {
@@ -117,14 +174,14 @@ function Game() {
               data.isBreak = false;
             }
 
-            // 고개 왼쪽으로 돌리기 detect(귀와 코를 기준으로)
-            if (rightEarTragionX < noseX) data.isLeftItemUse = true;
-            // 오른쪽으로 돌리기
-            else if(leftEarTragionX > noseX) data.isRightItemUse = true;
-            else {
-              data.isLeftItemUse = false;
-              data.isRightItemUse = false;
-            }
+            // // 고개 왼쪽으로 돌리기 detect(귀와 코를 기준으로)
+            // if (rightEarTragionX < noseX) data.isLeftItemUse = true;
+            // // 오른쪽으로 돌리기
+            // else if(leftEarTragionX > noseX) data.isRightItemUse = true;
+            // else {
+            //   data.isLeftItemUse = false;
+            //   data.isRightItemUse = false;
+            // }
 
           }
           
@@ -136,17 +193,15 @@ function Game() {
 
 
     const runFaceDetection = () => {
-      detectFaces();
+      // if(detector.current && videoRef.current) {
+        detect();
+      // }
       requestAnimationFrame(runFaceDetection)
     };
 
-    // runFaceDetection();
-    
-    
     const gameStart = () => {
       runFaceDetection(); // 계속 실행
     }
-
     gameStart();
 
   }, [videoRef]);
