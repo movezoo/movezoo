@@ -5,8 +5,16 @@ import { Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.j
 import { MAX_FRAME_COUNT, PLAYER_SPRITE, MAP_SPRITE, ITEM_SPRITE, EFFECT, ITEM } from './gameConstants.js';
 import { data, myGameData, playerGameDataList, playerCount, gameStartData } from './data.js';
 import { useRecoilState } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 
-import { gameCurrentTimeState, gameMyItemLeftState, gameMyItemRightState, gameStartCountState } from '../state/state.js'
+import {
+  gameCurrentTimeState, 
+  gameMyItemLeftState, 
+  gameMyItemRightState, 
+  gameStartCountState, 
+  gameEndCountState, 
+  singleResultState
+} from '../state/state.js'
 
 const localStorage = window.localStorage || {};
 
@@ -22,8 +30,11 @@ const Main = (props) => {
   const [gameMyItemLeft, setGameMyItemLeft] = useRecoilState(gameMyItemLeftState);
   const [gameMyItemRight, setGameMyItemRight] = useRecoilState(gameMyItemRightState);
   const [gameStartCount, setGameStartCount] = useRecoilState(gameStartCountState);
+  const [gameEndCount, setGameEndCount] = useRecoilState(gameEndCountState);
+  const [singleResult, setSingleResult] = useRecoilState(singleResultState);
 
 
+  const navigate = useNavigate();
   const canvasRef = useRef(null)
 
 
@@ -42,20 +53,6 @@ const Main = (props) => {
       }, 1000);
     }, 3000);
   },[])
-
-  // useEffect(() => {
-  //   let count = 10; // 실제로 3초부터 출력함
-  //   // setGameStartCount(count);
-
-  //   const endCount = setInterval(() => {
-  //     setGameStartCount(count);
-  //     count-=1;
-  //     if(count === 0) data.isGameEnd = true;    
-  //   }, 1000);
-  //   setTimeout(() => {
-  //     clearInterval(endCount)
-  //   }, 4000);
-  // })
 
   useEffect(() => {
     const selectMap = gameStartData.selectMap;
@@ -80,6 +77,7 @@ const Main = (props) => {
     
     let itemLeft = '';
     let itemRight = '';
+    let isStopControl = false;
 
     // View 관련 설정 변수
     let roadWidth      = 2000;                    // 사실상 도로의 반폭, 도로가 -roadWidth에서 +roadWidth로 이어지면 수학이 더 간단해짐
@@ -144,14 +142,6 @@ const Main = (props) => {
       last_lap_time: null,
       fast_lap_time: null
     }
-    // const hud = {
-    //   speed:            { value: null, dom: Dom.get('speed_value')            },
-    //   current_lap_time: { value: null, dom: Dom.get('current_lap_time_value') },
-    //   last_lap_time:    { value: null, dom: Dom.get('last_lap_time_value')    },
-    //   fast_lap_time:    { value: null, dom: Dom.get('fast_lap_time_value')    }
-    // }
-    
-
 
 
 
@@ -191,14 +181,18 @@ const Main = (props) => {
       position = Util.increase(position, dt * speed, trackLength);
       
       // 키 조작에 따른 플레이어 위치 업데이트
-      dx *= (data.centerDistance/5000 * data.sensitivity);
-      dx = dx < 0.05 ? dx : 0.05;
-      if (keyLeft)
-        playerX = playerX - dx;
-      else if (keyRight)
-        playerX = playerX + dx; 
+      // dx *= (data.centerDistance/5000 * data.sensitivity);
+      // dx = dx < 0.05 ? dx : 0.05;
     
-      playerX = playerX - (dx * speedPercent * playerSegment.curve * centrifugal);
+      // 게임이 끝나면 조향이 되지 않는다.
+      if (!isStopControl) {
+        if (keyLeft)
+          playerX = playerX - dx;
+        else if (keyRight)
+          playerX = playerX + dx; 
+
+        playerX = playerX - (dx * speedPercent * playerSegment.curve * centrifugal);
+      }
       
       // 가속, 감속 및 정지 등 속도 관리
       // if (keyFaster) {
@@ -300,6 +294,7 @@ const Main = (props) => {
       hillOffset = Util.increase(hillOffset, hillSpeed * playerSegment.curve * (position-startPosition)/segmentLength, 1);
       treeOffset = Util.increase(treeOffset, treeSpeed * playerSegment.curve * (position-startPosition)/segmentLength, 1);
     
+      // 게임 종료
       // 현재 랩 타임 업데이트 및 최고 랩 타임 확인
       if (position > playerZ) {
         if (currentLapTime && (startPosition < playerZ)) {
@@ -309,15 +304,13 @@ const Main = (props) => {
           lastLapTime    = currentLapTime;
           currentLapTime = 0;
 
+          gameEnd();
+
           if (lastLapTime <= Util.toFloat(localStorage.fast_lap_time)) {
             localStorage.fast_lap_time = lastLapTime;
             updateHud('fast_lap_time', formatTime(lastLapTime));
-            // Dom.addClassName('fast_lap_time', 'fastest');
-            // Dom.addClassName('last_lap_time', 'fastest');
           }
           else {
-            // Dom.removeClassName('fast_lap_time', 'fastest');
-            // Dom.removeClassName('last_lap_time', 'fastest');
           }
           updateHud('last_lap_time', formatTime(lastLapTime));
           // Dom.show('last_lap_time');
@@ -335,6 +328,30 @@ const Main = (props) => {
 
 
       updateUseItem();
+    }
+
+    const gameEnd = () => {
+      isStopControl = true;
+      let count = 10; // 실제로 3초부터 출력함
+      const playCount = setInterval(() => {
+        count-=1;
+        setGameEndCount(count);
+        if(count === 0) {
+          // 여기서 게임을 완전 종료 시켜줘야 함
+          clearInterval(playCount)
+          data.isGameEnd = true;
+          goResult();
+        }
+      }, 1000);
+    }
+
+    const goResult = () => {
+      setSingleResult({
+        time: formatTime(lastLapTime)
+      })
+      if (gameStartData.mode === 'single') {
+        navigate('/single/result');
+      }
     }
     
 
@@ -368,7 +385,7 @@ const Main = (props) => {
             maxSpeed -= 500;
             // console.log(`maxSpeed : ${maxSpeed}`)
             if(maxSpeed <= 8000) {
-              maxSpeed = 8000;
+              maxSpeed = 8000; // 혹시몰라서 8000으로 다시 설정
               clearInterval(returnSpeed);
             }
           }, 500);
@@ -1384,26 +1401,18 @@ const Main = (props) => {
   
   return (
     <div>
-      <div id="racer">
-        {/* <div id="hud">
-          <span id="speed"            className="hud"><span id="speed_value" className="value">0</span> mph</span>
-          <span id="current_lap_time" className="hud">Time: <span id="current_lap_time_value" className="value">0.0</span></span> 
-          <span id="last_lap_time"    className="hud">Last Lap: <span id="last_lap_time_value" className="value">0.0</span></span>
-          <span id="fast_lap_time"    className="hud">Fastest Lap: <span id="fast_lap_time_value" className="value"></span></span>
-        </div> */}
-        {/* <canvas id="canvas">
-          Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
-        </canvas> */}
 
+      <div id="racer">
         <canvas id="canvas" ref={canvasRef} {...props}>Loading...</canvas>
-        
       </div>
+
       <div>
         {/* 속도 : {5 * Math.round(testSpeed/500)} <br/>
         시간 : {Util.formatTime(testCurrentLapTime)} <br/>
         방금기록 : { Util.formatTime(testLastLapTime) } { } <br/>
         최고기록 : { Util.formatTime(Util.toFloat(localStorage.fast_lap_time)) } <br/> */}
       </div>
+
     </div>
   )
 }
