@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.room-container {
+  @apply min-w-[1200px] min-h-screen flex flex-col justify-center items-center
+  bg-green-400 cursor-default;
+}
+
+.room-header {
+  @apply w-[1200px] flex justify-start items-start p-5
+}
+
+.room-name {
+  @apply text-8xl text-white justify-start items-start
+}
+
+.room-body-card {
+  background-color: rgba(247, 254, 231, 0.6);
+  @apply w-[1200px] min-w-[1200px] min-h-[700px] flex flex-col
+  rounded-3xl mb-10;
+}
+
+.room-back-button{
+  @apply flex justify-end items-end
+}
+
+.room-body {
+  @apply flex flex-row justify-between m-10
+}
+
+.room-body-cam {
+  @apply w-full flex flex-wrap items-center justify-between ;
+}
+
+.room-webCam {
+  @apply w-96 flex items-center justify-center
+  rounded-3xl overflow-hidden;
+}
+
+.room-selects {
+  @apply w-[400px] flex flex-col items-end justify-between ml-10
+}
+
+
+.room-chat {
+  @apply w-[300px] h-[350px] flex justify-center items-center mt-5 mb-5
+  bg-lime-50 rounded-2xl
+}
+
+
+.charact-select-button {
+  @apply text-2xl
+}
+
+.start-select {
+
+}
