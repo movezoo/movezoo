@@ -3,7 +3,9 @@ import { PLAYER_SPRITE, KEY, COLORS, BACKGROUND, SPRITES, MAX_FRAME_COUNT, BACKG
 import { gameStartData } from './data.js';
 
 
-// 이미지 불러오기
+
+
+
 // import background from './images/background.png';
 // import mute from './images/mute.png';
 // import sprites from './images/sprites.png';
@@ -20,7 +22,6 @@ Object.keys(MAX_FRAME_COUNT).forEach(character => {
     frameIndex[character][action] = 0;
   })
 })
-
 // 프레임 업데이트
 // 현재프레임 = (현재프레임+1) % 최대프레임
 const updateFrameIndex = () => {
