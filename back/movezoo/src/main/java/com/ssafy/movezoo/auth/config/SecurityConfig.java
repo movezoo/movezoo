@@ -102,6 +102,11 @@ public class SecurityConfig {
                                                 userMap.put("loginUser", userResponseDto);
 
                                                 ObjectMapper objectMapper = new ObjectMapper();
+
+                                                //json, encoding설정 
+                                                response.setContentType("application/json");
+                                                response.setCharacterEncoding("utf-8");
+
                                                 response.getWriter().write(objectMapper.writeValueAsString(userMap));
                                                 // 성공 응답을 생성하거나 추가 작업 수행
                                                 response.setStatus(HttpServletResponse.SC_OK);
