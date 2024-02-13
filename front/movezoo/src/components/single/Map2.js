@@ -97,8 +97,8 @@ function Carousel() {
   const [userLaptime, setUserLaptime] = useState(null);
 
   const images = [
-    { id: 1, name: 'map1', image: '/images/minimap/n.png' },
-    { id: 2, name: 'map2', image: '/images/minimap/o.png' }
+    { id: 1, name: 'map1', image: '/images/minimap/map1.png' },
+    { id: 2, name: 'map2', image: '/images/minimap/map2.png' }
   ];
 
   const handlePrevious = () => {
