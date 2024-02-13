@@ -35,7 +35,7 @@ function Game() {
 
   useEffect(() => {
 
-    // setIsLoading(true); // 로딩 시작
+    setIsLoading(true); // 로딩 시작
 
     const initializeFaceDetector = async () => {
       const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
