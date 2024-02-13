@@ -526,6 +526,7 @@ function Multi() {
         <Room
           setPage={setPage}
           session={session}
+          myRoom={myRoom}
           mainStreamManager={mainStreamManager}
           subscribers={subscribers}
           setSubscribers={setSubscribers}
