@@ -117,10 +117,11 @@ function Game() {
             // console.log(faces);
             // 화면 기준 - 화면의 중앙을 기준으로 코의 좌표의 위치에 따른 진행 방향 결정, 민감도 설정 가능
             const centerX = videoWidth / 2;
-            let sensitivity = 50; // 민감도
 
+            let noseX, noseY, rightEarTragionX, rightEarTragionY,
+            leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX,
+            mouthCenterY;
 
-            let noseX, noseY, rightEarTragionX, rightEarTragionY, leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX;
             faces[0]?.keypoints.forEach((obj) => {
               if(obj.name === 'noseTip') {
                 noseX = obj.x;
@@ -136,8 +137,10 @@ function Game() {
                 leftEyeX = obj.x;
               } else if(obj.name === 'leftEye') {
                 rightEyeX = obj.x;
+              } else if(obj.name === 'mouthCenter') {
+                mouthCenterY = obj.y;
               }
-
+              
 
               // noseTip
               // rightEarTragion
@@ -145,13 +148,24 @@ function Game() {
               // leftEye
               // rightEye
               // mouthCenter
+              // 
+              // console.log(`sensitivity : ${}`);
             })
+            
+            let sensitivity = Math.abs(noseY - mouthCenterY)*1.3; // 민감도
+            // console.log(faces[0]?.keypoints);
+            // console.log(`sensitivity : ${faces[0]?.keypoints}`);
+
             // const rightEarTragionY = faces[0]?.keypoints[4]?.y;
             // const leftEarTragionY = faces[0]?.keypoints[5]?.y;
 
             // 게임이 시작됐을 때 detect
+            // console.log(`noseX: ${noseX}, centerX: ${centerX}, sensitivity: ${Math.abs(noseY - mouthCenterY)}`);
+            
+            // noseX: 269.99345779418945, centerX: 320, sensitivity: 32.98797607421875
             if(data.isGameStart) {
-
+              data.centerDistance = Math.abs(centerX - noseX);
+              data.sensitivity = Math.abs(noseY - mouthCenterY); // 얼굴을 움직일 때 가장 값이 변하지 않는 거리
               // 좌우 이동 detect
               if (noseX < centerX - sensitivity) {
                 data.isLeftKeyPressed = false;
@@ -167,7 +181,7 @@ function Game() {
               }
 
               // 고개들기(뒤로젖히기) detect
-              if ( rightEarTragionY > noseY && leftEarTragionY > noseY) {
+              if (rightEarTragionY > noseY && leftEarTragionY > noseY) {
                 data.isRun = false;
                 data.isBreak = true;
                 // console.log(`break!!!`)

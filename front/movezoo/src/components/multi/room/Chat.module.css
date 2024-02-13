@@ -1,12 +1,16 @@
 .container {
   height: 100%;
+  padding: 10px;
   /* border: purple 1px solid; */
 }
 
 .chatLog {
   position: relative;
-  height: 85%;
+  overflow-y: scroll;
+  min-height: 85%;
+  max-height: 85%;
   border: black 1px solid;
+  border-radius: 5px;
 }
 
 .chatInput {
