@@ -39,6 +39,7 @@ function Main() {
       axios.get('/api/current-user')
         .then(response => {
           const userDataFromServer = response.data;
+          console.log(userDataFromServer)
           setUserData(userDataFromServer);
           setCoin(userDataFromServer.coin);
           setNickName(userDataFromServer.nickname);
