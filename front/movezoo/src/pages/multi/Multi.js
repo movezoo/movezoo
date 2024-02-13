@@ -52,6 +52,13 @@ function Multi() {
     };
   }, [mySessionId, connectionId]);
 
+  useEffect(() => {
+    return () => {
+      changeSession();
+    };
+  }, []);
+
+
   const handleChangeSessionId = (e) => {
     setMySessionId(e.target.value);
   };
@@ -357,8 +364,8 @@ function Multi() {
           .catch((error) => {
             console.error(error);
           });
-          changeSession();
-          alert("방이 삭제되었습니다.");
+        changeSession();
+        alert("방이 삭제되었습니다.");
       }
 
     } else {
