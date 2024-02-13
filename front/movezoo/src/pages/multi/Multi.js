@@ -227,6 +227,7 @@ function Multi() {
 
     newSession.on("signal:master-out", (event) => {
       console.log("방장이 나감 ", data.userData.userId);
+      alert("방장이 방을 삭제했습니다.")
       changeSession();
       // 상태 업데이트
       setMyRoom({});
@@ -379,7 +380,7 @@ function Multi() {
     setMainStreamManager(undefined);
     setPublisher(undefined);
     console.log("leave session complete!!!");
-    // navigate("/main");
+    navigate("/main");
   }
 
   const switchCamera = async () => {
