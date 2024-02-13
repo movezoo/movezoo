@@ -51,7 +51,7 @@ function Main() {
           console.error('Error fetching user data:', error);
         });
     }
-  }, [setUserData]);
+  }, [userData.UserData, setUserData]);
 
   // 페이지 로드 시 localStorage에서 userData 상태 로드
   useEffect(() => {
