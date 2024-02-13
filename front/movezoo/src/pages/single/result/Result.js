@@ -5,13 +5,20 @@ import ResultBack from "../../../components/single/result/ResultBack";
 import Record from "../../../components/single/result/Record";
 import "./Result.css";
 
+
+
+
 function Result() {
-  const [loading, setLoading] = useState(true);
+  const [ loading, setLoading ] = useState(true);
+
+
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
       setLoading(false);
     });
   }, []);
+
+
   return (
       <div className="single-result-container">
 

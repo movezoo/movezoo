@@ -1,3 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.roomlist-make {
+  @apply w-[120px] h-12 flex items-center justify-center rounded-lg mr-4 bg-green-500 text-white
+  text-xl
+  hover:scale-110 transition duration-300 hover:bg-green-600 cursor-pointer
+}
+
 .makeroom-container {
   display: flex;
   flex-direction: column;
