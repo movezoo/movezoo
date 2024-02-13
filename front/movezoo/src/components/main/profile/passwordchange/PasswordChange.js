@@ -8,12 +8,10 @@ const ChangePasswordModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [userEmail, setEmail] = useState('');
   const [confirmModal, setConfirmModal] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-  
   const openModal = () => {
     setIsOpen(true);
   };
@@ -24,7 +22,16 @@ const ChangePasswordModal = () => {
   };
 
   const handleChangePassword = (e) => {
-    setPassword(e.target.value);
+    const newPassword = e.target.value;
+    const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
+
+    if (!passwordPattern.test(newPassword)) {
+      setPasswordError('8글자 이상 16글자 미만, 대문자와 특수문자가 각각 1개 이상 포함되어야 합니다.');
+    } else {
+      setPasswordError('');
+    }
+
+    setPassword(newPassword);
   };
 
   const handleChangeConfirmPassword = (e) => {
@@ -55,21 +62,17 @@ const ChangePasswordModal = () => {
   const handlePasswordChange = async () => {
     try {
       const storedUserData = localStorage.getItem('userData');
-        if (!storedUserData) {
-            throw new Error('사용자 정보를 찾을 수 없습니다.');
-        }
+      if (!storedUserData) {
+        throw new Error('사용자 정보를 찾을 수 없습니다.');
+      }
 
       // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
       const userData = JSON.parse(storedUserData);
 
-      console.log(userData)
-
       // 사용자 이메일을 변수에 저장
       const userEmail = userData.userData.userEmail;
 
-      console.log(userEmail)
-
-      await axios.patch('https://i10e204.p.ssafy.io/api/user/password', {userEmail, password}, {
+      await axios.patch('https://i10e204.p.ssafy.io/api/user/password', { userEmail, password }, {
         withCredentials: true,
       });
 
@@ -113,6 +116,7 @@ const ChangePasswordModal = () => {
             </div>
             <div className='password-change'>
               <input className='passwordchange-input' type="password" value={password} onChange={handleChangePassword} placeholder="새 비밀번호" />
+              {passwordError && <p className="error-message">{passwordError}</p>}
               <input className='passwordchange-input' type="password" value={confirmPassword} onChange={handleChangeConfirmPassword} placeholder="비밀번호 확인" />
               {confirmPasswordError && <p className="error-message">{confirmPasswordError}</p>}
             </div>
@@ -126,7 +130,19 @@ const ChangePasswordModal = () => {
       <Modal 
         isOpen={confirmModal}
         onRequestClose={closeModal}
-        className="passwordchangemodal">
+        className="passwordchangemodal"
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0)', // 투명도를 0.75로 설정한 검은색 배경
+          },
+          content: {
+            width: '350px',
+            height: '350px',
+            margin: 'auto',
+            borderRadius: '30px',
+          }
+        }}
+        >
         <div className='passwordconfirm-container'>
           <div className='passwordconfirm-header'>
             <h3>정말 비밀번호를 변경하시겠습니까?</h3>
