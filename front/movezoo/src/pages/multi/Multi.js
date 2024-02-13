@@ -366,6 +366,7 @@ function Multi() {
       await exitRoom();
     }
 
+    //방장이 나가면서 세션을 없에기때문에 캠이 계속 켜져있다
     if (session) {
       session.disconnect();
     }
