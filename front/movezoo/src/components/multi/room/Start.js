@@ -3,7 +3,11 @@ import './Start.css'
 
 function Start(props) {
   const onClick = () =>{
-    if (session && chatMessage.trim() !== "") {
+    const {
+      session
+    } = props
+
+    if (session) {
       session
         .signal({
           to: [],

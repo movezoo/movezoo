@@ -163,7 +163,7 @@ const Room = (props) => {
                 <Select />
               </div>
               <div className="room-start-select">
-                <Start setPage={setPage}/>
+                <Start setPage={setPage} session={session}/>
               </div>
             </div>
           </div>
