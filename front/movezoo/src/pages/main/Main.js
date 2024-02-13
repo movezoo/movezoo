@@ -35,12 +35,12 @@ function Main() {
   };
 
   useEffect(() => {
-    if (!userData.userData) {
+    if (userData.userData === null) {
       axios.get('/api/current-user')
         .then(response => {
           const userDataFromServer = response.data;
           console.log(userDataFromServer)
-          setUserData(userDataFromServer.userData);
+          setUserData({...userDataFromServer});
           setCoin(userDataFromServer.userData.coin);
           setNickName(userDataFromServer.userData.nickname);
           setProfileImgUrl(userDataFromServer.userData.profileImgUrl);
