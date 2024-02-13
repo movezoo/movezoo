@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import Back from "../../../components/single/game/Back";
 import Main from "../../../components/play/Main";
