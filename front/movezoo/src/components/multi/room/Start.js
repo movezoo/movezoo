@@ -2,7 +2,21 @@ import { Link } from "react-router-dom";
 import './Start.css'
 
 function Start(props) {
-  const onClick = () => props.setPage(3)
+  const onClick = () =>{
+    if (session && chatMessage.trim() !== "") {
+      session
+        .signal({
+          to: [],
+          type: "game-start",
+        })
+        .then(() => {
+          console.log("game start done")
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }
   return (
     <div className="start-button" onClick={onClick}>
       <div className="start-link">
