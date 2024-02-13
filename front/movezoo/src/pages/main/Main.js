@@ -35,7 +35,7 @@ function Main() {
   };
 
   useEffect(() => {
-    if (!userData) {
+    if (!userData.userData) {
       axios.get('/api/current-user')
         .then(response => {
           const userDataFromServer = response.data;
