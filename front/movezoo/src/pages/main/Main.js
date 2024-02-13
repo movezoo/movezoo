@@ -40,10 +40,10 @@ function Main() {
         .then(response => {
           const userDataFromServer = response.data;
           console.log(userDataFromServer)
-          setUserData(userDataFromServer);
-          setCoin(userDataFromServer.coin);
-          setNickName(userDataFromServer.nickname);
-          setProfileImgUrl(userDataFromServer.profileImgUrl);
+          setUserData(userDataFromServer.userData);
+          setCoin(userDataFromServer.userData.coin);
+          setNickName(userDataFromServer.userData.nickname);
+          setProfileImgUrl(userDataFromServer.userData.profileImgUrl);
         })
         .catch(error => {
           console.error('Error fetching user data:', error);
