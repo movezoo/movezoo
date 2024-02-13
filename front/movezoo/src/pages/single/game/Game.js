@@ -13,7 +13,7 @@ import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
 
 import { Util } from '../../../components/play/common.js';
 import { useRecoilState } from 'recoil';
-import { gameCurrentTimeState, gameMyItemLeftState, gameMyItemRightState, gameStartCountState } from '../../../components/state/state.js'
+import { gameCurrentTimeState, gameMyItemLeftState, gameMyItemRightState, gameStartCountState, gameEndCountState } from '../../../components/state/state.js'
 
 
 function Game() {
@@ -21,6 +21,7 @@ function Game() {
   const [gameMyItemLeft, setGameMyItemLeft] = useRecoilState(gameMyItemLeftState);
   const [gameMyItemRight, setGameMyItemRight] = useRecoilState(gameMyItemRightState);
   const [gameStartCount, setGameStartCount] = useRecoilState(gameStartCountState);
+  const [gameEndCount, setGameEndCount] = useRecoilState(gameEndCountState);
 
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const videoRef = useRef(null);
@@ -54,6 +55,22 @@ function Game() {
 
 
     const detect = async () => {
+      // 게임 종료 로직
+      if (data.isGameEnd) {
+        data.data = {
+          centerDistance: 0,
+          sensitivity: 0,
+          isLeftKeyPressed: false,
+          isRightKeyPressed: false,
+          isBreak : false,
+          isRun: false, // Test중... false로 바꿔야됨
+          isLeftItemUse: false,
+          isRightItemUse: false,
+          isGameStart: false,
+          isGameEnd: false
+        };
+        return;
+      }
       const estimationConfig = { flipHorizontal: false };
 
       // VideoRef가 null이 아닐때 실행
@@ -247,7 +264,8 @@ function Game() {
         <Main width={1920} height={1080} />
       </div>
 
-      <div className="current-time">카운트다운 : {gameStartCount}</div>
+      <div className="current-time">시작카운트다운 : {gameStartCount}</div>
+      <div className="current-time">종료카운트다운 : {gameEndCount}</div>
       <div className="current-time">시간 : {Util.formatTime(testCurrentLapTime)}</div>
       <div className="over-contents">
         <Webcam
