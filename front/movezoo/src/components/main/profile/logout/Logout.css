@@ -11,8 +11,12 @@
   @apply fixed inset-0 flex items-center justify-center z-50 outline-none focus:outline-none bg-white;
 }
 
-.logout-container {
-  @apply w-[300px] h-[220px]  border-2 border-black max-w-lg mx-auto rounded-lg shadow-lg bg-white overflow-hidden;
+.logout-box {
+  @apply
+  flex
+  flex-col
+  justify-center
+  w-[300px] h-[300px] max-w-lg mx-auto rounded-lg shadow-lg bg-white overflow-hidden;
 }
 
 .logout-header {
