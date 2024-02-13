@@ -234,6 +234,8 @@ function Multi() {
 
     newSession.on("signal:master-out", (event) => {
       console.log("방장이 나감 ", data.userData.userId);
+      console.log("현재 세션 ", session);
+      console.log("현재 세션 ", newSession);
       alert("방장이 방을 삭제했습니다.")
       changeSession();
       // 상태 업데이트
