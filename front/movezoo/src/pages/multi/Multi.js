@@ -13,12 +13,13 @@ function Multi() {
   const APPLICATION_SERVER_URL =
     process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
 
+  const storedUserData = localStorage.getItem('userData');
+  const data = (JSON.parse(storedUserData));
+
   // 게임시작관리(props로 념겨줌)
   const [isPlayingGame, setIsPlayingGame] = useState(false);
   const [mySessionId, setMySessionId] = useState(null);
-  const [myUserName, setMyUserName] = useState(
-    "Participant" + Math.floor(Math.random() * 100)
-  );
+  const [myUserName, setMyUserName] = useState(data.userData.nickname);
   const [session, setSession] = useState(undefined);
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
   const [publisher, setPublisher] = useState(undefined);
@@ -327,8 +328,7 @@ function Multi() {
   const leaveSession = async () => {
     //1.mySessionId로 룸을 들고온다
     const masterId = myRoom.roomMasterId;
-    const storedUserData = localStorage.getItem('userData');
-    const data = (JSON.parse(storedUserData));
+
 
     console.log("Exit ", mySessionId, masterId);
 
@@ -374,7 +374,7 @@ function Multi() {
     setSession(undefined);
     setSubscribers([]);
     setMySessionId(null);
-    setMyUserName("Participant" + Math.floor(Math.random() * 100));
+    setMyUserName(data.userData.nickname);
     setMainStreamManager(undefined);
     setPublisher(undefined);
     console.log("leave session complete!!!");
@@ -486,7 +486,7 @@ function Multi() {
   const func = (sessionId) => {
     console.log(`sessionId: ${sessionId}`);
     setMySessionId(sessionId);
-    setMyUserName(myUserName);
+    setMyUserName(data.userData.nickname);
     setMainStreamManager(mainStreamManager);
     setSubscribers(subscribers);
     setPublisher(publisher);
