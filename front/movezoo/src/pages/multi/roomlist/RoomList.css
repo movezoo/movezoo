@@ -9,6 +9,10 @@
   bg-green-400 cursor-default;
 }
 
+.roomlist-table::-webkit-scrollbar {
+  display: none;
+}
+
 /* 룸 리스트 헤더 */
 .roomlist-header {
   @apply w-[1000px] flex justify-start items-start mb-5 mt-3
@@ -32,48 +36,47 @@
 }
 
 .roomlist-info-choose {
-  @apply flex flex-row
+  @apply flex flex-row items-center
 }
 
 .roomlist-search{
-  display: inline-flex;
-  position: relative;
-  border: solid black 1px;
-  border-radius: 10px;
-  background-color: white;
-  font-size: 25px;
-  width: 40%;
-  text-align: center;
-  overflow: hidden;
   @apply mr-4
 }
 
-.roomlist-match{
-  position: relative;
-  border-radius: 20px;
-  background-color: black;
-  color: white;
-  /* font-weight: bold; */
-  font-size: 25px;
-  text-align: center;
-  width: 20%;
-  @apply rounded-lg mr-4
+.roomlist-search-input {
+  @apply w-80 h-10 rounded-lg border-2 border-green-400 outline-none
 }
 
+.roomlist-search-input:focus {
+  @apply  border-green-600
+}
+
+.roomlist-search-input::placeholder {
+  @apply pl-5 text-gray-300 text-xl
+}
+
+.roomlist-search-button {
+  @apply w-20 h-10 mr-40 flex items-center justify-center rounded-lg
+  bg-black text-white
+  hover:scale-110 transition duration-300
+}
+
+.roomlist-match{
+  @apply w-[120px] h-12 flex items-center justify-center rounded-lg mr-4 bg-green-500 text-white
+  text-xl
+  hover:scale-110 transition duration-300
+}
+
+
+
 .roomlist-make{
-  position: relative;
-  border-radius: 20px;
-  background-color: black;
-  color: white;
-  /* font-weight: bold; */
-  font-size: 25px;
-  text-align: center;
-  width: 20%;
-  @apply mr-10 rounded-lg
+  @apply w-[120px] h-12 flex items-center justify-center rounded-lg mr-4 bg-green-500 text-white
+  text-xl
+  hover:scale-110 transition duration-300
 }
 
 .roomlist-table{
-  @apply h-[400px] flex flex-wrap justify-stretch overflow-y-scroll ml-1
+  @apply h-[400px] flex flex-wrap justify-stretch overflow-y-scroll ml-4
 }
 
 .roomlist-table-box {
