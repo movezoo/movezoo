@@ -1,4 +1,6 @@
 const data = {
+  centerDistance: 0,
+  sensitivity: 0,
   isLeftKeyPressed: false,
   isRightKeyPressed: false,
   isBreak : false,
