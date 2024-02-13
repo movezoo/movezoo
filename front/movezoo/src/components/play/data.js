@@ -7,10 +7,11 @@ const data = {
   isRightItemUse: false,
   isGameStart: false
 };
+
 const gameStartData = {
   mode: 'multi',
-  selectMap: 'map1',
-  selectCharacter: 'husky',
+  selectMap: 'map2',
+  selectCharacter: 'fox',
 }
 
 const playerCount = { value: 1 };

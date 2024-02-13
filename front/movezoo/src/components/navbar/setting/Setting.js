@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { AiFillSetting, AiFillSound } from 'react-icons/ai';
 import './Setting.css';
 import { IoCloseSharp } from "react-icons/io5";
+// import { AiFillSound } from "react-icons/ai";
 
 const Setting = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +31,8 @@ const Setting = () => {
   return (
     <div className='setting'>
       <div className='setting-button-container' onClick={openModal}>
-        <AiFillSetting className='settingButton'/>
+        <AiFillSound className='settingButton'/>
+        {/* <AiFillSetting className='settingButton'/> */}
       </div>
 
       <Modal 
@@ -38,20 +40,21 @@ const Setting = () => {
       onRequestClose={closeModal}
       style={{
         overlay: {
-          backgroundColor: 'rgba(0, 0, 0, 0.75)', // 투명도를 0.75로 설정한 검은색 배경
+          backgroundColor: 'rgba(0, 0, 0, 0.5)', // 투명도를 0.75로 설정한 검은색 배경
         },
         content: {
-          width: '500px',
-          height: '500px',
+          width: '300px',
+          height: '170px',
           margin: 'auto',
           borderRadius: '30px',
+          backgroundColor: 'rgba(247, 254, 231, 0.6)', 
         }
       }}
       >
         <div className='setting-container'>
           <div className='setting-header'>
             <div className='setting-header-name'>
-              <h1>설정</h1>
+              
             </div>
             <div className='shop-header-exit'>
               <IoCloseSharp className='exit-button' onClick={closeModal} />

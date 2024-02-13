@@ -43,7 +43,7 @@ public class Room {
         this.roomMode = roomMode;
         this.roomMasterId = userId;
         this.roomTitle = roomTitle;
-        this.currentUserCount = 1;
+        this.currentUserCount = 0;
         this.maxUserCount = maxUserCount;
         this.creationDateTime = LocalDateTime.now(); // 현재 날짜와 시간 저장
     }
@@ -54,11 +54,11 @@ public class Room {
         this.secretRoom = false;
         this.secretRoomPassword = null;
         this.roomStatus = false;    // 시작 x
-        this.trackId = 1;           // 1번 맵
+        this.trackId = 0;           // 1번 맵
         this.roomMode = roomMode;
         this.roomMasterId = userId;
         this.roomTitle = roomTitle;
-        this.currentUserCount = 1;
+        this.currentUserCount = 0;
         this.maxUserCount = maxUserCount;
         this.creationDateTime = LocalDateTime.now(); // 현재 날짜와 시간 저장
     }

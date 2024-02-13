@@ -3,31 +3,32 @@
 @tailwind utilities;
 
 .single-result-container {
-  background-image:url('/public/images/singlebg/Summer6.png');
+  background-image:url('/public/images/mainbg/mainbg.png');
   background-size: cover;
-  @apply min-w-[1000px] min-h-screen flex flex-col justify-center 
-  items-center bg-green-400 cursor-default;
+  @apply min-w-[1200px] min-h-screen flex flex-col justify-center items-center
+  bg-green-400 cursor-default;
 }
 
 .result-header {
-  @apply  w-[1000px] flex flex-col mb-5
+  @apply  w-[900px] flex justify-start items-start p-5
 }
 
 .result-name {
-  @apply text-7xl text-white justify-center ml-8
+  @apply text-7xl text-white justify-start items-start
+}
+
+.result-body-card {
+  background-color: rgba(247, 254, 231, 0.6);
+  @apply w-[900px] min-w-[900px] flex flex-col
+  rounded-3xl mb-10;
 }
 
 .result-body {
-  @apply w-[1000px] h-[528px] flex flex-row items-center justify-center
+  @apply flex flex-row justify-between m-10
 }
 
 .result-body-cam {
-  @apply w-[680px] h-[528px] flex items-center justify-center  bg-white 
-  rounded-3xl p-10;
-}
-
-.result-select {
-  @apply w-[300px] h-[528px] flex flex-col items-center justify-between
+  @apply w-full flex items-center justify-center ;
 }
 
 .result-webcam {
@@ -35,22 +36,26 @@
   rounded-3xl;
 }
 
+.result-select {
+  @apply w-[400px] flex flex-col items-end justify-between
+}
+
 .result-record {
-  @apply w-[250px] h-[250px] flex justify-center items-center 
-  bg-white rounded-2xl
+  @apply w-[228px] h-[200px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
+  cursor-default;
 }
 
 .result-reward {
-  @apply w-[250px] h-[150px] flex flex-col justify-between items-center
-  bg-white rounded-2xl
+  @apply w-[228px] h-[84px] flex flex-col justify-center items-center 
+  bg-lime-50 rounded-2xl
 }
 
-.reward-alarm {
-  @apply text-3xl pt-5
-}
+/* .reward-alarm {
+  @apply text-3xl
+} */
 
 .reward-coin {
-  @apply text-xl pb-14
+  @apply text-3xl
 }
 
 .result-back-button {
