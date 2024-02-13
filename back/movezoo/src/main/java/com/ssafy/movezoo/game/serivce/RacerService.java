@@ -88,7 +88,7 @@ public class RacerService {
     }
 
     public MyRacer addMyRacer(int userId,int racerId){
-        MyRacer myRacer =new MyRacer();
+        MyRacer myRacer = new MyRacer();
 
         User user = userService.findById(userId);
         Racer racer = racerRepository.findById(racerId);
