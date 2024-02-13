@@ -127,6 +127,8 @@ function Multi() {
 
     newSession.on("signal:game-start", (event) => {
       console.log("game start : ", data.userData.userId);
+      console.log("start start session Id", mySessionId);
+      roomGameStart(mySessionId);
       setPage(3);
     });
 
@@ -258,6 +260,7 @@ function Multi() {
 
     newSession.on("signal:game-start", (event) => {
       console.log("game start : ", data.userData.userId);
+      
       setPage(3);
     });
     //창희 추가 end//
@@ -470,7 +473,19 @@ function Multi() {
       throw error;
     }
   };
+const roomGameStart = async(sessionId)=>{
+  const response = await axios.post(
+    APPLICATION_SERVER_URL + "api/room/start",
+    {
+      roomSessionId: sessionId,
+    },
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 
+  console.log("roomGameStart result : ",response.data)
+}
   //방 입장을 위한 토큰 발급받기(백에서 발급된 세션아이디로 join)
   const createToken = async (sessionId) => {
     console.log("createToken ", sessionId, myUserName);
