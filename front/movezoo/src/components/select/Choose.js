@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import './Choose.css';
 import { useRecoilState } from 'recoil';
 import { userCoin } from '../state/state';
+import { data } from '../play/data.js';
 
 function Character ({ closeModal }) {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
@@ -15,14 +16,14 @@ function Character ({ closeModal }) {
 
 
   const chracterImages = [
-    { id: 1, name: '시바', image: '/images/shop/shiba.png' },
-    { id: 2, name: '당나귀', image: '/images/shop/donkey.png' },
-    { id: 3, name: '여우', image: '/images/shop/fox.png' },
-    { id: 4, name: '사슴', image: '/images/shop/deer.png' },
-    { id: 5, name: '허스키', image: '/images/shop/husky.png' },
-    { id: 6, name: '늑대', image: '/images/shop/wolf.png' },
-    { id: 7, name: '말', image: '/images/shop/horse.png' },
-    { id: 8, name: '순록', image: '/images/shop/stag.png' },
+    { id: 1, flieName: 'shiba', name: '시바', image: '/images/shop/shiba.png' },
+    { id: 2, flieName: 'donkey', name: '당나귀', image: '/images/shop/donkey.png' },
+    { id: 3, flieName: 'fox', name: '여우', image: '/images/shop/fox.png' },
+    { id: 4, flieName: 'deer', name: '사슴', image: '/images/shop/deer.png' },
+    { id: 5, flieName: 'husky', name: '허스키', image: '/images/shop/husky.png' },
+    { id: 6, flieName: 'wolf', name: '늑대', image: '/images/shop/wolf.png' },
+    { id: 7, flieName: 'horse', name: '말', image: '/images/shop/horse.png' },
+    { id: 8, flieName: 'stag', name: '순록', image: '/images/shop/stag.png' },
   ];
     
   const noCharacterImages = [
@@ -38,6 +39,7 @@ function Character ({ closeModal }) {
 
   const handleCharacterClick = (character) => {
     setSelectedCharacter(character);
+    data.gameStartData.character = character.fileName;
   };
 
   
@@ -75,7 +77,8 @@ function Character ({ closeModal }) {
       
       if (selectedCharacter) {
         const updatedSelectedCharacter = userImages.find(image => image.id === selectedCharacter.id);
-        setSelectedCharacter(updatedSelectedCharacter);
+        setSelectedCharacter(updatedSelectedCharacter)
+        data.gameStartData.character = updatedSelectedCharacter.fileName;
       }
 
       // 코인

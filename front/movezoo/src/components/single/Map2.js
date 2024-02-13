@@ -86,11 +86,12 @@
 
 // test
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./Map2.css";
 import { AiFillCaretLeft } from "react-icons/ai";
 import { AiFillCaretRight } from "react-icons/ai";
 import axios from "axios";
+import { data } from '../play/data.js'
 
 function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -141,6 +142,9 @@ function Carousel() {
     // 선택된 맵의 id를 userData에 추가
     userData.selectedMapId = images[newIndex].id;
   
+    data.gameStartData.mode = 'single';
+    data.gameStartData.selectMap = userData.selectedMapId;
+    
     // 수정된 userData를 다시 로컬 스토리지에 저장
     localStorage.setItem('userData', JSON.stringify(userData));
   };
