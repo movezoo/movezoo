@@ -10,16 +10,16 @@
 }
 
 .result-header {
-  @apply  w-[1200px] flex justify-start items-start p-5
+  @apply  w-[900px] flex justify-start items-start p-5
 }
 
 .result-name {
-  @apply text-8xl text-white justify-start items-start
+  @apply text-7xl text-white justify-start items-start
 }
 
 .result-body-card {
   background-color: rgba(247, 254, 231, 0.6);
-  @apply w-[1200px] min-w-[1200px] flex flex-col
+  @apply w-[900px] min-w-[900px] flex flex-col
   rounded-3xl mb-10;
 }
 
@@ -37,16 +37,16 @@
 }
 
 .result-select {
-  @apply w-[400px] flex flex-col items-end justify-between ml-10
+  @apply w-[400px] flex flex-col items-end justify-between
 }
 
 .result-record {
-  @apply w-[300px] h-[340px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
+  @apply w-[228px] h-[200px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
   cursor-default;
 }
 
 .result-reward {
-  @apply w-[300px] h-[100px] flex flex-col justify-center items-center 
+  @apply w-[228px] h-[84px] flex flex-col justify-center items-center 
   bg-lime-50 rounded-2xl
 }
 

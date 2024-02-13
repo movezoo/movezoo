@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 .Record-body {
-  @apply flex flex-col justify-center items-center space-y-4
+  @apply flex flex-col justify-center items-center space-y-2
 }
 
 .title {
-  @apply text-4xl pb-2 pt-2
+  @apply text-3xl pb-1 pt-2
 }
 
 .time {

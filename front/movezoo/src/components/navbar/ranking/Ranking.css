@@ -47,8 +47,12 @@
   @apply w-[400px] mb-4 ml-10 
 }
 
+.ranking-line {
+  @apply w-[400px] h-1 bg-black
+}
+
 .ranking-my {
-  @apply w-[400px] ml-10
+  @apply w-[400px] ml-10 mt-4
 }
 
 .ranking-user {

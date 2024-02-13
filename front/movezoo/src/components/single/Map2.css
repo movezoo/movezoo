@@ -3,17 +3,17 @@
 @tailwind utilities;
 
 .map-container {
-  @apply w-[300px] h-[340px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
+  @apply w-[228px] h-[200px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
   cursor-default;
 }
 
 .map-header {
   @apply  w-[300px] flex flex-row items-center justify-center mt-5
-  mb-10 cursor-default
+  mb-5 cursor-default
 }
 
 .map-image {
-  @apply w-[150px] h-[150px] flex items-center border-4 rounded-3xl
+  @apply w-[100px] h-[100px] flex items-center border-4 rounded-3xl
 border-black;
 }
 
@@ -28,10 +28,10 @@ border-black;
 }
 
 .map-record-name {
-  @apply text-4xl cursor-default
+  @apply text-3xl cursor-default
 }
 
 .best-map-record {
-  @apply text-2xl cursor-default
+  @apply text-xl cursor-default
 }
 
