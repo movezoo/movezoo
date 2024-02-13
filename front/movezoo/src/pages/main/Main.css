@@ -16,11 +16,11 @@
 }
 
 .main-headerName {
-  @apply flex justify-start items-start text-8xl text-white ml-10
+  @apply flex justify-start items-start text-8xl text-white
 }
 
 .main-header-info {
-  @apply w-2/6 flex flex-row justify-end mr-5;
+  @apply w-2/6 flex flex-row justify-end ;
 }
 
 .main-header-navbar {
