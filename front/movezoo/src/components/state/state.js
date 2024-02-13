@@ -68,7 +68,7 @@ export const gameStartCountState = atom({
 })
 export const gameEndCountState = atom({
   key: 'gameEndCountState',
-  default: 10
+  default: 11
 })
 export const gameEndState = atom({
   key: 'gameEndState',
