@@ -12,7 +12,13 @@ import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
 
 import { Util } from '../../../components/play/common.js';
 import { useRecoilState } from 'recoil';
-import { gameCurrentTimeState, gameMyItemLeftState, gameMyItemRightState, gameStartCountState, gameEndCountState } from '../../../components/state/state.js'
+import {
+  gameCurrentTimeState,
+  gameMyItemLeftState,
+  gameMyItemRightState,
+  gameStartCountState,
+  gameEndCountState
+} from '../../../components/state/state.js'
 
 
 function Game() {
@@ -27,14 +33,7 @@ function Game() {
   const detector = useRef(null);
   const handDetector = useRef(null);
 
-  // 디버깅
   useEffect(() => {
-    // console.log(`gameMyItemLeft : ${gameMyItemLeft}`);
-    // console.log(`gameMyItemRight : ${gameMyItemRight}`);
-  }, [gameMyItemLeft, gameMyItemRight])
-
-  useEffect(() => {
-
     setIsLoading(true); // 로딩 시작
 
     const initializeFaceDetector = async () => {
