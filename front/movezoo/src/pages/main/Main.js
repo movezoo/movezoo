@@ -52,6 +52,13 @@ function Main() {
         });
     }
   }, [userData.UserData, setUserData]);
+  
+  // userData 상태가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    localStorage.setItem('userData', JSON.stringify(userData));
+    const storedData = localStorage.getItem('userData');
+    console.log('Stored userData in localStorage:', storedData);
+  }, [userData]);
 
   // 페이지 로드 시 localStorage에서 userData 상태 로드
   useEffect(() => {
@@ -83,16 +90,6 @@ function Main() {
   useEffect(() => {
     console.log('현재 coin 상태:', coin);
   }, [coin]);
-
-
-
-  // userData 상태가 변경될 때마다 localStorage에 저장
-  useEffect(() => {
-    localStorage.setItem('userData', JSON.stringify(userData));
-    const storedData = localStorage.getItem('userData');
-    console.log('Stored userData in localStorage:', storedData);
-  }, [userData]);
-
 
   return (
     <div className="main-container">
