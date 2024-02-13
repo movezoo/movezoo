@@ -94,7 +94,7 @@ const MAP_SPRITE = {
 
 const ITEM_SPRITE = { x:    0, y:    0, w:  300, h:  277 }
 const ITEM = {
-  SPEED:            { x:    0, y:    0, w:  300, h:  277 }
+  speedup:          { x:    0, y:    0, w:  300, h:  277 }
 }
 const EFFECT = {
   speedup:          { x:    0, y:    0, w: 1200, h:  675, frameCount:  2 }
@@ -142,9 +142,9 @@ const COLORS = {
 
 // 게임 배경 이미지 위치 및 크기
 const BACKGROUND = {
-  HILLS: { x:   0, y:   0, w: 1280, h: 480 },
-  SKY:   { x:   0, y: 0, w: 1280, h: 420 },
-  FARAWAY: { x:   0, y: 0, w: 1280, h: 480 }
+  HILLS:   { x:   0, y:   0, w: 1280, h:  480 },
+  SKY:     { x:   0, y:   0, w: 1280, h:  420 },
+  FARAWAY: { x:   0, y:   0, w: 1280, h:  480 }
 };
 
 // 게임 스프라이트 정보

@@ -326,15 +326,43 @@ const Main = (props) => {
 
 
     const updateUseItem = () => {
+      // 왼쪽 아이템 사용
       if (data.isLeftItemUse) {
         // console.log(`useItem Left`);
+        useItem(itemLeft);
         itemLeft = ''
         setGameMyItemLeft(itemLeft);
+      // 오른쪽 아이템 사용
       } else if(data.isRightItemUse) {
         // console.log(`useItem Right`);
+        useItem(itemRight);
         itemRight = ''
         setGameMyItemRight(itemRight);
       }
+    }
+
+    const useItem = item => {
+
+      // 아이템1. 속도 증가 아이템!!
+      if(item === 'speedup') {
+        // maxSpeed를 12000으로 증가 후
+        maxSpeed = 12000;
+        console.log(`maxSpeed : ${maxSpeed}`)
+        // 5초 뒤에 서서히 8000으로 줄어 들게 한다.
+        setTimeout(() => {
+          const returnSpeed = setInterval(() => {
+            maxSpeed -= 500;
+            console.log(`maxSpeed : ${maxSpeed}`)
+            if(maxSpeed === 8000) clearInterval(returnSpeed);
+          }, 500);
+        }, 5000);
+      }
+
+      // 아이템2. 
+      else {
+
+      }
+
     }
 
 
