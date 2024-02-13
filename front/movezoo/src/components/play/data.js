@@ -5,7 +5,8 @@ const data = {
   isRun: false, // Test중... false로 바꿔야됨
   isLeftItemUse: false,
   isRightItemUse: false,
-  isGameStart: false
+  isGameStart: false,
+  isGameEnd: false
 };
 
 const gameStartData = {
