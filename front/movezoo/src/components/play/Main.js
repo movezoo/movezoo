@@ -998,65 +998,74 @@ const Main = (props) => {
         // func: addSprite(z축위치, 스프라이트그룹, 스프라이트이름, x축위치)
         
         // 랜덤 위치에 각종 캐릭터 스프라이트 추가
+
+        let sideRandNum = Util.randomChoice([0.5, 1]);
         for(let n = 10; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
-          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(1, 4));
-          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(-1, -4));
-          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'vampire', Util.randomInt(1, 4));
-          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'vampire', Util.randomInt(-1, -4));
-          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'zombie', Util.randomInt(1, 4));
-          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'zombie', Util.randomInt(-1, -4));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(1, 5) + sideRandNum);
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(-1, -5) - sideRandNum);
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'vampire', Util.randomInt(1, 5) + sideRandNum);
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'vampire', Util.randomInt(-1, -5) - sideRandNum);
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'zombie', Util.randomInt(1, 5) + sideRandNum);
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'zombie', Util.randomInt(-1, -5) - sideRandNum);
         }
 
         // 랜덤 위치에 나무 생성
+        sideRandNum = Util.randomChoice([0.2, 1]);
         for(let n = 10; n < (segments.length-50); n ++) {
           addSprite(n + Util.randomInt(0,5), 'TREE',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
-            Util.randomChoice([1,-1]) * (2 + Math.random() * 5)
+            Util.randomInt(1, 5) + sideRandNum
           );
           addSprite(n + Util.randomInt(0,5), 'TREE',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
-            Util.randomChoice([1,-1]) * (1 + Math.random() * 5)
-          );
-          addSprite(n + Util.randomInt(0,5), 'TREE',
-            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
-            Util.randomChoice([1,-1]) * (1 + Math.random() * 8)
+            Util.randomInt(-1, -5) - sideRandNum
           );
         }
-        // for(let n = 1100; n < 2000; n += 5) {
-        //   addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
-        //   addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', 1 + (Math.random() * 2));
-        // }
 
-        // 다양한 위치에 랜덤하게 무덤 스프라이트 추가
-        for(let n = 0; n < (segments.length-50); n += 3) {
-          addSprite(
-            n, 'GRAVE',
-            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].GRAVE)),
-            Util.randomChoice([1,-1]) * (2 + Math.random() * 5)
+        // 먼 곳 비어보일까봐 나무
+        for(let n = 10; n < (segments.length-50); n += 5) {
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(-5, -8) - sideRandNum
           );
-          addSprite(
-            n, 'GRAVE',
-            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].GRAVE)),
-            Util.randomChoice([1,-1]) * (1 + Math.random() * 5)
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(5, 8) - sideRandNum
           );
+        }
+
+        // 다양한 위치에 랜덤하게 스프라이트(무덤, 전등, 호박등) 추가
+        for(let n = 0; n < (segments.length-50); n += 5) {
+          addSprite(n + Util.randomInt(0, 50), 'GRAVE', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].GRAVE)), Util.randomInt(-1, -7) - sideRandNum);
+          addSprite(n + Util.randomInt(0, 50), 'GRAVE', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].GRAVE)), Util.randomInt(1, 7) + sideRandNum);
+        }
+
+        for(let n = 0; n < (segments.length-50); n += 10) {
+          addSprite(n + Util.randomInt(0, 50), 'LIGHTPOST', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].LIGHTPOST)), Util.randomInt(-1, -7) - sideRandNum);
+          addSprite(n + Util.randomInt(0, 50), 'LIGHTPOST', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].LIGHTPOST)), Util.randomInt(1, 7) + sideRandNum);
+        }
+
+        for(let n = 0; n < (segments.length-50); n += 3) {  
+          addSprite(n + Util.randomInt(0, 50), 'STUFF', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)), Util.randomInt(-1, -7) - sideRandNum);
+          addSprite(n + Util.randomInt(0, 50), 'STUFF', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)), Util.randomInt(1, 7) + sideRandNum);
         }
       
         // 일정한 간격으로 랜덤한 방향으로 물건 및 전등 스프라이트 추가
-        let side, sprite, offset;
-        for(let n = 10; n < (segments.length-50); n += 100) {
-          side = Util.randomChoice([1, -1]);
-          addSprite(
-            n + Util.randomInt(0, 50),
-            'STUFF',
-            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)),
-            -side
-          );
-          for(let i = 0; i < 20; i++) {
-            sprite = Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].LIGHTPOST));
-            offset = side * (1.5 + Math.random());
-            addSprite(n + Util.randomInt(0, 50), 'LIGHTPOST', sprite, offset);
-          }
-        }
+        // let side, sprite, offset;
+        // for(let n = 10; n < (segments.length-50); n += 20) {
+        //   side = Util.randomChoice([1, -1]);
+        //   addSprite(
+        //     n + Util.randomInt(0, 50),
+        //     'STUFF',
+        //     Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)),
+        //     -side
+        //   );
+        //   for(let i = 0; i < 20; i++) {
+        //     sprite = Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].LIGHTPOST));
+        //     offset = side * (1.5 + Math.random());
+        //     addSprite(n + Util.randomInt(0, 50), 'LIGHTPOST', sprite, offset);
+        //   }
+        // }
         // 스프라이트 세팅 End ********************************************************************************************************
 
 

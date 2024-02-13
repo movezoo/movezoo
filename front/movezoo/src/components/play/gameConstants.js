@@ -48,7 +48,6 @@ const MAP_SPRITE = {
   
   map2: {
     GRAVE: {
-      grave_border:          { x:    0, y:    0, w: 1000, h:  300 },
       gravestone_flat:       { x:    0, y:    0, w: 1000, h:  400 },
       gravestone_bevel:      { x:    0, y:    0, w:  500, h:  500 },
       gravestone_decorative: { x:    0, y:    0, w:  500, h:  600 },
