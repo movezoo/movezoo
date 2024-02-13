@@ -191,8 +191,8 @@ const Main = (props) => {
       position = Util.increase(position, dt * speed, trackLength);
       
       // 키 조작에 따른 플레이어 위치 업데이트
-      dx *= (data.centerDistance/5000 * data.sensitivity);
-      dx = dx < 0.05 ? dx : 0.05;
+      // dx *= (data.centerDistance/5000 * data.sensitivity);
+      // dx = dx < 0.05 ? dx : 0.05;
       if (keyLeft)
         playerX = playerX - dx;
       else if (keyRight)
