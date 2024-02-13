@@ -387,7 +387,7 @@ function Multi() {
     setMainStreamManager(undefined);
     setPublisher(undefined);
     console.log("leave session complete!!!");
-    navigate("/main");
+    // navigate("/main");
   }
 
   const switchCamera = async () => {
