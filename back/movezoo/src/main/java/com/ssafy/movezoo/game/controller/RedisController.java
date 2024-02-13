@@ -42,13 +42,14 @@ public class RedisController {
     @PostMapping("/room")
     public ResponseEntity<RoomResponseDto> createRoom(Authentication authentication, @RequestBody CreateRoomRequestDto dto) throws OpenViduJavaClientException, OpenViduHttpException {
         log.info("make room {}", dto);
+        log.info("make room master {}", dto);
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
         simpleResponseDto.setSuccess(true);
 
-        System.out.println(authentication);
-        int userId = 1;
+        if(authentication==null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
-//        int userId = Integer.parseInt(authentication.getName());
+        System.out.println(authentication);
+        int userId = Integer.parseInt(authentication.getName());
 
         //랜덤아이디 생성
         String randomSessionId = makeRandomSessionId();
@@ -76,10 +77,9 @@ public class RedisController {
         }
 
         try {
-            dto.setMaxRange(4);
             if (dto.getRoomPassword() != null && !dto.getRoomPassword().isEmpty()) {     // 비밀방일 경우
                 Room room = redisService.createSecretRoom(userId, dto);
-                log.info("make s room {}", room);
+                log.info("make secret room {}", room);
                 simpleResponseDto.setMsg("비밀방 생성 성공");
 
                 RoomResponseDto roomResponseDto = RoomResponseDto.builder()
@@ -178,10 +178,10 @@ public class RedisController {
         });
 
         for(Room room : roomList){
-            if(!room.isRoomStatus() && room.getMaxUserCount()>room.getCurrentUserCount()){
+            if(!room.isRoomStatus() && room.getMaxUserCount()>room.getCurrentUserCount() && room.getSecretRoomPassword()==null){
 
                 Session session = openvidu.getActiveSession(room.getRoomSessionId());
-                if(session==null) continue;
+                if(session==null || session.getConnections().isEmpty()) continue;
 
                 RoomResponseDto roomResponseDto = RoomResponseDto.builder()
                         .roomSessionId(room.getRoomSessionId())

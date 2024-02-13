@@ -74,12 +74,12 @@ const ImageChangeModal = () => {
       updatedUserData.userData.profileImgUrl = profileImgUrl;
       localStorage.setItem('userData', JSON.stringify(updatedUserData));
 
-      alert('이미지가 변경되었습니다.');
+      alert('프로필 이미지가 변경되었습니다.');
       closeModal();
 
       } catch (error) {
         console.error('이미지 변경 실패:', error);
-        alert('이미지 변경에 실패하였습니다.');
+        alert('프로필 이미지 변경에 실패하였습니다.');
       }
   };
 

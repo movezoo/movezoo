@@ -9,7 +9,8 @@
 }
 
 .pofileModal {
-  @apply fixed inset-0 flex items-center justify-center z-50 outline-none focus:outline-none bg-black bg-opacity-50;
+  @apply fixed inset-0 flex items-center justify-center z-50 outline-none focus:outline-none
+   bg-black bg-opacity-50;
 }
 
 .modal-container {

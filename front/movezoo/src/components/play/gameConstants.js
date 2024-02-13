@@ -4,7 +4,7 @@
 
 // 캐릭터 이름, 행동, 방향    (캐릭터파일명 : 이름_행동_방향)
 const PLAYER_SPRITE = {
-  NAMES:      [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra", "deer", "donkey", "fox", "husky", "shiba", "stag", "wolf" ],
+  NAMES:      [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra", "deer", "donkey", "fox", "husky", "shiba", "stag", "wolf", "whitehorse" ],
   ACTIONS:    [ { name: "run" } ],
   DIRECTIONS: [ "uphill_left", "uphill_straight", "uphill_right", "left", "straight", "right" ]
 }
@@ -45,9 +45,9 @@ const MAP_SPRITE = {
       tree3:            { x:    0, y:    0, w:  985, h:  875 },
     }
   },
+  
   map2: {
     GRAVE: {
-      grave:                 { x:    0, y:    0, w: 1000, h:  300 },
       grave_border:          { x:    0, y:    0, w: 1000, h:  300 },
       gravestone_flat:       { x:    0, y:    0, w: 1000, h:  400 },
       gravestone_bevel:      { x:    0, y:    0, w:  500, h:  500 },
@@ -88,6 +88,11 @@ const MAP_SPRITE = {
       lightpost_single:          { x:    0, y:    0, w:  500, h:  900 },
       lightpost_all:             { x:    0, y:    0, w:  600, h:  900 },
       lightpost_double:          { x:    0, y:    0, w:  600, h:  900 }
+    },
+    CHARACTER: {
+      ghost:                     { x:    0, y:    0, w:  400, h:  400 },
+      zombie:                    { x:    0, y:    0, w:  400, h:  400 },
+      vampire:                   { x:    0, y:    0, w:  400, h:  400 }
     }
   }
 }
@@ -141,12 +146,20 @@ const COLORS = {
 };
 
 // 게임 배경 이미지 위치 및 크기
-const BACKGROUND = {
-  HILLS:   { x:   0, y:   0, w: 1280, h:  480 },
-  SKY:     { x:   0, y:   0, w: 1280, h:  420 },
-  FARAWAY: { x:   0, y:   0, w: 1280, h:  480 }
-};
 
+// for map1
+// const BACKGROUND = {
+//   HILLS: { x:   0, y:   0, w: 1280, h: 720 },
+//   SKY:   { x:   0, y: 0, w: 1280, h: 960 },
+//   FARAWAY: { x:   0, y: 0, w: 1280, h: 720 }
+// };
+
+// for map2
+const BACKGROUND = {
+  HILLS:    { x:   0, y:   0, w: 640, h: 960 },
+  SKY:      { x:   0, y: 0, w: 1280, h: 960 },
+  FARAWAY:  { x:   0, y: 0, w: 2560, h: 960 }
+};
 // 게임 스프라이트 정보
 
 // SPRITES.동물이름.액션[이름].방향 : [{x, y, w, h}, {x, y, w, h}, {x, y, w, h}] // 프레임별로 있음

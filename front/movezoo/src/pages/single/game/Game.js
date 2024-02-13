@@ -22,6 +22,7 @@ function Game() {
   const [gameMyItemRight, setGameMyItemRight] = useRecoilState(gameMyItemRightState);
   const [gameStartCount, setGameStartCount] = useRecoilState(gameStartCountState);
 
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const videoRef = useRef(null);
   const detector = useRef(null);
   const handDetector = useRef(null);
@@ -33,6 +34,8 @@ function Game() {
   }, [gameMyItemLeft, gameMyItemRight])
 
   useEffect(() => {
+
+    setIsLoading(true); // 로딩 시작
 
     const initializeFaceDetector = async () => {
       const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
@@ -200,17 +203,24 @@ function Game() {
     };
 
     const gameStart = () => {
-      runFaceDetection(); // 계속 실행
+      setTimeout(() => {
+        setIsLoading(false); // 3초 후에 로딩 종료 및 게임 시작
+        runFaceDetection();
+      }, 2000);
     }
     gameStart();
 
   }, [videoRef]);
 
-
-
-
-
-
+  // 로딩 중일 때 보여줄 뷰
+  if (isLoading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-body">
+          로딩 중...
+        </div>
+      </div>);
+  }
 
 
   return (
@@ -262,14 +272,17 @@ function Game() {
         {/* <div className="game">
           <Main width={1920} height={1080} />
         </div>
+      </div>
+      
+      <div className="singlegame-cam-card">
         <div className="singlegame-cam">
           <Webcam
             className="single-webCam"
             mirrored={true}
             ref={videoRef}
             videoConstraints={{ //비디오 품질 해상도
-              width: 640,
-              height: 480
+              width: 200,
+              height: 160
             }}
           />
         </div> */}
