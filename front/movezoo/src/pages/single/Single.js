@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Webcam from "react-webcam";
 import Map2 from "../../components/single/Map2";
-import Back from "../../components/single/Back";
 import Start from "../../components/single/Start";
 import Select from "../../components/select/Select";
 import { FaAnglesLeft } from "react-icons/fa6";

@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
-import Back from "../../../components/single/game/Back";
 import Main from "../../../components/play/Main";
 import "./Game.css";
 import { data } from "../../../components/play/data.js";
@@ -18,10 +17,10 @@ import { gameCurrentTimeState, gameMyItemLeftState, gameMyItemRightState, gameSt
 
 function Game() {
   const [testCurrentLapTime] = useRecoilState(gameCurrentTimeState);
-  const [gameMyItemLeft, setGameMyItemLeft] = useRecoilState(gameMyItemLeftState);
-  const [gameMyItemRight, setGameMyItemRight] = useRecoilState(gameMyItemRightState);
-  const [gameStartCount, setGameStartCount] = useRecoilState(gameStartCountState);
-  const [gameEndCount, setGameEndCount] = useRecoilState(gameEndCountState);
+  const [gameMyItemLeft] = useRecoilState(gameMyItemLeftState);
+  const [gameMyItemRight] = useRecoilState(gameMyItemRightState);
+  const [gameStartCount] = useRecoilState(gameStartCountState);
+  const [gameEndCount] = useRecoilState(gameEndCountState);
 
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const videoRef = useRef(null);
@@ -165,19 +164,9 @@ function Game() {
               // leftEye
               // rightEye
               // mouthCenter
-              // 
-              // console.log(`sensitivity : ${}`);
             })
             
             let sensitivity = Math.abs(noseY - mouthCenterY)*1.3; // 민감도
-            // console.log(faces[0]?.keypoints);
-            // console.log(`sensitivity : ${faces[0]?.keypoints}`);
-
-            // const rightEarTragionY = faces[0]?.keypoints[4]?.y;
-            // const leftEarTragionY = faces[0]?.keypoints[5]?.y;
-
-            // 게임이 시작됐을 때 detect
-            // console.log(`noseX: ${noseX}, centerX: ${centerX}, sensitivity: ${Math.abs(noseY - mouthCenterY)}`);
             
             // noseX: 269.99345779418945, centerX: 320, sensitivity: 32.98797607421875
             if(data.isGameStart) {
@@ -207,15 +196,6 @@ function Game() {
                 data.isBreak = false;
               }
 
-              // // 고개 왼쪽으로 돌리기 detect(귀와 코를 기준으로)
-              // if (rightEarTragionX < noseX) data.isLeftItemUse = true;
-              // // 오른쪽으로 돌리기
-              // else if(leftEarTragionX > noseX) data.isRightItemUse = true;
-              // else {
-              //   data.isLeftItemUse = false;
-              //   data.isRightItemUse = false;
-              // }
-
             }
           } catch (error) {
             // console.error('Error detecting faces:', error);
@@ -229,9 +209,7 @@ function Game() {
 
 
     const runFaceDetection = () => {
-      // if(detector.current && videoRef.current) {
-        detect();
-      // }
+      detect();
       requestAnimationFrame(runFaceDetection)
     };
 
@@ -252,7 +230,8 @@ function Game() {
         <div className="loading-body">
           로딩 중...
         </div>
-      </div>);
+      </div>
+    );
   }
 
 
@@ -283,16 +262,6 @@ function Game() {
         </div>
       </div>
 
-
-
-
-
-
-
-      {/* 뒤로가면 메인 화면*/}
-      {/* <div className="goBack">
-        <Back />
-      </div> */}
 
       {/*왼쪽 화면, 게임 화면*/}
       {/* <div className="singlegame-body"> */}
