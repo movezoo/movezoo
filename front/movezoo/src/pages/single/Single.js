@@ -25,7 +25,7 @@ function Single() {
       {/* header */}
       <div className="single-header">
         <div>
-          <h1 className="single-name">Single Play!</h1>
+          <h1 className="single-name">Single Play</h1>
         </div>
       </div>
 
