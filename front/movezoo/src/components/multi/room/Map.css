@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 .room-map-container {
-  @apply w-[250px] h-[150px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
+  @apply w-[225px] h-[150px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
   cursor-default;
 }
 
 .room-map-header {
-  @apply  w-[300px] flex flex-row items-center justify-center mt-5
+  @apply  w-[200px] flex flex-row items-center justify-center mt-5
   mb-5 cursor-default
 }
 
