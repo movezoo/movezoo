@@ -4,7 +4,7 @@
 
 .map-container {
   @apply w-[228px] h-[200px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
-  cursor-default;
+  cursor-default;   
 }
 
 .map-header {
