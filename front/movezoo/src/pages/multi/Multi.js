@@ -52,8 +52,15 @@ function Multi() {
     };
   }, [mySessionId, connectionId]);
 
+  useEffect(() => {
+    return () => {
+      changeSession();
+    };
+  }, []);
+
+
   const handleChangeSessionId = (e) => {
-    setMySessionId(e.target.value);  
+    setMySessionId(e.target.value);
   };
 
   const handleChangeUserName = (e) => {
@@ -117,10 +124,8 @@ function Multi() {
     });
 
     newSession.on("signal:master-out", (event) => {
-      console.log("받다 마스터");
-      leaveSession();
-      alert("방장이 방을 나갔습니다.");
-
+      console.log("방장입니다. 난 함수 실행 안해요", data.userData.userId);
+      // changeSession();
       // 상태 업데이트
       setMyRoom({});
     });
@@ -228,13 +233,14 @@ function Multi() {
     });
 
     newSession.on("signal:master-out", (event) => {
-      console.log("받다 마스터");
-
-      leaveSession();
-
+      console.log("방장이 나감 ", data.userData.userId);
+      console.log("현재 세션 ", session);
+      console.log("현재 세션 ", newSession);
+      alert("방장이 방을 삭제했습니다.")
+      changeSession();
       // 상태 업데이트
       setMyRoom({});
-      alert("방장이 방을 나갔습니다.");
+
     });
     //창희 추가 end//
 
@@ -301,7 +307,7 @@ function Multi() {
       console.error("Error joining session:", error);
     }
   };
-  
+
   const exitRoom = async () => {
     await axios.patch(
       APPLICATION_SERVER_URL + "api/room/exit",
@@ -330,7 +336,7 @@ function Multi() {
     const masterId = myRoom.roomMasterId;
 
 
-    console.log("Exit ", mySessionId, masterId);
+    console.log("Exit ", mySessionId, masterId, data.userData.userId);
 
     //방장일 경우
     //signal을 보내 모든 유저의 세션을 닫도록한다. 또한 redis에서 방을 삭제한다
@@ -339,7 +345,7 @@ function Multi() {
     //마스터구별을 어떻게 하는지 모르겟다
     if (masterId === data.userData.userId) {
       console.log("out? ", connectionId);
-      //레디스에서 방삭제
+
       await deleteRoom();
 
       //시그널
@@ -350,27 +356,31 @@ function Multi() {
           })
           .then(() => {
             console.log("master out signal sned");
-            if (mainStreamManager) {
-              mainStreamManager.stream.disposeWebRtcPeer();
-            }
-            if (publisher) {
-              publisher.stream.disposeWebRtcPeer();
-            }
+            // if (mainStreamManager) {
+            //   mainStreamManager.stream.disposeWebRtcPeer();
+            // }
+            // if (publisher) {
+            //   publisher.stream.disposeWebRtcPeer();
+            // }
           })
           .catch((error) => {
             console.error(error);
           });
+        changeSession();
+        alert("방이 삭제되었습니다.");
       }
+
     } else {
-      console.log("exitroom direct")
       await exitRoom();
+      changeSession()
+      alert("방에서 나갑니다.");
     }
+  };
 
-    //방장이 나가면서 세션을 없에기때문에 캠이 계속 켜져있다
+  const changeSession = async () => {
     if (session) {
-      session.disconnect();
+      await session.disconnect();
     }
-
     setIsPlayingGame(false);
     setSession(undefined);
     setSubscribers([]);
@@ -380,7 +390,7 @@ function Multi() {
     setPublisher(undefined);
     console.log("leave session complete!!!");
     navigate("/main");
-  };
+  }
 
   const switchCamera = async () => {
     try {
@@ -425,10 +435,12 @@ function Multi() {
     try {
       const response = await axios.post(
         APPLICATION_SERVER_URL + "api/room",
-        { roomMode : roomInfo.roomMode,
-          roomTitle : roomInfo.roomTitle,
-          roomPassword : roomInfo.roomPassword,
-          maxRange : roomInfo.maxRange },
+        {
+          roomMode: roomInfo.roomMode,
+          roomTitle: roomInfo.roomTitle,
+          roomPassword: roomInfo.roomPassword,
+          maxRange: roomInfo.maxRange
+        },
         {
           headers: { "Content-Type": "application/json" },
         }
@@ -495,10 +507,10 @@ function Multi() {
 
   return (
     <div>
-      {page === 1 ? 
-        <RoomList 
-          setPage={setPage} 
-          func={func} 
+      {page === 1 ?
+        <RoomList
+          setPage={setPage}
+          func={func}
           createRoom={createRoom}
           enterRoom={enterRoom}
           mySessionId={mySessionId}
@@ -512,8 +524,8 @@ function Multi() {
           setSubscribers={setSubscribers}
           publisher={publisher}
           mySessionId={mySessionId}
-          connectionId = {connectionId}
-          chatMessage = {chatMessage}
+          connectionId={connectionId}
+          chatMessage={chatMessage}
           setChatMessage={setChatMessage}
           chatMessages={chatMessages}
           setChatMessages={setChatMessages}

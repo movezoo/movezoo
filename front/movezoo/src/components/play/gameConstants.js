@@ -48,7 +48,6 @@ const MAP_SPRITE = {
   
   map2: {
     GRAVE: {
-      grave_border:          { x:    0, y:    0, w: 1000, h:  300 },
       gravestone_flat:       { x:    0, y:    0, w: 1000, h:  400 },
       gravestone_bevel:      { x:    0, y:    0, w:  500, h:  500 },
       gravestone_decorative: { x:    0, y:    0, w:  500, h:  600 },
@@ -149,16 +148,16 @@ const COLORS = {
 
 // for map1
 // const BACKGROUND = {
-//   HILLS: { x:   0, y:   0, w: 1280, h: 720 },
-//   SKY:   { x:   0, y: 0, w: 1280, h: 960 },
-//   FARAWAY: { x:   0, y: 0, w: 1280, h: 720 }
+//   HILLS: { x:   0, y:   0, w: 1280, h: 2480 },
+//   SKY:   { x:   0, y: 0, w: 1280, h: 420 },
+//   FARAWAY: { x:   0, y: 0, w: 1280, h: 370 }
 // };
 
 // for map2
 const BACKGROUND = {
-  HILLS:    { x:   0, y:   0, w: 640, h: 960 },
-  SKY:      { x:   0, y: 0, w: 1280, h: 960 },
-  FARAWAY:  { x:   0, y: 0, w: 2560, h: 960 }
+  HILLS:    { x:   0, y: 0, w: 1280, h: 720 },
+  SKY:      { x:   0, y: 0, w: 1280, h: 720 },
+  FARAWAY:  { x:   0, y: 0, w: 1920, h: 840 }
 };
 // 게임 스프라이트 정보
 
