@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .start-button{
-  @apply w-[300px] h-[100px] bg-lime-50 text-black flex flex-col justify-center items-center
+  @apply w-[228px] h-[84px] bg-lime-50 text-black flex flex-col justify-center items-center
   rounded-2xl;
 }
 
