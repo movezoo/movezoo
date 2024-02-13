@@ -65,7 +65,7 @@ function Chat(props) {
           onKeyDown={handleKeyDown}
         />
         <button className={styles.chatBtn} onClick={sendChatMessage}>
-          enter
+          Enter
         </button>
       </div>
 
