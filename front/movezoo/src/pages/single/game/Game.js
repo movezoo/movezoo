@@ -53,20 +53,18 @@ function Game() {
 
 
     const detect = async () => {
-      // 게임 종료 로직
+      // 게임 종료 로직(초기화)
       if (data.isGameEnd) {
-        data.data = {
-          centerDistance: 0,
-          sensitivity: 0,
-          isLeftKeyPressed: false,
-          isRightKeyPressed: false,
-          isBreak: false,
-          isRun: false, // Test중... false로 바꿔야됨
-          isLeftItemUse: false,
-          isRightItemUse: false,
-          isGameStart: false,
-          isGameEnd: false
-        };
+          data.centerDistance = 0;
+          data.sensitivity = 0;
+          data.isLeftKeyPressed = false;
+          data.isRightKeyPressed = false;
+          data.isBreak = false;
+          data.isRun = false;
+          data.isLeftItemUse = false;
+          data.isRightItemUse = false;
+          data.isGameStart = false;
+          data.isGameEnd = false;
         return;
       }
       const estimationConfig = { flipHorizontal: false };

@@ -15,6 +15,7 @@ import {
   gameEndCountState, 
   singleResultState
 } from '../state/gameState.js'
+import { selectCharacterState } from '../state/state.js'
 
 const localStorage = window.localStorage || {};
 
@@ -32,13 +33,16 @@ const Main = (props) => {
   const [gameStartCount, setGameStartCount] = useRecoilState(gameStartCountState);
   const [gameEndCount, setGameEndCount] = useRecoilState(gameEndCountState);
   const [singleResult, setSingleResult] = useRecoilState(singleResultState);
+  const [selectCharacter] = useRecoilState(selectCharacterState);
   
 
 
   const navigate = useNavigate();
   const canvasRef = useRef(null)
 
-
+  // 게임 사전정보 초기화
+  useEffect(() => {
+  },[])
 
   // 게임 시작신호
   useEffect(() => {
@@ -56,6 +60,10 @@ const Main = (props) => {
   },[])
 
   useEffect(() => {
+    // 선택된 캐릭터
+    gameStartData.selectCharacter = selectCharacter; // state
+    console.log(`현재 선택된 캐릭터 : ${gameStartData.selectCharacter}`)
+
     const selectMap = gameStartData.selectMap;
 
     const canvas = canvasRef.current;
