@@ -809,7 +809,7 @@ const Main = (props) => {
         addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
         addDownhillToEnd();
 
-        console.log("총 길이: ",segments.length);
+        console.log("map1 총 길이: ",segments.length);
         // 길 세팅 End ******************************************************************
 
 
@@ -901,6 +901,7 @@ const Main = (props) => {
         addSCurves();
         addHill(ROAD.LENGTH.SHORT, ROAD.HILL.MEDIUM);
         addStraight();
+        addLowRollingHills();
         addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
         addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
         addStraight();
@@ -909,62 +910,60 @@ const Main = (props) => {
         addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
         addDownhillToEnd();
 
-        console.log("총 길이: ",segments.length);
+        console.log("map2 총 길이: ",segments.length);
         // 길 세팅 End ******************************************************************
 
 
         // 스프라이트 세팅 Start ********************************************************************
         // func: addSprite(z축위치, 스프라이트그룹, 스프라이트이름, x축위치)
         
-        // 고정된 위치에 각종 스프라이트 추가
-        addSprite(20, 'CHARACTER', 'ghost', -1);
-        addSprite(40, 'CHARACTER', 'vampire', -1);
-        addSprite(60, 'CHARACTER', 'zombie', -1);
-        addSprite(80, 'CHARACTER', 'ghost', -1);
-        addSprite(100, 'CHARACTER', 'zombie', -1);
-        addSprite(120, 'CHARACTER', 'vampire', -1);
-        addSprite(140, 'CHARACTER', 'ghost', -1);
-        addSprite(160, 'CHARACTER', 'zombie', -1);
+        // 랜덤 위치에 각종 캐릭터 스프라이트 추가
+        for(let n = 10; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(1, 4));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(-1, -4));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'vampire', Util.randomInt(1, 4));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'vampire', Util.randomInt(-1, -4));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'zombie', Util.randomInt(1, 4));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'zombie', Util.randomInt(-1, -4));
+        }
 
-        // 반복문으로 생성
-        for(let n = 10; n < 5800; n += 4 + Math.floor(n/100)) {
-          // addSprite(n, 'TREE', 'trunk', 0.8 + Math.random()*0.5);
-          // addSprite(n, 'TREE', 'pine', 0.7 + Math.random()*0.3);
-          // addSprite(n, 'TREE', 'pine_fall',   1.2 + Math.random()*2);
-          // addSprite(n, 'TREE', 'pine_crooked', 0.9 + Math.random()*0.3);
-          // addSprite(n, 'TREE', 'pine_fall_crooked',   1.4 + Math.random()*2);
-          // addSprite(n, 'TREE', 'trunk_long', 0.6 + Math.random()*0.4);
-          addSprite(
-            n,
-            'TREE',
+        // 랜덤 위치에 나무 생성
+        for(let n = 10; n < (segments.length-50); n ++) {
+          addSprite(n + Util.randomInt(0,5), 'TREE',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
             Util.randomChoice([1,-1]) * (2 + Math.random() * 5)
           );
-          addSprite(
-            n,
-            'TREE',
+          addSprite(n + Util.randomInt(0,5), 'TREE',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
-            Util.randomChoice([1,-1]) * (2 + Math.random() * 5)
+            Util.randomChoice([1,-1]) * (1 + Math.random() * 5)
+          );
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomChoice([1,-1]) * (1 + Math.random() * 8)
           );
         }
         // for(let n = 1100; n < 2000; n += 5) {
         //   addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
-        //   addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
+        //   addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', 1 + (Math.random() * 2));
         // }
 
-        // 다양한 위치에 랜덤하게 식물 스프라이트 추가
-        for(let n = 0; n < segments.length; n += 3) {
+        // 다양한 위치에 랜덤하게 무덤 스프라이트 추가
+        for(let n = 0; n < (segments.length-50); n += 3) {
           addSprite(
-            n,
-            'GRAVE',
+            n, 'GRAVE',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].GRAVE)),
             Util.randomChoice([1,-1]) * (2 + Math.random() * 5)
           );
+          addSprite(
+            n, 'GRAVE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].GRAVE)),
+            Util.randomChoice([1,-1]) * (1 + Math.random() * 5)
+          );
         }
       
-        // 일정한 간격으로 랜덤한 방향으로 빌보드 및 식물 스프라이트 추가
+        // 일정한 간격으로 랜덤한 방향으로 물건 및 전등 스프라이트 추가
         let side, sprite, offset;
-        for(let n = 1000; n < (segments.length-50); n += 100) {
+        for(let n = 10; n < (segments.length-50); n += 100) {
           side = Util.randomChoice([1, -1]);
           addSprite(
             n + Util.randomInt(0, 50),
