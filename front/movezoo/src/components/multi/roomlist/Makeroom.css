@@ -19,12 +19,11 @@
 
 .makeroom-title {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
   font-size: 35px;
   font-weight: bold;
-  margin-top: 15px;
-  @apply mb-4
+  @apply mb-10
 }
 
 .makeroom-name,
@@ -72,12 +71,12 @@
 
 .makeroom-option-selected{
   user-select : none;
-  @apply w-24 h-10 flex items-center justify-center cursor-pointer
+  @apply w-24 h-10 ml-4 flex items-center justify-center cursor-pointer
   rounded-lg bg-green-500 text-white
 }
 .makeroom-option-not{
   user-select : none;
-  @apply w-24 h-10 flex items-center justify-center cursor-pointer
+  @apply w-24 h-10 ml-4 flex items-center justify-center cursor-pointer
   rounded-lg bg-green-100
 }
 
