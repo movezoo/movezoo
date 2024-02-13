@@ -1,12 +1,16 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { singleResultState } from "../../../components/state/state.js"
+import { useRecoilState } from "recoil";
+
 
 import "./Record.css";
 
 
+
 function Record() {
   const [userLaptime, setUserLaptime] = useState(null);
+  const [ singleResult ] = useRecoilState(singleResultState);
 
   useEffect(() => {
     const fetchUserLaptime = async (mapNumber) => {
@@ -41,7 +45,7 @@ function Record() {
   return (
     <div className="Record-body">
       <div className="title">LAP TIME</div>
-      <div className="time">01.01.23</div>
+      <div className="time">{singleResult.time}</div>
       <div className="title">BEST</div>
       <div className="time">{userLaptime ? userLaptime.record : 'Loading...'}</div>
     </div>

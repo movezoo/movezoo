@@ -12,7 +12,7 @@ const data = {
 };
 
 const gameStartData = {
-  mode: 'multi',
+  mode: 'single',
   selectMap: 'map2',
   selectCharacter: 'fox',
 }
