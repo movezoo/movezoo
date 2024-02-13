@@ -11,7 +11,7 @@ function Back(props) {
 
   const handleLeaveGame = () => {
     props.leaveSession()
-    navigate("/main");
+    // navigate("/main");
   }
 
   return (
