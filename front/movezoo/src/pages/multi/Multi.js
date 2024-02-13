@@ -117,8 +117,8 @@ function Multi() {
     });
 
     newSession.on("signal:master-out", (event) => {
-      console.log("받다 마스터");
-      changeSession();
+      console.log("방장입니다. 난 함수 실행 안해요", data.userData.userId);
+      // changeSession();
       // 상태 업데이트
       setMyRoom({});
     });
@@ -226,7 +226,7 @@ function Multi() {
     });
 
     newSession.on("signal:master-out", (event) => {
-      console.log("받다 마스터");
+      console.log("방장이 나감 ", data.userData.userId);
       changeSession();
       // 상태 업데이트
       setMyRoom({});
@@ -326,7 +326,7 @@ function Multi() {
     const masterId = myRoom.roomMasterId;
 
 
-    console.log("Exit ", mySessionId, masterId);
+    console.log("Exit ", mySessionId, masterId, data.userData.userId);
 
     //방장일 경우
     //signal을 보내 모든 유저의 세션을 닫도록한다. 또한 redis에서 방을 삭제한다
@@ -352,19 +352,18 @@ function Multi() {
             // if (publisher) {
             //   publisher.stream.disposeWebRtcPeer();
             // }
-            changeSession();
           })
           .catch((error) => {
             console.error(error);
           });
-
-        alert("방이 삭제되었습니다.");
+          changeSession();
+          alert("방이 삭제되었습니다.");
       }
 
     } else {
       await exitRoom();
       changeSession()
-      alert("방장이 나가 방이 삭제되었습니다.");
+      alert("방에서 나갑니다.");
     }
   };
 
