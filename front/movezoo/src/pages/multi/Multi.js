@@ -52,11 +52,6 @@ function Multi() {
     };
   }, [mySessionId, connectionId]);
 
-  useEffect(() => {
-    return () => {
-      changeSession();
-    };
-  }, []);
 
 
   const handleChangeSessionId = (e) => {
@@ -237,7 +232,19 @@ function Multi() {
       console.log("현재 세션 ", session);
       console.log("현재 세션 ", newSession);
       alert("방장이 방을 삭제했습니다.")
-      changeSession();
+      // changeSession();
+      if (newSession) {
+        newSession.disconnect();
+      }
+      setIsPlayingGame(false);
+      setSession(undefined);
+      setSubscribers([]);
+      setMySessionId(null);
+      setMyUserName(data.userData.nickname);
+      setMainStreamManager(undefined);
+      setPublisher(undefined);
+      console.log("leave session complete!!!");
+      navigate("/main");
       // 상태 업데이트
       setMyRoom({});
 
