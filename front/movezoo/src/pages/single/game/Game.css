@@ -56,12 +56,23 @@
 .over-contents {
   z-index: 999;
   width: 100%;
-  max-width: 400px; /* Limit width to 400px */
+  display: flex;
+  justify-content: center;
+  /* max-width: 400px; Limit width to 400px */
 }
+
 .current-time {
   z-index: 999;
+  width: auto;
+  /* background-color: white; */
   position: relative;
+  font-size: 64px;
+  @apply
+  absolute
+  top-[100px]
+  left-[160px];
 }
+
 .my-item-list {
   position: fixed;
   bottom: 0;
@@ -78,18 +89,48 @@
   width: 150px;
   background-color: rgba(0, 0, 0, 70%);
   border-radius: 30px;
+}
 
+.webcam-box {
+  z-index: 998;
+  width: 300px;
+  height: 230px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  border-radius: 20px;
+  opacity: 80%;
 }
 
 .single-webCam {
   width: 100%;
-  max-width: 400px; /* Limit width to 400px */
+  max-width: 280px; /* Limit width to 400px */
   height: auto; /* Maintain aspect ratio */
+  border-radius: 20px;
+  overflow: hidden;
   @apply
   opacity-80
 }
 
+.start-time {
+  z-index: 999;
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 300px;
+  color: white;
+}
 
+.end-time {
+  z-index: 999;
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 300px;
+  color: white;
+}
 /* Game */
 
 /****************************************/
