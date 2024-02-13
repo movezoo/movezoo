@@ -3,11 +3,11 @@
 }
 
 .inforoom-head {
-  @apply flex flex-row pt-4 pl-4 pr-4 justify-between rounded-t-2xl 
+  @apply flex flex-row pt-4 pl-6 pr-6 justify-between rounded-t-2xl 
 }
 
 .inforoom-head-secret {
-  @apply flex flex-row pt-4 pl-4 pr-4 justify-between rounded-t-2xl 
+  @apply flex flex-row pt-4 pl-6 pr-6 justify-between rounded-t-2xl 
 }
 
 .inforoom-title {
