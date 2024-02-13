@@ -65,46 +65,46 @@ function Game() {
         video.height = videoHeight;
         // 손 디텍트 Start ***********
         if(!!handDetector.current) {
-          // try {
-          //   const hands = await handDetector.current.estimateHands(video, estimationConfig);
-          //   const centerX = videoWidth / 2;
-          //   const leftX = videoWidth; 
-          //   const rightX = 0;
+          try {
+            const hands = await handDetector.current.estimateHands(video, estimationConfig);
+            const centerX = videoWidth / 2;
+            const leftX = videoWidth; 
+            const rightX = 0;
 
-          //   // 손을 인식 성공했다면
-          //   if(!!hands) {
-          //     let isLeftTouch = false;
-          //     let isRightTouch = false;
-          //     hands.forEach(hand => {
-          //       hand.keypoints.forEach(point => {
-          //         // 왼쪽              
-          //         if (point.x > leftX - centerX/2) {
-          //           isLeftTouch = true;
-          //         // 오른쪽
-          //         } else if(point.x < rightX + centerX/2) { 
-          //           isRightTouch = true;
-          //         }
-          //       })
-          //       // console.log(hand.keypoints[0].x)
-          //       // console.log(hands)
-          //     })
+            // 손을 인식 성공했다면
+            if(!!hands) {
+              let isLeftTouch = false;
+              let isRightTouch = false;
+              hands.forEach(hand => {
+                hand.keypoints.forEach(point => {
+                  // 왼쪽              
+                  if (point.x > leftX - centerX/2) {
+                    isLeftTouch = true;
+                  // 오른쪽
+                  } else if(point.x < rightX + centerX/2) { 
+                    isRightTouch = true;
+                  }
+                })
+                // console.log(hand.keypoints[0].x)
+                // console.log(hands)
+              })
               
 
-          //     if (isLeftTouch) {
-          //       data.isLeftItemUse = true;
-          //       // console.log(`왼쪽 아이템 사용`)
-          //     } else if(isRightTouch) {
-          //       data.isRightItemUse = true;
-          //       // console.log(`오른쪽 아이템 사용`)
-          //     } else {
-          //       data.isLeftItemUse = false;
-          //       data.isRightItemUse = false;
-          //     }
-          //   }
+              if (isLeftTouch) {
+                data.isLeftItemUse = true;
+                // console.log(`왼쪽 아이템 사용`)
+              } else if(isRightTouch) {
+                data.isRightItemUse = true;
+                // console.log(`오른쪽 아이템 사용`)
+              } else {
+                data.isLeftItemUse = false;
+                data.isRightItemUse = false;
+              }
+            }
 
-          // } catch(error) {
-          //   // console.log(error);
-          // }
+          } catch(error) {
+            // console.log(error);
+          }
         }
         // 손 디텍트 End ***********
 
