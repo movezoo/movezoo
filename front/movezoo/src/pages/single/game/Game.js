@@ -21,6 +21,7 @@ import {
 } from '../../../components/state/gameState.js'
 
 
+
 function Game() {
   const [testCurrentLapTime] = useRecoilState(gameCurrentTimeState);
   const [gameMyItemLeft] = useRecoilState(gameMyItemLeftState);
@@ -55,16 +56,16 @@ function Game() {
     const detect = async () => {
       // 게임 종료 로직(초기화)
       if (data.isGameEnd) {
-          data.centerDistance = 0;
-          data.sensitivity = 0;
-          data.isLeftKeyPressed = false;
-          data.isRightKeyPressed = false;
-          data.isBreak = false;
-          data.isRun = false;
-          data.isLeftItemUse = false;
-          data.isRightItemUse = false;
-          data.isGameStart = false;
-          data.isGameEnd = false;
+        data.centerDistance = 0;
+        data.sensitivity = 0;
+        data.isLeftKeyPressed = false;
+        data.isRightKeyPressed = false;
+        data.isBreak = false;
+        data.isRun = false;
+        data.isLeftItemUse = false;
+        data.isRightItemUse = false;
+        data.isGameStart = false;
+        data.isGameEnd = false;
         return;
       }
       const estimationConfig = { flipHorizontal: false };
@@ -213,7 +214,7 @@ function Game() {
     const gameStart = () => {
       setTimeout(() => {
         setIsLoading(false); // 3초 후에 로딩 종료 및 게임 시작
-        // runFaceDetection();
+        runFaceDetection();
       }, 2000);
     }
     gameStart();
@@ -231,11 +232,20 @@ function Game() {
     );
   }
 
+  let itemImage = null;
+  if (gameMyItemLeft === "speedup") {
+    itemImage = <img src="/images/itemImg/itemBox_speedup.png" alt="speed up item" />;
+  }
+  let itemImage2 = null;
+  if (gameMyItemRight === "speedup") {
+    itemImage2 = <img src="/images/itemImg/itemBox_speedup.png" alt="speed up item" />;
+  }
+
 
   return (
     <div className="singlegame-container">
 
-
+    
       <div className="game">
         <Main width={1920} height={1080} />
       </div>
@@ -244,10 +254,10 @@ function Game() {
         {gameStartCount}
       </div>
       {/* <div className="start-time">시작카운트다운 : {gameStartCount}</div> */}
-      <div className={gameEndCount !== 11 ? "end-time" : "end-time hidden"}>
+      <div className={gameEndCount !== 10 ? "end-time" : "end-time hidden"}>
         {gameEndCount}
       </div>
-      <div className="end-time">{gameEndCount}</div>
+      {/* <div className="end-time">{gameEndCount}</div> */}
       <div className="current-time">{Util.formatTime(testCurrentLapTime)}</div>
       <div className="over-contents">
         <div className="webcam-box">
@@ -262,8 +272,8 @@ function Game() {
           />
         </div>
         <div className="my-item-list">
-          <div className="my-item">{gameMyItemLeft}</div>
-          <div className="my-item">{gameMyItemRight}</div>
+          <div className="my-item">{itemImage}</div>
+          <div className="my-item">{itemImage2}</div>
         </div>
       </div>
 
