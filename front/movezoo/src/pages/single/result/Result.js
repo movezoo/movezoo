@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import Webcam from "react-webcam";
 import ResultBack from "../../../components/single/result/ResultBack";
 import Record from "../../../components/single/result/Record";
@@ -16,6 +17,29 @@ function Result() {
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
       setLoading(false);
     });
+  }, []);
+
+  useEffect(() => {
+    const updateCoin = async () => {
+      try {
+        const storedUserData = localStorage.getItem('userData');
+        if (!storedUserData) {
+            throw new Error('사용자 정보를 찾을 수 없습니다.');
+        }
+        const userData = JSON.parse(storedUserData);    
+        const nickname = userData.userData.nickname;
+
+        console.log(userData.userData.nickname);
+
+        const response = await axios.patch('https://i10e204.p.ssafy.io/api/coin', 
+        { nickname, ranking: 1 });
+        console.log(response.data);
+      } catch (error) {
+        console.error('코인 업데이트 실패:', error);
+      }
+    }
+  
+    updateCoin();
   }, []);
 
 
@@ -48,7 +72,6 @@ function Result() {
               </div>
               
               <div className="result-reward">
-                {/* <p className="reward-alarm">획득!</p> */}
                 <p className="reward-coin">+10G</p>
               </div>
               
