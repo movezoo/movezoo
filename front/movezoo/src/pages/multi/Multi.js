@@ -477,7 +477,7 @@ function Multi() {
     }
   };
 const roomGameStart = async(sessionId)=>{
-  const response = await axios.post(
+  const response = await axios.patch(
     APPLICATION_SERVER_URL + "api/room/start",
     {
       roomSessionId: sessionId,
