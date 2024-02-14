@@ -176,10 +176,9 @@ const Room = (props) => {
               </div>
             </div>
           </div>
-
+          
         </div>
         
-
       </div>
       
     </div>
