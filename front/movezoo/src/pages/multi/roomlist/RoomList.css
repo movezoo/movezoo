@@ -44,12 +44,12 @@
 }
 
 .roomlist-search-input {
-  @apply w-80 h-10 rounded-lg border-2 border-green-400 outline-none
+  @apply w-80 h-10 rounded-lg outline-none
 }
 
-.roomlist-search-input:focus {
+/* .roomlist-search-input:focus {
   @apply  border-green-600
-}
+} */
 
 .roomlist-search-input::placeholder {
   @apply pl-5 text-gray-300 text-xl
@@ -57,8 +57,8 @@
 
 .roomlist-search-button {
   @apply w-20 h-10 mr-5 flex items-center justify-center rounded-lg
-  bg-black text-white
-  hover:scale-110 transition duration-300 active:bg-gray-800 cursor-pointer
+  bg-red-500 text-white
+  hover:scale-110 hover:bg-red-700 transition duration-300 active:bg-gray-800 cursor-pointer
 }
 
 .roomlist-reload {

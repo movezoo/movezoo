@@ -246,7 +246,11 @@ const MyOvVideo = (props) => {
       if(isPlayingGame) sendData();
 
       // responseData();
-      if(isPlayingGame) requestAnimationFrame(sendDataStart)
+      if(isPlayingGame) {
+        setTimeout(() => {
+          requestAnimationFrame(sendDataStart)
+        }, 1000/100);
+      }
     }
     
     const gameStart = () => {
