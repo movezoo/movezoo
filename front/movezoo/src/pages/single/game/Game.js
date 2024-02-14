@@ -33,7 +33,6 @@ function Game() {
   const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
   const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
 
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const videoRef = useRef(null);
   const detector = useRef(null);
   const handDetector = useRef(null);
@@ -43,7 +42,6 @@ function Game() {
     setIsLoadGame(false); // 로딩 안됨
     setIsLoadDetect(false); // 로딩 안됨
     
-    setIsLoading(true); // 로딩 시작
 
     const initializeFaceDetector = async () => {
       const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
@@ -225,10 +223,7 @@ function Game() {
     };
 
     const gameStart = () => {
-      setTimeout(() => {
-        setIsLoading(false); // 3초 후에 로딩 종료 및 게임 시작
-        runFaceDetection();
-      }, 2000);
+      runFaceDetection();
     }
     gameStart();
 
@@ -256,17 +251,6 @@ function Game() {
 
   }, [videoRef]);
 
-  // 로딩 중일 때 보여줄 뷰
-  if (isLoading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-body">
-          로딩 중...
-        </div>
-      </div>
-    );
-  }
-
   let itemImage = null;
   if (gameMyItemLeft === "speedup") {
     itemImage = <img src="/images/itemImg/itemBox_speedup.png" alt="speed up item" />;
@@ -279,7 +263,6 @@ function Game() {
 
   return (
     <div className="singlegame-container">
-
 
       <div className="game">
         <Main className='game-main' width={1536} height={864} />
