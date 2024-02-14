@@ -493,7 +493,7 @@ function Character ({ closeModal }) {
       localStorage.setItem('userData', JSON.stringify(userData));
 
 
-      
+      closeModal();
     } else {
       alert('선택된 캐릭터가 없습니다.');
     }
