@@ -213,7 +213,7 @@ function Game() {
     const gameStart = () => {
       setTimeout(() => {
         setIsLoading(false); // 3초 후에 로딩 종료 및 게임 시작
-        // runFaceDetection();
+        runFaceDetection();
       }, 2000);
     }
     gameStart();
