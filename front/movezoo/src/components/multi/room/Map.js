@@ -23,10 +23,12 @@ function Map(props) {
     { id: 2, name: 'map2', image: '/images/minimap/map2.png' }
   ];
 
-  // 스토리지 저장
-  let storages = JSON.parse(localStorage.getItem('userData'));
-  storages.selectedMapName = images[currentIndex].name; // 맵이름 저장
-  localStorage.setItem('userData', JSON.stringify(storages));
+  // 방을 만들고 맵선택후 자동입장시 스토리지 저장
+  if(!!myRoom) {
+    let storages = JSON.parse(localStorage.getItem('userData'));
+    storages.selectedMapName = images[currentIndex].name; // 맵이름 저장
+    localStorage.setItem('userData', JSON.stringify(storages));
+  }
 
   // const handlePrevious = () => {
   //   const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
