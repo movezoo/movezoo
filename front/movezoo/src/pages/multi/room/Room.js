@@ -71,6 +71,7 @@ import "./Room.css";
 
 import Back from "../../../components/multi/room/Back.js";
 import Map from "../../../components/multi/room/Map.js";
+import MapHost from "../../../components/multi/room/MapHost.js";
 import Chat from "../../../components/multi/room/Chat.js";
 import Ready from "../../../components/multi/room/Ready.js";
 import Start from "../../../components/multi/room/Start.js";
@@ -164,7 +165,10 @@ const Room = (props) => {
             </div>
             <div className="room-select">
               <div className="room-map-select">
-                <Map />
+              {myRoom.roomMasterId === data.userData.userId?
+                <MapHost />:<Map />
+                }
+                
               </div>
               <div className="room-charact-select-button">
                 <Select />
