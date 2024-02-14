@@ -1055,20 +1055,20 @@ const Main = (props) => {
         // 길 세팅 Start ******************************************************************
         addLowRollingHills();
         addStraight(ROAD.LENGTH.SHORT);
-        addSCurves();
-        addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.HARD, ROAD.HILL.LOW);
-        addBumps();
-        addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
-        addStraight();
-        addSCurves();
-        addHill(ROAD.LENGTH.SHORT, ROAD.HILL.MEDIUM);
-        addStraight();
-        addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
-        addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
-        addStraight();
-        addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
-        addBumps();
-        addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
+        // addSCurves();
+        // addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.HARD, ROAD.HILL.LOW);
+        // addBumps();
+        // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
+        // addStraight();
+        // addSCurves();
+        // addHill(ROAD.LENGTH.SHORT, ROAD.HILL.MEDIUM);
+        // addStraight();
+        // addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
+        // addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
+        // addStraight();
+        // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
+        // addBumps();
+        // addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
         addDownhillToEnd();
 
         console.log("map2 총 길이: ",segments.length);
