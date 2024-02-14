@@ -30,9 +30,14 @@ function RoomList(props) {
     }
   };
 
+  const reloadRoomList = () => {
+    setSearchRooms("");
+    fetchRoomList();
+  }
+
   useEffect(() => {
     fetchRoomList();
-  }, []);
+  }, [searchRooms]);
 
   console.log(rooms);
 
@@ -74,6 +79,9 @@ function RoomList(props) {
             </div>
             <div className="roomlist-search-button" onClick={fetchRoomList}>
               <button>검색</button>
+            </div>
+            <div className="roomlist-reload" onClick={reloadRoomList}>
+              <img className="roomlist-reload-button" src="/images/multibg/reload.png"/>
             </div>
             <div className="roomlist-match" onClick={fastEnterRoom}>
               <button className="roomlist-match-button">
