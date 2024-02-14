@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import { useRecoilState } from 'recoil';
-import { myGameData, playerGameDataList } from "../../components/play/data.js";
+import { myGameData, playerGameDataList, gameStartData } from "../../components/play/data.js";
 
 import { isMultiGameStartState } from '../../components/state/gameState.js'
 
@@ -162,6 +162,7 @@ function Multi() {
           setPublisher(newPublisher);
 
           myGameData.playerId = myUserName;
+          gameStartData.mode = 'multi';
           let existMyData = false;
           playerGameDataList.forEach((item) => { // 배열에 내아이디가 있는지 확인한다.
             if (item === myGameData.playerId) existMyData = true;
