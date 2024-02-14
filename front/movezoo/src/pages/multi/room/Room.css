@@ -3,12 +3,14 @@
 @tailwind utilities;
 
 .room-container {
+  background-image: url('/public/images/mainbg/mainbg.png');
+  background-size: cover;
   @apply min-w-[1200px] min-h-screen flex flex-col justify-center items-center
   bg-green-400 cursor-default;
 }
 
 .room-header {
-  @apply w-[1200px] flex justify-start items-start p-5
+  @apply w-[1000px] relative flex justify-start items-start mb-5 mt-3
 }
 
 .room-name {
@@ -17,7 +19,7 @@
 
 .room-body-card {
   background-color: rgba(247, 254, 231, 0.6);
-  @apply w-[1200px] min-w-[1200px] min-h-[700px] flex flex-col
+  @apply w-[1000px] min-w-[1000px] max-h-[525px] flex flex-col
   rounded-3xl mb-10;
 }
 
@@ -26,7 +28,7 @@
 }
 
 .room-body {
-  @apply flex flex-row justify-between m-10
+  @apply flex flex-row justify-between m-5
 }
 
 .room-body-cam {
@@ -34,25 +36,32 @@
 }
 
 .room-webCam {
-  @apply w-96 flex items-center justify-center
+  @apply w-[225px] flex items-center justify-center
   rounded-3xl overflow-hidden;
 }
 
-.room-selects {
-  @apply w-[400px] flex flex-col items-end justify-between ml-10
+.room-option {
+  @apply w-[450px] flex flex-row justify-center ml-5
 }
 
-
 .room-chat {
-  @apply w-[300px] h-[350px] flex justify-center items-center mt-5 mb-5
+  @apply w-[225px] h-[450px] flex justify-center items-center
   bg-lime-50 rounded-2xl
 }
 
-
-.charact-select-button {
-  @apply text-2xl
+.room-select {
+  @apply w-[200px] flex flex-col justify-between ml-5
 }
 
-.start-select {
+.room-map-select {
+  @apply w-[200px] flex
+}
+
+.room-charact-select-button {
+  @apply w-[200px] h-[100px] flex justify-center items-center 
+  bg-lime-50 rounded-2xl
+}
+
+.room-start-select {
 
 }
