@@ -25,6 +25,8 @@ function Map(props) {
 
   // 방을 만들고 맵선택후 자동입장시 스토리지 저장
   if(!!myRoom) {
+    console.log(`currentIndex : ${currentIndex}`)
+    console.log(`images[currentIndex] : ${images[currentIndex]}`)
     let storages = JSON.parse(localStorage.getItem('userData'));
     storages.selectedMapName = images[currentIndex].name; // 맵이름 저장
     localStorage.setItem('userData', JSON.stringify(storages));
