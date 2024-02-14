@@ -93,6 +93,7 @@
 
 .webcam-box {
   z-index: 998;
+  margin-top: 50px;
   width: 300px;
   height: 230px;
   background-color: white;
