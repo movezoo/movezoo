@@ -99,13 +99,13 @@ const Room = (props) => {
     setChatMessages
   } = props
 
-  console.log(myRoom)
+  // console.log(myRoom)
 
   const storedUserData = localStorage.getItem('userData');
   const data = (JSON.parse(storedUserData));
 
   
-  console.log(props)
+  // console.log(props)
   return (
     <div className="room-container">
 
@@ -157,7 +157,7 @@ const Room = (props) => {
             </div>
             <div className="room-select">
               <div className="room-map-select">
-                <Map />
+                <Map myRoom={myRoom}/>
               </div>
               <div className="room-charact-select-button">
                 <Select />
@@ -166,7 +166,6 @@ const Room = (props) => {
                 {myRoom.roomMasterId === data.userData.userId?
                 <Start setPage={setPage} session={session}/>:<Ready />
                 }
-                임시시작:<Start setPage={setPage} session={session}/>
               </div>
             </div>
           </div>
