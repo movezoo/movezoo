@@ -40,7 +40,7 @@ function Inforoom( props ) {
     }
   }
 
-  const images = ["n.png", "o.png"];
+  const images = ["map1.png", "map2.png"];
 
   return (
     // state에 필요한 데이터 객체 전달
@@ -63,7 +63,7 @@ function Inforoom( props ) {
 
         <div className="inforoom-body">
           <div className="inforoom-track">
-            <img src={`/minimap/${images[props.track]}`} alt="mini-map" />
+            <img src={`/images/minimap/${images[props.track]}`} alt="mini-map" />
           </div>
           <div className="inforoom-mode">
             {props.mode === 0 && <>개인전<br/>스피드</>}

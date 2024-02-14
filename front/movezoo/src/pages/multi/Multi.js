@@ -452,7 +452,8 @@ function Multi() {
           roomMode: roomInfo.roomMode,
           roomTitle: roomInfo.roomTitle,
           roomPassword: roomInfo.roomPassword,
-          maxRange: roomInfo.maxRange
+          maxRange: roomInfo.maxRange,
+          trackId: roomInfo.trackId,
         },
         {
           headers: { "Content-Type": "application/json" },
