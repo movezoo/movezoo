@@ -6,7 +6,6 @@ import * as faceDetection from '@tensorflow-models/face-detection';
 import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
 
 import { data, myGameData, playerGameDataList } from "./data.js";
-import { Util } from './common.js';
 import { useRecoilState } from 'recoil';
 import {
   gameCurrentTimeState,
@@ -49,6 +48,8 @@ const MyOvVideo = (props) => {
     initializeFaceDetector();
 
     const detect = async () => {
+      let readyFace = false;
+      let readyHand = false;
       // 게임 종료 로직
       if (data.isGameEnd) {
         data.data = {
@@ -76,6 +77,7 @@ const MyOvVideo = (props) => {
         video.height = videoHeight;
         // 손 디텍트 Start ***********
         if(!!handDetector.current) {
+          readyHand = true;
           try {
             const hands = await handDetector.current.estimateHands(video, estimationConfig);
             const centerX = videoWidth / 2;
@@ -118,7 +120,7 @@ const MyOvVideo = (props) => {
             // if( faces.length === 0 ) console.log(`no face`);
             // 화면 기준 - 화면의 중앙을 기준으로 코의 좌표의 위치에 따른 진행 방향 결정, 민감도 설정 가능
             const centerX = videoWidth / 2;
-
+            if(!!faces) readyFace = true
             let noseX, noseY, rightEarTragionX, rightEarTragionY,
             leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX,
             mouthCenterY;
@@ -179,6 +181,10 @@ const MyOvVideo = (props) => {
         // 얼굴 디텍트 End ***********
       }
 
+      if(readyHand && readyFace) {
+        // console.log(`detect load 완료`)
+        setIsLoadDetect(true)
+      }
     };
 
 
@@ -240,13 +246,11 @@ const MyOvVideo = (props) => {
     }
     
     const gameStart = () => {
-      setTimeout(() => {
-        setIsLoading(false); // 3초 후에 로딩 종료 및 게임 시작
-        responseData(); // 1회 열기
-        sendDataStart(); // 계속 실행
-        runFaceDetection(); // 계속 실행
-        runFaceDetection();
-      }, 2000);
+      setIsLoading(false); // 3초 후에 로딩 종료 및 게임 시작
+      responseData(); // 1회 열기
+      sendDataStart(); // 계속 실행
+      runFaceDetection(); // 계속 실행
+      runFaceDetection();
       responseData(); // 1회 열기
       sendDataStart(); // 계속 실행
       runFaceDetection(); // 계속 실행
