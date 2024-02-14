@@ -160,6 +160,7 @@ function Result() {
         if (response.status === 200 && response.data) {
             // Recoil 상태 및 로컬 스토리지 업데이트
             const newCoinAmount = response.data.coin;
+            console.log(newCoinAmount)
             setCoin(newCoinAmount); // Recoil 상태 업데이트
            
             let updatedUserData = { ...userData };
