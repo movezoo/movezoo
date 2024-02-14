@@ -122,7 +122,7 @@ public class SecurityConfig{
 
                                                 ObjectMapper objectMapper = new ObjectMapper();
 
-                                                //json, encoding설정 
+                                                //json, encoding설정
                                                 response.setContentType("application/json");
                                                 response.setCharacterEncoding("utf-8");
 
@@ -180,12 +180,12 @@ public class SecurityConfig{
         // OAuth
         http
                 .oauth2Login((oauth2Login) ->
-                        oauth2Login
-                                .loginPage("/")
-                                .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig // OAuth2 로그인 성공 후 가져올 설정들
-                                        .userService(customOAuth2Service))) // 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시
+                                oauth2Login
+                                        .loginPage("/")
+                                        .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig // OAuth2 로그인 성공 후 가져올 설정들
+                                                .userService(customOAuth2Service))) // 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시
 //                                .successHandler(successHandler())
-                                .successHandler(oAuthCustomSuccesHandler)
+                                        .successHandler(oAuthCustomSuccesHandler)
                 );
 
         return http.build();
