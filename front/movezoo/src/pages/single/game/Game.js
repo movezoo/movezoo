@@ -112,13 +112,9 @@ function Game() {
               })
 
 
-              if (isLeftTouch) {
-                data.isLeftItemUse = true;
-                // console.log(`왼쪽 아이템 사용`)
-              } else if (isRightTouch) {
-                data.isRightItemUse = true;
-                // console.log(`오른쪽 아이템 사용`)
-              } else {
+              if (isLeftTouch) data.isLeftItemUse = true;
+              else if (isRightTouch) data.isRightItemUse = true;
+              else {
                 data.isLeftItemUse = false;
                 data.isRightItemUse = false;
               }
@@ -164,12 +160,6 @@ function Game() {
               }
 
 
-              // noseTip
-              // rightEarTragion
-              // leftEarTragion
-              // leftEye
-              // rightEye
-              // mouthCenter
             })
 
             let sensitivity = Math.abs(noseY - mouthCenterY) * 1.3; // 민감도
