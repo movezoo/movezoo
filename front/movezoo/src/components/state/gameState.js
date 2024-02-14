@@ -52,3 +52,23 @@ export const isPlayingGameState = atom({
   key: 'isPlayingGameState',
   default: false
 })
+
+export const isLoadGameState = atom({
+  key: 'isLoadGameState',
+  default: false
+})
+
+export const isLoadDetectState = atom({
+  key: 'isLoadDetectState',
+  default: false
+})
+
+export const isGameEndState = atom({
+  key: 'isGameEndState',
+  default: false
+})
+
+export const isMultiGameStartState = atom({
+  key: 'isMultiGameStartState',
+  default: false
+})
