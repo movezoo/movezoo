@@ -14,7 +14,7 @@
 }
 
 .makeroom-body {
-  @apply flex flex-col items-center justify-center pb-6 pl-6 pr-6
+  @apply flex flex-col justify-center pb-6 pl-6 pr-6
 }
 
 .makeroom-title {
@@ -32,12 +32,20 @@
 }
 
 .makeroom-name-input {
-  @apply w-40 border-2 border-green-300 rounded-lg
+  @apply w-48 border-2 border-green-300 rounded-lg
   focus:border-green-600
 }
 
 .makeroom-password-input {
-  @apply w-40 border-2 border-green-300 rounded-lg
+  @apply w-48 border-2 border-green-300 rounded-lg
+}
+
+.makeroom-contents {
+  @apply w-full flex justify-between items-center mt-2 mb-2
+}
+
+.makeroom-contents-section {
+  @apply w-[190px] h-[100px] flex flex-col justify-between items-center pt-2 pb-2
 }
 
 .makeroom-people {
@@ -50,34 +58,46 @@
 }
 
 .makeroom-people-minus {
-  @apply flex justify-center items-center w-5 h-7 cursor-pointer
+  @apply flex justify-center items-center w-6 h-7 cursor-pointer
   active:bg-green-500 transition duration-300 rounded-l-lg
 }
 .makeroom-people-num {
   @apply flex justify-center items-center w-5 h-7
 }
 .makeroom-people-plus {
-  @apply flex justify-center items-center w-5 h-7 cursor-pointer
+  @apply flex justify-center items-center w-6 h-7 cursor-pointer
   active:bg-green-500 transition duration-300 rounded-l-lg
 }
 
 .makeroom-type {
-  @apply w-full flex items-center justify-end mb-4
+  @apply w-full flex items-center justify-between
 }
 
 .makeroom-option{
-  @apply flex
+  @apply w-full flex justify-between
 }
 
 .makeroom-option-selected{
   user-select : none;
-  @apply w-24 h-10 ml-4 flex items-center justify-center cursor-pointer
+  @apply w-[90px] h-10 flex items-center justify-center cursor-pointer
   rounded-lg bg-green-500 text-white
 }
 .makeroom-option-not{
   user-select : none;
-  @apply w-24 h-10 ml-4 flex items-center justify-center cursor-pointer
+  @apply w-[90px] h-10 flex items-center justify-center cursor-pointer
   rounded-lg bg-green-100
+}
+
+.makeroom-map {
+  @apply flex rounded-lg items-center border-2 border-black
+}
+
+.makeroom-map-img {
+  @apply w-20
+}
+.makeroom-map-prev,
+.makeroom-map-next {
+  @apply relative h-20 flex items-center justify-center;
 }
 
 .makeroom-check {
