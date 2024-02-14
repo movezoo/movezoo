@@ -52,18 +52,20 @@ const Main = (props) => {
     if(isLoadGame && isLoadDetect) myGameData.loadSuccess = true;
   }, [isLoadGame, isLoadDetect])
 
-  // 멀티 게임이 시작되지 않았다면?
-  if(!isMultiGameStart || gameStartData.mode !== 'multi' ) {
-    let readyAll = true;
-    playerGameDataList.forEach(userData => {
-      readyAll &= userData.loadSuccess;
-    })
-    if(readyAll) setIsMultiGameStart(true);
-  }
+  useEffect(() => {
+    // 멀티 게임이 시작되지 않았다면?
+    if(!isMultiGameStart || gameStartData.mode !== 'multi' ) {
+      let readyAll = true;
+      playerGameDataList.forEach(userData => {
+        readyAll = readyAll && userData.loadSuccess;
+      });
+      if(readyAll) setIsMultiGameStart(true);
+    }
+  })
 
   // 게임 시작신호
   useEffect(() => {
-    if(gameStartData.mode === 'single') {
+    if(gameStartData.mode === 'single' && isLoadGame && isLoadDetect) {
       let count = 4; // 실제로 3초부터 출력함
       setTimeout(() => {
         const playCount = setInterval(() => {
@@ -74,11 +76,21 @@ const Main = (props) => {
             data.isGameStart = true;    
           }
         }, 1000);
-      }, 3000);
-    } else if(gameStartData.mode === 'multi') {
-      // if(data.)
+      }, 3000); // 3초 뒤에 시작
+    } else if(gameStartData.mode === 'multi' && isMultiGameStart) {
+      let count = 4; // 실제로 3초부터 출력함
+      setTimeout(() => {
+        const playCount = setInterval(() => {
+          count-=1;
+          setGameStartCount(count);
+          if(count === 0) {
+            clearInterval(playCount)
+            data.isGameStart = true;    
+          }
+        }, 1000);
+      }, 3000); // 3초 뒤에 시작
     }
-  },[isMultiGameStart])
+  },[isLoadGame, isLoadDetect, isMultiGameStart])
 
   useEffect(() => {
     // 선택된 캐릭터
