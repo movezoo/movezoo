@@ -932,51 +932,95 @@ const Main = (props) => {
         // func: addSprite(z축위치, 스프라이트그룹, 스프라이트이름, x축위치)
         
         // 고정된 위치에 각종 스프라이트 추가
-        addSprite(20, 'BILLBOARD', 'billboard_ssafy', -1);
-        // addSprite(40, 'BILLBOARD', 'billboard_ssafy', -1);
-        addSprite(60, 'BILLBOARD', 'billboard', -1);
-        // addSprite(80, 'BILLBOARD', 'billboard_ssafy', -1);
-        addSprite(100, 'BILLBOARD', 'billboard_ssafy', -1);
-        // addSprite(120, 'BILLBOARD', 'billboard_ssafy', -1);
-        addSprite(140, 'BILLBOARD', 'billboard', -1);
-        addSprite(160, 'BILLBOARD', 'billboard_ssafy', -1);
+        // addSprite(20, 'BILLBOARD', 'billboard_ssafy', -1);
+        // // addSprite(40, 'BILLBOARD', 'billboard_ssafy', -1);
+        // addSprite(60, 'BILLBOARD', 'billboard', -1);
+        // // addSprite(80, 'BILLBOARD', 'billboard_ssafy', -1);
+        // addSprite(100, 'BILLBOARD', 'billboard_ssafy', -1);
+        // // addSprite(120, 'BILLBOARD', 'billboard_ssafy', -1);
+        // addSprite(140, 'BILLBOARD', 'billboard', -1);
+        // addSprite(160, 'BILLBOARD', 'billboard_ssafy', -1);
 
         // 반복문으로 생성
-        for(let n = 10; n < 200; n += 4 + Math.floor(n/100)) {
-          addSprite(n, 'TREE', 'tree1', 0.8 + Math.random()*0.5);
-          addSprite(n, 'TREE', 'tree1',   1.3 + Math.random()*2);
-        }
-        for(let n = 250; n < 1000; n += 5) {
-          addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
-          addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
-        }
+        // for(let n = 10; n < 200; n += 4 + Math.floor(n/100)) {
+        //   addSprite(n, 'TREE', 'tree1', 0.8 + Math.random()*0.5);
+        //   addSprite(n, 'TREE', 'tree1',   1.3 + Math.random()*2);
+        // }
+        // for(let n = 250; n < 1000; n += 5) {
+        //   addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
+        //   addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
+        // }
 
         // 다양한 위치에 랜덤하게 식물 스프라이트 추가
-        for(let n = 200; n < segments.length; n += 3) {
-          addSprite(
-            n,
-            'TREE',
-            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
-            Util.randomChoice([1,-1]) * (2 + Math.random() * 5)
-          );
-        }
+        // for(let n = 200; n < segments.length; n += 3) {
+        //   addSprite(
+        //     n,
+        //     'TREE',
+        //     Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+        //     Util.randomChoice([1,-1]) * (2 + Math.random() * 5)
+        //   );
+        // }
       
         // 일정한 간격으로 랜덤한 방향으로 빌보드 및 식물 스프라이트 추가
-        let side, sprite, offset;
-        for(let n = 1000; n < (segments.length-50); n += 100) {
-          side = Util.randomChoice([1, -1]);
-          addSprite(
-            n + Util.randomInt(0, 50),
-            'BILLBOARD',
-            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].BILLBOARD)),
-            -side
+        // let side, sprite, offset;
+        // for(let n = 1000; n < (segments.length-50); n += 100) {
+        //   side = Util.randomChoice([1, -1]);
+        //   addSprite(
+        //     n + Util.randomInt(0, 50),
+        //     'BILLBOARD',
+        //     Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].BILLBOARD)),
+        //     -side
+        //   );
+        //   for(let i = 0; i < 20; i++) {
+        //     sprite = Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE));
+        //     offset = side * (1.5 + Math.random());
+        //     addSprite(n + Util.randomInt(0, 50), 'TREE', sprite, offset);
+        //   }
+        // }
+
+        // ===============================================================================
+        
+        // 나무 랜덤 추가
+        for(let n = 10; n < (segments.length-50); n += 2) {
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
           );
-          for(let i = 0; i < 20; i++) {
-            sprite = Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE));
-            offset = side * (1.5 + Math.random());
-            addSprite(n + Util.randomInt(0, 50), 'TREE', sprite, offset);
-          }
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
+          );
         }
+
+        // 빌보드, 집&우물 추가
+        for(let n = 10; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
+          addSprite(n + Util.randomInt(0,5), 'BILLBOARD',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].BILLBOARD)),
+            Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'BILLBOARD',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].BILLBOARD)),
+            Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'STUFF',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)),
+            Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'STUFF',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)),
+            Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
+          );
+        }
+
+
         // 스프라이트 세팅 End ********************************************************************************************************
 
 
@@ -1030,9 +1074,8 @@ const Main = (props) => {
         // 스프라이트 세팅 Start ********************************************************************
         // func: addSprite(z축위치, 스프라이트그룹, 스프라이트이름, x축위치)
         
-        // 랜덤 위치에 각종 캐릭터 스프라이트 추가
+        // 랜덤 캐릭터 추가
 
-        let sideRandNum = Util.randomChoice([0.5, 1]);
         for(let n = 10; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
           addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(1, 5) + Util.randomChoice([0.2, 1]));
           addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1]));
@@ -1042,7 +1085,7 @@ const Main = (props) => {
           addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'zombie', Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1]));
         }
 
-        // 랜덤 위치에 나무 생성
+        // 랜덤 나무 추가
         for(let n = 10; n < (segments.length-50); n ++) {
           addSprite(n + Util.randomInt(0,5), 'TREE',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
@@ -1062,15 +1105,15 @@ const Main = (props) => {
           );
         }
 
-        // 먼 곳 비어보일까봐 나무
+        // 사이드 먼 곳 나무 추가
         for(let n = 10; n < (segments.length-50); n += 3) {
           addSprite(n + Util.randomInt(0,5), 'TREE',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
-            Util.randomInt(-5, -8) - Util.randomChoice([0.2, 1])
+            Util.randomInt(-5, -10) - Util.randomChoice([0, 1])
           );
           addSprite(n + Util.randomInt(0,5), 'TREE',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
-            Util.randomInt(5, 8) - Util.randomChoice([0.2, 1])
+            Util.randomInt(5, 10) - Util.randomChoice([0, 1])
           );
         }
 
