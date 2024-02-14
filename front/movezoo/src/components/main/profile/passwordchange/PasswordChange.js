@@ -95,8 +95,8 @@ const ChangePasswordModal = () => {
             backgroundColor: 'rgba(0, 0, 0, 0)', // 투명도를 0.75로 설정한 검은색 배경
           },
           content: {
-            width: '400px',
-            height: '370px',
+            width: '330px',
+            height: '400px',
             margin: 'auto',
             borderRadius: '30px',
           }
