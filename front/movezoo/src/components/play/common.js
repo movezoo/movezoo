@@ -9,6 +9,8 @@ import { gameStartData } from './data.js';
 // import sprites from './images/sprites.png';
 
 const selectAction = "run";
+gameStartData.selectMap = JSON.parse(localStorage.getItem('userData')).selectedMapName;
+gameStartData.selectCharacter = JSON.parse(localStorage.getItem('userData')).selectedCharacterId;
 
 const frameIndex = {}
 // frameIndex 초기화
