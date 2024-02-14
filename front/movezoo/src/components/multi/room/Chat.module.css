@@ -14,8 +14,8 @@
   overflow-y: scroll;
   min-height: 85%;
   max-height: 85%;
-  border: black 1px solid;
-  border-radius: 5px;
+  border: gainsboro 1px solid;
+  border-radius: 6px;
 }
 
 .chatInput {
@@ -28,12 +28,16 @@
 .chatText {
   position: relative;
   width: 80%;
-  border: black 1px solid;
+  border: gainsboro 1px solid;
+  border-radius: 6px;
+  padding-left: 10px;
 }
 
 .chatBtn {
   position: relative;
   width: 15%;
   left: 5%;
-  border: black 2px solid;
+  background-color: white;
+  border: gainsboro 1px solid;
+  border-radius: 6px;
 }
