@@ -27,6 +27,7 @@ function Result(props) {
           </div>
         </div>
 
+        {/* body */}
         <div className="multi-result-body-card">
 
           <div className="multi-result-body">
@@ -34,7 +35,8 @@ function Result(props) {
             {/*왼쪽 화면, 웹캠 화면*/}
             <div className="multi-result-leftSection">
 
-              <div className="multi-result-topCamSection">
+              <div className="multi-result-CamSection">
+
                 <div className="multi-result-firstWebCam">
                   {loading ? (
                     <h1>Loading...</h1>
@@ -44,22 +46,17 @@ function Result(props) {
                 </div>
 
                 <div className="multi-result-secondCam">
-                  <div>
-                    2등 웹캠
-                  </div>
+                  2번캠
                 </div>
-              </div>
 
-              <div className="multi-result-bottomCamSection">
-                
-                  <div className="multi-result-thirdCam">
-                    3등웹캠
-                  </div>
+                <div className="multi-result-thirdCam">
+                  3번캠
+                </div>
 
-                  <div className="multi-result-FourthCam">
-                    4등 웹캠
-                  </div>
-                  
+                <div className="multi-result-FourthCam">
+                  4번캠
+                </div>
+
               </div>
 
             </div>
@@ -68,17 +65,18 @@ function Result(props) {
             <div className="multi-result-rightSection">
 
               {/*보상 및 돌아가기 버튼*/}
-              <div className="multi-result-anotherSection">
-                <div className="multi-result-reward">
-                  <span>G</span>
-                  <span>#획득 골드#</span>
-                  <span>획득!</span>
-                </div>
-                {/* 돌아가기 버튼*/}
-                <div className="multi-result-backbutton">
-                  <Back leaveSession={leaveSession}/>
-                </div>
+              
+              <div className="multi-result-reward">
+                <span>G</span>
+                <span>#획득 골드#</span>
+                <span>획득!</span>
               </div>
+              
+              {/* 돌아가기 버튼*/}
+              <div className="multi-result-backbutton">
+                <Back leaveSession={leaveSession}/>
+              </div>
+              
 
             </div>
 
