@@ -14,6 +14,11 @@
 
 .map-image {
   @apply w-[100px] h-[100px] flex items-center border-4 rounded-3xl
+border-white;
+}
+
+.map-inner-image {
+  @apply w-[95px] h-[95px] flex items-center rounded-3xl
 border-black;
 }
 
