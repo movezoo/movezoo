@@ -89,15 +89,15 @@ function Carousel() {
     <div className="room-map-container">
 
       <div className="room-map-header">
-        {/* <div className="room-map-prev">
+        <div className="room-map-prev">
           <AiFillCaretLeft className='room-map-change-button' onClick={handlePrevious}/>
-        </div> */}
+        </div>
         <div className="room-map-image">
           <img src={images[currentIndex].image} alt="mini-map" />
         </div>
-        {/* <div className="map-next">
+        <div className="map-next">
           <AiFillCaretRight className='room-map-change-button' onClick={handleNext}/>
-        </div> */}
+        </div>
       </div>
     </div>
   );
