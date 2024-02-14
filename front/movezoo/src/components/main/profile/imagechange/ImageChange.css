@@ -20,7 +20,7 @@
 }
 
 .selectImg.selected {
-  @apply border-2 border-green-300;
+  @apply border-4 border-green-500;
 }
 
 .imagechange-button {

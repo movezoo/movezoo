@@ -17,7 +17,7 @@ const Ranking = () => {
       try {
         const response = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${mapNumber}`);
         const sortedRankings = response.data.sort((a, b) => a.record - b.record);
-        const topTenRankings = sortedRankings.slice(0, 10);
+        const topTenRankings = sortedRankings.slice(0, 5);
         setRankings(topTenRankings);
 
         
@@ -85,14 +85,15 @@ const Ranking = () => {
           }
         }}
       >
+
         <div className='ranking-container'>
+
+          <div className='ranking-header-exit'>
+            <IoCloseSharp className='exit-button' onClick={closeModal} />
+          </div>
 
           <div className='ranking-header'>
             
-            <div className='ranking-header-exit'>
-              <IoCloseSharp className='exit-button' onClick={closeModal} />
-            </div>
-
             <div className='ranking-header-map'>
               <button className='ranking-map-button' onClick={() => handleMapButtonClick(1)}>1번 맵</button>
               <button className='ranking-map-button' onClick={() => handleMapButtonClick(2)}>2번 맵</button>
@@ -106,12 +107,13 @@ const Ranking = () => {
                 <div>
                   {rankings.map((ranking, index) => (
                     <div className='ranking-user' key={index}>
-                      <p className='w-40'>{index + 1}위</p>
-                      <p className='w-80'>{ranking.nickName}</p>
-                      <p className='w-40'>{ranking.record}</p>
+                      <p className='ranking-user-rank'>{index + 1}위</p>
+                      <p className='ranking-user-nickname'>{ranking.nickName}</p>
+                      <p className='ranking-user-record'>{ranking.record}</p>
+                      
                     </div>
                   ))}
-
+          
                 </div>
               )}
             </div>
@@ -120,10 +122,10 @@ const Ranking = () => {
             
             <div className='ranking-my'>
             {userLaptime && (
-              <div className='ranking-user'>
-                <p className='w-40'>{userRank}위</p>
-                <p className='w-80'>{userLaptime.nickName}</p>
-                <p className='w-40'>{userLaptime.record}</p>
+              <div className='ranking-user-my'>
+                <p className='ranking-user-rank'>{userRank}위</p>
+                <p className='ranking-user-nickname'>{userLaptime.nickName}</p>
+                <p className='ranking-user-record'>{userLaptime.record}</p>
                 <hr />
               </div>
             )}
