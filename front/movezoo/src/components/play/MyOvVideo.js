@@ -262,11 +262,7 @@ const MyOvVideo = (props) => {
         return;
       }
 
-<<<<<<< HEAD
       if(isPlayingGame)sendData();
-=======
-      if(isPlayingGameState)sendData();
->>>>>>> 7ea802d5c9685a87b05b2504ffb35d200d989e8d
 
       // responseData();
       if(isPlayingGame) requestAnimationFrame(sendDataStart)
