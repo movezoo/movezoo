@@ -94,6 +94,7 @@ public class RedisController {
                         .currentUserCount(room.getCurrentUserCount())
                         .maxUserCount(room.getMaxUserCount())
                         .roomMasterId(room.getRoomMasterId())
+                        .trackId(room.getTrackId())
                         .build();
                 return ResponseEntity.status(HttpStatus.OK).body(roomResponseDto);
             } else {
@@ -110,6 +111,7 @@ public class RedisController {
                         .currentUserCount(room.getCurrentUserCount())
                         .maxUserCount(room.getMaxUserCount())
                         .roomMasterId(room.getRoomMasterId())
+                        .trackId(room.getTrackId())
                         .build();
                 log.info("make room {}", room);
                 return ResponseEntity.status(HttpStatus.OK).body(roomResponseDto);

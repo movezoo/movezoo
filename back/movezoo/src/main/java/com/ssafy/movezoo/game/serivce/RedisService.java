@@ -68,12 +68,12 @@ public class RedisService {
 
     // 방 만들기
     public Room createRoom(int userId, CreateRoomRequestDto dto) {
-        Room room = new Room(userId, dto.getRoomSessionId(), dto.getRoomTitle(), dto.getRoomMode(), dto.getMaxRange());
+        Room room = new Room(userId, dto.getRoomSessionId(), dto.getRoomTitle(), dto.getRoomMode(), dto.getMaxRange(), dto.getTrackId());
         return redisRepository.save(room);
     }
 
     public Room createSecretRoom(int userId, CreateRoomRequestDto dto) {
-        Room room = new Room(userId, dto.getRoomSessionId(), dto.getRoomTitle(), dto.getRoomMode(), dto.getMaxRange(), dto.getRoomPassword());
+        Room room = new Room(userId, dto.getRoomSessionId(), dto.getRoomTitle(), dto.getRoomMode(), dto.getMaxRange(), dto.getRoomPassword(), dto.getTrackId());
         return redisRepository.save(room);
     }
 
