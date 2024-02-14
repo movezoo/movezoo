@@ -12,7 +12,13 @@ import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
 
 import { Util } from '../../../components/play/common.js';
 import { useRecoilState } from 'recoil';
-import { gameCurrentTimeState, gameMyItemLeftState, gameMyItemRightState, gameStartCountState, gameEndCountState } from '../../../components/state/state.js'
+import {
+  gameCurrentTimeState,
+  gameMyItemLeftState,
+  gameMyItemRightState,
+  gameStartCountState,
+  gameEndCountState
+} from '../../../components/state/gameState.js'
 
 
 function Game() {
@@ -27,14 +33,7 @@ function Game() {
   const detector = useRef(null);
   const handDetector = useRef(null);
 
-  // 디버깅
   useEffect(() => {
-    // console.log(`gameMyItemLeft : ${gameMyItemLeft}`);
-    // console.log(`gameMyItemRight : ${gameMyItemRight}`);
-  }, [gameMyItemLeft, gameMyItemRight])
-
-  useEffect(() => {
-
     setIsLoading(true); // 로딩 시작
 
     const initializeFaceDetector = async () => {
@@ -54,20 +53,18 @@ function Game() {
 
 
     const detect = async () => {
-      // 게임 종료 로직
+      // 게임 종료 로직(초기화)
       if (data.isGameEnd) {
-        data.data = {
-          centerDistance: 0,
-          sensitivity: 0,
-          isLeftKeyPressed: false,
-          isRightKeyPressed: false,
-          isBreak: false,
-          isRun: false, // Test중... false로 바꿔야됨
-          isLeftItemUse: false,
-          isRightItemUse: false,
-          isGameStart: false,
-          isGameEnd: false
-        };
+          data.centerDistance = 0;
+          data.sensitivity = 0;
+          data.isLeftKeyPressed = false;
+          data.isRightKeyPressed = false;
+          data.isBreak = false;
+          data.isRun = false;
+          data.isLeftItemUse = false;
+          data.isRightItemUse = false;
+          data.isGameStart = false;
+          data.isGameEnd = false;
         return;
       }
       const estimationConfig = { flipHorizontal: false };

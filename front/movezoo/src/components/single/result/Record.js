@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { singleResultState } from "../../../components/state/state.js"
+import { singleResultState } from "../../../components/state/gameState.js"
 import { useRecoilState } from "recoil";
 
 
