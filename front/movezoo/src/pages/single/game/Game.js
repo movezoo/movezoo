@@ -219,6 +219,28 @@ function Game() {
     }
     gameStart();
 
+    // 전체 화면으로 전환
+    document.documentElement.requestFullscreen();
+
+    const handleMouseMove = () => {
+      document.body.style.cursor = 'auto'; // 마우스 포인터 보이기
+      clearTimeout(cursorTimeout); // 이전에 설정한 숨기기 타이머 제거
+      cursorTimeout = setTimeout(() => { // 일정 시간이 지난 후에 다시 숨기기
+        document.body.style.cursor = 'none';
+      }, 3000);
+    };
+
+    // 마우스 이동 이벤트에 핸들러 연결
+    document.addEventListener('mousemove', handleMouseMove);
+
+    let cursorTimeout; // 마우스 커서 숨기기를 위한 타이머
+
+    // 컴포넌트가 unmount될 때 이벤트 핸들러 제거
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      clearTimeout(cursorTimeout);
+    };
+
   }, [videoRef]);
 
   // 로딩 중일 때 보여줄 뷰
@@ -245,9 +267,9 @@ function Game() {
   return (
     <div className="singlegame-container">
 
-    
+
       <div className="game">
-        <Main width={1920} height={1080} />
+        <Main className='game-main' width={1536} height={864} />
       </div>
 
       <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
@@ -276,48 +298,6 @@ function Game() {
           <div className="my-item">{itemImage2}</div>
         </div>
       </div>
-
-
-      {/*왼쪽 화면, 게임 화면*/}
-      {/* <div className="singlegame-body"> */}
-
-
-
-
-      {/* <p style={{ textAlign: "center" }}>
-          <strong>게임 화면</strong>
-        </p> */}
-      {/* <div className="game">
-          <Main width={1920} height={1080} />
-        </div>
-      </div>
-      
-      <div className="singlegame-cam-card">
-        <div className="singlegame-cam">
-          <Webcam
-            className="single-webCam"
-            mirrored={true}
-            ref={videoRef}
-            videoConstraints={{ //비디오 품질 해상도
-              width: 200,
-              height: 160
-            }}
-          />
-        </div> */}
-
-
-
-
-
-      {/* </div> */}
-
-      {/*오른쪽 화면*/}
-      {/* <div className="singlegame-select">
-        <div>
-          <Link to="/Result">넘어가기</Link>
-        </div>
-      </div> */}
-
     </div >
   );
 }
