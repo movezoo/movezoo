@@ -40,6 +40,8 @@ function Inforoom( props ) {
         { id: 1, name: 'map1', image: '/images/minimap/map1.png' },
         { id: 2, name: 'map2', image: '/images/minimap/map2.png' }
       ];
+
+      console.log(`props.track : ${props.track}`);
       let storages = JSON.parse(localStorage.getItem('userData'));  
       storages.selectedMapName = images[props.track].name; // 맵이름 저장
       localStorage.setItem('userData', JSON.stringify(storages));
