@@ -1,14 +1,12 @@
 import { Link } from "react-router-dom";
-import styles from "./Ready.module.css";
+import './Ready.css'
 
-function Ready(props) {
-  function onClick() {
-    console.log(props);
-    props.setPage(3);
-  }
+function Ready() {
   return (
-    <div state={{mySessionId: props.mySessionId, isGameStart:props.isGameStart}}>
-        <button onClick={onClick} className={styles.btnReady}>준비</button>
+    <div className="ready-button">
+      <div className="ready-link">
+        <h1 className="ready-name">방장한테 돌던지기</h1>
+      </div>
     </div>
   );
 }

@@ -2,12 +2,14 @@ import RoomList from "./roomlist/RoomList";
 import Room from "./room/Room";
 import Game from "./game/Game";
 import Result from "./result/Result";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
+import { useRecoilState } from 'recoil';
 import { myGameData, playerGameDataList } from "../../components/play/data.js";
 
+import { isMultiGameStartState } from '../../components/state/gameState.js'
 
 function Multi() {
   const APPLICATION_SERVER_URL =
@@ -35,6 +37,8 @@ function Multi() {
   const navigate = useNavigate();
   //창희 추가 end
 
+  const [isMultiGameStart, setIsMultiGameStart] = useRecoilState(isMultiGameStartState);
+
   let OV, currentVideoDevice;
   // useEffect(() => {
   //   const handleBeforeUnload = (event) => {
@@ -54,83 +58,80 @@ function Multi() {
 
 
 
-  const handleChangeSessionId = (e) => {
-    setMySessionId(e.target.value);
-  };
+  // const handleChangeSessionId = e => { setMySessionId(e.target.value); }
+  // const handleChangeUserName = e => { setMyUserName(e.target.value); }
+  // const handleMainVideoStream = stream => {
+  //   if(mainStreamManager !== stream) setMainStreamManager(stream);
+  // }
 
-  const handleChangeUserName = (e) => {
-    setMyUserName(e.target.value);
-  };
-
-  const handleMainVideoStream = (stream) => {
-    if (mainStreamManager !== stream) {
-      setMainStreamManager(stream);
-    }
-  };
-
-  const deleteSubscriber = (streamManager) => {
-    setSubscribers((prevSubscribers) => {
+  const deleteSubscriber = streamManager => {
+    setSubscribers(prevSubscribers => {
       // streamManager를 사용하여 삭제할 구독자를 찾아서 제외합니다.
       const updatedSubscribers = prevSubscribers.filter(
         (subscriber) => subscriber.stream.streamManager !== streamManager
       );
       return updatedSubscribers;
     });
-  };
+  }
 
   const createRoom = async (roomInfo) => {
     OV = new OpenVidu();
-    OV.enableProdMode();
+    OV.enableProdMode(); // log 출력제거
 
     const newSession = OV.initSession();
     setSession(newSession);
 
-    newSession.on("streamCreated", (event) => {
+    newSession.on("streamCreated", event => {
       const subscriber = newSession.subscribe(event.stream, undefined);
       setSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
     });
 
-    newSession.on("streamDestroyed", (event) => {
+    newSession.on("streamDestroyed", event => {
       deleteSubscriber(event.stream.streamManager);
     });
 
     //창희 추가 start//
-    newSession.on("exception", (exception) => {
+    newSession.on("exception", exception => {
       console.warn(exception);
     });
 
-    newSession.on("signal:my-chat", (event) => {
-      console.log();
-
+    // 채팅 수신
+    newSession.on("signal:my-chat", event => {
       const userName = JSON.parse(event.from.data).clientData;
       const newMessage = {
         id: event.from.connectionId, // 보낸 사람의 아이디
         name: userName,
         message: event.data, // 채팅 메시지 내용
-      };
-
+      }
       // 기존 채팅 메시지 배열에 새로운 메시지 추가
-      const updatedMessages = [...chatMessages, newMessage];
-
-      console.log(updatedMessages);
+      // const updatedMessages = [...chatMessages, newMessage];
+      // console.log(updatedMessages);
       // 상태 업데이트
       setChatMessages((chatMessages) => [...chatMessages, newMessage]);
       // this.setState({ chatMessages: updatedMessages });
     });
 
-    newSession.on("signal:master-out", (event) => {
+    newSession.on("signal:master-out", () => {
       console.log("방장입니다. 난 함수 실행 안해요", data.userData.userId);
       // changeSession();
       // 상태 업데이트
       setMyRoom({});
     });
 
-    newSession.on("signal:game-start", (event) => {
+    // 게임시작 수신
+    newSession.on("signal:game-start", () => {
       console.log("game start : ", data.userData.userId);
       console.log("start start session Id", mySessionId);
       roomGameStart(mySessionId);
       setPage(3);
     });
+
+    // 모든사람의 게임로딩 상태를 받기
+    newSession.on("signal:game-load-success", event => {
+      playerGameDataList.forEach(userId => {
+        
+      })
+    })
 
     //창희 추가 end//
 
@@ -140,47 +141,35 @@ function Multi() {
         .connect(token, { clientData: myUserName })
         .then(async () => {
           setConnectionId(newSession.connection.connectionId);
-          let newPublisher = await OV.initPublisherAsync(undefined, {
-            audioSource: undefined,
-            videoSource: undefined,
-            publishAudio: true,
-            publishVideo: true,
-            resolution: "640x480",
-            frameRate: 30,
-            insertMode: "APPEND",
-            mirror: false,
+          const newPublisher = await OV.initPublisherAsync(undefined, {
+            audioSource:  undefined, videoSource:  undefined,
+            publishAudio: true,      publishVideo: true,
+            resolution:   "640x480", frameRate:    30,
+            insertMode:   "APPEND",  mirror:       false,
           });
 
           newSession.publish(newPublisher);
 
           const devices = await OV.getDevices();
-          const videoDevices = devices.filter(
-            (device) => device.kind === "videoinput"
-          );
+          const videoDevices = devices.filter( device => device.kind === "videoinput" );
           const currentVideoDeviceId = newPublisher.stream
             .getMediaStream()
             .getVideoTracks()[0]
             .getSettings().deviceId;
-          currentVideoDevice = videoDevices.find(
-            (device) => device.deviceId === currentVideoDeviceId
-          );
+          currentVideoDevice = videoDevices.find( device => device.deviceId === currentVideoDeviceId );
 
           setMainStreamManager(newPublisher);
           setPublisher(newPublisher);
 
           myGameData.playerId = myUserName;
           let existMyData = false;
-          playerGameDataList.forEach((item) => {
-            if (item === myGameData.playerId) {
-              existMyData = true;
-            }
+          playerGameDataList.forEach((item) => { // 배열에 내아이디가 있는지 확인한다.
+            if (item === myGameData.playerId) existMyData = true;
           });
-          if (!existMyData) playerGameDataList.push(myGameData);
+          if (!existMyData) playerGameDataList.push(myGameData); // 배열에 내 데이터가 없다면 추가한다.
 
           setIsPlayingGame(true);
-          console.log(
-            `joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`
-          );
+          console.log( `joinsession : playerId init!!!!!!!! <${myGameData.playerId}>` );
         })
         .catch((error) => {
           console.log(
@@ -201,21 +190,22 @@ function Multi() {
     const newSession = OV.initSession();
     setSession(newSession);
 
-    newSession.on("streamCreated", (event) => {
+    newSession.on("streamCreated", event => {
       const subscriber = newSession.subscribe(event.stream, undefined);
       setSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
     });
 
-    newSession.on("streamDestroyed", (event) => {
+    newSession.on("streamDestroyed", event => {
       deleteSubscriber(event.stream.streamManager);
     });
 
     //창희 추가 start//
-    newSession.on("exception", (exception) => {
+    newSession.on("exception", exception => {
       console.warn(exception);
     });
 
-    newSession.on("signal:my-chat", (event) => {
+    // 채팅 수신
+    newSession.on("signal:my-chat", event => {
       console.log();
       // const { chatMessages } = this.state;
 
@@ -235,7 +225,7 @@ function Multi() {
       // this.setState({ chatMessages: updatedMessages });
     });
 
-    newSession.on("signal:master-out", (event) => {
+    newSession.on("signal:master-out", () => {
       console.log("방장이 나감 ", data.userData.userId);
       console.log("현재 세션 ", session);
       console.log("현재 세션 ", newSession);
@@ -255,12 +245,14 @@ function Multi() {
       navigate("/main");
       // 상태 업데이트
       setMyRoom({});
-
     });
 
-    newSession.on("signal:game-start", (event) => {
+    newSession.on("signal:game-start", () => {
       console.log("game start : ", data.userData.userId);
       
+      console.log(mySessionId);
+      roomGameStart(mySessionId);
+    
       setPage(3);
     });
     //창희 추가 end//
@@ -413,37 +405,37 @@ function Multi() {
     navigate("/main");
   }
 
-  const switchCamera = async () => {
-    try {
-      const devices = await OV.getDevices();
-      const videoDevices = devices.filter(
-        (device) => device.kind === "videoinput"
-      );
+  // const switchCamera = async () => {
+  //   try {
+  //     const devices = await OV.getDevices();
+  //     const videoDevices = devices.filter(
+  //       (device) => device.kind === "videoinput"
+  //     );
 
-      if (videoDevices && videoDevices.length > 1) {
-        const newVideoDevice = videoDevices.filter(
-          (device) => device.deviceId !== currentVideoDevice.deviceId
-        );
+  //     if (videoDevices && videoDevices.length > 1) {
+  //       const newVideoDevice = videoDevices.filter(
+  //         (device) => device.deviceId !== currentVideoDevice.deviceId
+  //       );
 
-        if (newVideoDevice.length > 0) {
-          const newPublisher = OV.initPublisher(undefined, {
-            videoSource: newVideoDevice[0].deviceId,
-            publishAudio: true,
-            publishVideo: true,
-            mirror: true,
-          });
+  //       if (newVideoDevice.length > 0) {
+  //         const newPublisher = OV.initPublisher(undefined, {
+  //           videoSource: newVideoDevice[0].deviceId,
+  //           publishAudio: true,
+  //           publishVideo: true,
+  //           mirror: true,
+  //         });
 
-          await session.unpublish(mainStreamManager);
-          await session.publish(newPublisher);
+  //         await session.unpublish(mainStreamManager);
+  //         await session.publish(newPublisher);
 
-          setMainStreamManager(newPublisher);
-          setPublisher(newPublisher);
-        }
-      }
-    } catch (error) {
-      console.error("Error switching camera:", error);
-    }
-  };
+  //         setMainStreamManager(newPublisher);
+  //         setPublisher(newPublisher);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error switching camera:", error);
+  //   }
+  // };
 
   const getToken = async (roomInfo) => {
     const sessionId = await createSession(roomInfo);
@@ -474,7 +466,7 @@ function Multi() {
     }
   };
 const roomGameStart = async(sessionId)=>{
-  const response = await axios.post(
+  const response = await axios.patch(
     APPLICATION_SERVER_URL + "api/room/start",
     {
       roomSessionId: sessionId,
@@ -512,6 +504,8 @@ const roomGameStart = async(sessionId)=>{
       );
 
       // console.log("roomInfo ", roomInfo.data)
+      if(roomInfo.data.roomStatus === true) return;
+
       setMyRoom(roomInfo.data);
       setMySessionId(roomInfo.data.roomSessionId);
 
@@ -552,6 +546,7 @@ const roomGameStart = async(sessionId)=>{
         <Room
           setPage={setPage}
           session={session}
+          myRoom={myRoom}
           mainStreamManager={mainStreamManager}
           subscribers={subscribers}
           setSubscribers={setSubscribers}

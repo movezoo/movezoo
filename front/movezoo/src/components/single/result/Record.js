@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { singleResultState } from "../../../components/state/state.js"
+import { singleResultState } from "../../../components/state/gameState.js"
 import { useRecoilState } from "recoil";
 
 
@@ -13,7 +13,7 @@ function Record() {
   const [ singleResult ] = useRecoilState(singleResultState);
 
   useEffect(() => {
-    const fetchUserLaptime = async (mapNumber) => {
+    const fetchUserLaptime = async () => {
       try {
         const storedUserData = localStorage.getItem('userData');
         if (!storedUserData) {
@@ -23,24 +23,49 @@ function Record() {
         const userId = userData.userData.userId;
         const mapNumber = userData.selectedMapId;
         
-        const userLaptime = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${userId}/${mapNumber}`);
+        const { data: userLaptime } = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${userId}/${mapNumber}`);
         
+        // db에 랩타임이 없으면 이번 게임 랩타임을 db에 보내기
+        if (!userLaptime.record) {
+          try {
+            const updateLaptime = await axios.patch('https://i10e204.p.ssafy.io/api/laptime', 
+            { userId, trackId: mapNumber, record: singleResult.time });
+    
+            console.log('랩타임 업데이트 성공:', updateLaptime);
+          } catch (error) {
+            console.error('랩타임 업데이트 실패:', error);
+          }
+        }
+
         // 이번 게임 랩타임 db에 보내기
-        // if (userLaptime.data < )
+        if (userLaptime.record > singleResult.time ) {
+          try {
+            console.log(userId)
+            console.log(mapNumber)
+            console.log(userLaptime.record)
+            console.log(singleResult.time)
+            const updateLaptime = await axios.patch('https://i10e204.p.ssafy.io/api/laptime', 
+            { userId, trackId: mapNumber, record: singleResult.time });
+    
+            console.log('랩타임 업데이트 성공:', updateLaptime);
+          } catch (error) {
+            console.error('랩타임 업데이트 실패:', error);
+          }
+        }
         
-        
-        setUserLaptime(userLaptime.data);
-        // console.log(userLaptime.data);
-
-
+        setUserLaptime(userLaptime);
+        // console.log(userLaptime);
+  
       } catch (error) {
         console.error('랭킹 정보 요청 실패:', error);
       }
     }
-
+  
     fetchUserLaptime();
     
-  }, []);
+  }, [singleResult.time]);
+
+
 
   return (
     <div className="Record-body">
