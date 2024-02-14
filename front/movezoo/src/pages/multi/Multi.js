@@ -254,7 +254,7 @@ function Multi() {
       console.log(mySessionId);
       roomGameStart(mySessionId);
     
-      setPage(1);
+      setPage(3);
     });
     //창희 추가 end//
 
