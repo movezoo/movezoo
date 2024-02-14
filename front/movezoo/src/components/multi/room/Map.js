@@ -17,14 +17,17 @@ function Map(props) {
   // myRoom은 roomInfo로 Multi컴포넌트에서 오픈비두 서버통신을 통해 받아온 데이터이다.
   // 따라서 로컬에서는 실행이 되지 않는다.
   const [currentIndex, setCurrentIndex] = useState(myRoom.trackId);
+  const [src, setSrc] = useState('');
   // const [userLaptime, setUserLaptime] = useState(null);
   const images = [
     { id: 1, name: 'map1', image: '/images/minimap/map1.png' },
     { id: 2, name: 'map2', image: '/images/minimap/map2.png' }
   ];
 
-  
-
+  const selectMap = useState(JSON.parse(localStorage.getItem('userData')).selectedMapName);
+  images.forEach(image => {
+    if(image.name === selectMap) setSrc(image.image);
+  })
   // const handlePrevious = () => {
   //   const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
   //   setCurrentIndex(newIndex);
@@ -95,6 +98,7 @@ function Map(props) {
   
   useEffect(() => {
     // fetchLapTime(images[currentIndex].id);
+    
   }, []);
 
   return (
@@ -105,7 +109,7 @@ function Map(props) {
           <AiFillCaretLeft className='room-map-change-button' onClick={handlePrevious}/>
         </div> */}
         <div className="room-map-image">
-          <img src={images[currentIndex].image} alt="mini-map" />
+          <img src={src} alt="mini-map" />
         </div>
         {/* <div className="map-next">
           <AiFillCaretRight className='room-map-change-button' onClick={handleNext}/>
