@@ -1,35 +1,45 @@
-import { useState, useRef, useEffect } from "react";
-import Webcam from "react-webcam";
-import Main from "../../../components/play/Main";
 import "./Game.css";
-import { data } from "../../../components/play/data.js";
+import Main from "../../../components/play/Main";
 import MyVideoComponent from "../../../components/play/MyVideoComponent.js";
 import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
-import { useRecoilState } from "recoil";
-import { isLoadGameState, isLoadDetectState } from '../../../components/state/gameState.js'
 
 import '@mediapipe/face_detection';
 import '@tensorflow/tfjs-backend-webgl';
 import * as faceDetection from '@tensorflow-models/face-detection';
 import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
+import { useState, useRef, useEffect } from "react";
+import { useRecoilState } from "recoil";
+
 import { Util } from '../../../components/play/common.js';
+import { isLoadGameState, isLoadDetectState } from '../../../components/state/gameState.js'
+import { data } from "../../../components/play/data.js";
 
 import {
   gameCurrentTimeState,
   gameMyItemLeftState,
   gameMyItemRightState,
   gameStartCountState,
-  gameEndCountState
+  gameEndCountState,
+  isMultiGameStartState,
+  playGameModeState
 } from '../../../components/state/gameState.js'
 
 function Game(props) {
-  const { isPlayingGame, session, mainStreamManager, subscribers, leaveSession } = props;
+  const { setPage, isPlayingGame, session, mainStreamManager, subscribers, leaveSession } = props;
   const [testCurrentLapTime] = useRecoilState(gameCurrentTimeState);
   const [gameMyItemLeft] = useRecoilState(gameMyItemLeftState);
   const [gameMyItemRight] = useRecoilState(gameMyItemRightState);
   const [gameStartCount] = useRecoilState(gameStartCountState);
   const [gameEndCount] = useRecoilState(gameEndCountState);
+  const [isMultiGameStart] = useRecoilState(isMultiGameStartState);
+  const [playGameMode] = useRecoilState(playGameModeState);
+  
 
+  // **************************************************
+  // if(playGameMode === 'multi' && isMultiGameStart) 
+  //     위 조건이 참이되면 카운트다운이 시작된다.
+  // **************************************************
+  
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const videoRef = useRef(null);
   const detector = useRef(null);
@@ -248,7 +258,7 @@ function Game(props) {
 
     
       <div className="game">
-        <Main width={1920} height={1080} />
+        <Main width={1920} height={1080} setPage={setPage} />
       </div>
 
       <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
