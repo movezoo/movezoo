@@ -97,7 +97,6 @@
 // test
 
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import Webcam from "react-webcam";
 import ResultBack from "../../../components/single/result/ResultBack";
@@ -113,6 +112,9 @@ function Result() {
   const [coin, setCoin] = useRecoilState(userCoin);
 
   useEffect(() => {
+    // 컴포넌트가 마운트될 때 전체 화면 모드 종료
+    document.exitFullscreen();
+
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
       setLoading(false);
     });
@@ -215,36 +217,36 @@ function Result() {
   return (
       <div className="single-result-container">
 
-        <div className="result-header">
+        <div className="single-result-header">
           <div>
-            <h1 className="result-name">RESULT</h1>
+            <h1 className="single-result-name">RESULT</h1>
           </div>
         </div>
 
-        <div className="result-body-card">
+        <div className="single-result-body-card">
 
-          <div className="result-body">
+          <div className="single-result-body">
 
-            <div className="result-body-cam">
+            <div className="single-result-body-cam">
               {loading ? (
                 <h1>Loading...</h1>
               ) : (
-                <Webcam className="result-webcam" mirrored={true} />
+                <Webcam className="single-result-webcam" mirrored={true} />
               )}
             </div>
 
             {/*오른쪽 화면*/}
-            <div className="result-select">
+            <div className="single-result-select">
               
-              <div className="result-record">
+              <div className="single-result-record">
                 <Record />
               </div>
               
-              <div className="result-reward">
-                <p className="reward-coin">+10G</p>
+              <div className="single-result-reward">
+                <p className="single-reward-coin">+10G</p>
               </div>
               
-              <div className="result-back-button">
+              <div className="single-result-back-button">
                 <ResultBack />
               </div>
               

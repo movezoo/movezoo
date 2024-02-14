@@ -17,7 +17,9 @@ import {
   gameMyItemLeftState,
   gameMyItemRightState,
   gameStartCountState,
-  gameEndCountState
+  gameEndCountState,
+  isLoadGameState,
+  isLoadDetectState
 } from '../../../components/state/gameState.js'
 
 
@@ -28,14 +30,18 @@ function Game() {
   const [gameMyItemRight] = useRecoilState(gameMyItemRightState);
   const [gameStartCount] = useRecoilState(gameStartCountState);
   const [gameEndCount] = useRecoilState(gameEndCountState);
+  const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
+  const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
 
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const videoRef = useRef(null);
   const detector = useRef(null);
   const handDetector = useRef(null);
 
   useEffect(() => {
-    setIsLoading(true); // 로딩 시작
+    // 로딩 초기화
+    setIsLoadGame(false); // 로딩 안됨
+    setIsLoadDetect(false); // 로딩 안됨
+    
 
     const initializeFaceDetector = async () => {
       const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
@@ -54,18 +60,22 @@ function Game() {
 
 
     const detect = async () => {
+      let readyFace = false;
+      let readyHand = false;
       // 게임 종료 로직(초기화)
       if (data.isGameEnd) {
-        data.centerDistance = 0;
-        data.sensitivity = 0;
-        data.isLeftKeyPressed = false;
-        data.isRightKeyPressed = false;
-        data.isBreak = false;
-        data.isRun = false;
-        data.isLeftItemUse = false;
-        data.isRightItemUse = false;
-        data.isGameStart = false;
-        data.isGameEnd = false;
+        data.data = {
+          centerDistance: 0,
+          sensitivity: 0,
+          isLeftKeyPressed: false,
+          isRightKeyPressed: false,
+          isBreak : false,
+          isRun: false, // Test중... false로 바꿔야됨
+          isLeftItemUse: false,
+          isRightItemUse: false,
+          isGameStart: false,
+          isGameEnd: false
+        };
         return;
       }
       const estimationConfig = { flipHorizontal: false };
@@ -79,12 +89,12 @@ function Game() {
         video.height = videoHeight;
         // 손 디텍트 Start ***********
         if (!!handDetector.current) {
+          readyHand = true;
           try {
             const hands = await handDetector.current.estimateHands(video, estimationConfig);
             const centerX = videoWidth / 2;
             const leftX = videoWidth;
             const rightX = 0;
-
             // 손을 인식 성공했다면
             if (!!hands) {
               let isLeftTouch = false;
@@ -92,25 +102,18 @@ function Game() {
               hands.forEach(hand => {
                 hand.keypoints.forEach(point => {
                   // 왼쪽              
-                  if (point.x > leftX - centerX / 2) {
-                    isLeftTouch = true;
-                    // 오른쪽
-                  } else if (point.x < rightX + centerX / 2) {
-                    isRightTouch = true;
-                  }
+                  if (point.x > leftX - centerX/2) isLeftTouch = true;
+                  // 오른쪽
+                  else if(point.x < rightX + centerX/2) isRightTouch = true;
                 })
                 // console.log(hand.keypoints[0].x)
                 // console.log(hands)
               })
 
 
-              if (isLeftTouch) {
-                data.isLeftItemUse = true;
-                // console.log(`왼쪽 아이템 사용`)
-              } else if (isRightTouch) {
-                data.isRightItemUse = true;
-                // console.log(`오른쪽 아이템 사용`)
-              } else {
+              if (isLeftTouch) data.isLeftItemUse = true;
+              else if (isRightTouch) data.isRightItemUse = true;
+              else {
                 data.isLeftItemUse = false;
                 data.isRightItemUse = false;
               }
@@ -131,41 +134,32 @@ function Game() {
             // console.log(faces);
             // 화면 기준 - 화면의 중앙을 기준으로 코의 좌표의 위치에 따른 진행 방향 결정, 민감도 설정 가능
             const centerX = videoWidth / 2;
-
+            if(!!faces) readyFace = true
             let noseX, noseY, rightEarTragionX, rightEarTragionY,
               leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX,
               mouthCenterY;
 
-            faces[0]?.keypoints.forEach((obj) => {
-              if (obj.name === 'noseTip') {
-                noseX = obj.x;
-                noseY = obj.y;
-                // 캠 반전때문에 방향을 반대로 값을 넣어줌
-              } else if (obj.name === 'rightEarTragion') {
-                leftEarTragionX = obj.x;
-                leftEarTragionY = obj.y;
-              } else if (obj.name === 'leftEarTragion') {
-                rightEarTragionX = obj.x
-                rightEarTragionY = obj.y;
-              } else if (obj.name === 'rightEye') {
-                leftEyeX = obj.x;
-              } else if (obj.name === 'leftEye') {
-                rightEyeX = obj.x;
-              } else if (obj.name === 'mouthCenter') {
-                mouthCenterY = obj.y;
-              }
-
-
-              // noseTip
-              // rightEarTragion
-              // leftEarTragion
-              // leftEye
-              // rightEye
-              // mouthCenter
-            })
+              faces[0]?.keypoints.forEach(obj => {
+                if(obj.name === 'noseTip') {
+                  noseX = obj.x;
+                  noseY = obj.y;
+                  // 캠 반전때문에 방향을 반대로 값을 넣어줌
+                } else if(obj.name === 'rightEarTragion') {
+                  leftEarTragionX = obj.x;
+                  leftEarTragionY = obj.y;
+                } else if(obj.name === 'leftEarTragion') {
+                  rightEarTragionX = obj.x
+                  rightEarTragionY = obj.y;
+                } else if(obj.name === 'rightEye') {
+                  leftEyeX = obj.x;
+                } else if(obj.name === 'leftEye') {
+                  rightEyeX = obj.x;
+                } else if(obj.name === 'mouthCenter') {
+                  mouthCenterY = obj.y;
+                }
+              })
 
             let sensitivity = Math.abs(noseY - mouthCenterY) * 1.3; // 민감도
-
             // noseX: 269.99345779418945, centerX: 320, sensitivity: 32.98797607421875
             if (data.isGameStart) {
               data.centerDistance = Math.abs(centerX - noseX);
@@ -202,7 +196,10 @@ function Game() {
         // 얼굴 디텍트 End ***********
       }
 
-
+      if(readyHand && readyFace) {
+        // console.log(`detect load 완료`)
+        setIsLoadDetect(true)
+      }
     };
 
 
@@ -212,25 +209,33 @@ function Game() {
     };
 
     const gameStart = () => {
-      setTimeout(() => {
-        setIsLoading(false); // 3초 후에 로딩 종료 및 게임 시작
-        runFaceDetection();
-      }, 2000);
+      runFaceDetection();
     }
     gameStart();
 
-  }, [videoRef]);
+    // 전체 화면으로 전환
+    document.documentElement.requestFullscreen();
 
-  // 로딩 중일 때 보여줄 뷰
-  if (isLoading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-body">
-          로딩 중...
-        </div>
-      </div>
-    );
-  }
+    const handleMouseMove = () => {
+      document.body.style.cursor = 'auto'; // 마우스 포인터 보이기
+      clearTimeout(cursorTimeout); // 이전에 설정한 숨기기 타이머 제거
+      cursorTimeout = setTimeout(() => { // 일정 시간이 지난 후에 다시 숨기기
+        document.body.style.cursor = 'none';
+      }, 3000);
+    };
+
+    // 마우스 이동 이벤트에 핸들러 연결
+    document.addEventListener('mousemove', handleMouseMove);
+
+    let cursorTimeout; // 마우스 커서 숨기기를 위한 타이머
+
+    // 컴포넌트가 unmount될 때 이벤트 핸들러 제거
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      clearTimeout(cursorTimeout);
+    };
+
+  }, [videoRef]);
 
   let itemImage = null;
   if (gameMyItemLeft === "speedup") {
@@ -245,9 +250,8 @@ function Game() {
   return (
     <div className="singlegame-container">
 
-    
       <div className="game">
-        <Main width={1920} height={1080} />
+        <Main className='game-main' width={1536} height={864} />
       </div>
 
       <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
@@ -276,48 +280,6 @@ function Game() {
           <div className="my-item">{itemImage2}</div>
         </div>
       </div>
-
-
-      {/*왼쪽 화면, 게임 화면*/}
-      {/* <div className="singlegame-body"> */}
-
-
-
-
-      {/* <p style={{ textAlign: "center" }}>
-          <strong>게임 화면</strong>
-        </p> */}
-      {/* <div className="game">
-          <Main width={1920} height={1080} />
-        </div>
-      </div>
-      
-      <div className="singlegame-cam-card">
-        <div className="singlegame-cam">
-          <Webcam
-            className="single-webCam"
-            mirrored={true}
-            ref={videoRef}
-            videoConstraints={{ //비디오 품질 해상도
-              width: 200,
-              height: 160
-            }}
-          />
-        </div> */}
-
-
-
-
-
-      {/* </div> */}
-
-      {/*오른쪽 화면*/}
-      {/* <div className="singlegame-select">
-        <div>
-          <Link to="/Result">넘어가기</Link>
-        </div>
-      </div> */}
-
     </div >
   );
 }

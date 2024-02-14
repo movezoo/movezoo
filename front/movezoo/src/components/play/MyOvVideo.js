@@ -6,7 +6,6 @@ import * as faceDetection from '@tensorflow-models/face-detection';
 import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
 
 import { data, myGameData, playerGameDataList } from "./data.js";
-import { Util } from './common.js';
 import { useRecoilState } from 'recoil';
 import {
   gameCurrentTimeState,
@@ -14,6 +13,8 @@ import {
   gameMyItemRightState,
   gameStartCountState,
   gameEndCountState,
+  isLoadGameState,
+  isLoadDetectState
 } from '../state/gameState.js'
 
 let isPlayingGame = false;
@@ -26,38 +27,34 @@ const MyOvVideo = (props) => {
   const [gameMyItemRight] = useRecoilState(gameMyItemRightState);
   const [gameStartCount] = useRecoilState(gameStartCountState);
   const [gameEndCount] = useRecoilState(gameEndCountState);
+  const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
+  const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
 
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const videoRef = useRef(null);
   const detector = useRef(null);
   const handDetector = useRef(null);
   
 
   useEffect(() => {
-    setIsLoading(true); // 로딩 시작
+    // 로딩 초기화
+    setIsLoadGame(false); // 로딩 안됨
+    setIsLoadDetect(false); // 로딩 안됨
 
-    if (!!videoRef.current) {
-      // Add video element to StreamManager during initial rendering
-      streamManager.addVideoElement(videoRef.current);
-    }
-
+    if (!!videoRef.current) streamManager.addVideoElement(videoRef.current);
 
     const initializeFaceDetector = async () => {
       const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
       const handModel = handPoseDetection.SupportedModels.MediaPipeHands;
-      const detectorConfig = {
-        runtime: 'tfjs'
-      };
-      const handDetectorConfig = {
-        runtime: 'tfjs',
-        modelType: 'lite'
-      };
+      const detectorConfig = { runtime: 'tfjs' };
+      const handDetectorConfig = { runtime: 'tfjs', modelType: 'lite' };
       detector.current = await faceDetection.createDetector(model, detectorConfig);
       handDetector.current = await handPoseDetection.createDetector(handModel, handDetectorConfig);
     };
     initializeFaceDetector();
 
     const detect = async () => {
+      let readyFace = false;
+      let readyHand = false;
       // 게임 종료 로직
       if (data.isGameEnd) {
         data.data = {
@@ -85,6 +82,7 @@ const MyOvVideo = (props) => {
         video.height = videoHeight;
         // 손 디텍트 Start ***********
         if(!!handDetector.current) {
+          readyHand = true;
           try {
             const hands = await handDetector.current.estimateHands(video, estimationConfig);
             const centerX = videoWidth / 2;
@@ -98,25 +96,17 @@ const MyOvVideo = (props) => {
               hands.forEach(hand => {
                 hand.keypoints.forEach(point => {
                   // 왼쪽              
-                  if (point.x > leftX - centerX/2) {
-                    isLeftTouch = true;
+                  if (point.x > leftX - centerX/2) isLeftTouch = true;
                   // 오른쪽
-                  } else if(point.x < rightX + centerX/2) { 
-                    isRightTouch = true;
-                  }
+                  else if(point.x < rightX + centerX/2) isRightTouch = true;
                 })
-                // console.log(hand.keypoints[0].x)
-                // console.log(hands)
               })
               
 
-              if (isLeftTouch) {
-                data.isLeftItemUse = true;
-                // console.log(`왼쪽 아이템 사용`)
-              } else if(isRightTouch) {
-                data.isRightItemUse = true;
-                // console.log(`오른쪽 아이템 사용`)
-              } else {
+              // 아이템 사용
+              if (isLeftTouch) data.isLeftItemUse = true;
+              else if(isRightTouch) data.isRightItemUse = true;
+              else {
                 data.isLeftItemUse = false;
                 data.isRightItemUse = false;
               }
@@ -132,17 +122,15 @@ const MyOvVideo = (props) => {
         if (!!detector.current) {
           try {
             const faces = await detector.current.estimateFaces(video, estimationConfig);
-
-            if( faces.length === 0 ) console.log(`no face`);
-            // console.log(faces);
+            // if( faces.length === 0 ) console.log(`no face`);
             // 화면 기준 - 화면의 중앙을 기준으로 코의 좌표의 위치에 따른 진행 방향 결정, 민감도 설정 가능
             const centerX = videoWidth / 2;
-
+            if(!!faces) readyFace = true
             let noseX, noseY, rightEarTragionX, rightEarTragionY,
-            leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX,
-            mouthCenterY;
+              leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX,
+              mouthCenterY;
 
-            faces[0]?.keypoints.forEach((obj) => {
+            faces[0]?.keypoints.forEach(obj => {
               if(obj.name === 'noseTip') {
                 noseX = obj.x;
                 noseY = obj.y;
@@ -160,18 +148,9 @@ const MyOvVideo = (props) => {
               } else if(obj.name === 'mouthCenter') {
                 mouthCenterY = obj.y;
               }
-              
-
-              // noseTip
-              // rightEarTragion
-              // leftEarTragion
-              // leftEye
-              // rightEye
-              // mouthCenter
             })
             
             let sensitivity = Math.abs(noseY - mouthCenterY)*1.3; // 민감도
-            
             // noseX: 269.99345779418945, centerX: 320, sensitivity: 32.98797607421875
             if(data.isGameStart) {
               data.centerDistance = Math.abs(centerX - noseX);
@@ -199,7 +178,6 @@ const MyOvVideo = (props) => {
                 data.isRun = true;
                 data.isBreak = false;
               }
-
             }
           } catch (error) {
             // console.error('Error detecting faces:', error);
@@ -208,6 +186,10 @@ const MyOvVideo = (props) => {
         // 얼굴 디텍트 End ***********
       }
 
+      if(readyHand && readyFace) {
+        // console.log(`detect load 완료`)
+        setIsLoadDetect(true)
+      }
     };
 
 
@@ -250,7 +232,6 @@ const MyOvVideo = (props) => {
           // 3. 없다면 새로 push 한다.
           if(needPush) playerGameDataList.push(newPlayerGameData); // 삽입
         }
-        
       });
     }
 
@@ -262,20 +243,13 @@ const MyOvVideo = (props) => {
         return;
       }
 
-      if(isPlayingGame)sendData();
+      if(isPlayingGame) sendData();
 
       // responseData();
       if(isPlayingGame) requestAnimationFrame(sendDataStart)
     }
     
     const gameStart = () => {
-      setTimeout(() => {
-        setIsLoading(false); // 3초 후에 로딩 종료 및 게임 시작
-        responseData(); // 1회 열기
-        sendDataStart(); // 계속 실행
-        runFaceDetection(); // 계속 실행
-        runFaceDetection();
-      }, 2000);
       responseData(); // 1회 열기
       sendDataStart(); // 계속 실행
       runFaceDetection(); // 계속 실행
