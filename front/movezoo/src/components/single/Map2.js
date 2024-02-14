@@ -155,7 +155,7 @@ function Carousel() {
     try {
       const storedUserData = localStorage.getItem('userData');
         if (!storedUserData) {
-            throw new Error('사용자 정보를 찾을 수 없습니다.');
+          throw new Error('사용자 정보를 찾을 수 없습니다.');
         }
 
       // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
