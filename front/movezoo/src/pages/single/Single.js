@@ -4,6 +4,7 @@ import Webcam from "react-webcam";
 import Map2 from "../../components/single/Map2";
 import Start from "../../components/single/Start";
 import Select from "../../components/select/Select";
+import { gameStartData } from "../../components/play/data.js";
 import { FaAnglesLeft } from "react-icons/fa6";
 import "./Single.css";
 
@@ -14,6 +15,7 @@ function Single() {
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
       setLoading(false);
     });
+    gameStartData.mode = 'single';
   }, []);
 
   return (
