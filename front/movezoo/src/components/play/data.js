@@ -1,3 +1,7 @@
+
+
+
+
 const data = {
   centerDistance: 0,
   sensitivity: 0,
@@ -10,10 +14,10 @@ const data = {
   isGameStart: false,
   isGameEnd: false
 };
-
+// console.log(JSON.parse(localStorage.getItem('userData')).selectedMapName);
 const gameStartData = {
   mode: 'single',
-  selectMap: 'map2',
+  selectMap: (JSON.parse(localStorage.getItem('userData'))?.selectedMapName) ?? 'map1',
   selectCharacter: 'fox',
 }
 

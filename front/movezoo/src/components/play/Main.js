@@ -14,7 +14,8 @@ import {
   gameStartCountState, 
   gameEndCountState, 
   singleResultState
-} from '../state/state.js'
+} from '../state/gameState.js'
+import { selectCharacterState } from '../state/state.js'
 
 const localStorage = window.localStorage || {};
 
@@ -32,11 +33,12 @@ const Main = (props) => {
   const [gameStartCount, setGameStartCount] = useRecoilState(gameStartCountState);
   const [gameEndCount, setGameEndCount] = useRecoilState(gameEndCountState);
   const [singleResult, setSingleResult] = useRecoilState(singleResultState);
+  const [selectCharacter] = useRecoilState(selectCharacterState);
+  
 
 
   const navigate = useNavigate();
   const canvasRef = useRef(null)
-
 
 
   // 게임 시작신호
@@ -55,6 +57,8 @@ const Main = (props) => {
   },[])
 
   useEffect(() => {
+    // 선택된 캐릭터
+
     const selectMap = gameStartData.selectMap;
 
     const canvas = canvasRef.current;
@@ -1051,20 +1055,20 @@ const Main = (props) => {
         // 길 세팅 Start ******************************************************************
         addLowRollingHills();
         addStraight(ROAD.LENGTH.SHORT);
-        addSCurves();
-        addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.HARD, ROAD.HILL.LOW);
-        addBumps();
-        addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
-        addStraight();
-        addSCurves();
-        addHill(ROAD.LENGTH.SHORT, ROAD.HILL.MEDIUM);
-        addStraight();
-        addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
-        addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
-        addStraight();
-        addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
-        addBumps();
-        addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
+        // addSCurves();
+        // addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.HARD, ROAD.HILL.LOW);
+        // addBumps();
+        // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
+        // addStraight();
+        // addSCurves();
+        // addHill(ROAD.LENGTH.SHORT, ROAD.HILL.MEDIUM);
+        // addStraight();
+        // addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
+        // addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
+        // addStraight();
+        // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
+        // addBumps();
+        // addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
         addDownhillToEnd();
 
         console.log("map2 총 길이: ",segments.length);

@@ -47,40 +47,8 @@ export const profileImgUrl = atom({
   default: '',
 })
 
-export const gameCurrentTimeState = atom({
-  key: 'gameState',
-  default: 0
-});
 
-export const gameMyItemLeftState = atom({
-  key: 'gameMyItemLeftState',
-  default: ''
-})
-
-export const gameMyItemRightState = atom({
-  key: 'gameMyItemRightState',
-  default: ''
-})
-
-export const gameStartCountState = atom({
-  key: 'gameStartCountState',
-  default: 3
-})
-export const gameEndCountState = atom({
-  key: 'gameEndCountState',
-  default: 10
-})
-export const gameEndState = atom({
-  key: 'gameEndState',
-  default: false
-})
-
-export const startReadyUserCountState = atom({
-  key: 'startReadyUserCountState',
-  default: 0
-})
-
-export const singleResultState = atom({
-  key: 'singleResultState',
-  default: {}
+export const selectCharacterState = atom({
+  key: 'selectCharacterState',
+  default: 'shiba'
 })

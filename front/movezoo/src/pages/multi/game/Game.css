@@ -97,7 +97,7 @@
   width: 300px;
   height: 230px;
   background-color: white;
-  display: flex;
+  position: absolute;
   justify-content: center;
   border-radius: 20px;
   opacity: 80%;
@@ -109,6 +109,30 @@
   height: auto; /* Maintain aspect ratio */
   border-radius: 20px;
   overflow: hidden;
+  @apply
+  opacity-80
+}
+
+.multi-webCam-box {
+  width: 100%;
+  max-width: 200px; /* Limit width to 400px */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 20px;
+  overflow: hidden;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  @apply
+  opacity-80
+}
+
+.multi-webCam {
+  width: 100%;
+  max-width: 160px; /* Limit width to 400px */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 10px;
   @apply
   opacity-80
 }

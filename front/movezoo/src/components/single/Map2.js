@@ -86,11 +86,12 @@
 
 // test
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./Map2.css";
 import { AiFillCaretLeft } from "react-icons/ai";
 import { AiFillCaretRight } from "react-icons/ai";
 import axios from "axios";
+import { gameStartData } from '../play/data.js'
 
 function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -118,6 +119,7 @@ function Carousel() {
   
     // 선택된 맵의 id를 userData에 추가
     userData.selectedMapId = images[newIndex].id;
+    userData.selectedMapName = images[newIndex].name;
   
     // 수정된 userData를 다시 로컬 스토리지에 저장
     localStorage.setItem('userData', JSON.stringify(userData));
@@ -140,7 +142,11 @@ function Carousel() {
   
     // 선택된 맵의 id를 userData에 추가
     userData.selectedMapId = images[newIndex].id;
+    userData.selectedMapName = images[newIndex].name;
   
+    gameStartData.mode = 'single';
+    gameStartData.selectMap = userData.selectedMapName;
+    
     // 수정된 userData를 다시 로컬 스토리지에 저장
     localStorage.setItem('userData', JSON.stringify(userData));
   };
@@ -149,7 +155,7 @@ function Carousel() {
     try {
       const storedUserData = localStorage.getItem('userData');
         if (!storedUserData) {
-            throw new Error('사용자 정보를 찾을 수 없습니다.');
+          throw new Error('사용자 정보를 찾을 수 없습니다.');
         }
 
       // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
