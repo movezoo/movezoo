@@ -75,6 +75,27 @@ function Multi() {
     });
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // 방생성 : 방장
   const createRoom = async (roomInfo) => {
     OV = new OpenVidu();
     OV.enableProdMode(); // log 출력제거
@@ -85,6 +106,10 @@ function Multi() {
     newSession.on("streamCreated", event => {
       const subscriber = newSession.subscribe(event.stream, undefined);
       setSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
+    });
+    newSession.on('connectionDestroyed', (event) => {
+      console.log(`connection: ${event.connection}`);
+      console.log(event.connection);
     });
 
     newSession.on("streamDestroyed", event => {
@@ -104,10 +129,6 @@ function Multi() {
         name: userName,
         message: event.data, // 채팅 메시지 내용
       }
-      // 기존 채팅 메시지 배열에 새로운 메시지 추가
-      // const updatedMessages = [...chatMessages, newMessage];
-      // console.log(updatedMessages);
-      // 상태 업데이트
       setChatMessages((chatMessages) => [...chatMessages, newMessage]);
       // this.setState({ chatMessages: updatedMessages });
     });
@@ -145,12 +166,11 @@ function Multi() {
           const newPublisher = await OV.initPublisherAsync(undefined, {
             audioSource:  undefined, videoSource:  undefined,
             publishAudio: true,      publishVideo: true,
-            resolution:   "640x480", frameRate:    30,
+            resolution:   "280x210", frameRate:    30, // 원래: 640x480
             insertMode:   "APPEND",  mirror:       false,
           });
 
           newSession.publish(newPublisher);
-
           const devices = await OV.getDevices();
           const videoDevices = devices.filter( device => device.kind === "videoinput" );
           const currentVideoDeviceId = newPublisher.stream
@@ -171,7 +191,7 @@ function Multi() {
           if (!existMyData) playerGameDataList.push(myGameData); // 배열에 내 데이터가 없다면 추가한다.
 
           setIsPlayingGame(true);
-          console.log( `joinsession : playerId init!!!!!!!! <${myGameData.playerId}>` );
+          console.log(`joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`);
         })
         .catch((error) => {
           console.log(
@@ -185,6 +205,23 @@ function Multi() {
     }
   };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // 방입장
   const enterRoom = async (enterSessionId) => {
     OV = new OpenVidu();
     OV.enableProdMode();
@@ -195,6 +232,11 @@ function Multi() {
     newSession.on("streamCreated", event => {
       const subscriber = newSession.subscribe(event.stream, undefined);
       setSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
+    });
+
+    newSession.on('connectionDestroyed', (event) => {
+      console.log(`connection: ${event.connection}`);
+      console.log(event.connection);
     });
 
     newSession.on("streamDestroyed", event => {
@@ -208,21 +250,12 @@ function Multi() {
 
     // 채팅 수신
     newSession.on("signal:my-chat", event => {
-      console.log();
-      // const { chatMessages } = this.state;
-
       const userName = JSON.parse(event.from.data).clientData;
       const newMessage = {
         id: event.from.connectionId, // 보낸 사람의 아이디
         name: userName,
         message: event.data, // 채팅 메시지 내용
       };
-
-      // 기존 채팅 메시지 배열에 새로운 메시지 추가
-      const updatedMessages = [...chatMessages, newMessage];
-
-      console.log(updatedMessages);
-      // 상태 업데이트
       setChatMessages((chatMessages) => [...chatMessages, newMessage]);
       // this.setState({ chatMessages: updatedMessages });
     });
@@ -248,13 +281,14 @@ function Multi() {
       setMyRoom({});
     });
 
+    // 게임시작 수신
     newSession.on("signal:game-start", () => {
       console.log("game start : ", data.userData.userId);
       
       console.log(mySessionId);
       roomGameStart(mySessionId);
     
-      setPage(1);
+      setPage(3);
     });
     //창희 추가 end//
 
@@ -264,48 +298,35 @@ function Multi() {
         .connect(token, { clientData: myUserName })
         .then(async () => {
           setConnectionId(newSession.connection.connectionId);
-
-          let newPublisher = await OV.initPublisherAsync(undefined, {
-            audioSource: undefined,
-            videoSource: undefined,
-            publishAudio: true,
-            publishVideo: true,
-            resolution: "640x480",
-            frameRate: 30,
-            insertMode: "APPEND",
-            mirror: false,
+          const newPublisher = await OV.initPublisherAsync(undefined, {
+            audioSource:  undefined, videoSource:  undefined,
+            publishAudio: true,      publishVideo: true,
+            resolution:   "280x210", frameRate:    30, // 원래: 640x480
+            insertMode:   "APPEND",  mirror:       false,
           });
 
           newSession.publish(newPublisher);
-
           const devices = await OV.getDevices();
-          const videoDevices = devices.filter(
-            (device) => device.kind === "videoinput"
-          );
+          const videoDevices = devices.filter( device => device.kind === "videoinput" );
           const currentVideoDeviceId = newPublisher.stream
             .getMediaStream()
             .getVideoTracks()[0]
             .getSettings().deviceId;
-          currentVideoDevice = videoDevices.find(
-            (device) => device.deviceId === currentVideoDeviceId
-          );
+          currentVideoDevice = videoDevices.find( device => device.deviceId === currentVideoDeviceId );
 
           setMainStreamManager(newPublisher);
           setPublisher(newPublisher);
 
           myGameData.playerId = myUserName;
+          setPlayGameMode('multi'); // 모드 멀티로 설정
           let existMyData = false;
-          playerGameDataList.forEach((item) => {
-            if (item === myGameData.playerId) {
-              existMyData = true;
-            }
+          playerGameDataList.forEach((item) => { // 배열에 내아이디가 있는지 확인한다.
+            if (item === myGameData.playerId) existMyData = true;
           });
-          if (!existMyData) playerGameDataList.push(myGameData);
+          if (!existMyData) playerGameDataList.push(myGameData); // 배열에 내 데이터가 없다면 추가한다.
 
           setIsPlayingGame(true);
-          console.log(
-            `joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`
-          );
+          console.log( `joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`);
 
           // //발급받은 토큰으로 연결 완료 되면 sessionId set
           // setMySessionId(enterSessionId);
@@ -321,6 +342,15 @@ function Multi() {
       console.error("Error joining session:", error);
     }
   };
+
+
+
+
+
+
+
+
+
 
   const exitRoom = async () => {
     await axios.patch(
