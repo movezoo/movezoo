@@ -45,7 +45,7 @@ public class RedisController {
         log.info("make room master {}", dto);
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
         simpleResponseDto.setSuccess(true);
-
+        log.info("room make {}", authentication);
         if(authentication==null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
         System.out.println(authentication);
