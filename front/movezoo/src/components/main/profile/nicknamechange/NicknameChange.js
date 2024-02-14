@@ -195,8 +195,8 @@ const ChangeNicknameModal = () => {
 
   
       // 서버에서 에러 메시지를 받은 경우
-      if (response.data.error) {
-        alert(response.data.error);
+      if (response.data) {
+        alert(response.data);
         return;
       }
   
