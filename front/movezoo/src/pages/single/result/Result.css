@@ -9,43 +9,43 @@
   bg-green-400 cursor-default;
 }
 
-.result-header {
+.single-result-header {
   @apply  w-[900px] flex justify-start items-start p-5
 }
 
-.result-name {
+.single-result-name {
   @apply text-7xl text-white justify-start items-start
 }
 
-.result-body-card {
+.single-result-body-card {
   background-color: rgba(247, 254, 231, 0.6);
   @apply w-[900px] min-w-[900px] flex flex-col
   rounded-3xl mb-10;
 }
 
-.result-body {
+.single-result-body {
   @apply flex flex-row justify-between m-10
 }
 
-.result-body-cam {
+.single-result-body-cam {
   @apply w-full flex items-center justify-center ;
 }
 
-.result-webcam {
+.single-result-webcam {
   @apply w-full flex items-center justify-center
   rounded-3xl;
 }
 
-.result-select {
+.single-result-select {
   @apply w-[400px] flex flex-col items-end justify-between
 }
 
-.result-record {
+.single-result-record {
   @apply w-[228px] h-[200px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
   cursor-default;
 }
 
-.result-reward {
+.single-result-reward {
   @apply w-[228px] h-[84px] flex flex-col justify-center items-center 
   bg-lime-50 rounded-2xl
 }
@@ -54,10 +54,10 @@
   @apply text-3xl
 } */
 
-.reward-coin {
+.single-reward-coin {
   @apply text-3xl
 }
 
-.result-back-button {
+.single-result-back-button {
   
 }
