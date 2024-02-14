@@ -21,6 +21,18 @@ function Makeroom(props) {
     setMaxUserCount((current) => current + 1);}};
   const onClickMinus = (current) => { if (maxUserCount > 2) {
     setMaxUserCount((current) => current - 1);}};
+  const [mapSelect, setMapSelect] = useState(0);
+  const onClickNext = (current) => { 
+    mapSelect === 1 ? setMapSelect(0) : setMapSelect(1) 
+    console.log("next")
+  }
+  const onClickPrevious = (current) => { mapSelect === 0 ? setMapSelect(1) : setMapSelect(0) 
+    console.log("previous") }
+
+  const images = [
+    { id: 1, name: 'map1', image: '/images/minimap/map1.png' },
+    { id: 2, name: 'map2', image: '/images/minimap/map2.png' }
+  ];
 
   const roomTitleRef = useRef(null);
   const secretRoomPasswordRef = useRef(null);
@@ -40,6 +52,7 @@ function Makeroom(props) {
         roomTitle: roomTitle,
         roomPassword: secretRoomPassword,
         maxRange: maxUserCount,
+        trackId: mapSelect,
       }
       console.log(roomInfo)
 
@@ -96,32 +109,43 @@ function Makeroom(props) {
               <input className="makeroom-password-input" ref={secretRoomPasswordRef}/>
             </div>
 
-            <div className="makeroom-people">
-              <div>
-                <p>인원수</p>
-              </div>
-              <div className="makeroom-people-btn">
-                <div className="makeroom-people-minus" onClick={onClickMinus}>-</div>
-                <div className="makeroom-people-num">{maxUserCount}</div>
-                <div className="makeroom-people-plus" onClick={onClickPlus}>+</div>
-              </div>
-            </div>
+            <div className="makeroom-contents">
+              <div className="makeroom-contents-section">
+                <div className="makeroom-people">
+                  <div>
+                    <p>인원수</p>
+                  </div>
+                  <div className="makeroom-people-btn">
+                    <div className="makeroom-people-minus" onClick={onClickMinus}>-</div>
+                    <div className="makeroom-people-num">{maxUserCount}</div>
+                    <div className="makeroom-people-plus" onClick={onClickPlus}>+</div>
+                  </div>
+                </div>
 
-            <div className="makeroom-type">
-              <div className="makeroom-option">
-                <div
-                  className={isItem ? "makeroom-option-not" : "makeroom-option-selected"}
-                  onClick={onClickSpeed}
-                >
-                  <p>스피드</p>
+                <div className="makeroom-type">
+                  <div className="makeroom-option">
+                    <div
+                      className={isItem ? "makeroom-option-not" : "makeroom-option-selected"}
+                      onClick={onClickSpeed}
+                    >
+                      <p>스피드</p>
+                    </div>
+                    <div
+                      className={isItem ? "makeroom-option-selected" : "makeroom-option-not"}
+                      onClick={onClickItem}
+                    >
+                      <p>아이템</p>
+                    </div>
+                  </div>
                 </div>
-                <div
-                  className={isItem ? "makeroom-option-selected" : "makeroom-option-not"}
-                  onClick={onClickItem}
-                >
-                  <p>아이템</p>
-                </div>
+
               </div>
+              <div className="makeroom-map">
+                <button className="makeroom-map-prev" onClick={onClickPrevious}>〈〈</button>
+                <img src={images[mapSelect].image} className="makeroom-map-img"/>
+                <button className="makeroom-map-next" onClick={onClickNext}>〉〉</button>
+              </div>
+
             </div>
             
             <div className="makeroom-check">
