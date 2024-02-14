@@ -302,6 +302,7 @@ function Character ({ closeModal }) {
   const [characterPrice, setCharacterPrice] = useState(0);
 
 
+
   const characterImages = [
     { id: 1, fileName: 'shiba', name: '시바', image: '/images/shop/shiba.png' },
     { id: 2, fileName: 'donkey', name: '당나귀', image: '/images/shop/donkey.png' },
@@ -323,6 +324,15 @@ function Character ({ closeModal }) {
     { id: 7, name: '말', image: '/images/shop/whitehorselock.png' },
     { id: 8, name: '순록', image: '/images/shop/staglock.png' },
   ];
+
+
+  useEffect(() => {
+    const storageCharacterId = JSON.parse(localStorage.getItem('userData')).selectedCharacterId
+    characterImages.forEach(image => {
+      if(image.id === storageCharacterId) gameStartData.selectCharacter = image.fileName;
+    })
+ }, [])
+
 
   const handleCharacterClick = (character) => {
     setSelectedCharacter(character);

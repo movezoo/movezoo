@@ -23,7 +23,7 @@ function Map(props) {
     { id: 1, name: 'map1', image: '/images/minimap/map1.png' },
     { id: 2, name: 'map2', image: '/images/minimap/map2.png' }
   ];
-
+  
   const selectMap = useState(JSON.parse(localStorage.getItem('userData')).selectedMapName);
   images.forEach(image => {
     if(image.name === selectMap) setSrc(image.image);
