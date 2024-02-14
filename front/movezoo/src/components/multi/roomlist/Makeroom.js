@@ -41,8 +41,8 @@ function Makeroom(props) {
 
     let storage = JSON.parse(localStorage.getItem('userData'));
     storage.selectedMapName = images[mapSelect].name;
-    localStorage.setItem(JSON.stringify(storage))
-    
+    localStorage.setItem('userData', JSON.stringify(storage))
+
     const roomTitle = roomTitleRef.current.value;
     const secretRoomPassword = secretRoomPasswordRef.current.value;
 
