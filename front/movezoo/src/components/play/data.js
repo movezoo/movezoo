@@ -1,3 +1,7 @@
+
+
+
+
 const data = {
   centerDistance: 0,
   sensitivity: 0,

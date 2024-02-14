@@ -9,11 +9,13 @@ import "./Single.css";
 
 function Single() {
   const [loading, setLoading] = useState(true);
+  
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
       setLoading(false);
     });
   }, []);
+
   return (
     <div className="single-container">
       
@@ -23,44 +25,27 @@ function Single() {
       
       {/* header */}
       <div className="single-header">
-        <div>
-          <h1 className="single-name">Single Play</h1>
-        </div>
+        <h1 className="single-name">Single Play</h1>
       </div>
 
-      {/*body*/}
+      {/* body */}
       <div className="single-body-card">
-
         <div className="single-body">
 
-          <div className="single-body-cam">
-            
-              {loading ? (
-                <h1 className="txtLoading">Loading...</h1>
-              ) : (
-                <Webcam className="single-body-webCam" mirrored={true} />
-              )}
-            
-          </div>
-
+          <div className="single-body-cam"> {
+            loading ? (<h1 className="txtLoading">Loading...</h1>)
+                    : (<Webcam className="single-body-webCam" mirrored={true} />) 
+          } </div>
+          
           <div className="body-selects">
-
-            <div className="map-select">
-              <Map2 />
-            </div>
-            <div className="charact-select">
-              <Select />
-            </div>
-            {/* 시작 버튼*/}
-            <div className="start-select">
-              <Start />
-            </div>
+            <div className="map-select"><Map2 /></div>
+            <div className="charact-select"><Select /></div>
+            <div className="start-select"><Start /></div>
           </div>
 
         </div>
-        
-
       </div>
+      
     </div>
   );
 }

@@ -261,6 +261,9 @@ function Multi() {
     newSession.on("signal:game-start", (event) => {
       console.log("game start : ", data.userData.userId);
       
+      console.log(mySessionId);
+      roomGameStart(mySessionId);
+    
       setPage(3);
     });
     //창희 추가 end//
@@ -512,6 +515,8 @@ const roomGameStart = async(sessionId)=>{
       );
 
       // console.log("roomInfo ", roomInfo.data)
+      if(roomInfo.data.roomStatus == true) return;
+
       setMyRoom(roomInfo.data);
       setMySessionId(roomInfo.data.roomSessionId);
 
