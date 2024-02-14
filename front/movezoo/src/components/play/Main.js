@@ -192,9 +192,9 @@ const Main = (props) => {
           readyAll = readyAll && userData.loadSuccess;
         });
         if(readyAll) setIsMultiGameStart(true);
-        console.log(`readyAll : ${readyAll}`)
+        // console.log(`readyAll : ${readyAll}`)
       }
-      console.log(playerGameDataList);
+      // console.log(playerGameDataList);
 
 
 
