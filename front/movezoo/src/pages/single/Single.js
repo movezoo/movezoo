@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Webcam from "react-webcam";
-import Map2 from "../../components/single/Map2";
+import Map from "../../components/single/Map";
 import Start from "../../components/single/Start";
 import Select from "../../components/select/Select";
 import { FaAnglesLeft } from "react-icons/fa6";
@@ -38,9 +38,17 @@ function Single() {
           } </div>
           
           <div className="body-selects">
-            <div className="map-select"><Map2 /></div>
-            <div className="charact-select"><Select /></div>
-            <div className="start-select"><Start /></div>
+
+            <div className="map-select">
+              <Map />
+            </div>
+            <div className="charact-select">
+              <Select />
+            </div>
+            {/* 시작 버튼*/}
+            <div className="start-select">
+              <Start />
+            </div>
           </div>
 
         </div>
