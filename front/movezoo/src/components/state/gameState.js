@@ -29,7 +29,7 @@ export const gameStartCountState = atom({
 // 게임 끝날 때 10초 count
 export const gameEndCountState = atom({
   key: 'gameEndCountState',
-  default: 11
+  default: 10
 })
 
 // 10초가 지나 게임이 모두 종료되었음을 알림
