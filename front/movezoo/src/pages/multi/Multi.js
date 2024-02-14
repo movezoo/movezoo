@@ -483,6 +483,8 @@ function Multi() {
   //방 만들기(사용자가 입력한 방정보를 넣는다, 세션아이디는 서버에서 만들어 반환)
   const createSession = async (roomInfo) => {
     console.log(roomInfo)
+
+    
     try {
       const response = await axios.post(
         APPLICATION_SERVER_URL + "api/room",
