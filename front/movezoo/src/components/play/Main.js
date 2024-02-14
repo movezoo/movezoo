@@ -13,7 +13,11 @@ import {
   gameMyItemRightState, 
   gameStartCountState, 
   gameEndCountState, 
-  singleResultState
+  singleResultState,
+  isLoadGameState,
+  isLoadDetectState,
+  isGameEndState,
+  isMultiGameStartState
 } from '../state/gameState.js'
 import { selectCharacterState } from '../state/state.js'
 
@@ -34,31 +38,52 @@ const Main = (props) => {
   const [gameEndCount, setGameEndCount] = useRecoilState(gameEndCountState);
   const [singleResult, setSingleResult] = useRecoilState(singleResultState);
   const [selectCharacter] = useRecoilState(selectCharacterState);
-  
-
+  const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
+  const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
+  const [isGameEnd, setIsGameEnd] = useRecoilState(isGameEndState);
+  const [isMultiGameStart, setIsMultiGameStart] = useRecoilState(isMultiGameStartState);
 
   const navigate = useNavigate();
   const canvasRef = useRef(null)
 
 
+  // 멀티에서 나의 게임 로딩 여부 전달하기 위한 데이터 저장
+  useEffect(() => {
+    if(isLoadGame && isLoadDetect) myGameData.loadSuccess = true;
+  }, [isLoadGame, isLoadDetect])
+
+  // 멀티 게임이 시작되지 않았다면?
+  if(!isMultiGameStart || gameStartData.mode !== 'multi' ) {
+    let readyAll = true;
+    playerGameDataList.forEach(userData => {
+      readyAll &= userData.loadSuccess;
+    })
+    if(readyAll) setIsMultiGameStart(true);
+  }
+
   // 게임 시작신호
   useEffect(() => {
-    let count = 4; // 실제로 3초부터 출력함
-    setTimeout(() => {
-      const playCount = setInterval(() => {
-        count-=1;
-        setGameStartCount(count);
-        if(count === 0) {
-          clearInterval(playCount)
-          data.isGameStart = true;    
-        }
-      }, 1000);
-    }, 3000);
-  },[])
+    if(gameStartData.mode === 'single') {
+      let count = 4; // 실제로 3초부터 출력함
+      setTimeout(() => {
+        const playCount = setInterval(() => {
+          count-=1;
+          setGameStartCount(count);
+          if(count === 0) {
+            clearInterval(playCount)
+            data.isGameStart = true;    
+          }
+        }, 1000);
+      }, 3000);
+    } else if(gameStartData.mode === 'multi') {
+      // if(data.)
+    }
+  },[isMultiGameStart])
 
   useEffect(() => {
     // 선택된 캐릭터
-
+    
+    console.log(`loading 초기화`)
     const selectMap = gameStartData.selectMap;
 
     const canvas = canvasRef.current;
@@ -344,6 +369,7 @@ const Main = (props) => {
           // 여기서 게임을 완전 종료 시켜줘야 함
           clearInterval(playCount)
           data.isGameEnd = true;
+          setIsGameEnd(true);
           goResult();
         }
       }, 1000);
@@ -1353,6 +1379,8 @@ const Main = (props) => {
         reset();
         localStorage.fast_lap_time = localStorage.fast_lap_time || 180;
         updateHud('fast_lap_time', formatTime(Util.toFloat(localStorage.fast_lap_time)));
+        setIsLoadGame(true);
+        console.log(`게임로딩완료`);
       }
     });
     
@@ -1425,7 +1453,9 @@ const Main = (props) => {
     //=========================================================================
     
     //=========================================================================
-  }, [])
+    
+    console.log(`loading 완료`)
+  }, [isGameEnd])
 
 
 
