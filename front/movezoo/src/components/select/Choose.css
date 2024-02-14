@@ -13,12 +13,12 @@
 
 .character-images-wrapper {
   @apply w-[172px] h-[100px] ml-2 mr-2 flex justify-center object-center rounded-lg transition duration-200
-  bg-white border-2 border-green-400
+  bg-white 
   hover:opacity-100 hover:scale-110;
 }
 
 .character-images-wrapper.selected {
-  @apply border-2 border-green-700
+  @apply border-4 border-green-500
 }
 
 .character-image {
