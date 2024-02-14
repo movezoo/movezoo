@@ -108,7 +108,8 @@ function Multi() {
       setSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
     });
     newSession.on('connectionDestroyed', (event) => {
-      console.log(`id: ${event.connection.clientData}`);
+      console.log(`connection: ${event.connection}`);
+      console.log(event.connection);
     });
 
     newSession.on("streamDestroyed", event => {
@@ -234,7 +235,8 @@ function Multi() {
     });
 
     newSession.on('connectionDestroyed', (event) => {
-      console.log(`id: ${event.connection.clientData}`);
+      console.log(`connection: ${event.connection}`);
+      console.log(event.connection);
     });
 
     newSession.on("streamDestroyed", event => {
