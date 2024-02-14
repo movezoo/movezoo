@@ -7,14 +7,18 @@ import Select from "../../components/select/Select";
 import { gameStartData } from "../../components/play/data.js";
 import { FaAnglesLeft } from "react-icons/fa6";
 import "./Single.css";
+import { playGameModeState } from '../../components/state/gameState.js'
+import { useRecoilState } from 'recoil';
 
 function Single() {
   const [loading, setLoading] = useState(true);
-  
+  const [playGameMode, setPlayGameMode] = useRecoilState(playGameModeState);
+
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
       setLoading(false);
     });
+    setPlayGameMode('single');
     gameStartData.mode = 'single';
   }, []);
 
