@@ -19,4 +19,6 @@ CreateRoomRequestDto {
 
     private String roomPassword;
 
+    private int trackId;
+
 }
