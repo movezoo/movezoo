@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .room-map-container {
-  @apply w-[225px] h-[150px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
+  @apply w-[225px] h-[200px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
   cursor-default;
 }
 
@@ -14,7 +14,7 @@
 
 .room-map-image {
   @apply w-[150px] h-[125px] flex items-center border-4 rounded-3xl
-border-black;
+border-white;
 }
 
 .room-map-change-button {

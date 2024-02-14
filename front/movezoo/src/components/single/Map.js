@@ -87,7 +87,7 @@
 // test
 
 import React, { useState, useEffect } from "react";
-import "./Map2.css";
+import "./Map.css";
 import { AiFillCaretLeft } from "react-icons/ai";
 import { AiFillCaretRight } from "react-icons/ai";
 import axios from "axios";
@@ -181,7 +181,7 @@ function Carousel() {
           <AiFillCaretLeft className='map-change-button' onClick={handlePrevious}/>
         </div>
         <div className="map-image">
-          <img src={images[currentIndex].image} alt="mini-map" />
+          <img className="map-inner-image" src={images[currentIndex].image} alt="mini-map" />
         </div>
         <div className="map-next">
           <AiFillCaretRight className='map-change-button' onClick={handleNext}/>
