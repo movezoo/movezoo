@@ -93,10 +93,11 @@ function Record() {
         const { data: userLaptime } = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${userId}/${mapNumber}`);
         
         // 이번 게임 랩타임 db에 보내기
-        if (userLaptime.record > singleResult.time) {
+        if (userLaptime.record > singleResult.time ) {
           try {
             console.log(userId)
             console.log(mapNumber)
+            console.log(userLaptime.record)
             console.log(singleResult.time)
             const updateLaptime = await axios.patch('https://i10e204.p.ssafy.io/api/laptime', 
             { userId, trackId: mapNumber, record: singleResult.time });
