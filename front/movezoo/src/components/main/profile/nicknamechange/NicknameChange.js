@@ -195,8 +195,8 @@ const ChangeNicknameModal = () => {
 
   
       // 서버에서 에러 메시지를 받은 경우
-      if (response.data) {
-        alert(response.data);
+      if (response) {
+        alert(response);
         return;
       }
   
@@ -205,6 +205,7 @@ const ChangeNicknameModal = () => {
       closeModal();
     } catch (error) {
       console.error('닉네임 변경 실패:', error);
+      alert('중복되는 닉네임이 있습니다.');
     }
   };
 
