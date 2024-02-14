@@ -20,6 +20,12 @@ function Single() {
     });
     setPlayGameMode('single');
     gameStartData.mode = 'single';
+
+    // 스토리지 저장
+    let storages = JSON.parse(localStorage.getItem('userData'));
+    if(!storages.selectedMapName) storages.selectedMapName = 'map1';
+    console.log(storages)
+    localStorage.setItem('userData', JSON.stringify(storages));
   }, []);
 
   return (
