@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import Webcam from "react-webcam";
 import ResultBack from "../../../components/single/result/ResultBack";
@@ -14,6 +13,9 @@ function Result() {
 
 
   useEffect(() => {
+    // 컴포넌트가 마운트될 때 전체 화면 모드 종료
+    document.exitFullscreen();
+
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
       setLoading(false);
     });
