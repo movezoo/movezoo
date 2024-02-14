@@ -47,3 +47,8 @@ export const singleResultState = atom({
   key: 'singleResultState',
   default: {}
 })
+
+export const isPlayingGameState = atom({
+  key: 'isPlayingGameState',
+  default: false
+})
