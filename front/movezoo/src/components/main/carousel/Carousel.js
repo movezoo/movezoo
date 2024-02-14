@@ -266,7 +266,7 @@ function Carousel() {
               classNames={`slide-${animationDirection}`}
             >
               <img className='carousel-choose-image' src={images[currentIndex].image} alt="carousel-image" 
-              onClick={openStoreModal}/>
+              />
             </CSSTransition>
           </SwitchTransition>
         }
