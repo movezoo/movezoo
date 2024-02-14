@@ -6,9 +6,18 @@ import Main from "../../../components/play/Main";
 import Cam from "../../../components/play/Cam";
 import MyVideoComponent from "../../../components/play/MyVideoComponent.js";
 import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
+import { useRecoilState } from "recoil";
+
+import { isLoadGameState, isLoadDetectState } from '../../../components/state/gameState.js'
+import { useEffect } from "react";
 
 function Game(props) {
   const { isPlayingGame, session, mainStreamManager, subscribers, leaveSession } = props;
+  
+  useEffect(() => {
+    // 로딩 초기화
+  },[])
+
   return (
     <div>
       {/*일단 축소 화면*/}
@@ -18,7 +27,9 @@ function Game(props) {
           {/* <p style={{ textAlign: "center" }}>
             <strong>게임 화면</strong>
           </p> */}
+          
           <Main width={1130} height={700} />
+
           {/* 뒤로가면 메인 화면*/}
           <div className={styles.goBack}>
             <Back leaveSession={leaveSession}/>
