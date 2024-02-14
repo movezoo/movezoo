@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,8 +30,12 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +43,7 @@ import java.util.Map;
 @EnableWebSecurity  // security 활성화 후 기본 스프링 필터체인에 등록
 @RequiredArgsConstructor
 @Slf4j
-public class SecurityConfig {
+public class SecurityConfig{
 
     private final CustomUserDetailsService UserDetailsServcie;
     private final CustomOAuth2Service customOAuth2Service;
@@ -47,7 +53,20 @@ public class SecurityConfig {
     AuthenticationEntryPoint authenticationEntryPoint;
     AccessDeniedHandler accessDeniedHandler;
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000/","https://i10e204.p.ssafy.io/")); // 모든 도메인 허용
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setExposedHeaders(Arrays.asList("Custom-Header"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -60,7 +79,7 @@ public class SecurityConfig {
 
         // 인증 관리
         http
-                .csrf((csrfConfig) -> csrfConfig.disable()) // Cross site request forgery 비활성화
+                .csrf(CsrfConfigurer::disable).cors(Customizer.withDefaults())// Cross site request forgery 비활성화
                 //                .headers((headerConfig) ->  // 보안 헤더를 구성하며, iframe에 임베딩을 허용하도록 프레임 옵션을 비활성화
                 //                        headerConfig.frameOptions(frameOptionsConfig ->
                 //                                frameOptionsConfig.disable()
