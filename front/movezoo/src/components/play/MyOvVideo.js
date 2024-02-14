@@ -13,6 +13,8 @@ import {
   gameMyItemRightState,
   gameStartCountState,
   gameEndCountState,
+  isLoadGameState,
+  isLoadDetectState
 } from '../state/gameState.js'
 
 let isPlayingGame = false;
@@ -25,15 +27,18 @@ const MyOvVideo = (props) => {
   const [gameMyItemRight] = useRecoilState(gameMyItemRightState);
   const [gameStartCount] = useRecoilState(gameStartCountState);
   const [gameEndCount] = useRecoilState(gameEndCountState);
+  const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
+  const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
 
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const videoRef = useRef(null);
   const detector = useRef(null);
   const handDetector = useRef(null);
   
 
   useEffect(() => {
-    setIsLoading(true); // 로딩 시작
+    // 로딩 초기화
+    setIsLoadGame(false); // 로딩 안됨
+    setIsLoadDetect(false); // 로딩 안됨
 
     if (!!videoRef.current) streamManager.addVideoElement(videoRef.current);
 
@@ -122,10 +127,10 @@ const MyOvVideo = (props) => {
             const centerX = videoWidth / 2;
             if(!!faces) readyFace = true
             let noseX, noseY, rightEarTragionX, rightEarTragionY,
-            leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX,
-            mouthCenterY;
-            // noseTip rightEarTragion leftEarTragion leftEye rightEye mouthCenter
-            faces[0]?.keypoints.forEach((obj) => {
+              leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX,
+              mouthCenterY;
+
+            faces[0]?.keypoints.forEach(obj => {
               if(obj.name === 'noseTip') {
                 noseX = obj.x;
                 noseY = obj.y;
@@ -227,7 +232,6 @@ const MyOvVideo = (props) => {
           // 3. 없다면 새로 push 한다.
           if(needPush) playerGameDataList.push(newPlayerGameData); // 삽입
         }
-        
       });
     }
 
@@ -239,18 +243,13 @@ const MyOvVideo = (props) => {
         return;
       }
 
-      if(isPlayingGame)sendData();
+      if(isPlayingGame) sendData();
 
       // responseData();
       if(isPlayingGame) requestAnimationFrame(sendDataStart)
     }
     
     const gameStart = () => {
-      setIsLoading(false); // 3초 후에 로딩 종료 및 게임 시작
-      responseData(); // 1회 열기
-      sendDataStart(); // 계속 실행
-      runFaceDetection(); // 계속 실행
-      runFaceDetection();
       responseData(); // 1회 열기
       sendDataStart(); // 계속 실행
       runFaceDetection(); // 계속 실행

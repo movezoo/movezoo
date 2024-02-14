@@ -64,16 +64,18 @@ function Game() {
       let readyHand = false;
       // 게임 종료 로직(초기화)
       if (data.isGameEnd) {
-        data.centerDistance = 0;
-        data.sensitivity = 0;
-        data.isLeftKeyPressed = false;
-        data.isRightKeyPressed = false;
-        data.isBreak = false;
-        data.isRun = false;
-        data.isLeftItemUse = false;
-        data.isRightItemUse = false;
-        data.isGameStart = false;
-        data.isGameEnd = false;
+        data.data = {
+          centerDistance: 0,
+          sensitivity: 0,
+          isLeftKeyPressed: false,
+          isRightKeyPressed: false,
+          isBreak : false,
+          isRun: false, // Test중... false로 바꿔야됨
+          isLeftItemUse: false,
+          isRightItemUse: false,
+          isGameStart: false,
+          isGameEnd: false
+        };
         return;
       }
       const estimationConfig = { flipHorizontal: false };
@@ -100,12 +102,9 @@ function Game() {
               hands.forEach(hand => {
                 hand.keypoints.forEach(point => {
                   // 왼쪽              
-                  if (point.x > leftX - centerX / 2) {
-                    isLeftTouch = true;
-                    // 오른쪽
-                  } else if (point.x < rightX + centerX / 2) {
-                    isRightTouch = true;
-                  }
+                  if (point.x > leftX - centerX/2) isLeftTouch = true;
+                  // 오른쪽
+                  else if(point.x < rightX + centerX/2) isRightTouch = true;
                 })
                 // console.log(hand.keypoints[0].x)
                 // console.log(hands)
@@ -140,30 +139,27 @@ function Game() {
               leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX,
               mouthCenterY;
 
-            faces[0]?.keypoints.forEach((obj) => {
-              if (obj.name === 'noseTip') {
-                noseX = obj.x;
-                noseY = obj.y;
-                // 캠 반전때문에 방향을 반대로 값을 넣어줌
-              } else if (obj.name === 'rightEarTragion') {
-                leftEarTragionX = obj.x;
-                leftEarTragionY = obj.y;
-              } else if (obj.name === 'leftEarTragion') {
-                rightEarTragionX = obj.x
-                rightEarTragionY = obj.y;
-              } else if (obj.name === 'rightEye') {
-                leftEyeX = obj.x;
-              } else if (obj.name === 'leftEye') {
-                rightEyeX = obj.x;
-              } else if (obj.name === 'mouthCenter') {
-                mouthCenterY = obj.y;
-              }
-
-
-            })
+              faces[0]?.keypoints.forEach(obj => {
+                if(obj.name === 'noseTip') {
+                  noseX = obj.x;
+                  noseY = obj.y;
+                  // 캠 반전때문에 방향을 반대로 값을 넣어줌
+                } else if(obj.name === 'rightEarTragion') {
+                  leftEarTragionX = obj.x;
+                  leftEarTragionY = obj.y;
+                } else if(obj.name === 'leftEarTragion') {
+                  rightEarTragionX = obj.x
+                  rightEarTragionY = obj.y;
+                } else if(obj.name === 'rightEye') {
+                  leftEyeX = obj.x;
+                } else if(obj.name === 'leftEye') {
+                  rightEyeX = obj.x;
+                } else if(obj.name === 'mouthCenter') {
+                  mouthCenterY = obj.y;
+                }
+              })
 
             let sensitivity = Math.abs(noseY - mouthCenterY) * 1.3; // 민감도
-
             // noseX: 269.99345779418945, centerX: 320, sensitivity: 32.98797607421875
             if (data.isGameStart) {
               data.centerDistance = Math.abs(centerX - noseX);
