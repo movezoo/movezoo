@@ -102,10 +102,10 @@ const Signup = ({ isOpen, onRequestClose }) => {
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
         },
         content: {
-          width: '750px', // 원하는 크기로 조절
+          width: '550px', // 원하는 크기로 조절
           height: '80%', // 원하는 크기로 조절
           margin: 'auto',
-          borderRadius: '30px'
+          borderRadius: '30px' 
         },
       }}
     >
