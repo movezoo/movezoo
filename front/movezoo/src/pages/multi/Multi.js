@@ -97,6 +97,13 @@ function Multi() {
 
   // 방생성 : 방장
   const createRoom = async (roomInfo) => {
+    // var roomInfo = {
+    //   roomMode: roomMode,
+    //   roomTitle: roomTitle,
+    //   roomPassword: secretRoomPassword,
+    //   maxRange: maxUserCount,
+    //   trackId: mapSelect,
+    // }
     OV = new OpenVidu();
     OV.enableProdMode(); // log 출력제거
 
