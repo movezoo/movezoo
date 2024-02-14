@@ -1,19 +1,25 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Webcam from "react-webcam";
-import Map2 from "../../components/single/Map2";
+import Map from "../../components/single/Map";
 import Start from "../../components/single/Start";
 import Select from "../../components/select/Select";
+import { gameStartData } from "../../components/play/data.js";
 import { FaAnglesLeft } from "react-icons/fa6";
 import "./Single.css";
+import { playGameModeState } from '../../components/state/gameState.js'
+import { useRecoilState } from 'recoil';
 
 function Single() {
   const [loading, setLoading] = useState(true);
-  
+  const [playGameMode, setPlayGameMode] = useRecoilState(playGameModeState);
+
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
       setLoading(false);
     });
+    setPlayGameMode('single');
+    gameStartData.mode = 'single';
   }, []);
 
   return (
@@ -38,9 +44,17 @@ function Single() {
           } </div>
           
           <div className="body-selects">
-            <div className="map-select"><Map2 /></div>
-            <div className="charact-select"><Select /></div>
-            <div className="start-select"><Start /></div>
+
+            <div className="map-select">
+              <Map />
+            </div>
+            <div className="charact-select">
+              <Select />
+            </div>
+            {/* 시작 버튼*/}
+            <div className="start-select">
+              <Start />
+            </div>
           </div>
 
         </div>
