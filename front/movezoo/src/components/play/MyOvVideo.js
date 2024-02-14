@@ -36,22 +36,13 @@ const MyOvVideo = (props) => {
   useEffect(() => {
     setIsLoading(true); // 로딩 시작
 
-    if (!!videoRef.current) {
-      // Add video element to StreamManager during initial rendering
-      streamManager.addVideoElement(videoRef.current);
-    }
-
+    if (!!videoRef.current) streamManager.addVideoElement(videoRef.current);
 
     const initializeFaceDetector = async () => {
       const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
       const handModel = handPoseDetection.SupportedModels.MediaPipeHands;
-      const detectorConfig = {
-        runtime: 'tfjs'
-      };
-      const handDetectorConfig = {
-        runtime: 'tfjs',
-        modelType: 'lite'
-      };
+      const detectorConfig = { runtime: 'tfjs' };
+      const handDetectorConfig = { runtime: 'tfjs', modelType: 'lite' };
       detector.current = await faceDetection.createDetector(model, detectorConfig);
       handDetector.current = await handPoseDetection.createDetector(handModel, handDetectorConfig);
     };
@@ -98,25 +89,17 @@ const MyOvVideo = (props) => {
               hands.forEach(hand => {
                 hand.keypoints.forEach(point => {
                   // 왼쪽              
-                  if (point.x > leftX - centerX/2) {
-                    isLeftTouch = true;
+                  if (point.x > leftX - centerX/2) isLeftTouch = true;
                   // 오른쪽
-                  } else if(point.x < rightX + centerX/2) { 
-                    isRightTouch = true;
-                  }
+                  else if(point.x < rightX + centerX/2) isRightTouch = true;
                 })
-                // console.log(hand.keypoints[0].x)
-                // console.log(hands)
               })
               
 
-              if (isLeftTouch) {
-                data.isLeftItemUse = true;
-                // console.log(`왼쪽 아이템 사용`)
-              } else if(isRightTouch) {
-                data.isRightItemUse = true;
-                // console.log(`오른쪽 아이템 사용`)
-              } else {
+              // 아이템 사용
+              if (isLeftTouch) data.isLeftItemUse = true;
+              else if(isRightTouch) data.isRightItemUse = true;
+              else {
                 data.isLeftItemUse = false;
                 data.isRightItemUse = false;
               }
@@ -132,16 +115,14 @@ const MyOvVideo = (props) => {
         if (!!detector.current) {
           try {
             const faces = await detector.current.estimateFaces(video, estimationConfig);
-
-            if( faces.length === 0 ) console.log(`no face`);
-            // console.log(faces);
+            // if( faces.length === 0 ) console.log(`no face`);
             // 화면 기준 - 화면의 중앙을 기준으로 코의 좌표의 위치에 따른 진행 방향 결정, 민감도 설정 가능
             const centerX = videoWidth / 2;
 
             let noseX, noseY, rightEarTragionX, rightEarTragionY,
             leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX,
             mouthCenterY;
-
+            // noseTip rightEarTragion leftEarTragion leftEye rightEye mouthCenter
             faces[0]?.keypoints.forEach((obj) => {
               if(obj.name === 'noseTip') {
                 noseX = obj.x;
@@ -160,18 +141,9 @@ const MyOvVideo = (props) => {
               } else if(obj.name === 'mouthCenter') {
                 mouthCenterY = obj.y;
               }
-              
-
-              // noseTip
-              // rightEarTragion
-              // leftEarTragion
-              // leftEye
-              // rightEye
-              // mouthCenter
             })
             
             let sensitivity = Math.abs(noseY - mouthCenterY)*1.3; // 민감도
-            
             // noseX: 269.99345779418945, centerX: 320, sensitivity: 32.98797607421875
             if(data.isGameStart) {
               data.centerDistance = Math.abs(centerX - noseX);
@@ -199,7 +171,6 @@ const MyOvVideo = (props) => {
                 data.isRun = true;
                 data.isBreak = false;
               }
-
             }
           } catch (error) {
             // console.error('Error detecting faces:', error);

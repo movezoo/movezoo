@@ -17,7 +17,9 @@ import {
   gameMyItemLeftState,
   gameMyItemRightState,
   gameStartCountState,
-  gameEndCountState
+  gameEndCountState,
+  isLoadGameState,
+  isLoadDetectState
 } from '../../../components/state/gameState.js'
 
 
@@ -28,6 +30,8 @@ function Game() {
   const [gameMyItemRight] = useRecoilState(gameMyItemRightState);
   const [gameStartCount] = useRecoilState(gameStartCountState);
   const [gameEndCount] = useRecoilState(gameEndCountState);
+  const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
+  const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
 
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const videoRef = useRef(null);
@@ -35,6 +39,10 @@ function Game() {
   const handDetector = useRef(null);
 
   useEffect(() => {
+    // 로딩 초기화
+    setIsLoadGame(false); // 로딩 안됨
+    setIsLoadDetect(false); // 로딩 안됨
+    
     setIsLoading(true); // 로딩 시작
 
     const initializeFaceDetector = async () => {
@@ -54,6 +62,8 @@ function Game() {
 
 
     const detect = async () => {
+      let readyFace = false;
+      let readyHand = false;
       // 게임 종료 로직(초기화)
       if (data.isGameEnd) {
         data.centerDistance = 0;
@@ -79,12 +89,12 @@ function Game() {
         video.height = videoHeight;
         // 손 디텍트 Start ***********
         if (!!handDetector.current) {
+          readyHand = true;
           try {
             const hands = await handDetector.current.estimateHands(video, estimationConfig);
             const centerX = videoWidth / 2;
             const leftX = videoWidth;
             const rightX = 0;
-
             // 손을 인식 성공했다면
             if (!!hands) {
               let isLeftTouch = false;
@@ -131,7 +141,7 @@ function Game() {
             // console.log(faces);
             // 화면 기준 - 화면의 중앙을 기준으로 코의 좌표의 위치에 따른 진행 방향 결정, 민감도 설정 가능
             const centerX = videoWidth / 2;
-
+            if(!!faces) readyFace = true
             let noseX, noseY, rightEarTragionX, rightEarTragionY,
               leftEarTragionX, leftEarTragionY, leftEyeX, rightEyeX,
               mouthCenterY;
@@ -202,7 +212,10 @@ function Game() {
         // 얼굴 디텍트 End ***********
       }
 
-
+      if(readyHand && readyFace) {
+        // console.log(`detect load 완료`)
+        setIsLoadDetect(true)
+      }
     };
 
 

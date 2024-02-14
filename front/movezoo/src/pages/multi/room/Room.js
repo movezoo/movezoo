@@ -75,7 +75,6 @@ import Chat from "../../../components/multi/room/Chat.js";
 import Ready from "../../../components/multi/room/Ready.js";
 import Start from "../../../components/multi/room/Start.js";
 import Select from "../../../components/select/Select";
-import Cam from "../../../components/play/Cam.js";
 import MyVideoComponent from "../../../components/play/MyVideoComponent.js";
 import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
 
@@ -173,6 +172,7 @@ const Room = (props) => {
                 {myRoom.roomMasterId === data.userData.userId?
                 <Start setPage={setPage} session={session}/>:<Ready />
                 }
+                임시시작:<Start setPage={setPage} session={session}/>
               </div>
             </div>
           </div>

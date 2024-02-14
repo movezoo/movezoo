@@ -22,7 +22,7 @@ const gameStartData = {
 }
 
 const playerCount = { value: 1 };
-const myGameData = { playerId: '', playerCharacter: gameStartData.selectCharacter, userX: 0, userZ: 0, speed: 0 }
+const myGameData = { playerId: '', playerCharacter: gameStartData.selectCharacter, userX: 0, userZ: 0, speed: 0, loadSuccess: false }
 const playerGameDataList = [];  // myGameData이 모인 리스트
 
 

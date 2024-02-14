@@ -5,6 +5,10 @@ import "./Game.css";
 import { data } from "../../../components/play/data.js";
 import MyVideoComponent from "../../../components/play/MyVideoComponent.js";
 import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
+import { useRecoilState } from "recoil";
+
+import { isLoadGameState, isLoadDetectState } from '../../../components/state/gameState.js'
+import { useEffect } from "react";
 
 import '@mediapipe/face_detection';
 import '@tensorflow/tfjs-backend-webgl';
