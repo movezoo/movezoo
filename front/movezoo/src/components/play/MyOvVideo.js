@@ -13,11 +13,13 @@ import {
   gameMyItemLeftState,
   gameMyItemRightState,
   gameStartCountState,
-  gameEndCountState
+  gameEndCountState,
 } from '../state/gameState.js'
 
+let isPlayingGame = false;
+
 const MyOvVideo = (props) => {
-  const { streamManager, mySession, isPlayingGame } = props;
+  const { streamManager, mySession } = props;
 
   const [testCurrentLapTime] = useRecoilState(gameCurrentTimeState);
   const [gameMyItemLeft] = useRecoilState(gameMyItemLeftState);
@@ -29,7 +31,7 @@ const MyOvVideo = (props) => {
   const videoRef = useRef(null);
   const detector = useRef(null);
   const handDetector = useRef(null);
-
+  
 
   useEffect(() => {
     setIsLoading(true); // 로딩 시작
@@ -259,7 +261,8 @@ const MyOvVideo = (props) => {
         console.log(`error!!!!!!!!!!!!!!!!!!!`) 
         return;
       }
-      sendData();
+
+      if(isPlayingGame)sendData();
 
       // responseData();
       if(isPlayingGame) requestAnimationFrame(sendDataStart)
@@ -282,7 +285,10 @@ const MyOvVideo = (props) => {
 
   }, [streamManager]);
   
-
+  useEffect(() => {
+    if(!!mySession) isPlayingGame = true;
+    else isPlayingGame = false;
+  }, [mySession])
 
 
 
