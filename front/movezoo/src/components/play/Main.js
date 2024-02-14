@@ -13,8 +13,13 @@ import {
   gameMyItemRightState, 
   gameStartCountState, 
   gameEndCountState, 
-  singleResultState
-} from '../state/state.js'
+  singleResultState,
+  isLoadGameState,
+  isLoadDetectState,
+  isGameEndState,
+  isMultiGameStartState
+} from '../state/gameState.js'
+import { selectCharacterState } from '../state/state.js'
 
 const localStorage = window.localStorage || {};
 
@@ -32,17 +37,38 @@ const Main = (props) => {
   const [gameStartCount, setGameStartCount] = useRecoilState(gameStartCountState);
   const [gameEndCount, setGameEndCount] = useRecoilState(gameEndCountState);
   const [singleResult, setSingleResult] = useRecoilState(singleResultState);
-
+  const [selectCharacter] = useRecoilState(selectCharacterState);
+  const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
+  const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
+  const [isGameEnd, setIsGameEnd] = useRecoilState(isGameEndState);
+  const [isMultiGameStart, setIsMultiGameStart] = useRecoilState(isMultiGameStartState);
 
   const navigate = useNavigate();
   const canvasRef = useRef(null)
 
 
+  // 멀티에서 나의 게임 로딩 여부 전달하기 위한 데이터 저장
+  useEffect(() => {
+    if(isLoadGame && isLoadDetect) myGameData.loadSuccess = true;
+  }, [isLoadGame, isLoadDetect])
+
+  useEffect(() => {
+    // 멀티 게임이 시작되지 않았다면?
+    if(!isMultiGameStart && gameStartData.mode === 'multi' ) {
+      let readyAll = true;
+      playerGameDataList.forEach(userData => {
+        readyAll = readyAll && userData.loadSuccess;
+      });
+      if(readyAll) setIsMultiGameStart(true);
+      console.log(`readyAll : ${readyAll}`)
+    }
+    console.log(playerGameDataList);
+  })
 
   // 게임 시작신호
   useEffect(() => {
-    let count = 4; // 실제로 3초부터 출력함
-    setTimeout(() => {
+    if(gameStartData.mode === 'single' && isLoadGame && isLoadDetect) {
+      let count = 4; // 실제로 3초부터 출력함
       const playCount = setInterval(() => {
         count-=1;
         setGameStartCount(count);
@@ -51,10 +77,25 @@ const Main = (props) => {
           data.isGameStart = true;    
         }
       }, 1000);
-    }, 3000);
-  },[])
+    } else if(gameStartData.mode === 'multi' && isMultiGameStart) {
+      let count = 4; // 실제로 3초부터 출력함
+      setTimeout(() => {
+        const playCount = setInterval(() => {
+          count-=1;
+          setGameStartCount(count);
+          if(count === 0) {
+            clearInterval(playCount)
+            data.isGameStart = true;    
+          }
+        }, 1000);
+      }, 3000); // 3초 뒤에 시작
+    }
+  },[isLoadGame, isLoadDetect, isMultiGameStart])
 
   useEffect(() => {
+    // 선택된 캐릭터
+    
+    console.log(`loading 초기화`)
     const selectMap = gameStartData.selectMap;
 
     const canvas = canvasRef.current;
@@ -108,7 +149,6 @@ const Main = (props) => {
     let effect = {};
     let sprites        = null;                    // 스프라이트 시트 loadImages 객체
     let playerSprites  = {};
-    let playerEnterDataList = [];
 
     let resolution     = null;                    // 해상도 독립성을 제공하기 위한 스케일링 팩터 (계산됨)
     let segmentLength  = 200;                     // 단일 세그먼트의 길이
@@ -160,7 +200,7 @@ const Main = (props) => {
       updatePlayerFrame();
 
       
-      for (let i = 0; i < playerCount.value; i++) {
+      for (let i = 0; i < playerGameDataList.length; i++) {
         const playerGameData = playerGameDataList[i];
         // 나의 데이터는 정확한 데이터가 아니므로 receive 할 필요 없다.
         if(!playerGameData || myGameData.playerId === playerGameData.playerId) continue;
@@ -340,6 +380,7 @@ const Main = (props) => {
           // 여기서 게임을 완전 종료 시켜줘야 함
           clearInterval(playCount)
           data.isGameEnd = true;
+          setIsGameEnd(true);
           goResult();
         }
       }, 1000);
@@ -426,8 +467,8 @@ const Main = (props) => {
         
 
         // if(playerGameData.playerId === undefined) console.log(`playerGameData.playerId : ${playerGameData.playerId}`)
-        car.playerId = playerEnterDataList[n].playerId
-        car.playerCharacter = playerEnterDataList[n].playerCharacter;
+        car.playerId = playerGameDataList[n].playerId
+        car.playerCharacter = playerGameDataList[n].playerCharacter;
 
 
         // console.log(car);
@@ -522,7 +563,7 @@ const Main = (props) => {
 
 
     const updatePlayerFrame = () => {
-      playerEnterDataList.forEach((data) => {
+      playerGameDataList.forEach((data) => {
         // console.log(`${data.playerCharacter}'s frame : ${data.frameIndex}`)
         const maxFrame = MAX_FRAME_COUNT[data.playerCharacter]['run'] // 프레임 개수
         // index는 항상 프레임 개수보다 작아야 함(최대 maxFrame-1)
@@ -1051,20 +1092,20 @@ const Main = (props) => {
         // 길 세팅 Start ******************************************************************
         addLowRollingHills();
         addStraight(ROAD.LENGTH.SHORT);
-        addSCurves();
-        addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.HARD, ROAD.HILL.LOW);
-        addBumps();
-        addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
-        addStraight();
-        addSCurves();
-        addHill(ROAD.LENGTH.SHORT, ROAD.HILL.MEDIUM);
-        addStraight();
-        addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
-        addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
-        addStraight();
-        addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
-        addBumps();
-        addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
+        // addSCurves();
+        // addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.HARD, ROAD.HILL.LOW);
+        // addBumps();
+        // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
+        // addStraight();
+        // addSCurves();
+        // addHill(ROAD.LENGTH.SHORT, ROAD.HILL.MEDIUM);
+        // addStraight();
+        // addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
+        // addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
+        // addStraight();
+        // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
+        // addBumps();
+        // addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
         addDownhillToEnd();
 
         console.log("map2 총 길이: ",segments.length);
@@ -1237,28 +1278,9 @@ const Main = (props) => {
 
     
     
-      
-    
-
-    // 게임 시작전 필요한 플레이어 데이터 초기화
-    const resetPlayerData = () => {
-      // 대기방에서 게임으로 넘어올 때 객체 데이터를 받아온다.
-
-      // 2. 각 플레이어의 ID와 캐릭터이름
-      playerEnterDataList = [
-        { playerId: 'Participant86', playerCharacter: 'pug', frameIndex: 0, }, 
-        { playerId: 'Participant87', playerCharacter: 'pug', frameIndex: 0 }
-        // { playerId: 'Participant88', playerCharacter: 'zebra', frameIndex: 0 },
-        // { playerId: 'Participant89', playerCharacter: 'pig', frameIndex: 0 }
-      ]
-      // 1. 플레이어의 수 setting
-      playerCount.value = playerEnterDataList.length
-
-      console.log(playerEnterDataList);
-    }
 
     const getPlayerFrameIndex = (playerId) => {
-      for (let data of playerEnterDataList) {
+      for (let data of playerGameDataList) {
         // console.log(`playerId : ${playerId}`)
         // console.log(`data.playerId : ${data.playerId}`)
         if (data.playerId === playerId) {
@@ -1270,10 +1292,9 @@ const Main = (props) => {
 
 
     const resetCars = () => {
-      resetPlayerData();
       cars = []; // 빈 배열로 초기화
       let car, segment, offset, z, sprite, speed;
-      for (let n = 0 ; n < playerCount.value ; n++) {
+      for (let n = 0 ; n < playerGameDataList.length ; n++) {
         offset = Math.random() * Util.randomChoice([-0.8, 0.8]);
         // z      = Math.floor(Math.random() * segments.length) * segmentLength;
         z      = 0;
@@ -1287,14 +1308,14 @@ const Main = (props) => {
         // sprite = Util.randomChoice(SPRITES.CARS); 
         speed  = maxSpeed/4 + Math.random() * maxSpeed/(sprite === SPRITES.SEMI ? 4 : 2);
         // speed  = maxSpeed;
-        // playerEnterDataList 배열인데 지금까지 playerEnterDataList.playerId, 이렇게 참조하고 있었다..
+        // playerGameDataList 배열인데 지금까지 playerGameDataList.playerId, 이렇게 참조하고 있었다..
         car = {
           offset: offset, z: z, 
           sprite: sprite, speed: speed, 
-          playerId: playerEnterDataList[n].playerId, 
-          playerCharacter: playerEnterDataList[n].playerCharacter
+          playerId: playerGameDataList[n].playerId, 
+          playerCharacter: playerGameDataList[n].playerCharacter
         };
-        // if( playerEnterDataList.playerId === undefined ) console.log(playerEnterDataList); // 출력됨!! 
+        // if( playerGameDataList.playerId === undefined ) console.log(playerGameDataList); // 출력됨!! 
         segment = findSegment(car.z);
         segment.cars.push(car);
         cars.push(car); // cars 배열에 담기
@@ -1349,6 +1370,8 @@ const Main = (props) => {
         reset();
         localStorage.fast_lap_time = localStorage.fast_lap_time || 180;
         updateHud('fast_lap_time', formatTime(Util.toFloat(localStorage.fast_lap_time)));
+        setIsLoadGame(true);
+        console.log(`게임로딩완료`);
       }
     });
     
@@ -1421,7 +1444,9 @@ const Main = (props) => {
     //=========================================================================
     
     //=========================================================================
-  }, [])
+    
+    console.log(`loading 완료`)
+  }, [isGameEnd])
 
 
 
