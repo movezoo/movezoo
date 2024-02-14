@@ -72,3 +72,8 @@ export const isMultiGameStartState = atom({
   key: 'isMultiGameStartState',
   default: false
 })
+
+export const playGameModeState = atom({
+  key: 'playGameModeState',
+  default: 'single'
+})
