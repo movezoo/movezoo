@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 
 import '@mediapipe/face_detection';
 import '@tensorflow/tfjs-backend-webgl';
