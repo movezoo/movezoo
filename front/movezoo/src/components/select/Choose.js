@@ -199,6 +199,7 @@ function Character ({ closeModal }) {
   
       // 새로운 값을 추가합니다.
       userData.selectedCharacterId = selectedCharacter.id;
+      userData.selectedCharacterName = selectedCharacter.name;
   
       // 변경된 객체를 다시 로컬 스토리지에 저장합니다.
       localStorage.setItem('userData', JSON.stringify(userData));
