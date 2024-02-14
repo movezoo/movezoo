@@ -104,12 +104,6 @@ const Room = (props) => {
   const storedUserData = localStorage.getItem('userData');
   const data = (JSON.parse(storedUserData));
 
-
-  // 게임시작관리(props로 념겨줌)
-  const [isGameStart, setIsGameStart] = useState(false);
-  const [myUserName, setMyUserName] = useState(
-    "Participant" + Math.floor(Math.random() * 100)
-  );
   
   console.log(props)
   return (

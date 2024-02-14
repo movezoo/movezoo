@@ -17,7 +17,8 @@ import {
   isLoadGameState,
   isLoadDetectState,
   isGameEndState,
-  isMultiGameStartState
+  isMultiGameStartState,
+  playGameModeState
 } from '../state/gameState.js'
 import { selectCharacterState } from '../state/state.js'
 
@@ -42,6 +43,7 @@ const Main = (props) => {
   const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
   const [isGameEnd, setIsGameEnd] = useRecoilState(isGameEndState);
   const [isMultiGameStart, setIsMultiGameStart] = useRecoilState(isMultiGameStartState);
+  const [playGameMode, setPlayGameMode] = useRecoilState(playGameModeState);
 
   const navigate = useNavigate();
   const canvasRef = useRef(null)
@@ -52,25 +54,11 @@ const Main = (props) => {
     if(isLoadGame && isLoadDetect) myGameData.loadSuccess = true;
   }, [isLoadGame, isLoadDetect])
 
-  useEffect(() => {
-    console.log(playerGameDataList);
-    console.log(`isMultiGameStart : ${isMultiGameStart}`);
-    console.log(`mode : ${gameStartData.mode}`);
-    // 멀티 게임이 시작되지 않았다면?
-    if(!isMultiGameStart && gameStartData.mode === 'multi' ) {
-      let readyAll = true;
-      playerGameDataList.forEach(userData => {
-        readyAll = readyAll && userData.loadSuccess;
-      });
-      if(readyAll) setIsMultiGameStart(true);
-      console.log(`readyAll : ${readyAll}`)
-    }
-    console.log(playerGameDataList);
-  })
+
 
   // 게임 시작신호
   useEffect(() => {
-    if(gameStartData.mode === 'single' && isLoadGame && isLoadDetect) {
+    if(playGameMode === 'single' && isLoadGame && isLoadDetect) {
       let count = 4; // 실제로 3초부터 출력함
       const playCount = setInterval(() => {
         count-=1;
@@ -80,7 +68,7 @@ const Main = (props) => {
           data.isGameStart = true;    
         }
       }, 1000);
-    } else if(gameStartData.mode === 'multi' && isMultiGameStart) {
+    } else if(playGameMode === 'multi' && isMultiGameStart) {
       let count = 4; // 실제로 3초부터 출력함
       setTimeout(() => {
         const playCount = setInterval(() => {
@@ -192,6 +180,27 @@ const Main = (props) => {
     // UPDATE THE GAME WORLD
     // =========================================================================
     const update = (dt) => {
+
+      gameStartData.mode = playGameMode; // 게임모드 세팅
+      console.log(playerGameDataList);
+      console.log(`isMultiGameStart : ${isMultiGameStart}`);
+      console.log(`mode : ${gameStartData.mode}`);
+      // 멀티 게임이 시작되지 않았다면?
+      if(!isMultiGameStart && gameStartData.mode === 'multi' ) {
+        let readyAll = true;
+        playerGameDataList.forEach(userData => {
+          readyAll = readyAll && userData.loadSuccess;
+        });
+        if(readyAll) setIsMultiGameStart(true);
+        console.log(`readyAll : ${readyAll}`)
+      }
+      console.log(playerGameDataList);
+
+
+
+
+
+
       // dt === step(1/60)
       keyLeft        = data.isLeftKeyPressed;
       keyRight       = data.isRightKeyPressed;
