@@ -4,28 +4,31 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import './Choose.css';
 import { useRecoilState } from 'recoil';
-import { userCoin } from '../state/state';
+import { userCoin, selectCharacterState } from '../state/state';
+import { data, gameStartData } from '../play/data.js';
 
 function Character ({ closeModal }) {
+  const [coin, setCoin] = useRecoilState(userCoin);
+  const [selectCharacter, setSelectCharacter] = useRecoilState(selectCharacterState);
+
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [images, setImages] = useState([]);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
-  const [coin, setCoin] = useRecoilState(userCoin);
   const [characterPrice, setCharacterPrice] = useState(0);
 
 
-  const chracterImages = [
-    { id: 1, name: '시바', image: '/images/shop/shiba.png' },
-    { id: 2, name: '당나귀', image: '/images/shop/donkey.png' },
-    { id: 3, name: '여우', image: '/images/shop/fox.png' },
-    { id: 4, name: '사슴', image: '/images/shop/deer.png' },
-    { id: 5, name: '허스키', image: '/images/shop/husky.png' },
-    { id: 6, name: '늑대', image: '/images/shop/wolf.png' },
-    { id: 7, name: '말', image: '/images/shop/horse.png' },
-    { id: 8, name: '순록', image: '/images/shop/stag.png' },
+  const characterImages = [
+    { id: 1, fileName: 'shiba', name: '시바', image: '/images/shop/shiba.png' },
+    { id: 2, fileName: 'donkey', name: '당나귀', image: '/images/shop/donkey.png' },
+    { id: 3, fileName: 'fox', name: '여우', image: '/images/shop/fox.png' },
+    { id: 4, fileName: 'deer', name: '사슴', image: '/images/shop/deer.png' },
+    { id: 5, fileName: 'husky', name: '허스키', image: '/images/shop/husky.png' },
+    { id: 6, fileName: 'wolf', name: '늑대', image: '/images/shop/wolf.png' },
+    { id: 7, fileName: 'horse', name: '말', image: '/images/shop/horse.png' },
+    { id: 8, fileName: 'stag', name: '순록', image: '/images/shop/stag.png' },
   ];
     
-  const noCharacterImages = [
+  const lockCharacterImages = [
     { id: 1, name: '시바', image: '/images/shop/shibalock.png' },
     { id: 2, name: '당나귀', image: '/images/shop/donkeylock.png' },
     { id: 3, name: '여우', image: '/images/shop/foxlock.png' },
@@ -38,6 +41,8 @@ function Character ({ closeModal }) {
 
   const handleCharacterClick = (character) => {
     setSelectedCharacter(character);
+    setSelectCharacter(character.fileName) // recoil state
+    gameStartData.selectCharacter = character.fileName;
   };
 
   
@@ -52,30 +57,32 @@ function Character ({ closeModal }) {
       // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
       const userData = JSON.parse(storedUserData);
 
-      console.log(userData)
+      // console.log(userData)
 
       // 사용자 이메일을 변수에 저장
       const userId = userData.userData.userId;
 
-      console.log(userId)
+      // console.log(userId)
 
       const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${userId}`, {})
 
       const userCharacterIds = response.data.map(character => character.racerId);
 
-      const userImages = chracterImages.map((image) => {
+      const userImages = characterImages.map((image) => {
         if (userCharacterIds.includes(image.id)) {
           return image;
         } else {
-          const noCharacterImage = noCharacterImages.find(noImg => noImg.id === image.id);
-          return noCharacterImage || image; // 캐릭터가 없는 경우 noCharacterImage로 대체
+          const lockCharacterImage = lockCharacterImages.find(noImg => noImg.id === image.id);
+          return lockCharacterImage || image; // 캐릭터가 없는 경우 lockCharacterImage로 대체
         }
       });
       setImages(userImages);
       
       if (selectedCharacter) {
         const updatedSelectedCharacter = userImages.find(image => image.id === selectedCharacter.id);
-        setSelectedCharacter(updatedSelectedCharacter);
+        setSelectedCharacter(updatedSelectedCharacter)
+        setSelectCharacter(updatedSelectedCharacter.fileName) // recoil state
+        gameStartData.selectCharacter = updatedSelectedCharacter.fileName;
       }
 
       // 코인
@@ -86,7 +93,7 @@ function Character ({ closeModal }) {
   }
   
   useEffect(() => {
-    fetchUserCharacters ();
+    fetchUserCharacters();
   },[]);
 
   const handleBuyClick = () => {
@@ -192,6 +199,7 @@ function Character ({ closeModal }) {
   
       // 새로운 값을 추가합니다.
       userData.selectedCharacterId = selectedCharacter.id;
+      userData.selectedCharacterName = selectedCharacter.name;
   
       // 변경된 객체를 다시 로컬 스토리지에 저장합니다.
       localStorage.setItem('userData', JSON.stringify(userData));
@@ -229,12 +237,12 @@ function Character ({ closeModal }) {
                 <p className='image-name'>{selectedCharacter.name}</p>
               </div>
               <div className='body-select-chooseButton'>
-                {chracterImages.some(image => image.id === selectedCharacter.id && image.image === selectedCharacter.image) && 
+                {characterImages.some(image => image.id === selectedCharacter.id && image.image === selectedCharacter.image) && 
                   <button className='character-choose-button' onClick={handleSelectClick}>선택하기</button>
                 }
               </div>
               <div className='body-select-buyButton'>
-                {noCharacterImages.some(image => image.id === selectedCharacter.id && image.image === selectedCharacter.image) && 
+                {lockCharacterImages.some(image => image.id === selectedCharacter.id && image.image === selectedCharacter.image) && 
                 <button className='character-buy-button' onClick={handleBuyClick}>구매하기</button>}
               </div>
             </div>
