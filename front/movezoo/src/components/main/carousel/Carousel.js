@@ -1,6 +1,7 @@
 // import React, { useEffect, useState } from 'react';
 // import './Carousel.css';
 // import axios from 'axios';
+// import Shop from '../../navbar/shop/Shop';
 // import { AiFillCaretLeft } from "react-icons/ai";
 // import { AiFillCaretRight } from "react-icons/ai";
 // import { CSSTransition, SwitchTransition } from 'react-transition-group';
@@ -18,18 +19,40 @@
 //   ];
 
 //   const [images, setImages] = useState([]);
-//   const [currentIndex, setCurrentIndex] = useState(0);
 //   const [nextIndex, setNextIndex] = useState(null);
 //   const [animationDirection, setAnimationDirection] = useState('right');
-
+  
+//   const [currentIndex, setCurrentIndex] = useState(() => {
+//     const storedUserData = localStorage.getItem('userData');
+//     if (!storedUserData) {
+//       return 0; // 로컬 스토리지에 userData가 없으면 기본값 0을 사용
+//     }
+//     const userData = JSON.parse(storedUserData);
+//     const selectedCharacterId = userData.selectedCharacterId;
+//     if (selectedCharacterId === undefined) {
+//       return 0; // selectedCharacterId가 설정되지 않았으면 기본값 0을 사용
+//     }
+//     const index = initialImages.findIndex(image => image.id === selectedCharacterId);
+//     return index === -1 ? 0 : index; // selectedCharacterId에 해당하는 이미지가 없으면 기본값 0을 사용
+//   });
+  
 //   const handlePrevious = () => {
-//     if (images.length === 1) return; // 이미지가 하나만 있을 경우 아무 작업도 수행하지 않음
-//     setNextIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
+//     if (images.length <= 1) return; // 이미지가 하나 또는 없을 경우 아무 작업도 수행하지 않음
+//     setNextIndex((prevIndex) => {
+//       let newIndex = prevIndex === 0 ? images.length - 1 : prevIndex - 1;
+//       const originalIndex = newIndex;
+//       while (!images[newIndex]) {
+//         console.log(newIndex); // newIndex의 변화를 추적
+//         newIndex = newIndex <= 0 ? images.length - 1 : newIndex - 1; // newIndex가 0보다 작아지지 않도록 수정
+//         if (newIndex === originalIndex) break; // 모든 이미지가 유효하지 않은 경우 루프를 빠져나옴
+//       }
+//       return newIndex;
+//     });
 //     setAnimationDirection('right');
 //   };
-
+  
 //   const handleNext = () => {
-//     if (images.length === 1) return; // 이미지가 하나만 있을 경우 아무 작업도 수행하지 않음
+//     if (images.length <= 1) return; // 이미지가 하나 또는 없을 경우 아무 작업도 수행하지 않음
 //     setNextIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
 //     setAnimationDirection('left');
 //   };
@@ -39,6 +62,19 @@
 //       setCurrentIndex(nextIndex);
 //     }
 //   }, [nextIndex]);
+
+//   useEffect(() => {
+//     if (currentIndex !== null && images[currentIndex]) {
+//       const storedUserData = localStorage.getItem('userData');
+//       if (!storedUserData) {
+//         throw new Error('사용자 정보를 찾을 수 없습니다.');
+//       }
+      
+//       const userData = JSON.parse(storedUserData);
+//       userData.selectedCharacterId = images[currentIndex].id;
+//       localStorage.setItem('userData', JSON.stringify(userData));
+//     }
+// }, [currentIndex, images]);
 
 //   useEffect(() => {
 //     const fetchUserCharacters = async () => {
@@ -76,7 +112,7 @@
 //         <AiFillCaretLeft className='prevButton' onClick={handlePrevious}/>
 //       </div>
 //       <div className='carousel-image'>
-//         {images.length > 0 && 
+//         {images[currentIndex] && 
 //           <SwitchTransition mode="out-in">
 //             <CSSTransition
 //               key={currentIndex}
@@ -98,14 +134,17 @@
 // export default Carousel;
 
 
+
 // test
 
 import React, { useEffect, useState } from 'react';
 import './Carousel.css';
 import axios from 'axios';
+import Shop from '../../navbar/shop/Shop';
 import { AiFillCaretLeft } from "react-icons/ai";
 import { AiFillCaretRight } from "react-icons/ai";
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import { useNavigate } from 'react-router-dom';
 
 function Carousel() {
   const initialImages  = [
@@ -120,10 +159,29 @@ function Carousel() {
   ];
 
   const [images, setImages] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(null);
   const [animationDirection, setAnimationDirection] = useState('right');
 
+  const navigate = useNavigate();
+
+  const openStoreModal = () => {
+    navigate('/shop'); // '/shop'은 상점 페이지의 경로입니다.
+  };
+  
+  const [currentIndex, setCurrentIndex] = useState(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (!storedUserData) {
+      return 0; // 로컬 스토리지에 userData가 없으면 기본값 0을 사용
+    }
+    const userData = JSON.parse(storedUserData);
+    const selectedCharacterId = userData.selectedCharacterId;
+    if (selectedCharacterId === undefined) {
+      return 0; // selectedCharacterId가 설정되지 않았으면 기본값 0을 사용
+    }
+    const index = initialImages.findIndex(image => image.id === selectedCharacterId);
+    return index === -1 ? 0 : index; // selectedCharacterId에 해당하는 이미지가 없으면 기본값 0을 사용
+  });
+  
   const handlePrevious = () => {
     if (images.length <= 1) return; // 이미지가 하나 또는 없을 경우 아무 작업도 수행하지 않음
     setNextIndex((prevIndex) => {
@@ -150,6 +208,19 @@ function Carousel() {
       setCurrentIndex(nextIndex);
     }
   }, [nextIndex]);
+
+  useEffect(() => {
+    if (currentIndex !== null && images[currentIndex]) {
+      const storedUserData = localStorage.getItem('userData');
+      if (!storedUserData) {
+        throw new Error('사용자 정보를 찾을 수 없습니다.');
+      }
+      
+      const userData = JSON.parse(storedUserData);
+      userData.selectedCharacterId = images[currentIndex].id;
+      localStorage.setItem('userData', JSON.stringify(userData));
+    }
+}, [currentIndex, images]);
 
   useEffect(() => {
     const fetchUserCharacters = async () => {
@@ -194,7 +265,8 @@ function Carousel() {
               timeout={300}
               classNames={`slide-${animationDirection}`}
             >
-              <img className='carousel-choose-image' src={images[currentIndex].image} alt="carousel-image" />
+              <img className='carousel-choose-image' src={images[currentIndex].image} alt="carousel-image" 
+              />
             </CSSTransition>
           </SwitchTransition>
         }

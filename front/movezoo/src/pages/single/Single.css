@@ -15,16 +15,16 @@
 }
 
 .single-header {
-  @apply w-[1200px] flex justify-start items-start p-5
+  @apply w-[900px] flex justify-start items-start p-5
 }
 
 .single-name {
-  @apply text-8xl text-white justify-start items-start
+  @apply text-7xl text-white justify-start items-start
 }
 
 .single-body-card {
   background-color: rgba(247, 254, 231, 0.6);
-  @apply w-[1200px] min-w-[1200px] flex flex-col
+  @apply w-[900px] min-w-[900px] flex flex-col
   rounded-3xl mb-10;
 }
 
@@ -54,7 +54,7 @@
 }
 
 .charact-select {
-  @apply w-[300px] h-[100px] flex justify-center items-center 
+  @apply w-[228px] h-[84px] flex justify-center items-center 
   bg-lime-50 rounded-2xl
 }
 

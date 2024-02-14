@@ -56,9 +56,17 @@
 }
 
 .roomlist-search-button {
-  @apply w-20 h-10 mr-40 flex items-center justify-center rounded-lg
+  @apply w-20 h-10 mr-5 flex items-center justify-center rounded-lg
   bg-black text-white
   hover:scale-110 transition duration-300 active:bg-gray-800 cursor-pointer
+}
+
+.roomlist-reload {
+  @apply w-10 mr-24
+}
+
+.roomlist-reload-button {
+  @apply w-10 transition duration-300 transform hover:rotate-180;
 }
 
 .roomlist-match{

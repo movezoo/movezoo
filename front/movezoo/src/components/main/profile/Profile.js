@@ -26,36 +26,36 @@ const Profile = ({ isProfileOpen, isProfileClose }) => {
 
 
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        // == 쿠키 사용해서 로그인한 유저 id 가져오기 ============
+  // useEffect(() => {
+  //   const fetchUserInfo = async () => {
+  //     try {
+  //       // == 쿠키 사용해서 로그인한 유저 id 가져오기 ============
 
-        // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
-        //   withCredentials: true, // 쿠키 허용
-        // });
-        // const UserId = loginUserId.data;
+  //       // const loginUserId = await axios.get('https://i10e204.p.ssafy.io/api/currentUser', {
+  //       //   withCredentials: true, // 쿠키 허용
+  //       // });
+  //       // const UserId = loginUserId.data;
 
-        // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
+  //       // const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${UserId}`, {})
 
-        // 임시 유저 데이터==
-        const response = await axios.get('https://i10e204.p.ssafy.io/api/user/103');
+  //       // 임시 유저 데이터==
+  //       const response = await axios.get('https://i10e204.p.ssafy.io/api/user/103');
 
-        const user = response.data;
-        setUser(user);
-        // setNickname(user.nickname); 
+  //       const user = response.data;
+  //       setUser(user);
+  //       // setNickname(user.nickname); 
 
-        const userImage = response.data.profileImgUrl;
-        setUserImage(userImage)
+  //       const userImage = response.data.profileImgUrl;
+  //       setUserImage(userImage)
 
-      } catch (error) {
-        console.error('유저 정보 요청 실패:', error);
-      }
+  //     } catch (error) {
+  //       console.error('유저 정보 요청 실패:', error);
+  //     }
 
-    }
+  //   }
 
-    fetchUserInfo();
-  }, []);
+  //   fetchUserInfo();
+  // }, []);
 
   return (
     <div className='profile'>

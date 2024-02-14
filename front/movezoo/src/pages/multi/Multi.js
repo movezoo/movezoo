@@ -99,6 +99,7 @@ function Multi() {
       console.warn(exception);
     });
 
+    // 채팅 수신
     newSession.on("signal:my-chat", (event) => {
       console.log();
 
@@ -125,6 +126,7 @@ function Multi() {
       setMyRoom({});
     });
 
+    // 게임시작 수신
     newSession.on("signal:game-start", (event) => {
       console.log("game start : ", data.userData.userId);
       console.log("start start session Id", mySessionId);
@@ -215,6 +217,7 @@ function Multi() {
       console.warn(exception);
     });
 
+    // 채팅 수신
     newSession.on("signal:my-chat", (event) => {
       console.log();
       // const { chatMessages } = this.state;
@@ -261,6 +264,9 @@ function Multi() {
     newSession.on("signal:game-start", (event) => {
       console.log("game start : ", data.userData.userId);
       
+      console.log(mySessionId);
+      roomGameStart(mySessionId);
+    
       setPage(3);
     });
     //창희 추가 end//
@@ -474,7 +480,7 @@ function Multi() {
     }
   };
 const roomGameStart = async(sessionId)=>{
-  const response = await axios.post(
+  const response = await axios.patch(
     APPLICATION_SERVER_URL + "api/room/start",
     {
       roomSessionId: sessionId,
@@ -512,6 +518,8 @@ const roomGameStart = async(sessionId)=>{
       );
 
       // console.log("roomInfo ", roomInfo.data)
+      if(roomInfo.data.roomStatus == true) return;
+
       setMyRoom(roomInfo.data);
       setMySessionId(roomInfo.data.roomSessionId);
 
@@ -552,6 +560,7 @@ const roomGameStart = async(sessionId)=>{
         <Room
           setPage={setPage}
           session={session}
+          myRoom={myRoom}
           mainStreamManager={mainStreamManager}
           subscribers={subscribers}
           setSubscribers={setSubscribers}
