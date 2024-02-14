@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import { useRecoilState } from 'recoil';
-import { myGameData, playerGameDataList, gameStartData } from "../../components/play/data.js";
+import { myGameData, playerGameDataList } from "../../components/play/data.js";
 
-import { isMultiGameStartState } from '../../components/state/gameState.js'
+import { isMultiGameStartState, playGameModeState } from '../../components/state/gameState.js'
 
 function Multi() {
   const APPLICATION_SERVER_URL =
@@ -38,6 +38,7 @@ function Multi() {
   //창희 추가 end
 
   const [isMultiGameStart, setIsMultiGameStart] = useRecoilState(isMultiGameStartState);
+  const [playGameMode, setPlayGameMode] = useRecoilState(playGameModeState);
 
   let OV, currentVideoDevice;
   // useEffect(() => {
@@ -162,7 +163,7 @@ function Multi() {
           setPublisher(newPublisher);
 
           myGameData.playerId = myUserName;
-          gameStartData.mode = 'multi';
+          setPlayGameMode('multi'); // 모드 멀티로 설정
           let existMyData = false;
           playerGameDataList.forEach((item) => { // 배열에 내아이디가 있는지 확인한다.
             if (item === myGameData.playerId) existMyData = true;
@@ -232,9 +233,8 @@ function Multi() {
       console.log("현재 세션 ", newSession);
       alert("방장이 방을 삭제했습니다.")
       // changeSession();
-      if (newSession) {
-        newSession.disconnect();
-      }
+      if (newSession) newSession.disconnect();
+      
       setIsPlayingGame(false);
       setSession(undefined);
       setSubscribers([]);
