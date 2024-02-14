@@ -4,6 +4,7 @@ import Webcam from "react-webcam";
 import Back from "../../../components/multi/result/Back";
 import Record from "../../../components/single/result/Record";
 import './Result.css';
+import { playerGameDataList } from "../../../components/play/data.js";
 
 function Result(props) {
   const [loading, setLoading] = useState(true);
@@ -15,6 +16,9 @@ function Result(props) {
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
       setLoading(false);
     });
+
+    console.log(`[게임결과]`)
+    console.log(playerGameDataList);
   }, []);
   return (
     <div>
