@@ -99,6 +99,7 @@ function Multi() {
       console.warn(exception);
     });
 
+    // 채팅 수신
     newSession.on("signal:my-chat", (event) => {
       console.log();
 
@@ -125,6 +126,7 @@ function Multi() {
       setMyRoom({});
     });
 
+    // 게임시작 수신
     newSession.on("signal:game-start", (event) => {
       console.log("game start : ", data.userData.userId);
       console.log("start start session Id", mySessionId);
@@ -215,6 +217,7 @@ function Multi() {
       console.warn(exception);
     });
 
+    // 채팅 수신
     newSession.on("signal:my-chat", (event) => {
       console.log();
       // const { chatMessages } = this.state;
