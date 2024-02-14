@@ -183,7 +183,7 @@ const Main = (props) => {
 
       gameStartData.mode = playGameMode; // 게임모드 세팅
       console.log(playerGameDataList);
-      console.log(`isMultiGameStart : ${isMultiGameStart}`);
+      if(isMultiGameStart) console.log(`isMultiGameStart : ${isMultiGameStart}`) ;
       console.log(`mode : ${gameStartData.mode}`);
       // 멀티 게임이 시작되지 않았다면?
       if(!isMultiGameStart && gameStartData.mode === 'multi' ) {
