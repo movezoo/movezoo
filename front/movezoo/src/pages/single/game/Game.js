@@ -19,7 +19,8 @@ import {
   gameStartCountState,
   gameEndCountState,
   isLoadGameState,
-  isLoadDetectState
+  isLoadDetectState,
+  playGameModeState
 } from '../../../components/state/gameState.js'
 
 
@@ -32,6 +33,7 @@ function Game() {
   const [gameEndCount] = useRecoilState(gameEndCountState);
   const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
   const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
+  const [playGameMode] = useRecoilState(playGameModeState);
 
   const videoRef = useRef(null);
   const detector = useRef(null);
@@ -246,6 +248,9 @@ function Game() {
     itemImage2 = <img src="/images/itemImg/itemBox_speedup.png" alt="speed up item" />;
   }
 
+
+  // if(playGameMode === 'single' && isLoadGame && isLoadDetect)
+  // 위 조건이 만족되면 카운트 시작함
 
   return (
     <div className="singlegame-container">
