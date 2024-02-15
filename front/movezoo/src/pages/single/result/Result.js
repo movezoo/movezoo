@@ -189,20 +189,20 @@ function Result() {
         const userData = JSON.parse(storedUserData);
   
         // 코인 정보 조회 요청
-          const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${userData.userData.userId}`, {
-              withCredentials: true
-          });
+        const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${userData.userData.userId}`, {
+            withCredentials: true
+        });
   
-          if (response.status === 200 && response.data) {
-              // Recoil 상태 및 로컬 스토리지 업데이트
-              const newCoinAmount = response.data.coin;
-              console.log(newCoinAmount)
-              setCoin(newCoinAmount); // Recoil 상태 업데이트
-             
-              let updatedUserData = { ...userData };
-              updatedUserData.userData.coin = newCoinAmount;
-              localStorage.setItem('userData', JSON.stringify(updatedUserData));
-          }
+        if (response.status === 200 && response.data) {
+            // Recoil 상태 및 로컬 스토리지 업데이트
+            const newCoinAmount = response.data.coin;
+            console.log(newCoinAmount)
+            setCoin(newCoinAmount); // Recoil 상태 업데이트
+            
+            let updatedUserData = { ...userData };
+            updatedUserData.userData.coin = newCoinAmount;
+            localStorage.setItem('userData', JSON.stringify(updatedUserData));
+        }
   
   
       } catch (error) {
