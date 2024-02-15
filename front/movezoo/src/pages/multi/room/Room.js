@@ -109,6 +109,10 @@ const Room = (props) => {
   // console.log("room info",props.mySessionId)
   return (
     <div className="room-container">
+      <div>
+        <Back leaveSession={leaveSession} />
+      </div>
+      
 
       {/* header */}
       <div className="room-header">
@@ -116,9 +120,6 @@ const Room = (props) => {
           <h1 className="room-name">
             {myRoom.roomTitle}
           </h1>
-        </div>
-        <div style={{ position: "absolute", right: "0", bottom: "0" }}>
-          <Back leaveSession={leaveSession} />
         </div>
       </div>
 
