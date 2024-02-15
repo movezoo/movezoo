@@ -10,6 +10,7 @@ import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
 
 function Result(props) {
   const [loading, setLoading] = useState(true);
+  const [userIds, setUserIds] = useState([])
   const leaveSession = props.leaveSession;
   const {
     setPage,
@@ -27,8 +28,6 @@ function Result(props) {
     setChatMessages
   } = props
 
-  let userIds = [];
-
   useEffect(() => {
     // 컴포넌트가 마운트될 때 전체 화면 모드 종료
     document.exitFullscreen();
@@ -40,22 +39,23 @@ function Result(props) {
     console.log(`[게임결과]`)
     console.log(playerGameDataList);
 
+    let newIds = [];
+
     // user 개개인의 ID와 LapTime
     for (let i = 0; i < playerGameDataList.length; i++) {
       const userId = playerGameDataList[i].playerId;
       const userLapTime = playerGameDataList[i].lapTime;
 
-      const isExist = userIds.some(user => user.userId === userId);
+      const isExist = newIds.some(user => user.userId === userId);
 
-      // userId가 배열에 없는 경우에만 추가
       if (!isExist) {
-        userIds.push({ userId, userLapTime });
+        newIds.push({ userId, userLapTime });
       }
     }
 
     // userdata laptime 빠른순으로 정렬
     // 통과 못한 랩타임은 뒤로 정렬
-    userIds.sort(function(a, b) {
+    newIds.sort(function(a, b) {
 
       if (!a.userLapTime && !b.userLapTime) {
         return 0;
@@ -72,7 +72,7 @@ function Result(props) {
       return a.userLapTime - b.userLapTime;
     });
 
-    console.log(userIds);
+    setUserIds(newIds)
 
 
   }, []);
