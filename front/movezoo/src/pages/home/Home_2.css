@@ -6,26 +6,29 @@
 .home-container {
   background-image: url('/public/images/mainbg/mainbg.png');
   background-size: cover;
+  /* padding-left: 100px; */
   @apply
   flex
   h-screen
   m-auto
   justify-center
   items-center
+  select-none
 }
 
 .home-title {
+ padding-left: 50px;
+}
+
+.mainlogo {
   width: 500px;
   height: 400px;
-  font-style: italic;
-  @apply flex justify-center items-center text-8xl text-white;
 }
 
 .home-logincontainer {
   width: 500px;
   height: 600px;
   border-radius: 30px;
-  /* background-image: url('/public/images/mainbg/sky1.jpg'); */
   @apply flex justify-center items-center;
 }
 
