@@ -19,12 +19,11 @@ function Multi() {
   const storedUserData = localStorage.getItem('userData');
   const data = (JSON.parse(storedUserData));
 
-  setPlayGameMode('single');
   gameStartData.mode = 'multi'
   gameStartData.selectMap = data.selectedMapName;
   gameStartData.selectCharacter = data.selectedCharacterName;
   myGameData.playerCharacter = data.selectedCharacterName;
-
+  
   // 게임시작관리(props로 념겨줌)
   const [isPlayingGame, setIsPlayingGame] = useState(false);
   const [mySessionId, setMySessionId] = useState(null);
@@ -33,9 +32,9 @@ function Multi() {
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
   const [publisher, setPublisher] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
-
-  const [page, setPage] = useState(4);
-
+  
+  const [page, setPage] = useState(1);
+  
   //창희 추가 start
   const [connectionId, setConnectionId] = useState(null);
   const [chatMessage, setChatMessage] = useState("");
@@ -43,9 +42,10 @@ function Multi() {
   const [myRoom, setMyRoom] = useState({});
   const navigate = useNavigate();
   //창희 추가 end
-
+  
   const [isMultiGameStart, setIsMultiGameStart] = useRecoilState(isMultiGameStartState);
   const [playGameMode, setPlayGameMode] = useRecoilState(playGameModeState);
+  setPlayGameMode('multi');
 
   let OV, currentVideoDevice;
   // useEffect(() => {
