@@ -11,7 +11,8 @@
 
 .Back {
   @apply flex flex-row items-center absolute bottom-10 left-10
-  text-white text-2xl;
+  text-white text-2xl
+  hover:scale-125 hover:text-gray-300 transition;
 }
 
 .single-header {

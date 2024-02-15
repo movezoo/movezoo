@@ -2,7 +2,7 @@ import "./Inforoom.css";
 import Modal from "react-modal";
 import { useRef, useState } from "react";
 import { FaLock } from "react-icons/fa";
-
+import { toast } from 'react-toastify';
 
 
 function Inforoom( props ) {
@@ -28,7 +28,7 @@ function Inforoom( props ) {
     // 필요한 데이터 : 사용자 ID, sessionID
     // console.log(props.session);
     if(props.userCount >= props.userMaxCount) {
-      alert("사람이 꽉 찼어요!");
+      toast.error("사람이 모두 찼습니다.");
       return;
     }
     if (props.secretRoom) {
@@ -72,7 +72,7 @@ function Inforoom( props ) {
 
         <div className="inforoom-body">
           <div className="inforoom-track">
-            <img src={`/images/minimap/${images[props.track]}`} alt="mini-map" />
+            <img className="inforoom-body-img" src={`/images/minimap/${images[props.track]}`} alt="mini-map" />
           </div>
           <div className="inforoom-mode">
             {props.mode === 0 && <>개인전<br/>스피드</>}
