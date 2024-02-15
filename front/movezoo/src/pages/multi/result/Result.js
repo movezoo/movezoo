@@ -48,7 +48,21 @@ function Result(props) {
     }
 
     // userdata laptime 빠른순으로 정렬
+    // 통과 못한 랩타임은 뒤로 정렬
     userIds.sort(function(a, b) {
+
+      if (!a.userLapTime && !b.userLapTime) {
+        return 0;
+      }
+
+      if (!a.userLapTime) {
+        return 1;
+      }
+
+      if (!b.userLapTime) {
+        return -1;
+      }
+
       return a.userLapTime - b.userLapTime;
     });
 
