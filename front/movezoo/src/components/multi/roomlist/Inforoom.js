@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { useRef, useState } from "react";
 import { FaLock } from "react-icons/fa";
 import { toast } from 'react-toastify';
+import { IoCloseSharp } from "react-icons/io5";
 
 
 function Inforoom( props ) {
@@ -87,25 +88,29 @@ function Inforoom( props ) {
         isOpen={isOpen}
         // onRequestClose={closeModal}
         style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)', // 투명도를 0.75로 설정한 검은색 배경
+          },
           content: {
-            width: "400px",
+            width: "350px",
             height: "250px",
             margin: "auto",
+            borderRadius: '30px',
           },
         }}
       >
         <div className="secretroom-container">
-          <div className="secretroom-close" onClick={closeModal}>
-            X
+          
+          <div className='header-exit'>
+            <IoCloseSharp className='exit-button' onClick={closeModal} />
           </div>
+
           <div className="secretroom-title">
             비밀번호를 입력하세요
           </div>
           <div className="secretroom-main">
-            <input value={password} onChange={onChange} placeholder="secret이 뭐야?? 비밀..." 
-            style={{ width: "80%" }}/>
-            <button onClick={checkPassword} 
-            style={{ width: "20%", backgroundColor: "burlywood" }}>확인</button>
+            <input className="secretroom-main-input" value={password} onChange={onChange} placeholder="password" />
+            <button className="secretroom-main-button" onClick={checkPassword}>확인</button>
           </div>
         </div>
       </Modal>
