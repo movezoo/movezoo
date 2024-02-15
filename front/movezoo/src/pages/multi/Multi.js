@@ -354,6 +354,7 @@ function Multi() {
             error.code,
             error.message
           );
+          alert("방 입장에 문제가 생겼습니다. \n방 목록을 갱신 해주세요!")
         });
     } catch (error) {
       console.error("Error joining session:", error);
