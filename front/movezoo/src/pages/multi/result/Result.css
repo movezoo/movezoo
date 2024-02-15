@@ -40,6 +40,11 @@
   @apply w-full flex flex-wrap items-center justify-between ;
 }
 
+.multi-result-webCam {
+  @apply w-60 h-[200px] flex flex-col items-center justify-between
+  rounded-3xl bg-white overflow-hidden;
+}
+
 .multi-result-bottomCamSection {
   @apply flex flex-row
 }
@@ -65,7 +70,7 @@
 }
 
 .multi-result-reward-thead {
-  @apply w-full justify-center items-center
+  @apply w-full mb-4 justify-between items-center
 }
 
 .multi-result-reward-theadTr {
