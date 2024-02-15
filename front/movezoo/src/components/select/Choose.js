@@ -290,7 +290,7 @@ import Modal from 'react-modal';
 import './Choose.css';
 import { useRecoilState } from 'recoil';
 import { userCoin, selectCharacterState } from '../state/state';
-import { data, gameStartData } from '../play/data.js';
+import { data, gameStartData, myGameData } from '../play/data.js';
 
 function Character ({ closeModal }) {
   const [coin, setCoin] = useRecoilState(userCoin);
@@ -300,6 +300,7 @@ function Character ({ closeModal }) {
   const [images, setImages] = useState([]);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [characterPrice, setCharacterPrice] = useState(0);
+
 
 
   const characterImages = [
@@ -324,10 +325,26 @@ function Character ({ closeModal }) {
     { id: 8, name: '순록', image: '/images/shop/staglock.png' },
   ];
 
+
+  useEffect(() => {
+    const storageCharacterId = JSON.parse(localStorage.getItem('userData')).selectedCharacterId
+    characterImages.forEach(image => {
+      if(image.id === storageCharacterId) {
+        const str = JSON.parse(localStorage.getItem('userData'));
+        str.selectedCharacterName = image.fileName;
+        localStorage.setItem('userData', JSON.stringify(str))
+        gameStartData.selectCharacter = image.fileName;
+        myGameData.playerCharacter = image.fileName;
+      }
+    })
+ }, [])
+
+
   const handleCharacterClick = (character) => {
     setSelectedCharacter(character);
     setSelectCharacter(character.fileName) // recoil state
     gameStartData.selectCharacter = character.fileName;
+    myGameData.playerCharacter = character.fileName;
   };
 
   const getSelectedCharacterIdFromLocalStorage = () => {
@@ -371,6 +388,7 @@ function Character ({ closeModal }) {
         setSelectedCharacter(updatedSelectedCharacter)
         setSelectCharacter(updatedSelectedCharacter.fileName) // recoil state
         gameStartData.selectCharacter = updatedSelectedCharacter.fileName;
+        myGameData.playerCharacter = updatedSelectedCharacter.fileName;
       }
 
       // 코인
