@@ -625,10 +625,18 @@ const roomGameStart = async(sessionId)=>{
       {page === 4 ? (
         <Result
           setPage={setPage}
-          mySessionId={mySessionId}
           session={session}
+          myRoom={myRoom}
           mainStreamManager={mainStreamManager}
-          setMySessionId={setMySessionId}
+          subscribers={subscribers}
+          setSubscribers={setSubscribers}
+          publisher={publisher}
+          mySessionId={mySessionId}
+          connectionId={connectionId}
+          chatMessage={chatMessage}
+          setChatMessage={setChatMessage}
+          chatMessages={chatMessages}
+          setChatMessages={setChatMessages}
           leaveSession={leaveSession}
         />
       ) : null}
