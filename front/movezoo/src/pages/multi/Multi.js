@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import { useRecoilState } from 'recoil';
-import { myGameData, playerGameDataList } from "../../components/play/data.js";
+import { toast } from 'react-toastify';
+import { myGameData, gameStartData, playerGameDataList } from "../../components/play/data.js";
 
 import { isMultiGameStartState, playGameModeState } from '../../components/state/gameState.js'
 
@@ -18,6 +19,11 @@ function Multi() {
   const storedUserData = localStorage.getItem('userData');
   const data = (JSON.parse(storedUserData));
 
+  gameStartData.mode = 'multi'
+  gameStartData.selectMap = data.selectedMapName;
+  gameStartData.selectCharacter = data.selectedCharacterName;
+  myGameData.playerCharacter = data.selectedCharacterName;
+  
   // 게임시작관리(props로 념겨줌)
   const [isPlayingGame, setIsPlayingGame] = useState(false);
   const [mySessionId, setMySessionId] = useState(null);
@@ -26,9 +32,9 @@ function Multi() {
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
   const [publisher, setPublisher] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
-
+  
   const [page, setPage] = useState(1);
-
+  
   //창희 추가 start
   const [connectionId, setConnectionId] = useState(null);
   const [chatMessage, setChatMessage] = useState("");
@@ -36,9 +42,10 @@ function Multi() {
   const [myRoom, setMyRoom] = useState({});
   const navigate = useNavigate();
   //창희 추가 end
-
+  
   const [isMultiGameStart, setIsMultiGameStart] = useRecoilState(isMultiGameStartState);
   const [playGameMode, setPlayGameMode] = useRecoilState(playGameModeState);
+  setPlayGameMode('multi');
 
   let OV, currentVideoDevice;
   // useEffect(() => {
@@ -191,6 +198,7 @@ function Multi() {
 
           myGameData.playerId = myUserName;
           setPlayGameMode('multi'); // 모드 멀티로 설정
+          myGameData.mode='multi'
           let existMyData = false;
           playerGameDataList.forEach((item) => { // 배열에 내아이디가 있는지 확인한다.
             if (item === myGameData.playerId) existMyData = true;
@@ -326,6 +334,7 @@ function Multi() {
 
           myGameData.playerId = myUserName;
           setPlayGameMode('multi'); // 모드 멀티로 설정
+          myGameData.mode='multi'
           let existMyData = false;
           playerGameDataList.forEach((item) => { // 배열에 내아이디가 있는지 확인한다.
             if (item === myGameData.playerId) existMyData = true;
@@ -420,13 +429,13 @@ function Multi() {
             console.error(error);
           });
         changeSession();
-        alert("방이 삭제되었습니다.");
+        toast.error("방이 삭제되었습니다.");
       }
 
     } else {
       await exitRoom();
       changeSession()
-      alert("방에서 나갑니다.");
+      toast.error("방에서 나갑니다.");
     }
   };
 
@@ -606,10 +615,18 @@ function Multi() {
       {page === 4 ? (
         <Result
           setPage={setPage}
-          mySessionId={mySessionId}
           session={session}
+          myRoom={myRoom}
           mainStreamManager={mainStreamManager}
-          setMySessionId={setMySessionId}
+          subscribers={subscribers}
+          setSubscribers={setSubscribers}
+          publisher={publisher}
+          mySessionId={mySessionId}
+          connectionId={connectionId}
+          chatMessage={chatMessage}
+          setChatMessage={setChatMessage}
+          chatMessages={chatMessages}
+          setChatMessages={setChatMessages}
           leaveSession={leaveSession}
         />
       ) : null}

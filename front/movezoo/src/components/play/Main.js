@@ -175,15 +175,15 @@ const Main = (props) => {
     }
 
 
-
+    let isMultiGameEndCountStart = false;
     // =========================================================================
     // UPDATE THE GAME WORLD
     // =========================================================================
     const update = (dt) => {
 
-      gameStartData.mode = playGameMode; // 게임모드 세팅
-      gameStartData.selectMap = JSON.parse(localStorage.getItem('userData'))?.selectedMapName;
-      gameStartData.selectCharacter = JSON.parse(localStorage.getItem('userData'))?.selectedCharacterId;
+      // gameStartData.mode = playGameMode; // 게임모드 세팅
+      // gameStartData.selectMap = JSON.parse(localStorage.getItem('userData'))?.selectedMapName;
+      // gameStartData.selectCharacter = JSON.parse(localStorage.getItem('userData'))?.selectedCharacterName;
 
       // 멀티 게임이 시작되지 않았다면?
       if(!isMultiGameStart && gameStartData.mode === 'multi' ) {
@@ -193,12 +193,19 @@ const Main = (props) => {
         });
         if(readyAll) setIsMultiGameStart(true);
       }
+      
 
-      // 멀티게임 누군가 통과했다면(계속확인함)
-      if(playerGameDataList.length !== 0) {
-        playerGameDataList.forEach(userData => {
-          if(userData.lapTime !== '') multiGameEndCount();
-        })
+      // 카운트를 시작한적이 없고, 멀티게임 누군가 통과했다면(계속확인함)
+      if(!isMultiGameEndCountStart) {
+        if(playerGameDataList.length !== 0) {
+          playerGameDataList.forEach(userData => {
+            if(userData.lapTime !== '') {
+              multiGameEndCount();
+              isMultiGameEndCountStart = true;
+              return false;
+            }
+          })
+        }
       }
 
 
@@ -358,7 +365,6 @@ const Main = (props) => {
           setTestCurrentLapTime(0);
           lastLapTime    = currentLapTime;
           currentLapTime = 0;
-
           gameEnd(); // 게임종료 로직실행
 
           if (lastLapTime <= Util.toFloat(localStorage.fast_lap_time)) {
@@ -409,7 +415,7 @@ const Main = (props) => {
         // 2. 카운트다운 중에 들어갔는지? -> 카운트를 실행시키지 않는다. 
 
         // 일단 골인했으니 기록을 저장한다. (계속 공유함)
-        myGameData.lapTime = currentLapTime;
+        myGameData.lapTime = formatTime(lastLapTime);
 
         // playerGameDataList.forEach(gameData => {
         //   // 나를 제외한 사람이 랩타임이 없는지 확인
@@ -431,6 +437,7 @@ const Main = (props) => {
       const playCount = setInterval(() => {
         count-=1;
         setGameEndCount(count);
+        // console.log(count);
         if(count === 0) {
           // 여기서 게임을 완전 종료 시켜줘야 함
           clearInterval(playCount)

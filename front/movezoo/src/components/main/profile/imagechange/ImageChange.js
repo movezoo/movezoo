@@ -5,6 +5,7 @@ import './ImageChange.css';
 import { useRecoilState } from 'recoil';
 import { profileImgUrl as profileImgUrlState } from '../../../state/state';
 import { IoCloseSharp } from "react-icons/io5";
+import { toast } from 'react-toastify';
 
 
 const profileImages = [
@@ -74,12 +75,12 @@ const ImageChangeModal = () => {
       updatedUserData.userData.profileImgUrl = profileImgUrl;
       localStorage.setItem('userData', JSON.stringify(updatedUserData));
 
-      alert('프로필 이미지가 변경되었습니다.');
+      toast.success('프로필 이미지가 변경되었습니다.');
       closeModal();
 
       } catch (error) {
         console.error('이미지 변경 실패:', error);
-        alert('프로필 이미지 변경에 실패하였습니다.');
+        toast.error('프로필 이미지 변경에 실패하였습니다.');
       }
   };
 

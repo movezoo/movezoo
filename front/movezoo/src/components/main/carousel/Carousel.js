@@ -9,14 +9,14 @@ import { useNavigate } from 'react-router-dom';
 
 function Carousel() {
   const initialImages  = [
-    { id: 1, name: '시바', image: '/images/shop/shiba.png' },
-    { id: 2, name: '당나귀', image: '/images/shop/donkey.png' },
-    { id: 3, name: '여우', image: '/images/shop/fox.png' },
-    { id: 4, name: '사슴', image: '/images/shop/deer.png' },
-    { id: 5, name: '허스키', image: '/images/shop/husky.png' },
-    { id: 6, name: '늑대', image: '/images/shop/wolf.png' },
-    { id: 7, name: '말', image: '/images/shop/horse.png' },
-    { id: 8, name: '순록', image: '/images/shop/stag.png' },
+    { id: 1, fileName: 'shiba', name: '시바', image: '/images/shop/shiba.png' },
+    { id: 2, fileName: 'donkey', name: '당나귀', image: '/images/shop/donkey.png' },
+    { id: 3, fileName: 'fox', name: '여우', image: '/images/shop/fox.png' },
+    { id: 4, fileName: 'deer', name: '사슴', image: '/images/shop/deer.png' },
+    { id: 5, fileName: 'husky', name: '허스키', image: '/images/shop/husky.png' },
+    { id: 6, fileName: 'wolf', name: '늑대', image: '/images/shop/wolf.png' },
+    { id: 7, fileName: 'horse', name: '말', image: '/images/shop/horse.png' },
+    { id: 8, fileName: 'stag', name: '순록', image: '/images/shop/stag.png' },
   ];
 
   const [images, setImages] = useState([]);
@@ -79,6 +79,7 @@ function Carousel() {
       
       const userData = JSON.parse(storedUserData);
       userData.selectedCharacterId = images[currentIndex].id;
+      userData.selectedCharacterName = images[currentIndex].fileName;
       localStorage.setItem('userData', JSON.stringify(userData));
     }
 }, [currentIndex, images]);

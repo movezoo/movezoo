@@ -290,7 +290,8 @@ import Modal from 'react-modal';
 import './Choose.css';
 import { useRecoilState } from 'recoil';
 import { userCoin, selectCharacterState } from '../state/state';
-import { data, gameStartData } from '../play/data.js';
+import { data, gameStartData, myGameData } from '../play/data.js';
+import { toast } from 'react-toastify';
 
 function Character ({ closeModal }) {
   const [coin, setCoin] = useRecoilState(userCoin);
@@ -329,7 +330,13 @@ function Character ({ closeModal }) {
   useEffect(() => {
     const storageCharacterId = JSON.parse(localStorage.getItem('userData')).selectedCharacterId
     characterImages.forEach(image => {
-      if(image.id === storageCharacterId) gameStartData.selectCharacter = image.fileName;
+      if(image.id === storageCharacterId) {
+        const str = JSON.parse(localStorage.getItem('userData'));
+        str.selectedCharacterName = image.fileName;
+        localStorage.setItem('userData', JSON.stringify(str))
+        gameStartData.selectCharacter = image.fileName;
+        myGameData.playerCharacter = image.fileName;
+      }
     })
  }, [])
 
@@ -338,6 +345,7 @@ function Character ({ closeModal }) {
     setSelectedCharacter(character);
     setSelectCharacter(character.fileName) // recoil state
     gameStartData.selectCharacter = character.fileName;
+    myGameData.playerCharacter = character.fileName;
   };
 
   const getSelectedCharacterIdFromLocalStorage = () => {
@@ -381,6 +389,7 @@ function Character ({ closeModal }) {
         setSelectedCharacter(updatedSelectedCharacter)
         setSelectCharacter(updatedSelectedCharacter.fileName) // recoil state
         gameStartData.selectCharacter = updatedSelectedCharacter.fileName;
+        myGameData.playerCharacter = updatedSelectedCharacter.fileName;
       }
 
       // 코인
@@ -422,7 +431,7 @@ function Character ({ closeModal }) {
       }, { withCredentials: true });
       
       if (response.status === 200 || response.data.success) { // 성공 응답 조건 확인
-        alert('캐릭터를 구매하였습니다.');
+        toast.success('캐릭터를 구매하였습니다.');
         setBuyModalOpen(false);
         // 캐릭터 목록을 다시 불러옵니다.
         fetchUserCharacters();
@@ -436,7 +445,7 @@ function Character ({ closeModal }) {
       
     } catch (error) {
       console.error('캐릭터 구매 실패:', error);
-      alert('Coin이 모자랍니다.');
+      toast.error('Coin이 모자랍니다.');
     }
   };
 
@@ -497,7 +506,7 @@ function Character ({ closeModal }) {
   
       // 새로운 값을 추가합니다.
       userData.selectedCharacterId = selectedCharacter.id;
-      userData.selectedCharacterName = selectedCharacter.name;
+      userData.selectedCharacterName = selectedCharacter.fileName;
   
       // 변경된 객체를 다시 로컬 스토리지에 저장합니다.
       localStorage.setItem('userData', JSON.stringify(userData));
@@ -505,7 +514,7 @@ function Character ({ closeModal }) {
 
       closeModal();
     } else {
-      alert('선택된 캐릭터가 없습니다.');
+      toast.error('선택된 캐릭터가 없습니다.');
     }
   };
 
