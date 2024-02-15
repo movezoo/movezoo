@@ -74,7 +74,7 @@
 }
 
 .multi-result-reward-theadTr {
-  @apply flex justify-start items-center
+  @apply flex justify-between items-center
 }
 
 .multi-result-reward-tbody {
