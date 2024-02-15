@@ -119,7 +119,7 @@ function Carousel() {
   
     // 선택된 맵의 id를 userData에 추가
     userData.selectedMapId = images[newIndex].id;
-    userData.selectedMapName = images[newIndex].name;
+    userData.selectMap = images[newIndex].name;
   
     // 수정된 userData를 다시 로컬 스토리지에 저장
     localStorage.setItem('userData', JSON.stringify(userData));
@@ -142,10 +142,10 @@ function Carousel() {
   
     // 선택된 맵의 id를 userData에 추가
     userData.selectedMapId = images[newIndex].id;
-    userData.selectedMapName = images[newIndex].name;
+    userData.selectMap = images[newIndex].name;
   
     gameStartData.mode = 'single';
-    gameStartData.selectMap = userData.selectedMapName;
+    gameStartData.selectMap = userData.selectMap;
     
     // 수정된 userData를 다시 로컬 스토리지에 저장
     localStorage.setItem('userData', JSON.stringify(userData));
