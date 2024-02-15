@@ -10,6 +10,7 @@ import Signup from "./components/home/Signup.jsx";
 import Multi from "./pages/multi/Multi.js";
 import "./index.css";
 import { RecoilRoot } from "recoil";
+import Redirect from "./components/main/Redirect.js";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/single/result" element={<Result />} />
 
           <Route path="/multi" element={<Multi />} />
+          <Route path="/redirect" element={<Redirect />} />
         </Routes>
       </Router>
     </RecoilRoot>
