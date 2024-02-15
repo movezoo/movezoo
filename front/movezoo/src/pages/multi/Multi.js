@@ -19,7 +19,7 @@ function Multi() {
   const data = (JSON.parse(storedUserData));
 
   
-  gameStartData.selectedMapName = data.selectedMapName;
+  gameStartData.selectMap = data.selectedMapName;
   gameStartData.selectCharacter = data.selectedCharacterName;
   myGameData.playerCharacter = data.selectedCharacterName;
 
