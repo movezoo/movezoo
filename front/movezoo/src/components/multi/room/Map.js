@@ -24,10 +24,7 @@ function Map(props) {
     { id: 2, name: 'map2', image: '/images/minimap/map2.png' }
   ];
   
-  const selectMap = useState(JSON.parse(localStorage.getItem('userData')).selectedMapName);
-  images.forEach(image => {
-    if(image.name === selectMap) setSrc(images.image);
-  })
+  
   // const handlePrevious = () => {
   //   const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
   //   setCurrentIndex(newIndex);
@@ -98,22 +95,18 @@ function Map(props) {
   
   useEffect(() => {
     // fetchLapTime(images[currentIndex].id);
-    
+    const selectMap = JSON.parse(localStorage.getItem('userData')).selectedMapName
+    // console.log(selectMap)
+    images.forEach(image => {
+      if(image.name === selectMap) setSrc(image.image);
+    })
   }, []);
 
   return (
     <div className="room-map-container">
 
       <div className="room-map-header">
-        {/* <div className="room-map-prev">
-          <AiFillCaretLeft className='room-map-change-button' onClick={handlePrevious}/>
-        </div> */}
-        <div className="room-map-image">
-          <img src={src} alt="mini-map" />
-        </div>
-        {/* <div className="map-next">
-          <AiFillCaretRight className='room-map-change-button' onClick={handleNext}/>
-        </div> */}
+        <img src={src} alt="mini-map" className="room-map-image" />
       </div>
     </div>
   );
