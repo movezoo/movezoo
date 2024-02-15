@@ -95,7 +95,6 @@
 <details><summary>펼치기 / 접기</summary>
 
 ```
-
 backend
 ├─main
 │  ├─java
@@ -299,10 +298,9 @@ movezoo
 
 ## 💬 API 명세서
 
-<!-- ![API명세서](README_assets/19_API명세서.pdf) -->
+![API명세서](./Docs/API명세서.pdf)
 
 <br/>
 
-## 🖼️ 와이어프레임
-
+<!-- ## 🖼️ 와이어프레임 -->
 <!-- ![와이어프레임](README_assets/20_와이어프레임.png) -->
