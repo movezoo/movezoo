@@ -32,12 +32,12 @@
 }
 
 .room-body-cam {
-  @apply w-full flex flex-wrap items-center justify-between ;
+  @apply w-full flex flex-wrap items-center justify-center ;
 }
 
 .room-webCam {
   @apply w-[225px] flex items-center justify-center
-  rounded-3xl overflow-hidden;
+  rounded-3xl overflow-hidden m-[10px];
 }
 
 .room-option {

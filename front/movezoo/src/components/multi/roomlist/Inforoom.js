@@ -18,7 +18,6 @@ function Inforoom( props ) {
   const checkPassword = () => {
     if (props.secretRoomPassword === password) {
       props.enterRoom(props.session) 
-      props.setPage(2);
     } else { 
       setPassword("");
     }
@@ -47,7 +46,6 @@ function Inforoom( props ) {
       localStorage.setItem('userData', JSON.stringify(storages));
 
       props.enterRoom(props.session) 
-      props.setPage(2);
     }
   }
 
