@@ -49,9 +49,21 @@
 }
 
 .multi-result-reward {
-  @apply w-[250px] h-[300px] flex flex-col items-center justify-center
+  @apply w-[250px] h-[300px] p-5 flex flex-col items-center justify-center
    bg-white rounded-3xl
 }
 
 .multi-result-backbutton {
+}
+
+.multi-result-reward-table {
+  @apply w-full flex items-center justify-center
+}
+
+.multi-result-reward-thead {
+  @apply w-full
+}
+
+.multi-result-reward-theadTr {
+  @apply flex justify-between items-center
 }
