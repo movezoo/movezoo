@@ -199,7 +199,11 @@ const Main = (props) => {
       if(!isMultiGameEndCountStart) {
         if(playerGameDataList.length !== 0) {
           playerGameDataList.forEach(userData => {
-            if(userData.lapTime !== '') multiGameEndCount();
+            if(userData.lapTime !== '') {
+              multiGameEndCount();
+              isMultiGameEndCountStart = true;
+              return false;
+            }
           })
         }
       }
