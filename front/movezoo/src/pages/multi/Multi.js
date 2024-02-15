@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import { useRecoilState } from 'recoil';
-import { myGameData, playerGameDataList } from "../../components/play/data.js";
+import { toast } from 'react-toastify';
+import { myGameData, gameStartData, playerGameDataList } from "../../components/play/data.js";
 
 import { isMultiGameStartState, playGameModeState } from '../../components/state/gameState.js'
 
@@ -18,6 +19,11 @@ function Multi() {
   const storedUserData = localStorage.getItem('userData');
   const data = (JSON.parse(storedUserData));
 
+  gameStartData.mode = 'multi'
+  gameStartData.selectMap = data.selectedMapName;
+  gameStartData.selectCharacter = data.selectedCharacterName;
+  myGameData.playerCharacter = data.selectedCharacterName;
+  
   // 게임시작관리(props로 념겨줌)
   const [isPlayingGame, setIsPlayingGame] = useState(false);
   const [mySessionId, setMySessionId] = useState(null);
@@ -26,9 +32,9 @@ function Multi() {
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
   const [publisher, setPublisher] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
-
-  const [page, setPage] = useState(4);
-
+  
+  const [page, setPage] = useState(1);
+  
   //창희 추가 start
   const [connectionId, setConnectionId] = useState(null);
   const [chatMessage, setChatMessage] = useState("");
@@ -36,9 +42,10 @@ function Multi() {
   const [myRoom, setMyRoom] = useState({});
   const navigate = useNavigate();
   //창희 추가 end
-
+  
   const [isMultiGameStart, setIsMultiGameStart] = useRecoilState(isMultiGameStartState);
   const [playGameMode, setPlayGameMode] = useRecoilState(playGameModeState);
+  setPlayGameMode('multi');
 
   let OV, currentVideoDevice;
   // useEffect(() => {
@@ -75,7 +82,35 @@ function Multi() {
     });
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // 방생성 : 방장
   const createRoom = async (roomInfo) => {
+    // var roomInfo = {
+    //   roomMode: roomMode,
+    //   roomTitle: roomTitle,
+    //   roomPassword: secretRoomPassword,
+    //   maxRange: maxUserCount,
+    //   trackId: mapSelect,
+    // }
     OV = new OpenVidu();
     OV.enableProdMode(); // log 출력제거
 
@@ -85,6 +120,10 @@ function Multi() {
     newSession.on("streamCreated", event => {
       const subscriber = newSession.subscribe(event.stream, undefined);
       setSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
+    });
+    newSession.on('connectionDestroyed', (event) => {
+      console.log(`connection: ${event.connection}`);
+      console.log(event.connection);
     });
 
     newSession.on("streamDestroyed", event => {
@@ -104,10 +143,6 @@ function Multi() {
         name: userName,
         message: event.data, // 채팅 메시지 내용
       }
-      // 기존 채팅 메시지 배열에 새로운 메시지 추가
-      // const updatedMessages = [...chatMessages, newMessage];
-      // console.log(updatedMessages);
-      // 상태 업데이트
       setChatMessages((chatMessages) => [...chatMessages, newMessage]);
       // this.setState({ chatMessages: updatedMessages });
     });
@@ -121,9 +156,9 @@ function Multi() {
 
     // 게임시작 수신
     newSession.on("signal:game-start", () => {
-      console.log("game start : ", data.userData.userId);
-      console.log("start start session Id", mySessionId);
-      roomGameStart(mySessionId);
+      // console.log("game start : ", data.userData.userId);
+      // console.log("start start session Id", mySessionId);
+      // roomGameStart(mySessionId);
       setPage(3);
     });
 
@@ -145,12 +180,11 @@ function Multi() {
           const newPublisher = await OV.initPublisherAsync(undefined, {
             audioSource:  undefined, videoSource:  undefined,
             publishAudio: true,      publishVideo: true,
-            resolution:   "640x480", frameRate:    30,
+            resolution:   "280x210", frameRate:    30, // 원래: 640x480
             insertMode:   "APPEND",  mirror:       false,
           });
 
           newSession.publish(newPublisher);
-
           const devices = await OV.getDevices();
           const videoDevices = devices.filter( device => device.kind === "videoinput" );
           const currentVideoDeviceId = newPublisher.stream
@@ -164,6 +198,7 @@ function Multi() {
 
           myGameData.playerId = myUserName;
           setPlayGameMode('multi'); // 모드 멀티로 설정
+          myGameData.mode='multi'
           let existMyData = false;
           playerGameDataList.forEach((item) => { // 배열에 내아이디가 있는지 확인한다.
             if (item === myGameData.playerId) existMyData = true;
@@ -171,7 +206,7 @@ function Multi() {
           if (!existMyData) playerGameDataList.push(myGameData); // 배열에 내 데이터가 없다면 추가한다.
 
           setIsPlayingGame(true);
-          console.log( `joinsession : playerId init!!!!!!!! <${myGameData.playerId}>` );
+          console.log(`joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`);
         })
         .catch((error) => {
           console.log(
@@ -185,6 +220,23 @@ function Multi() {
     }
   };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // 방입장
   const enterRoom = async (enterSessionId) => {
     OV = new OpenVidu();
     OV.enableProdMode();
@@ -195,6 +247,11 @@ function Multi() {
     newSession.on("streamCreated", event => {
       const subscriber = newSession.subscribe(event.stream, undefined);
       setSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
+    });
+
+    newSession.on('connectionDestroyed', (event) => {
+      console.log(`connection: ${event.connection}`);
+      console.log(event.connection);
     });
 
     newSession.on("streamDestroyed", event => {
@@ -208,21 +265,12 @@ function Multi() {
 
     // 채팅 수신
     newSession.on("signal:my-chat", event => {
-      console.log();
-      // const { chatMessages } = this.state;
-
       const userName = JSON.parse(event.from.data).clientData;
       const newMessage = {
         id: event.from.connectionId, // 보낸 사람의 아이디
         name: userName,
         message: event.data, // 채팅 메시지 내용
       };
-
-      // 기존 채팅 메시지 배열에 새로운 메시지 추가
-      const updatedMessages = [...chatMessages, newMessage];
-
-      console.log(updatedMessages);
-      // 상태 업데이트
       setChatMessages((chatMessages) => [...chatMessages, newMessage]);
       // this.setState({ chatMessages: updatedMessages });
     });
@@ -248,13 +296,14 @@ function Multi() {
       setMyRoom({});
     });
 
+    // 게임시작 수신
     newSession.on("signal:game-start", () => {
       console.log("game start : ", data.userData.userId);
       
-      console.log(mySessionId);
-      roomGameStart(mySessionId);
-    
-      setPage(1);
+      // roomGameStart(mySessionId);
+      // console.log(`mySessionId: ${mySessionId}`);
+      
+      setPage(3);
     });
     //창희 추가 end//
 
@@ -264,51 +313,40 @@ function Multi() {
         .connect(token, { clientData: myUserName })
         .then(async () => {
           setConnectionId(newSession.connection.connectionId);
-
-          let newPublisher = await OV.initPublisherAsync(undefined, {
-            audioSource: undefined,
-            videoSource: undefined,
-            publishAudio: true,
-            publishVideo: true,
-            resolution: "640x480",
-            frameRate: 30,
-            insertMode: "APPEND",
-            mirror: false,
+          const newPublisher = await OV.initPublisherAsync(undefined, {
+            audioSource:  undefined, videoSource:  undefined,
+            publishAudio: true,      publishVideo: true,
+            resolution:   "280x210", frameRate:    30, // 원래: 640x480
+            insertMode:   "APPEND",  mirror:       false,
           });
 
           newSession.publish(newPublisher);
-
           const devices = await OV.getDevices();
-          const videoDevices = devices.filter(
-            (device) => device.kind === "videoinput"
-          );
+          const videoDevices = devices.filter( device => device.kind === "videoinput" );
           const currentVideoDeviceId = newPublisher.stream
             .getMediaStream()
             .getVideoTracks()[0]
             .getSettings().deviceId;
-          currentVideoDevice = videoDevices.find(
-            (device) => device.deviceId === currentVideoDeviceId
-          );
+          currentVideoDevice = videoDevices.find( device => device.deviceId === currentVideoDeviceId );
 
           setMainStreamManager(newPublisher);
           setPublisher(newPublisher);
 
           myGameData.playerId = myUserName;
+          setPlayGameMode('multi'); // 모드 멀티로 설정
+          myGameData.mode='multi'
           let existMyData = false;
-          playerGameDataList.forEach((item) => {
-            if (item === myGameData.playerId) {
-              existMyData = true;
-            }
+          playerGameDataList.forEach((item) => { // 배열에 내아이디가 있는지 확인한다.
+            if (item === myGameData.playerId) existMyData = true;
           });
-          if (!existMyData) playerGameDataList.push(myGameData);
+          if (!existMyData) playerGameDataList.push(myGameData); // 배열에 내 데이터가 없다면 추가한다.
 
           setIsPlayingGame(true);
-          console.log(
-            `joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`
-          );
+          console.log( `joinsession : playerId init!!!!!!!! <${myGameData.playerId}>`);
 
           // //발급받은 토큰으로 연결 완료 되면 sessionId set
           // setMySessionId(enterSessionId);
+          setPage(2);
         })
         .catch((error) => {
           console.log(
@@ -316,11 +354,22 @@ function Multi() {
             error.code,
             error.message
           );
+          alert("방 입장에 문제가 생겼습니다. \n방 목록을 갱신 해주세요!")
         });
     } catch (error) {
       console.error("Error joining session:", error);
+      alert("방 입장에 문제가 생겼습니다. \n방 목록을 갱신 해주세요!")
     }
   };
+
+
+
+
+
+
+
+
+
 
   const exitRoom = async () => {
     await axios.patch(
@@ -381,13 +430,13 @@ function Multi() {
             console.error(error);
           });
         changeSession();
-        alert("방이 삭제되었습니다.");
+        toast.error("방이 삭제되었습니다.");
       }
 
     } else {
       await exitRoom();
       changeSession()
-      alert("방에서 나갑니다.");
+      toast.error("방에서 나갑니다.");
     }
   };
 
@@ -446,6 +495,8 @@ function Multi() {
   //방 만들기(사용자가 입력한 방정보를 넣는다, 세션아이디는 서버에서 만들어 반환)
   const createSession = async (roomInfo) => {
     console.log(roomInfo)
+
+    
     try {
       const response = await axios.post(
         APPLICATION_SERVER_URL + "api/room",
@@ -453,7 +504,8 @@ function Multi() {
           roomMode: roomInfo.roomMode,
           roomTitle: roomInfo.roomTitle,
           roomPassword: roomInfo.roomPassword,
-          maxRange: roomInfo.maxRange
+          maxRange: roomInfo.maxRange,
+          trackId: roomInfo.trackId,
         },
         {
           headers: { "Content-Type": "application/json" },
@@ -466,19 +518,7 @@ function Multi() {
       throw error;
     }
   };
-const roomGameStart = async(sessionId)=>{
-  const response = await axios.patch(
-    APPLICATION_SERVER_URL + "api/room/start",
-    {
-      roomSessionId: sessionId,
-    },
-    {
-      headers: { "Content-Type": "application/json" },
-    }
-  );
 
-  console.log("roomGameStart result : ",response.data)
-}
   //방 입장을 위한 토큰 발급받기(백에서 발급된 세션아이디로 join)
   const createToken = async (sessionId) => {
     console.log("createToken ", sessionId, myUserName);
@@ -576,10 +616,18 @@ const roomGameStart = async(sessionId)=>{
       {page === 4 ? (
         <Result
           setPage={setPage}
-          mySessionId={mySessionId}
           session={session}
+          myRoom={myRoom}
           mainStreamManager={mainStreamManager}
-          setMySessionId={setMySessionId}
+          subscribers={subscribers}
+          setSubscribers={setSubscribers}
+          publisher={publisher}
+          mySessionId={mySessionId}
+          connectionId={connectionId}
+          chatMessage={chatMessage}
+          setChatMessage={setChatMessage}
+          chatMessages={chatMessages}
+          setChatMessages={setChatMessages}
           leaveSession={leaveSession}
         />
       ) : null}

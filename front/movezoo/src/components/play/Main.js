@@ -25,7 +25,7 @@ import { selectCharacterState } from '../state/state.js'
 const localStorage = window.localStorage || {};
 
 const Main = (props) => {
-
+  const { setPage } = props;
   // useState
   const [testSpeed, setTestSpeed] = useState(0);
   const [testLastLapTime, setTestLastLapTime] = useState(0);
@@ -79,7 +79,7 @@ const Main = (props) => {
             data.isGameStart = true;    
           }
         }, 1000);
-      }, 3000); // 3초 뒤에 시작
+      }, 2000); // 3초 뒤에 시작
     }
   },[isLoadGame, isLoadDetect, isMultiGameStart])
 
@@ -175,16 +175,16 @@ const Main = (props) => {
     }
 
 
-
+    let isMultiGameEndCountStart = false;
     // =========================================================================
     // UPDATE THE GAME WORLD
     // =========================================================================
     const update = (dt) => {
 
-      gameStartData.mode = playGameMode; // 게임모드 세팅
-      console.log(playerGameDataList);
-      console.log(`isMultiGameStart : ${isMultiGameStart}`);
-      console.log(`mode : ${gameStartData.mode}`);
+      // gameStartData.mode = playGameMode; // 게임모드 세팅
+      // gameStartData.selectMap = JSON.parse(localStorage.getItem('userData'))?.selectedMapName;
+      // gameStartData.selectCharacter = JSON.parse(localStorage.getItem('userData'))?.selectedCharacterName;
+
       // 멀티 게임이 시작되지 않았다면?
       if(!isMultiGameStart && gameStartData.mode === 'multi' ) {
         let readyAll = true;
@@ -192,11 +192,21 @@ const Main = (props) => {
           readyAll = readyAll && userData.loadSuccess;
         });
         if(readyAll) setIsMultiGameStart(true);
-        console.log(`readyAll : ${readyAll}`)
       }
-      console.log(playerGameDataList);
+      
 
-
+      // 카운트를 시작한적이 없고, 멀티게임 누군가 통과했다면(계속확인함)
+      if(!isMultiGameEndCountStart) {
+        if(playerGameDataList.length !== 0) {
+          playerGameDataList.forEach(userData => {
+            if(userData.lapTime !== '') {
+              multiGameEndCount();
+              isMultiGameEndCountStart = true;
+              return false;
+            }
+          })
+        }
+      }
 
 
 
@@ -355,8 +365,7 @@ const Main = (props) => {
           setTestCurrentLapTime(0);
           lastLapTime    = currentLapTime;
           currentLapTime = 0;
-
-          gameEnd();
+          gameEnd(); // 게임종료 로직실행
 
           if (lastLapTime <= Util.toFloat(localStorage.fast_lap_time)) {
             localStorage.fast_lap_time = lastLapTime;
@@ -383,11 +392,52 @@ const Main = (props) => {
     }
 
     const gameEnd = () => {
-      isStopControl = true;
+      isStopControl = true; // 일단 통과하면 컨트롤은 중지된다.
+
+      if(gameStartData.mode === 'single') {
+        let count = 10; // 실제로 3초부터 출력함
+        const playCount = setInterval(() => {
+          count-=1;
+          setGameEndCount(count);
+          if(count === 0) {
+            // 여기서 게임을 완전 종료 시켜줘야 함
+            clearInterval(playCount)
+            data.isGameEnd = true;
+            setIsGameEnd(true); // 재렌더링을 위한 state 변경
+            goResult();
+          }
+        }, 1000);
+      } else if(gameStartData.mode === 'multi') {
+        // 해당 로직은 유저가 골라인을 통과했을 때 실행된다.
+        // 따라서 아래와 같이 조건에 따라 다르게 처리해줘야 한다.
+
+        // 1. 가장먼저 골인한 사람인지? -> 카운트를 실행시킨다.
+        // 2. 카운트다운 중에 들어갔는지? -> 카운트를 실행시키지 않는다. 
+
+        // 일단 골인했으니 기록을 저장한다. (계속 공유함)
+        myGameData.lapTime = formatTime(lastLapTime);
+
+        // playerGameDataList.forEach(gameData => {
+        //   // 나를 제외한 사람이 랩타임이 없는지 확인
+        //   if(myGameData.playerId !== gameData.playerId && gameData.lapTime === '') {
+        //     isFirstGoal = true;
+        //   }
+        // })
+        // if(isFirstGoal) {
+
+        // } 
+      }
+
+    }
+
+
+    // 멀티게임은 동시에 카운트를 위해 조건부 호출로 따로 실행한다.
+    const multiGameEndCount = () => {
       let count = 10; // 실제로 3초부터 출력함
       const playCount = setInterval(() => {
         count-=1;
         setGameEndCount(count);
+        // console.log(count);
         if(count === 0) {
           // 여기서 게임을 완전 종료 시켜줘야 함
           clearInterval(playCount)
@@ -404,6 +454,8 @@ const Main = (props) => {
       })
       if (gameStartData.mode === 'single') {
         navigate('/single/result');
+      } else if(gameStartData.mode === 'multi') {
+        setPage(4); // multi result 화면으로 이동
       }
     }
     
@@ -1078,19 +1130,18 @@ const Main = (props) => {
 
 
         // 아이템 세팅 Start *******************************************************************************
-        addItem(20, 0.75);
-        addItem(20, 0.25);
-        addItem(20, -0.25);
-        addItem(20, -0.75);
+        addItem(50, 0.75);
+        addItem(50, 0.25);
+        addItem(50, -0.25);
+        addItem(50, -0.75);
 
-        addItem(80, 0.75);
-        addItem(100, 0.25);
-        addItem(60, -0.25);
-        addItem(200, -0.75);
-        addItem(300, 0.75);
-        addItem(800, 0.25);
-        addItem(250, -0.25);
-        addItem(400, -0.75);
+        for(let n = 50; n < (segments.length-450); n += 300) {
+          let itemPos1 = 0.25 + Util.randomInt(0, 1) * 0.5;
+          let itemPos2 = -0.25 - Util.randomInt(0, 1) * 0.5;
+          addItem(50, itemPos1);
+          addItem(50, itemPos2);
+        }
+
         // 아이템 세팅 End *******************************************************************************
       },
 

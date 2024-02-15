@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import './PasswordChange.css';
 import { IoCloseSharp } from "react-icons/io5";
+import { toast } from 'react-toastify';
 
 const ChangePasswordModal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -76,7 +77,7 @@ const ChangePasswordModal = () => {
         withCredentials: true,
       });
 
-      alert('비밀번호 변경에 성공했습니다.');
+      toast.success('비밀번호 변경에 성공했습니다.');
       closeModal();
     } catch (error) {
       console.error('비밀번호 변경 실패:', error);
@@ -95,8 +96,8 @@ const ChangePasswordModal = () => {
             backgroundColor: 'rgba(0, 0, 0, 0)', // 투명도를 0.75로 설정한 검은색 배경
           },
           content: {
-            width: '400px',
-            height: '370px',
+            width: '330px',
+            height: '400px',
             margin: 'auto',
             borderRadius: '30px',
           }
@@ -136,8 +137,8 @@ const ChangePasswordModal = () => {
             backgroundColor: 'rgba(0, 0, 0, 0)', // 투명도를 0.75로 설정한 검은색 배경
           },
           content: {
-            width: '350px',
-            height: '350px',
+            width: '330px',
+            height: '400px',
             margin: 'auto',
             borderRadius: '30px',
           }

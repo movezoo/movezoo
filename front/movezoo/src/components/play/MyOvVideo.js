@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 
 import '@mediapipe/face_detection';
 import '@tensorflow/tfjs-backend-webgl';
@@ -246,7 +246,11 @@ const MyOvVideo = (props) => {
       if(isPlayingGame) sendData();
 
       // responseData();
-      if(isPlayingGame) requestAnimationFrame(sendDataStart)
+      if(isPlayingGame) {
+        setTimeout(() => {
+          requestAnimationFrame(sendDataStart)
+        }, 1000/100);
+      }
     }
     
     const gameStart = () => {
