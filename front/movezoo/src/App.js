@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Home from "./pages/home/Home.jsx";
 import Main from "./pages/main/Main";
 import Single from "./pages/single/Single";
@@ -12,6 +14,7 @@ import { RecoilRoot } from "recoil";
 function App() {
   return (
     <RecoilRoot>
+      <ToastContainer />
       <Router>
         <Routes>
           {/* <Route path="/hello" element={<h1>Hello</h1>} /> */}

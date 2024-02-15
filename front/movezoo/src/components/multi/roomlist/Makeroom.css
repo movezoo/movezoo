@@ -50,11 +50,11 @@
 
 .makeroom-people {
   user-select : none;
-  @apply w-full flex items-center justify-between mb-2
+  @apply w-full flex items-center justify-start mb-2
 }
 
 .makeroom-people-btn {
-  @apply flex flex-row justify-center items-center rounded-lg border-2 border-black
+  @apply ml-12 flex flex-row justify-center items-center rounded-lg border-2 border-black
 }
 
 .makeroom-people-minus {
@@ -66,7 +66,7 @@
 }
 .makeroom-people-plus {
   @apply flex justify-center items-center w-6 h-7 cursor-pointer
-  active:bg-green-500 transition duration-300 rounded-l-lg
+  active:bg-green-500 transition duration-300 rounded-r-lg
 }
 
 .makeroom-type {
@@ -74,30 +74,36 @@
 }
 
 .makeroom-option{
-  @apply w-full flex justify-between
+  @apply w-full flex justify-start
 }
 
 .makeroom-option-selected{
   user-select : none;
-  @apply w-[90px] h-10 flex items-center justify-center cursor-pointer
+  @apply w-[80px] h-10 flex items-center justify-center cursor-pointer
   rounded-lg bg-green-500 text-white
 }
 .makeroom-option-not{
   user-select : none;
-  @apply w-[90px] h-10 flex items-center justify-center cursor-pointer
+  @apply w-[80px] h-10 flex items-center justify-center cursor-pointer
   rounded-lg bg-green-100
 }
 
 .makeroom-map {
-  @apply flex rounded-lg items-center border-2 border-black
+  @apply flex rounded-lg items-center
 }
 
 .makeroom-map-img {
-  @apply w-20
+  user-select : none;
+  @apply w-20 rounded-lg 
 }
-.makeroom-map-prev,
+.makeroom-map-prev {
+  @apply w-5 h-5 flex items-center justify-center
+  hover:scale-125 hover:text-gray-500 transition duration-300 cursor-pointer
+}
+
 .makeroom-map-next {
-  @apply relative h-20 flex items-center justify-center;
+  @apply w-5 h-5 flex items-center justify-center
+  hover:scale-125 hover:text-gray-500 transition duration-300 cursor-pointer;
 }
 
 .makeroom-check {
