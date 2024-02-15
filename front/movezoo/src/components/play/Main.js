@@ -434,7 +434,7 @@ const Main = (props) => {
       const playCount = setInterval(() => {
         count-=1;
         setGameEndCount(count);
-        console.log(count);
+        // console.log(count);
         if(count === 0) {
           // 여기서 게임을 완전 종료 시켜줘야 함
           clearInterval(playCount)
