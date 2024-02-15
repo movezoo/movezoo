@@ -132,7 +132,7 @@ function Game() {
           try {
             const faces = await detector.current.estimateFaces(video, estimationConfig);
 
-            if (faces.length === 0) console.log(`no face`);
+            // if (faces.length === 0) console.log(`no face`);
             // console.log(faces);
             // 화면 기준 - 화면의 중앙을 기준으로 코의 좌표의 위치에 따른 진행 방향 결정, 민감도 설정 가능
             const centerX = videoWidth / 2;

@@ -183,7 +183,7 @@ const Main = (props) => {
 
       gameStartData.mode = playGameMode; // 게임모드 세팅
       gameStartData.selectMap = JSON.parse(localStorage.getItem('userData'))?.selectedMapName;
-      gameStartData.selectCharacter = JSON.parse(localStorage.getItem('userData'))?.selectedCharacterId;
+      gameStartData.selectCharacter = JSON.parse(localStorage.getItem('userData'))?.selectedCharacterName;
 
       // 멀티 게임이 시작되지 않았다면?
       if(!isMultiGameStart && gameStartData.mode === 'multi' ) {
