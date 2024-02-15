@@ -73,21 +73,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 35px;
+  font-size: 25px;
   font-weight: bold;
   margin-top: 15px;
   margin-bottom: 30px;
+
 }
 
 .secretroom-main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  border: solid black 1px;
-  border-radius: 10px;
-  margin-right: 10px;
-  margin-left: 10px;
-  text-align: center;
-  overflow: hidden;
+  @apply w-full flex justify-center items-center
+}
+
+.secretroom-main-input {
+  @apply w-[200px] flex justify-center items-center
+  text-xl border-2 border-green-400 rounded-md outline-none
+}
+
+.secretroom-main-input::placeholder {
+  @apply pl-2 text-gray-300 text-lg
+}
+
+.secretroom-main-button {
+  @apply w-[60px] h-[32px] ml-4 bg-green-500 text-white rounded-md
+  hover:scale-125 hover:bg-green-700 transition duration-300
 }
