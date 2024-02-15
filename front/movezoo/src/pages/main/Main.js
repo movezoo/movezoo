@@ -97,7 +97,7 @@ function Main() {
       <div className="main-header">
 
         <div className="main-headerName">
-          <h1>MoveZoo</h1>
+        <img src='/images/mainLogo/mainlogo.svg' alt='mainlogo'/>
         </div>
 
 
