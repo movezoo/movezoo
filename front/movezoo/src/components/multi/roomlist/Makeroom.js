@@ -41,6 +41,11 @@ function Makeroom(props) {
   const secretRoomPasswordRef = useRef(null);
 
   const onClickConfirm = async () => {
+
+    let storage = JSON.parse(localStorage.getItem('userData'));
+    storage.selectedMapName = images[mapSelect].name;
+    localStorage.setItem('userData', JSON.stringify(storage))
+
     const roomTitle = roomTitleRef.current.value;
     const secretRoomPassword = secretRoomPasswordRef.current.value;
 

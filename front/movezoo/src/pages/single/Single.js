@@ -4,7 +4,7 @@ import Webcam from "react-webcam";
 import Map from "../../components/single/Map";
 import Start from "../../components/single/Start";
 import Select from "../../components/select/Select";
-import { gameStartData } from "../../components/play/data.js";
+import { gameStartData, myGameData } from "../../components/play/data.js";
 import { FaAnglesLeft } from "react-icons/fa6";
 import "./Single.css";
 import { playGameModeState } from '../../components/state/gameState.js'
@@ -23,9 +23,13 @@ function Single() {
 
     // 스토리지 저장
     let storages = JSON.parse(localStorage.getItem('userData'));
-    if(!storages.selectedMapName) storages.selectedMapName = 'map1';
+    if(!storages.selectMap) storages.selectMap = 'map1';
     console.log(storages)
     localStorage.setItem('userData', JSON.stringify(storages));
+
+    gameStartData.selectMap = storages.selectMap;
+    gameStartData.selectCharacter = storages.selectedCharacterName;
+    myGameData.playerCharacter = storages.selectedCharacterName;
   }, []);
 
   return (

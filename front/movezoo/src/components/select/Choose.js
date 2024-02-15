@@ -303,6 +303,7 @@ function Character ({ closeModal }) {
   const [characterPrice, setCharacterPrice] = useState(0);
 
 
+
   const characterImages = [
     { id: 1, fileName: 'shiba', name: '시바', image: '/images/shop/shiba.png' },
     { id: 2, fileName: 'donkey', name: '당나귀', image: '/images/shop/donkey.png' },
@@ -325,10 +326,26 @@ function Character ({ closeModal }) {
     { id: 8, name: '순록', image: '/images/shop/staglock.png' },
   ];
 
+
+  useEffect(() => {
+    const storageCharacterId = JSON.parse(localStorage.getItem('userData')).selectedCharacterId
+    characterImages.forEach(image => {
+      if(image.id === storageCharacterId) {
+        const str = JSON.parse(localStorage.getItem('userData'));
+        str.selectedCharacterName = image.fileName;
+        localStorage.setItem('userData', JSON.stringify(str))
+        gameStartData.selectCharacter = image.fileName;
+        myGameData.playerCharacter = image.fileName;
+      }
+    })
+ }, [])
+
+
   const handleCharacterClick = (character) => {
     setSelectedCharacter(character);
     setSelectCharacter(character.fileName) // recoil state
     gameStartData.selectCharacter = character.fileName;
+    myGameData.playerCharacter = character.fileName;
   };
 
   const getSelectedCharacterIdFromLocalStorage = () => {
@@ -372,6 +389,7 @@ function Character ({ closeModal }) {
         setSelectedCharacter(updatedSelectedCharacter)
         setSelectCharacter(updatedSelectedCharacter.fileName) // recoil state
         gameStartData.selectCharacter = updatedSelectedCharacter.fileName;
+        myGameData.playerCharacter = updatedSelectedCharacter.fileName;
       }
 
       // 코인
@@ -488,7 +506,7 @@ function Character ({ closeModal }) {
   
       // 새로운 값을 추가합니다.
       userData.selectedCharacterId = selectedCharacter.id;
-      userData.selectedCharacterName = selectedCharacter.name;
+      userData.selectedCharacterName = selectedCharacter.fileName;
   
       // 변경된 객체를 다시 로컬 스토리지에 저장합니다.
       localStorage.setItem('userData', JSON.stringify(userData));
