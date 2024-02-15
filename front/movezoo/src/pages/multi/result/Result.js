@@ -47,7 +47,13 @@ function Result(props) {
       userIds.push({ userId, userLapTime });
     }
 
+    // userdata laptime 빠른순으로 정렬
+    userIds.sort(function(a, b) {
+      return a.userLapTime - b.userLapTime;
+    });
+
     console.log(userIds);
+
 
   }, []);
   return (
