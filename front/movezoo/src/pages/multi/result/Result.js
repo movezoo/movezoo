@@ -223,15 +223,25 @@ function Result(props) {
                 <table className="multi-result-reward-table">
                   <thead className="multi-result-reward-thead">
                     <tr className="multi-result-reward-theadTr">
-                      <th>순위</th>
-                      <th>닉네임</th>
+                      <th className="multi-result-reward-theadTh">순위</th>
+                      <th className="multi-result-reward-theadThName">닉네임</th>
                       <th>랩타임</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="multi-result-reward-tbody">
+                    {/* <tr className="multi-result-reward-tbodyTr">
+                      <td>1</td>
+                      <td>ssss</td>
+                      <td>00:00:00</td>
+                    </tr>
+                    <tr className="multi-result-reward-tbodyTr">
+                      <td>2</td>
+                      <td>wwww</td>
+                      <td>00:00:00</td>
+                    </tr> */}
                     {
                       userIds.map((user, index) => (
-                        <tr key={user.userId}>
+                        <tr className="multi-result-reward-tbodyTr" key={user.userId}>
                           <td>{index + 1}</td>
                           <td>{user.userId}</td>
                           <td>{user.userLapTime}초</td>
