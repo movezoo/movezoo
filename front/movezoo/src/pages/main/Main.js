@@ -49,7 +49,7 @@ function Main() {
         })
         .catch(error => {
           console.error('Error fetching user data:', error);
-        });
+        })
     }
   }, [userData.userData, setUserData]);
   
