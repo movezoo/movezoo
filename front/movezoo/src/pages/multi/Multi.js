@@ -34,7 +34,7 @@ function Multi() {
   const [publisher, setPublisher] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(4);
 
   //창희 추가 start
   const [connectionId, setConnectionId] = useState(null);
@@ -625,10 +625,18 @@ const roomGameStart = async(sessionId)=>{
       {page === 4 ? (
         <Result
           setPage={setPage}
-          mySessionId={mySessionId}
           session={session}
+          myRoom={myRoom}
           mainStreamManager={mainStreamManager}
-          setMySessionId={setMySessionId}
+          subscribers={subscribers}
+          setSubscribers={setSubscribers}
+          publisher={publisher}
+          mySessionId={mySessionId}
+          connectionId={connectionId}
+          chatMessage={chatMessage}
+          setChatMessage={setChatMessage}
+          chatMessages={chatMessages}
+          setChatMessages={setChatMessages}
           leaveSession={leaveSession}
         />
       ) : null}
