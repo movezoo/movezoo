@@ -39,6 +39,11 @@ function Game() {
   const detector = useRef(null);
   const handDetector = useRef(null);
 
+  useEffect((() => {
+    // 전체 화면으로 전환
+    document.documentElement.requestFullscreen();
+  }), [])
+
   useEffect(() => {
     // 로딩 초기화
     setIsLoadGame(false); // 로딩 안됨
@@ -215,8 +220,7 @@ function Game() {
     }
     gameStart();
 
-    // 전체 화면으로 전환
-    document.documentElement.requestFullscreen();
+    
 
     const handleMouseMove = () => {
       document.body.style.cursor = 'auto'; // 마우스 포인터 보이기
