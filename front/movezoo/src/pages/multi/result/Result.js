@@ -5,10 +5,28 @@ import Back from "../../../components/multi/result/Back";
 import Record from "../../../components/single/result/Record";
 import './Result.css';
 import { playerGameDataList } from "../../../components/play/data.js";
+import MyVideoComponent from "../../../components/play/MyVideoComponent.js";
+import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
 
 function Result(props) {
   const [loading, setLoading] = useState(true);
   const leaveSession = props.leaveSession;
+  const {
+    setPage,
+    session,
+    myRoom,
+    mainStreamManager,
+    subscribers,
+    setSubscribers,
+    publisher,
+    mySessionId,
+    connectionId,
+    chatMessage,
+    setChatMessage,
+    chatMessages,
+    setChatMessages
+  } = props
+
   useEffect(() => {
     // 컴포넌트가 마운트될 때 전체 화면 모드 종료
     document.exitFullscreen();
@@ -19,6 +37,11 @@ function Result(props) {
 
     console.log(`[게임결과]`)
     console.log(playerGameDataList);
+
+    // user 개개인의 ID와 LapTime
+    const userId = playerGameDataList.playerId;
+    const userLapTime = playerGameDataList.lapTime;
+
   }, []);
   return (
     <div>
@@ -42,23 +65,20 @@ function Result(props) {
               <div className="multi-result-CamSection">
 
                 <div className="multi-result-firstWebCam">
-                  {loading ? (
-                    <h1>Loading...</h1>
-                  ) : (
-                    <Webcam mirrored={true} />
-                  )}
-                </div>
-
-                <div className="multi-result-secondCam">
-                  2번캠
-                </div>
-
-                <div className="multi-result-thirdCam">
-                  3번캠
-                </div>
-
-                <div className="multi-result-FourthCam">
-                  4번캠
+                  {mainStreamManager !== undefined ? (
+                    <div className="room-webCam">
+                      <MyVideoComponent
+                        streamManager={mainStreamManager}
+                        mySession={session}
+                        />
+                    </div>
+                    ) : <h1 className="txtLoading">Loading...</h1>
+                  }
+                  {subscribers.map((sub, i) => (
+                    <div className="room-webCam">
+                      <UserVideoComponent className="room-webCam" streamManager={sub} />
+                    </div>
+                  ))}
                 </div>
 
               </div>
