@@ -17,12 +17,12 @@ const data = {
 // console.log(JSON.parse(localStorage.getItem('userData')).selectedMapName);
 const gameStartData = {
   mode: 'single',
-  selectMap: (JSON.parse(localStorage.getItem('userData'))?.selectedMapName) ?? 'map1',
+  selectMap: '',
   selectCharacter: 'fox',
 }
 
 const playerCount = { value: 1 };
-const myGameData = { playerId: '', playerCharacter: gameStartData.selectCharacter, userX: 0, userZ: 0, speed: 0, loadSuccess: false }
+const myGameData = { playerId: '', playerCharacter: gameStartData.selectCharacter, userX: 0, userZ: 0, speed: 0, loadSuccess: false, lapTime: '' }
 const playerGameDataList = [];  // myGameData이 모인 리스트
 
 
