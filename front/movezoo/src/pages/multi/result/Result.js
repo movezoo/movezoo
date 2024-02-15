@@ -89,7 +89,8 @@ function Result(props) {
           
           const response = await axios.patch('https://i10e204.p.ssafy.io/api/coin', 
           { nickname, ranking: i + 1 });
-          console.log(response.data);
+          console.log(userIds[i]);
+          console.log(response);
         }
 
       } catch (error) {
