@@ -23,7 +23,7 @@
   justify-content: center;
   font-size: 35px;
   font-weight: bold;
-  @apply mb-5
+  @apply mb-10
 }
 
 .makeroom-name,
@@ -45,12 +45,12 @@
 }
 
 .makeroom-contents-section {
-  @apply w-48 flex flex-col justify-center items-center pt-2 pb-2
+  @apply w-[190px] h-[100px] flex flex-col justify-between items-center pt-2 pb-2
 }
 
 .makeroom-people {
   user-select : none;
-  @apply w-full flex items-center justify-between mb-5
+  @apply w-full flex items-center justify-start mb-2
 }
 
 .makeroom-people-btn {
@@ -90,7 +90,7 @@
 }
 
 .makeroom-map {
-  @apply mb-4 flex rounded-lg items-center justify-center
+  @apply flex rounded-lg items-center
 }
 
 .makeroom-map-img {
@@ -98,12 +98,12 @@
   @apply w-20 rounded-lg 
 }
 .makeroom-map-prev {
-  @apply w-8 h-8 mr-5 flex items-center justify-center
+  @apply w-5 h-5 flex items-center justify-center
   hover:scale-125 hover:text-gray-500 transition duration-300 cursor-pointer
 }
 
 .makeroom-map-next {
-  @apply w-8 h-8 ml-5 flex items-center justify-center
+  @apply w-5 h-5 flex items-center justify-center
   hover:scale-125 hover:text-gray-500 transition duration-300 cursor-pointer;
 }
 
