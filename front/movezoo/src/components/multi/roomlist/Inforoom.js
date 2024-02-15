@@ -18,7 +18,6 @@ function Inforoom( props ) {
   const checkPassword = () => {
     if (props.secretRoomPassword === password) {
       props.enterRoom(props.session) 
-      props.setPage(2);
     } else { 
       setPassword("");
     }
@@ -29,7 +28,7 @@ function Inforoom( props ) {
     // 필요한 데이터 : 사용자 ID, sessionID
     // console.log(props.session);
     if(props.userCount >= props.userMaxCount) {
-      alert("사람이 꽉 찾쓰");
+      alert("사람이 꽉 찼어요!");
       return;
     }
     if (props.secretRoom) {
@@ -47,7 +46,6 @@ function Inforoom( props ) {
       localStorage.setItem('userData', JSON.stringify(storages));
 
       props.enterRoom(props.session) 
-      props.setPage(2);
     }
   }
 

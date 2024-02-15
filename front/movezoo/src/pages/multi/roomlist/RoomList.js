@@ -20,11 +20,17 @@ function RoomList(props) {
 
   const fetchRoomList = async () => {
     try {
-      // 임시 데이터
       const response = await axios.get("https://i10e204.p.ssafy.io/api/room", {});
+      let filteredRooms = response.data;
+      
       if (searchRooms !== "") {
-        setRooms(response.data.filter((room) => room.roomTitle === searchRooms))
-      } else {setRooms(response.data);}
+        filteredRooms = filteredRooms.filter(
+          (room) => room.roomTitle.includes(searchRooms) && room.roomStatus === false
+        );
+      } else {
+        filteredRooms = filteredRooms.filter((room) => room.roomStatus === false);
+      }
+      setRooms(filteredRooms);
     } catch (error) {
       console.error("방정보 불러오기 실패:", error);
     }

@@ -26,7 +26,7 @@ function Map(props) {
   
   const selectMap = useState(JSON.parse(localStorage.getItem('userData')).selectedMapName);
   images.forEach(image => {
-    if(image.name === selectMap) setSrc(image.image);
+    if(image.name === selectMap) setSrc(images.image);
   })
   // const handlePrevious = () => {
   //   const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
