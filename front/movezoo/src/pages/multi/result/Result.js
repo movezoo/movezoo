@@ -220,10 +220,9 @@ function Result(props) {
               {/*보상 및 돌아가기 버튼*/}
               
               <div className="multi-result-reward">
-                <p>순위</p>
-                <table>
-                  <thead>
-                    <tr>
+                <table className="multi-result-reward-table">
+                  <thead className="multi-result-reward-thead">
+                    <tr className="multi-result-reward-theadTr">
                       <th>순위</th>
                       <th>닉네임</th>
                       <th>랩타임</th>

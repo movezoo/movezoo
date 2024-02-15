@@ -12,6 +12,7 @@ function Record() {
   const [userLaptime, setUserLaptime] = useState(null);
   const [ singleResult ] = useRecoilState(singleResultState);
 
+  
   useEffect(() => {
     const fetchUserLaptime = async () => {
       try {
@@ -25,18 +26,7 @@ function Record() {
         
         const { data: userLaptime } = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${userId}/${mapNumber}`);
         
-        // db에 랩타임이 없으면 이번 게임 랩타임을 db에 보내기
-        if (!userLaptime.record) {
-          try {
-            const updateLaptime = await axios.patch('https://i10e204.p.ssafy.io/api/laptime', 
-            { userId, trackId: mapNumber, record: singleResult.time });
-    
-            console.log('랩타임 업데이트 성공:', updateLaptime);
-          } catch (error) {
-            console.error('랩타임 업데이트 실패:', error);
-          }
-        }
-
+        
         // 이번 게임 랩타임 db에 보내기
         if (userLaptime.record > singleResult.time ) {
           try {
@@ -44,6 +34,18 @@ function Record() {
             console.log(mapNumber)
             console.log(userLaptime.record)
             console.log(singleResult.time)
+            const updateLaptime = await axios.patch('https://i10e204.p.ssafy.io/api/laptime', 
+            { userId, trackId: mapNumber, record: singleResult.time });
+            
+            console.log('랩타임 업데이트 성공:', updateLaptime);
+          } catch (error) {
+            console.error('랩타임 업데이트 실패:', error);
+          }
+        }
+        
+        // db에 랩타임이 없으면 이번 게임 랩타임을 db에 보내기
+        if (!userLaptime.record) {
+          try {
             const updateLaptime = await axios.patch('https://i10e204.p.ssafy.io/api/laptime', 
             { userId, trackId: mapNumber, record: singleResult.time });
     
