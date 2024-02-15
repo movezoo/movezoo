@@ -290,7 +290,8 @@ import Modal from 'react-modal';
 import './Choose.css';
 import { useRecoilState } from 'recoil';
 import { userCoin, selectCharacterState } from '../state/state';
-import { data, gameStartData, myGameData } from '../play/data.js';
+import { data, gameStartData } from '../play/data.js';
+import { toast } from 'react-toastify';
 
 function Character ({ closeModal }) {
   const [coin, setCoin] = useRecoilState(userCoin);
@@ -430,7 +431,7 @@ function Character ({ closeModal }) {
       }, { withCredentials: true });
       
       if (response.status === 200 || response.data.success) { // 성공 응답 조건 확인
-        alert('캐릭터를 구매하였습니다.');
+        toast.success('캐릭터를 구매하였습니다.');
         setBuyModalOpen(false);
         // 캐릭터 목록을 다시 불러옵니다.
         fetchUserCharacters();
@@ -444,7 +445,7 @@ function Character ({ closeModal }) {
       
     } catch (error) {
       console.error('캐릭터 구매 실패:', error);
-      alert('Coin이 모자랍니다.');
+      toast.error('Coin이 모자랍니다.');
     }
   };
 
@@ -513,7 +514,7 @@ function Character ({ closeModal }) {
 
       closeModal();
     } else {
-      alert('선택된 캐릭터가 없습니다.');
+      toast.error('선택된 캐릭터가 없습니다.');
     }
   };
 
