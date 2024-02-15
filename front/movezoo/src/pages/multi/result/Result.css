@@ -56,14 +56,34 @@
 .multi-result-backbutton {
 }
 
+.multi-result-reward {
+  @apply flex justify-center items-center
+}
+
 .multi-result-reward-table {
-  @apply w-full flex items-center justify-center
+  @apply w-full flex flex-col items-center justify-center
 }
 
 .multi-result-reward-thead {
-  @apply w-full
+  @apply w-full justify-center items-center
 }
 
 .multi-result-reward-theadTr {
+  @apply flex justify-start items-center
+}
+
+.multi-result-reward-theadTh {
+  @apply mr-5
+}
+
+.multi-result-reward-theadThName {
+  @apply mr-14
+}
+
+.multi-result-reward-tbody {
+  @apply w-full justify-center items-center
+}
+
+.multi-result-reward-tbodyTr {
   @apply flex justify-between items-center
 }
