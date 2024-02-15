@@ -248,16 +248,6 @@ function Game() {
     itemImage2 = <img src="/images/itemImg/itemBox_speedup.png" alt="speed up item" />;
   }
 
-  useEffect(() => {
-    // isLoadGame과 isLoadDetect가 둘 다 true일 때만 waviyVisible 상태를 false로 설정
-    if (isLoadGame && isLoadDetect) {
-      setWaviyVisible(false);
-    }
-  }, [isLoadGame, isLoadDetect]);
-
-  // if(playGameMode === 'single' && isLoadGame && isLoadDetect)
-  // 위 조건이 만족되면 카운트 시작함
-
   return (
         <div className="singlegame-container">
 
