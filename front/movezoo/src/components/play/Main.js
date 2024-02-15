@@ -365,7 +365,6 @@ const Main = (props) => {
           setTestCurrentLapTime(0);
           lastLapTime    = currentLapTime;
           currentLapTime = 0;
-
           gameEnd(); // 게임종료 로직실행
 
           if (lastLapTime <= Util.toFloat(localStorage.fast_lap_time)) {
@@ -416,7 +415,7 @@ const Main = (props) => {
         // 2. 카운트다운 중에 들어갔는지? -> 카운트를 실행시키지 않는다. 
 
         // 일단 골인했으니 기록을 저장한다. (계속 공유함)
-        myGameData.lapTime = currentLapTime;
+        myGameData.lapTime = formatTime(lastLapTime);
 
         // playerGameDataList.forEach(gameData => {
         //   // 나를 제외한 사람이 랩타임이 없는지 확인
