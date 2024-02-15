@@ -72,14 +72,6 @@
   @apply flex justify-start items-center
 }
 
-.multi-result-reward-theadTh {
-  @apply mr-5
-}
-
-.multi-result-reward-theadThName {
-  @apply mr-14
-}
-
 .multi-result-reward-tbody {
   @apply w-full justify-center items-center
 }
