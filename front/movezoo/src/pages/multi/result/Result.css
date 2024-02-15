@@ -36,29 +36,12 @@
   @apply w-full flex flex-wrap items-center justify-start ;
 }
 
-.multi-result-firstWebCam {
-  @apply w-[280px] h-[180px] m-3 flex items-center justify-center
-  rounded-3xl overflow-hidden;
-}
-
-.multi-result-secondCam {
-  @apply w-[280px] h-[180px] m-3 flex items-center justify-center
-  rounded-3xl overflow-hidden bg-white;
+.multi-result-bodyWebCam {
+  @apply w-full flex flex-wrap items-center justify-between ;
 }
 
 .multi-result-bottomCamSection {
   @apply flex flex-row
-}
-
-
-.multi-result-thirdCam {
-  @apply w-[280px] h-[180px] m-3 flex items-center justify-center
-  rounded-3xl overflow-hidden bg-white;
-}
-
-.multi-result-FourthCam {
-  @apply w-[280px] h-[180px] m-3 flex items-center justify-center
-  rounded-3xl overflow-hidden bg-white;
 }
 
 .multi-result-rightSection {
