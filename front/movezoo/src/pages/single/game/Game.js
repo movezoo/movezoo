@@ -19,7 +19,8 @@ import {
   gameStartCountState,
   gameEndCountState,
   isLoadGameState,
-  isLoadDetectState
+  isLoadDetectState,
+  playGameModeState
 } from '../../../components/state/gameState.js'
 
 
@@ -32,7 +33,7 @@ function Game() {
   const [gameEndCount] = useRecoilState(gameEndCountState);
   const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
   const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
-  const [waviyVisible, setWaviyVisible] = useState(true);
+  const [playGameMode] = useRecoilState(playGameModeState);
 
   const videoRef = useRef(null);
   const detector = useRef(null);
@@ -131,7 +132,7 @@ function Game() {
           try {
             const faces = await detector.current.estimateFaces(video, estimationConfig);
 
-            if (faces.length === 0) console.log(`no face`);
+            // if (faces.length === 0) console.log(`no face`);
             // console.log(faces);
             // 화면 기준 - 화면의 중앙을 기준으로 코의 좌표의 위치에 따른 진행 방향 결정, 민감도 설정 가능
             const centerX = videoWidth / 2;
@@ -253,6 +254,9 @@ function Game() {
       setWaviyVisible(false);
     }
   }, [isLoadGame, isLoadDetect]);
+
+  // if(playGameMode === 'single' && isLoadGame && isLoadDetect)
+  // 위 조건이 만족되면 카운트 시작함
 
   return (
         <div className="singlegame-container">

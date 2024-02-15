@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useRef, useState, useEffect } from "react";
 import "./Makeroom.css";
 import { IoCloseSharp } from "react-icons/io5";
+import { AiFillCaretLeft } from "react-icons/ai";
+import { AiFillCaretRight } from "react-icons/ai";
+import { toast } from 'react-toastify';
 
 function Makeroom(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,11 +41,16 @@ function Makeroom(props) {
   const secretRoomPasswordRef = useRef(null);
 
   const onClickConfirm = async () => {
+
+    let storage = JSON.parse(localStorage.getItem('userData'));
+    storage.selectedMapName = images[mapSelect].name;
+    localStorage.setItem('userData', JSON.stringify(storage))
+
     const roomTitle = roomTitleRef.current.value;
     const secretRoomPassword = secretRoomPasswordRef.current.value;
 
     if (!roomTitle ) {
-      alert('방 제목을 입력해주세요.');
+      toast.error('방 제목을 입력해주세요.');
       return;
     }
 
@@ -141,9 +149,9 @@ function Makeroom(props) {
 
               </div>
               <div className="makeroom-map">
-                <button className="makeroom-map-prev" onClick={onClickPrevious}>〈〈</button>
-                <img src={images[mapSelect].image} className="makeroom-map-img"/>
-                <button className="makeroom-map-next" onClick={onClickNext}>〉〉</button>
+                <AiFillCaretLeft className="makeroom-map-prev" onClick={onClickPrevious} />
+                  <img src={images[mapSelect].image} className="makeroom-map-img"/>
+                <AiFillCaretRight className="makeroom-map-next" onClick={onClickNext}/>
               </div>
 
             </div>
