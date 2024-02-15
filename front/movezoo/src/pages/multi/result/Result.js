@@ -99,7 +99,7 @@ function Result(props) {
     }
   
     updateCoin();
-  }, []);
+  }, [userIds]);
 
   // 유저 코인 정보 업데이트
   useEffect(() => {
