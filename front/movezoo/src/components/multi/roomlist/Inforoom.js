@@ -35,6 +35,17 @@ function Inforoom( props ) {
     if (props.secretRoom) {
       openModal();
     } else {
+      // 방을 만들고 맵선택후 자동입장시 스토리지 저장
+      const images = [
+        { id: 1, name: 'map1', image: '/images/minimap/map1.png' },
+        { id: 2, name: 'map2', image: '/images/minimap/map2.png' }
+      ];
+
+      console.log(`props.track : ${props.track}`);
+      let storages = JSON.parse(localStorage.getItem('userData'));  
+      storages.selectedMapName = images[props.track].name; // 맵이름 저장
+      localStorage.setItem('userData', JSON.stringify(storages));
+
       props.enterRoom(props.session) 
       props.setPage(2);
     }

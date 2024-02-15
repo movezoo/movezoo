@@ -10,6 +10,7 @@ import { gameStartData } from './data.js';
 
 const selectAction = "run";
 
+
 const frameIndex = {}
 // frameIndex 초기화
 Object.keys(MAX_FRAME_COUNT).forEach(character => {
@@ -255,6 +256,7 @@ const Game = {
       }
       const getSpritesCount = () => {
         let tempCount = 0;
+        console.log(gameStartData);
         Object.keys(MAP_SPRITE[gameStartData.selectMap]).forEach(spriteGroup => {
           tempCount += Object.keys(MAP_SPRITE[gameStartData.selectMap][spriteGroup]).length;
         })

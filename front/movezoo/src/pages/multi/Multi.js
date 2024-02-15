@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import { useRecoilState } from 'recoil';
-import { myGameData, playerGameDataList } from "../../components/play/data.js";
+import { myGameData, playerGameDataList, gameStartData } from "../../components/play/data.js";
 
 import { isMultiGameStartState, playGameModeState } from '../../components/state/gameState.js'
 
@@ -17,6 +17,11 @@ function Multi() {
 
   const storedUserData = localStorage.getItem('userData');
   const data = (JSON.parse(storedUserData));
+
+  
+  gameStartData.selectedMapName = data.selectedMapName;
+  gameStartData.selectCharacter = data.selectedCharacterName;
+  myGameData.playerCharacter = data.selectedCharacterName;
 
   // 게임시작관리(props로 념겨줌)
   const [isPlayingGame, setIsPlayingGame] = useState(false);
@@ -483,6 +488,8 @@ function Multi() {
   //방 만들기(사용자가 입력한 방정보를 넣는다, 세션아이디는 서버에서 만들어 반환)
   const createSession = async (roomInfo) => {
     console.log(roomInfo)
+
+    
     try {
       const response = await axios.post(
         APPLICATION_SERVER_URL + "api/room",
