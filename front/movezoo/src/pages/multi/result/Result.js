@@ -221,13 +221,26 @@ function Result(props) {
               
               <div className="multi-result-reward">
                 <p>순위</p>
-                {
-                  userIds.map((user, index) => (
-                    <div key={user.userId}>
-                      <p>{index + 1}등: {user.userId} - {user.userLapTime}초</p>
-                    </div>
-                  ))
-                }
+                <table>
+                  <thead>
+                    <tr>
+                      <th>순위</th>
+                      <th>닉네임</th>
+                      <th>랩타임</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      userIds.map((user, index) => (
+                        <tr key={user.userId}>
+                          <td>{index + 1}</td>
+                          <td>{user.userId}</td>
+                          <td>{user.userLapTime}초</td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                </table>
               </div>
               
               {/* 돌아가기 버튼*/}
