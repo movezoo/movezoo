@@ -8,7 +8,7 @@ import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import { useRecoilState } from 'recoil';
 import { toast } from 'react-toastify';
-import { myGameData, playerGameDataList } from "../../components/play/data.js";
+import { myGameData, gameStartData, playerGameDataList } from "../../components/play/data.js";
 
 import { isMultiGameStartState, playGameModeState } from '../../components/state/gameState.js'
 
