@@ -76,6 +76,10 @@ function Result(props) {
 
 
   }, []);
+
+  console.log(`[순위 정렬]`)
+  console.log(userIds)
+
   return (
     <div>
       {/*일단 축소 화면*/}
@@ -126,9 +130,9 @@ function Result(props) {
               <div className="multi-result-reward">
                 <p>순위</p>
                 {
-                  userIds.map((userArr, index) => (
-                    <div key={userArr[0].userId}>
-                      <p>{index + 1}등: {userArr[0].userId} - {userArr[0].userLapTime}초</p>
+                  userIds.map((user, index) => (
+                    <div key={user.userId}>
+                      <p>{index + 1}등: {user.userId} - {user.userLapTime}초</p>
                     </div>
                   ))
                 }
