@@ -5,13 +5,14 @@ function Back(props) {
   const navigate = useNavigate();
   const handleLeaveGame = () => {
     props.leaveSession()
+    window.location.reload();
     navigate("/main");
   }
   return (
     <div className="back-button">
-      <Link className="back-link" to="/main">
+      <div className="back-link" to="/main">
         <button className="back-name" onClick={handleLeaveGame}>돌아가기</button>
-      </Link>
+      </div>
     </div>
   );
 }
