@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import { useRecoilState } from 'recoil';
-import { myGameData, playerGameDataList } from "../../components/play/data.js";
+import { myGameData, playerGameDataList, gameStartData } from "../../components/play/data.js";
 
 import { isMultiGameStartState, playGameModeState } from '../../components/state/gameState.js'
 
@@ -17,6 +17,11 @@ function Multi() {
 
   const storedUserData = localStorage.getItem('userData');
   const data = (JSON.parse(storedUserData));
+
+  
+  gameStartData.selectedMapName = data.selectedMapName;
+  gameStartData.selectCharacter = data.selectedCharacterName;
+  myGameData.playerCharacter = data.selectedCharacterName;
 
   // 게임시작관리(props로 념겨줌)
   const [isPlayingGame, setIsPlayingGame] = useState(false);
