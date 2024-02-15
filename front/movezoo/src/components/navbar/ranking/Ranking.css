@@ -37,8 +37,8 @@
 }
 
 .ranking-map-button{
-  @apply w-40 h-10 flex items-center justify-center p-2 text-white
-  bg-green-500 rounded-md
+  @apply w-48 h-10 flex items-center justify-center p-2 text-white
+  bg-green-500 rounded-xl
   hover:bg-green-700 hover:scale-110 transition;
 }
 

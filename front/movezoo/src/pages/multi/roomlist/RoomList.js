@@ -9,6 +9,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { search } from "@tensorflow/tfjs-core/dist/io/composite_array_buffer";
+import { toast } from 'react-toastify';
 
 Modal.setAppElement("#root");
 
@@ -52,7 +53,7 @@ function RoomList(props) {
     );
     console.log("fast enter ", response);
     if (response.data == "") {
-      alert("참가가능한 방이 없음");
+      toast.error("참가가능한 방이 없음");
       return;
     }
 

@@ -199,7 +199,7 @@ function Carousel() {
           BEST LAP
         </p>
         <p className="best-map-record">
-          {userLaptime ? userLaptime : '랩타임을 가져오는 중입니다.'}
+          {userLaptime ? userLaptime : 'Loading...'}
         </p>
         
       </div>
