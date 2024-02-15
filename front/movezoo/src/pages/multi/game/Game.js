@@ -45,6 +45,11 @@ function Game(props) {
   const detector = useRef(null);
   const handDetector = useRef(null);
 
+  useEffect((() => {
+    // 전체 화면으로 전환
+    document.documentElement.requestFullscreen();
+  }), [])
+
   useEffect(() => {
     setIsLoading(true); // 로딩 시작
 
