@@ -1130,19 +1130,18 @@ const Main = (props) => {
 
 
         // 아이템 세팅 Start *******************************************************************************
-        addItem(20, 0.75);
-        addItem(20, 0.25);
-        addItem(20, -0.25);
-        addItem(20, -0.75);
+        addItem(50, 0.75);
+        addItem(50, 0.25);
+        addItem(50, -0.25);
+        addItem(50, -0.75);
 
-        addItem(80, 0.75);
-        addItem(100, 0.25);
-        addItem(60, -0.25);
-        addItem(200, -0.75);
-        addItem(300, 0.75);
-        addItem(800, 0.25);
-        addItem(250, -0.25);
-        addItem(400, -0.75);
+        for(let n = 50; n < (segments.length-450); n += 300) {
+          let itemPos1 = 0.25 + Util.randomInt(0, 1) * 0.5;
+          let itemPos2 = -0.25 - Util.randomInt(0, 1) * 0.5;
+          addItem(50, itemPos1);
+          addItem(50, itemPos2);
+        }
+
         // 아이템 세팅 End *******************************************************************************
       },
 
