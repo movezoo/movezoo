@@ -54,7 +54,8 @@
 }
 
 .makeroom-people-btn {
-  @apply ml-8 flex flex-row justify-center items-center rounded-lg border-2 border-black
+  @apply ml-8 flex flex-row justify-center items-center 
+  rounded-lg border-2 border-green-300
 }
 
 .makeroom-people-minus {
