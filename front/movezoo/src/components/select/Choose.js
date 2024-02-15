@@ -290,7 +290,7 @@ import Modal from 'react-modal';
 import './Choose.css';
 import { useRecoilState } from 'recoil';
 import { userCoin, selectCharacterState } from '../state/state';
-import { data, gameStartData } from '../play/data.js';
+import { data, gameStartData, myGameData } from '../play/data.js';
 import { toast } from 'react-toastify';
 
 function Character ({ closeModal }) {
