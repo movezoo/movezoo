@@ -1136,10 +1136,8 @@ const Main = (props) => {
         addItem(50, -0.75);
 
         for(let n = 50; n < (segments.length-450); n += 300) {
-          let itemPos1 = 0.25 + Util.randomInt(0, 1) * 0.5;
-          let itemPos2 = -0.25 - Util.randomInt(0, 1) * 0.5;
-          addItem(50, itemPos1);
-          addItem(50, itemPos2);
+          addItem(n, 0.25 + Util.randomInt(0, 1) * 0.5);
+          addItem(n, -0.25 - Util.randomInt(0, 1) * 0.5);
         }
 
         // 아이템 세팅 End *******************************************************************************
