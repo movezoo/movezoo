@@ -44,7 +44,13 @@ function Result(props) {
     for (let i = 0; i < playerGameDataList.length; i++) {
       const userId = playerGameDataList[i].playerId;
       const userLapTime = playerGameDataList[i].lapTime;
-      userIds.push({ userId, userLapTime });
+
+      const isExist = userIds.some(user => user.userId === userId);
+
+      // userId가 배열에 없는 경우에만 추가
+      if (!isExist) {
+        userIds.push({ userId, userLapTime });
+      }
     }
 
     // userdata laptime 빠른순으로 정렬
@@ -118,9 +124,14 @@ function Result(props) {
               {/*보상 및 돌아가기 버튼*/}
               
               <div className="multi-result-reward">
-                <span>G</span>
-                <span>#획득 골드#</span>
-                <span>획득!</span>
+                <p>순위</p>
+                {
+                  userIds.map((user, index) => (
+                    <div key={user.userId}>
+                      <p>{index + 1}등: {user.userId} - {user.userLapTime}초</p>
+                    </div>
+                  ))
+                }
               </div>
               
               {/* 돌아가기 버튼*/}
