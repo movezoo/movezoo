@@ -175,7 +175,7 @@ const Main = (props) => {
     }
 
 
-
+    let isMultiGameEndCountStart = false;
     // =========================================================================
     // UPDATE THE GAME WORLD
     // =========================================================================
@@ -193,12 +193,15 @@ const Main = (props) => {
         });
         if(readyAll) setIsMultiGameStart(true);
       }
+      
 
-      // 멀티게임 누군가 통과했다면(계속확인함)
-      if(playerGameDataList.length !== 0) {
-        playerGameDataList.forEach(userData => {
-          if(userData.lapTime !== '') multiGameEndCount();
-        })
+      // 카운트를 시작한적이 없고, 멀티게임 누군가 통과했다면(계속확인함)
+      if(!isMultiGameEndCountStart) {
+        if(playerGameDataList.length !== 0) {
+          playerGameDataList.forEach(userData => {
+            if(userData.lapTime !== '') multiGameEndCount();
+          })
+        }
       }
 
 
