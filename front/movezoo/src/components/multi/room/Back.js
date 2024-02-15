@@ -2,6 +2,7 @@ import { Fragment, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { FaAnglesLeft } from "react-icons/fa6";
 
 function Back(props) {
   
@@ -16,13 +17,16 @@ function Back(props) {
 
   return (
     <div>
-      <button
+      {/* <button
         type="button"
         className="inline-flex w-full rounded-md bg-red-600 px-5 py-4 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
         onClick={() => setOpen(true)}
       >
         X
-      </button>
+      </button> */}
+      <div className="Back" onClick={() => setOpen(true)}>
+        <FaAnglesLeft className="mr-2"/><p>뒤로가기</p>
+      </div>
 
       <Transition.Root show={open} as={Fragment}>
         <Dialog
