@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import { useRecoilState } from 'recoil';
-import { myGameData, playerGameDataList, gameStartData } from "../../components/play/data.js";
+import { toast } from 'react-toastify';
+import { myGameData, playerGameDataList } from "../../components/play/data.js";
 
 import { isMultiGameStartState, playGameModeState } from '../../components/state/gameState.js'
 
@@ -423,13 +424,13 @@ function Multi() {
             console.error(error);
           });
         changeSession();
-        alert("방이 삭제되었습니다.");
+        toast.error("방이 삭제되었습니다.");
       }
 
     } else {
       await exitRoom();
       changeSession()
-      alert("방에서 나갑니다.");
+      toast.error("방에서 나갑니다.");
     }
   };
 

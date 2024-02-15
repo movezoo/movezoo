@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useState } from 'react';
 import './Logout.css';
+import { toast } from 'react-toastify';
 
 const LogoutModal = () => {
   const [isOpen, setIsOpen] = useState(false);
