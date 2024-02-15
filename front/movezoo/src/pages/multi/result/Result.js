@@ -7,10 +7,14 @@ import './Result.css';
 import { playerGameDataList } from "../../../components/play/data.js";
 import MyVideoComponent from "../../../components/play/MyVideoComponent.js";
 import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
+import axios from "axios";
+import { useRecoilState } from 'recoil';
+import { userCoin } from '../../../components/state/state';
 
 function Result(props) {
   const [loading, setLoading] = useState(true);
   const [userIds, setUserIds] = useState([])
+  const [coin, setCoin] = useRecoilState(userCoin);
   const leaveSession = props.leaveSession;
   const {
     setPage,
@@ -74,13 +78,65 @@ function Result(props) {
 
     setUserIds(newIds)
 
-    
-
-
   }, []);
 
-  console.log(`[순위 정렬]`)
-  console.log(userIds)
+  // 등수에 따라 코인 업데이트
+  useEffect(() => {
+    const updateCoin = async () => {
+      try {
+        for (let i = 0; i < userIds.length; i++) {
+          const { userId: nickname } = userIds[i];
+          
+          const response = await axios.patch('https://i10e204.p.ssafy.io/api/coin', 
+          { nickname, ranking: i + 1 });
+          console.log(response.data);
+        }
+
+      } catch (error) {
+        console.error('코인 업데이트 실패:', error);
+      }
+    }
+  
+    updateCoin();
+  }, []);
+
+  // 유저 코인 정보 업데이트
+  useEffect(() => {
+
+    const fetchUserCoin = async () => {
+      try {
+        const storedUserData = localStorage.getItem('userData');
+          if (!storedUserData) {
+              throw new Error('사용자 정보를 찾을 수 없습니다.');
+          }
+  
+        // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
+        const userData = JSON.parse(storedUserData);
+  
+        // 코인 정보 조회 요청
+        const response = await axios.get(`https://i10e204.p.ssafy.io/api/user/${userData.userData.userId}`, {
+            withCredentials: true
+        });
+  
+        if (response.status === 200 && response.data) {
+            // Recoil 상태 및 로컬 스토리지 업데이트
+            const newCoinAmount = response.data.coin;
+            console.log(newCoinAmount)
+            setCoin(newCoinAmount); // Recoil 상태 업데이트
+            
+            let updatedUserData = { ...userData };
+            updatedUserData.userData.coin = newCoinAmount;
+            localStorage.setItem('userData', JSON.stringify(updatedUserData));
+        }
+  
+  
+      } catch (error) {
+        console.error('유저 코인 정보 요청 실패:', error);
+      }
+    }
+  
+    fetchUserCoin();
+  }, []);
 
   return (
     <div>
