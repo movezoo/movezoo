@@ -13,7 +13,7 @@
 }
 
 .room-map-image {
-  @apply w-[150px] h-[125px] flex items-center border-4 rounded-3xl
+  @apply w-[190px] h-[190px] flex items-center border-4 rounded-3xl
 border-white;
 }
 
