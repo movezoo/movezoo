@@ -9,10 +9,14 @@ import { FaAnglesLeft } from "react-icons/fa6";
 import "./Single.css";
 import { playGameModeState } from '../../components/state/gameState.js'
 import { useRecoilState } from 'recoil';
+import { useNavigate } from "react-router-dom";
+
 
 function Single() {
   const [loading, setLoading] = useState(true);
   const [playGameMode, setPlayGameMode] = useRecoilState(playGameModeState);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
@@ -32,11 +36,15 @@ function Single() {
     myGameData.playerCharacter = storages.selectedCharacterName;
   }, []);
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+  
   return (
     <div className="single-container">
       
       <Link className="Back" to="/main">
-        <FaAnglesLeft className="mr-2" /><p>뒤로가기</p>
+        <FaAnglesLeft className="mr-2" onClick={handleGoBack}/><p>뒤로가기</p>
       </Link>
       
       {/* header */}
