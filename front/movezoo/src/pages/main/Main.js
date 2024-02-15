@@ -51,15 +51,15 @@ function Main() {
           console.error('Error fetching user data:', error);
         });
     }
-  }, [userData.UserData, setUserData]);
+  }, [userData.userData, setUserData]);
   
   // 페이지 로드 시 localStorage에서 userData 상태 로드
   useEffect(() => {
-    console.log(userData)
+    // console.log(userData)
     const storedUserData = localStorage.getItem('userData');
-    console.log(storedUserData)
+    // console.log(storedUserData)
     if (storedUserData) {
-      console.log(storedUserData)
+      // console.log(storedUserData)
       
       const data = (JSON.parse(storedUserData));
       

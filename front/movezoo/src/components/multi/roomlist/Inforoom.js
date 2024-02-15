@@ -2,7 +2,7 @@ import "./Inforoom.css";
 import Modal from "react-modal";
 import { useRef, useState } from "react";
 import { FaLock } from "react-icons/fa";
-
+import { toast } from 'react-toastify';
 
 
 function Inforoom( props ) {
@@ -18,7 +18,6 @@ function Inforoom( props ) {
   const checkPassword = () => {
     if (props.secretRoomPassword === password) {
       props.enterRoom(props.session) 
-      props.setPage(2);
     } else { 
       setPassword("");
     }
@@ -29,14 +28,24 @@ function Inforoom( props ) {
     // 필요한 데이터 : 사용자 ID, sessionID
     // console.log(props.session);
     if(props.userCount >= props.userMaxCount) {
-      alert("사람이 꽉 찾쓰");
+      toast.error("사람이 모두 찼습니다.");
       return;
     }
     if (props.secretRoom) {
       openModal();
     } else {
+      // 방을 만들고 맵선택후 자동입장시 스토리지 저장
+      const images = [
+        { id: 1, name: 'map1', image: '/images/minimap/map1.png' },
+        { id: 2, name: 'map2', image: '/images/minimap/map2.png' }
+      ];
+
+      console.log(`props.track : ${props.track}`);
+      let storages = JSON.parse(localStorage.getItem('userData'));  
+      storages.selectedMapName = images[props.track].name; // 맵이름 저장
+      localStorage.setItem('userData', JSON.stringify(storages));
+
       props.enterRoom(props.session) 
-      props.setPage(2);
     }
   }
 
@@ -63,7 +72,7 @@ function Inforoom( props ) {
 
         <div className="inforoom-body">
           <div className="inforoom-track">
-            <img src={`/images/minimap/${images[props.track]}`} alt="mini-map" />
+            <img className="inforoom-body-img" src={`/images/minimap/${images[props.track]}`} alt="mini-map" />
           </div>
           <div className="inforoom-mode">
             {props.mode === 0 && <>개인전<br/>스피드</>}

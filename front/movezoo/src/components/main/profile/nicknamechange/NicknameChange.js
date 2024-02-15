@@ -5,6 +5,7 @@ import './NicknameChange.css';
 import { IoCloseSharp } from "react-icons/io5";
 import { useRecoilState } from 'recoil';
 import { nickName as nickNameState } from '../../../state/state';
+import { toast } from 'react-toastify';
 
 const ChangeNicknameModal = () => {
   const [nickname, setNickName] = useRecoilState(nickNameState);
@@ -42,16 +43,23 @@ const ChangeNicknameModal = () => {
 
       console.log(userEmail, newNickName);
 
+      if (nickname === newNickName) {
+        toast.error('현재 닉네임과 같은 닉네임입니다. 다른 닉네임을 입력해주세요.');
+        return;
+      }
+
       await axios.patch('https://i10e204.p.ssafy.io/api/user/nickname', {userEmail, nickname: newNickName}, {
         withCredentials: true,
       });
 
       setNickName(newNickName);
       console.log(newNickName)
-      alert('닉네임 변경에 성공했습니다.');
+      toast.success('닉네임 변경에 성공했습니다.');
       closeModal();
     } catch (error) {
       console.error('닉네임 변경 실패:', error);
+      toast.error('중복되는 닉네임이 있습니다.');
+      closeModal();
     }
   };
 
