@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { search } from "@tensorflow/tfjs-core/dist/io/composite_array_buffer";
 import { toast } from 'react-toastify';
+import { FaAnglesLeft } from "react-icons/fa6";
 
 Modal.setAppElement("#root");
 
@@ -70,6 +71,11 @@ function RoomList(props) {
 
   return (
     <div className="roomlist-container">
+
+      <Link className="Back" to="/main">
+        <FaAnglesLeft className='mr-2'/><p>뒤로가기</p>
+      </Link>
+
       {/* 홈으로, 프로필 */}
       <div className="roomlist-header">
         <div>
@@ -106,9 +112,7 @@ function RoomList(props) {
               
           </div>
 
-          <Link to="/main">
-            <IoCloseSharp className='exit-button'/>
-          </Link>
+
 
         </div>
 

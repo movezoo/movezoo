@@ -88,10 +88,9 @@ function Inforoom( props ) {
         // onRequestClose={closeModal}
         style={{
           content: {
-            width: "500px",
+            width: "400px",
             height: "250px",
             margin: "auto",
-            border: "2px solid black",
           },
         }}
       >
