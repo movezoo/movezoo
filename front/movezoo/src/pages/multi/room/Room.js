@@ -96,7 +96,8 @@ const Room = (props) => {
     chatMessage,
     setChatMessage,
     chatMessages,
-    setChatMessages
+    setChatMessages,
+    roomGameStart,
   } = props
 
   // console.log(myRoom)
@@ -105,7 +106,7 @@ const Room = (props) => {
   const data = (JSON.parse(storedUserData));
 
   
-  // console.log(props)
+  // console.log("room info",props.mySessionId)
   return (
     <div className="room-container">
 
@@ -113,7 +114,7 @@ const Room = (props) => {
       <div className="room-header">
         <div>
           <h1 className="room-name">
-            {myRoom.roomTitle}[{myRoom.currentUserCount}/{myRoom.maxUserCount}]
+            {myRoom.roomTitle}
           </h1>
         </div>
         <div style={{ position: "absolute", right: "0", bottom: "0" }}>
@@ -164,7 +165,7 @@ const Room = (props) => {
               </div>
               <div className="room-start-select">
                 {myRoom.roomMasterId === data.userData.userId?
-                <Start setPage={setPage} session={session}/>:<Ready />
+                <Start setPage={setPage} session={session} mySessionId={mySessionId} />:<Ready />
                 }
               </div>
             </div>
