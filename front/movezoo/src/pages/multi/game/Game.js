@@ -258,7 +258,7 @@ function Game(props) {
 
     
       <div className="game">
-        <Main width={1920} height={1080} setPage={setPage} />
+        <Main width={1536} height={864} setPage={setPage} />
       </div>
 
       <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
@@ -273,7 +273,7 @@ function Game(props) {
       <div className="over-contents">
         <div className="webcam-box">
           <div className="single-webCam">
-           {mainStreamManager !== undefined ? (
+            {mainStreamManager !== undefined ? (
             <div id="main-video">
               <MyVideoComponent
                 streamManager={mainStreamManager}
@@ -285,12 +285,12 @@ function Game(props) {
           </div>
         </div>
         <div className="multi-webCam-box">
-             {subscribers.map((sub, i) => (
-              <div key={sub.id} className="multi-webCam">
-                <span>{sub.id}</span>
-                <UserVideoComponent streamManager={sub} />
-              </div>
-            ))}
+          {subscribers.map((sub, i) => (
+            <div key={sub.id} className="multi-webCam">
+              <span>{sub.id}</span>
+              <UserVideoComponent streamManager={sub} />
+            </div>
+          ))}
         </div>
         <div className="my-item-list">
           <div className="my-item">{itemImage}</div>
