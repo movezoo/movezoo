@@ -23,6 +23,9 @@ function Record() {
         const userData = JSON.parse(storedUserData);    
         const userId = userData.userData.userId;
         const mapNumber = userData.selectedMapId;
+
+        console.log(userId)
+        console.log(mapNumber)
         
         const { data: userLaptime } = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${userId}/${mapNumber}`);
         
