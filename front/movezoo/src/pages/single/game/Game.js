@@ -241,7 +241,7 @@ function Game() {
       clearTimeout(cursorTimeout);
     };
 
-  }, [videoRef, isLoadGame, isLoadDetect]);
+  }, [videoRef]);
 
   let itemImage = null;
   if (gameMyItemLeft === "speedup") {
@@ -253,41 +253,41 @@ function Game() {
   }
 
   return (
-        <div className="singlegame-container">
+    <div className="singlegame-container">
 
-          <div className="game">
-            <Main className='game-main' width={1536} height={864} />
-          </div>
+      <div className="game">
+        <Main className='game-main' width={1536} height={864} />
+      </div>
 
-          <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
-            {gameStartCount}
-          </div>
-          {/* <div className="start-time">시작카운트다운 : {gameStartCount}</div> */}
-          <div className={gameEndCount !== 10 ? "end-time" : "end-time hidden"}>
-            {gameEndCount}
-          </div>
-          {/* <div className="end-time">{gameEndCount}</div> */}
-          <div className="current-time">{Util.formatTime(testCurrentLapTime)}</div>
-          <div className="over-contents">
-            <div className="webcam-box">
-              <Webcam
-                className="single-webCam"
-                mirrored={true}
-                ref={videoRef}
-                videoConstraints={{ //비디오 품질 해상도
-                  width: 640,
-                  height: 480
-                }}
-              />
-            </div>
-            <div className="my-item-list">
-              <div className="my-item">{itemImage}</div>
-              <div className="my-item">{itemImage2}</div>
-            </div>
-          </div>
-        </div >
-      );
-    }
+      <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
+        {gameStartCount}
+      </div>
+      {/* <div className="start-time">시작카운트다운 : {gameStartCount}</div> */}
+      <div className={gameEndCount !== 10 ? "end-time" : "end-time hidden"}>
+        {gameEndCount}
+      </div>
+      {/* <div className="end-time">{gameEndCount}</div> */}
+      <div className="current-time">{Util.formatTime(testCurrentLapTime)}</div>
+      <div className="over-contents">
+        <div className="webcam-box">
+          <Webcam
+            className="single-webCam"
+            mirrored={true}
+            ref={videoRef}
+            videoConstraints={{ //비디오 품질 해상도
+              width: 640,
+              height: 480
+            }}
+          />
+        </div>
+        <div className="my-item-list">
+          <div className="my-item">{itemImage}</div>
+          <div className="my-item">{itemImage2}</div>
+        </div>
+      </div>
+    </div >
+  );
+}
 
     //     <div className="singlegame-container">
     //       {(!isLoadGame || !isLoadDetect) && (
