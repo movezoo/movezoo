@@ -87,7 +87,7 @@ function Makeroom(props) {
           },
           content: {
             width: "400px",
-            height: "450px",
+            height: "460px",
             margin: "auto",
             borderRadius: '30px',
           },
@@ -117,44 +117,27 @@ function Makeroom(props) {
               <input className="makeroom-password-input" ref={secretRoomPasswordRef}/>
             </div>
 
-            <div className="makeroom-contents">
-              <div className="makeroom-contents-section">
-                <div className="makeroom-people">
-                  <div>
-                    <p>인원수</p>
-                  </div>
-                  <div className="makeroom-people-btn">
-                    <div className="makeroom-people-minus" onClick={onClickMinus}>-</div>
-                    <div className="makeroom-people-num">{maxUserCount}</div>
-                    <div className="makeroom-people-plus" onClick={onClickPlus}>+</div>
-                  </div>
-                </div>
-
-                <div className="makeroom-type">
-                  <div className="makeroom-option">
-                    <div
-                      className={isItem ? "makeroom-option-not" : "makeroom-option-selected"}
-                      onClick={onClickSpeed}
-                    >
-                      <p>스피드</p>
-                    </div>
-                    <div
-                      className={isItem ? "makeroom-option-selected" : "makeroom-option-not"}
-                      onClick={onClickItem}
-                    >
-                      <p>아이템</p>
-                    </div>
-                  </div>
-                </div>
-
+            
+          
+            <div className="makeroom-people">
+              <div>
+                <p>인원수</p>
               </div>
-              <div className="makeroom-map">
-                <AiFillCaretLeft className="makeroom-map-prev" onClick={onClickPrevious} />
-                  <img src={images[mapSelect].image} className="makeroom-map-img"/>
-                <AiFillCaretRight className="makeroom-map-next" onClick={onClickNext}/>
+              <div className="makeroom-people-btn">
+                <div className="makeroom-people-minus" onClick={onClickMinus}>-</div>
+                <div className="makeroom-people-num">{maxUserCount}</div>
+                <div className="makeroom-people-plus" onClick={onClickPlus}>+</div>
               </div>
-
             </div>
+
+              
+            <div className="makeroom-map">
+              <AiFillCaretLeft className="makeroom-map-prev" onClick={onClickPrevious} />
+                <img src={images[mapSelect].image} className="makeroom-map-img"/>
+              <AiFillCaretRight className="makeroom-map-next" onClick={onClickNext}/>
+            </div>
+
+            
             
             <div className="makeroom-check">
               <div className="makeroom-confirm" onClick={onClickConfirm}>
