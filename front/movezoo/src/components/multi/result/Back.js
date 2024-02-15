@@ -5,7 +5,7 @@ function Back(props) {
   const navigate = useNavigate();
   const handleLeaveGame = () => {
     props.leaveSession()
-    window.location.reload();
+    // window.location.reload();
     navigate("/main");
   }
   return (
