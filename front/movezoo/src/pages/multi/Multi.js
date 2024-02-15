@@ -18,7 +18,8 @@ function Multi() {
   const storedUserData = localStorage.getItem('userData');
   const data = (JSON.parse(storedUserData));
 
-  
+  setPlayGameMode('single');
+  gameStartData.mode = 'multi'
   gameStartData.selectMap = data.selectedMapName;
   gameStartData.selectCharacter = data.selectedCharacterName;
   myGameData.playerCharacter = data.selectedCharacterName;
@@ -196,6 +197,7 @@ function Multi() {
 
           myGameData.playerId = myUserName;
           setPlayGameMode('multi'); // 모드 멀티로 설정
+          myGameData.mode='multi'
           let existMyData = false;
           playerGameDataList.forEach((item) => { // 배열에 내아이디가 있는지 확인한다.
             if (item === myGameData.playerId) existMyData = true;
@@ -331,6 +333,7 @@ function Multi() {
 
           myGameData.playerId = myUserName;
           setPlayGameMode('multi'); // 모드 멀티로 설정
+          myGameData.mode='multi'
           let existMyData = false;
           playerGameDataList.forEach((item) => { // 배열에 내아이디가 있는지 확인한다.
             if (item === myGameData.playerId) existMyData = true;
