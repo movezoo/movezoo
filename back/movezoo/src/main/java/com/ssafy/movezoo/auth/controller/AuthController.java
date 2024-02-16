@@ -7,8 +7,10 @@ import com.ssafy.movezoo.auth.dto.GoogleLoginRequestDto;
 import com.ssafy.movezoo.auth.sevice.EmailService;
 import com.ssafy.movezoo.global.dto.SimpleResponseDto;
 import com.ssafy.movezoo.user.domain.User;
+import com.ssafy.movezoo.user.dto.UserResponseDto;
 import com.ssafy.movezoo.user.repository.UserRepository;
 import com.ssafy.movezoo.user.sevice.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -212,8 +215,8 @@ public class AuthController {
 //        return customUserDetails.getUsername();
 //    }
 
-    @GetMapping("/currentUser")
-    public String currentUserId() {
+    @GetMapping("/current-user")
+    public ResponseEntity<UserResponseDto> currentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        User user = (User) authentication.getPrincipal();
 
@@ -223,21 +226,27 @@ public class AuthController {
 
             String googleEmail = String.valueOf(oauth2User.getAttributes().get("email"));
             Optional<User> optionalUser = userRepository.findByGoogleEmail(googleEmail);
+            if (optionalUser.isPresent()){
+                UserResponseDto userResponseDto = new UserResponseDto(optionalUser.get());
 
+                log.info("login find user {}", userResponseDto.toString());
 
-            System.out.println(optionalUser.get().toString());
-
-            String userId = String.valueOf(optionalUser.get().getUserId());
-
-            return userId;
+                return ResponseEntity.ok().body(userResponseDto);
+            } else {
+                return ResponseEntity.badRequest().body(null);
+            }
         } else if (authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails user = (UserDetails) authentication.getPrincipal();
-            System.out.println(user.getUsername());
-            return user.getUsername();
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            User user = userService.findById(Integer.parseInt(userDetails.getUsername()));
+
+            log.info("AuthController currentUser : {}", user.toString() );
+
+            UserResponseDto userResponseDto = new UserResponseDto(user);
+            return ResponseEntity.ok().body(userResponseDto);
         } else {
-            System.out.println("authentication 없음");
+            log.info("authentication 없음");
             
-            return null;
+            return ResponseEntity.badRequest().body(null);
         }
     }
 }

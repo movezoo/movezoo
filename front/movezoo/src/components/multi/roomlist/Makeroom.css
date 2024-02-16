@@ -1,86 +1,110 @@
-.makeroom-container {
-  display: flex;
-  flex-direction: column;
-  font-size: 25px;
-  padding: 10px;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.roomlist-make {
+  @apply w-[120px] h-12 flex items-center justify-center rounded-lg mr-4 bg-green-500 text-white
+  text-xl
+  hover:scale-110 transition duration-300 hover:bg-green-600 cursor-pointer
 }
 
-.makeroom-close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 25px;
-  height: 25px;
-  background-color: black;
-  color: white;
-  font-size: 15px;
-  text-align: center;
+
+.makeroom-header {
+  @apply flex items-center justify-end
+}
+
+.makeroom-body {
+  @apply flex flex-col justify-center pb-6 pl-6 pr-6
 }
 
 .makeroom-title {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
   font-size: 35px;
   font-weight: bold;
-  margin-top: 15px;
-  margin-bottom: 30px;
+  @apply mb-10
 }
 
 .makeroom-name,
 .makeroom-password {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  @apply w-full flex justify-between items-center mb-2
+}
+
+.makeroom-name-input {
+  @apply w-48 border-2 border-green-300 rounded-lg
+  focus:border-green-600
+}
+
+.makeroom-password-input {
+  @apply w-48 border-2 border-green-300 rounded-lg
+}
+
+.makeroom-contents {
+  @apply w-full flex justify-between items-center mt-2 mb-2
+}
+
+.makeroom-contents-section {
+  @apply w-[190px] h-[100px] flex flex-col justify-between items-center pt-2 pb-2
 }
 
 .makeroom-people {
-  display: flex;
-  align-items: center;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  user-select : none;
+  @apply w-full flex items-center justify-between mb-2
 }
 
 .makeroom-people-btn {
-  display: flex;
-  margin-left: 25px;
+  @apply ml-8 flex flex-row justify-center items-center 
+  rounded-lg border-2 border-green-300
 }
 
-.makeroom-people-minus,
-.makeroom-people-num,
+.makeroom-people-minus {
+  @apply flex justify-center items-center w-6 h-7 cursor-pointer
+  active:bg-green-500 transition duration-300 rounded-l-lg
+}
+.makeroom-people-num {
+  @apply flex justify-center items-center w-5 h-7
+}
 .makeroom-people-plus {
-  display: flex;
-  border: solid black 1px;
-  padding: 5px;
+  @apply flex justify-center items-center w-6 h-7 cursor-pointer
+  active:bg-green-500 transition duration-300 rounded-r-lg
 }
 
 .makeroom-type {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 30px;
+  @apply w-full flex items-center justify-between
 }
 
 .makeroom-option{
-  display: flex;
-  margin: 10px;
+  @apply w-full flex justify-start
 }
 
 .makeroom-option-selected{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100px;
-  height: 50px;
-  background-color: skyblue;
-  border-radius: 5px;
+  user-select : none;
+  @apply w-[80px] h-10 flex items-center justify-center cursor-pointer
+  rounded-lg bg-green-500 text-white
 }
 .makeroom-option-not{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100px;
-  height: 50px;
+  user-select : none;
+  @apply w-[80px] h-10 flex items-center justify-center cursor-pointer
+  rounded-lg bg-green-100
+}
+
+.makeroom-map {
+  @apply flex rounded-lg items-center justify-center
+}
+
+.makeroom-map-img {
+  user-select : none;
+  @apply w-20 rounded-lg 
+}
+.makeroom-map-prev {
+  @apply w-5 h-5 flex items-center justify-center
+  hover:scale-125 hover:text-gray-500 transition duration-300 cursor-pointer
+}
+
+.makeroom-map-next {
+  @apply w-5 h-5 flex items-center justify-center
+  hover:scale-125 hover:text-gray-500 transition duration-300 cursor-pointer;
 }
 
 .makeroom-check {
@@ -90,12 +114,7 @@
 }
 
 .makeroom-confirm {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: greenyellow;
-  border: solid black 1px;
-  border-radius: 5px;
-  width: 150px;
-  height: 50px;
+  @apply w-40 h-12 mt-4 flex items-center justify-center bg-green-500
+  rounded-lg text-white text-xl
+  hover:scale-110 transition duration-300 hover:bg-green-600 cursor-pointer
 }

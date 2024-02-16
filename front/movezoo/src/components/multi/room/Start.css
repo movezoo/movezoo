@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.start-button{
+  @apply w-[200px] h-[100px] bg-lime-50 text-black flex flex-col justify-center items-center
+  rounded-2xl;
+}
+
+.start-link {
+  @apply w-full h-full flex flex-1 justify-center items-center text-lg rounded-xl
+   
+  hover:text-red-100 hover:bg-red-500 active:text-red-900 hover:cursor-pointer 
+}
+
+.start-link:hover .start-name {
+  @apply scale-150;
+}
+
+.start-name {
+  @apply transition
+}
+

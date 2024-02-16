@@ -41,6 +41,9 @@ public class OAuthCustomSuccesHandler extends SimpleUrlAuthenticationSuccessHand
 
         setDefaultTargetUrl("/main");
 
+        log.info(authentication.getPrincipal().toString());
+        log.info(authentication.getName());
+
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
         log.info("소셜 로그인 성공 - 사용자명: {}", userDetails.getUsername());
@@ -74,7 +77,7 @@ public class OAuthCustomSuccesHandler extends SimpleUrlAuthenticationSuccessHand
 //        }
 
         // 백엔드에서 redirect 시키지 말고 프론트에 전달한 응답 코드에 따라서 프론트에서 redirect 하도록 하자
-//        redirectStrategy.sendRedirect(request, response, getDefaultTargetUrl());
+        redirectStrategy.sendRedirect(request, response, getDefaultTargetUrl());
     }
 
 }

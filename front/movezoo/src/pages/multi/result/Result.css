@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.multi-result-container {
+  background-image:url('/public/images/mainbg/mainbg.png');
+  background-size: cover;
+  @apply min-w-[1000px] min-h-screen flex flex-col justify-center items-center
+  bg-green-400 cursor-default;
+}
+
+.multi-result-header {
+  @apply  w-[1000px] flex justify-start items-start p-5
+}
+
+.multi-result-name {
+  @apply text-7xl text-white justify-start items-start
+}
+
+.multi-result-body-card {
+  background-color: rgba(247, 254, 231, 0.6);
+  @apply w-[1000px] min-w-[1000px] flex flex-col
+  rounded-3xl mb-10;
+}
+
+.multi-result-body {
+  @apply flex flex-row m-5
+}
+
+.multi-result-leftSection {
+  @apply w-4/6 flex flex-col items-center justify-center  ;
+}
+
+.multi-result-CamSection {
+  @apply w-full flex flex-wrap items-center justify-start ;
+}
+
+.multi-result-bodyWebCam {
+  @apply w-full flex flex-wrap items-center justify-between ;
+}
+
+.multi-result-webCam {
+  @apply w-60 h-[200px] flex flex-col items-center justify-between
+  rounded-3xl bg-white overflow-hidden;
+}
+
+.multi-result-bottomCamSection {
+  @apply flex flex-row
+}
+
+.multi-result-rightSection {
+  @apply w-2/6 h-[400px] flex flex-col items-center justify-between
+}
+
+.multi-result-reward {
+  @apply w-[250px] h-[300px] p-5 flex flex-col items-center justify-center
+   bg-white rounded-3xl
+}
+
+.multi-result-backbutton {
+}
+
+.multi-result-reward {
+  @apply flex justify-center items-center
+}
+
+.multi-result-reward-table {
+  @apply w-full flex flex-col items-center justify-center
+}
+
+.multi-result-reward-thead {
+  @apply w-full mb-4 justify-between items-center
+}
+
+.multi-result-reward-theadTr {
+  @apply flex justify-between items-center
+}
+
+.multi-result-reward-tbody {
+  @apply w-full justify-center items-center
+}
+
+.multi-result-reward-tbodyTr {
+  @apply flex justify-between items-center
+}

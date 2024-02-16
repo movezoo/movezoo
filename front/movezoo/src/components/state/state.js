@@ -47,3 +47,8 @@ export const profileImgUrl = atom({
   default: '',
 })
 
+
+export const selectCharacterState = atom({
+  key: 'selectCharacterState',
+  default: 'shiba'
+})

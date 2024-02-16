@@ -1,12 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .container {
+  width: 300px;
   height: 100%;
+  padding: 10px;
   /* border: purple 1px solid; */
 }
 
 .chatLog {
   position: relative;
-  height: 85%;
-  border: black 1px solid;
+  overflow-y: scroll;
+  word-wrap: break-word;
+  max-width: 200px;
+  min-height: 85%;
+  max-height: 85%;
+  border: gainsboro 1px solid;
+  border-radius: 6px;
+}
+
+/* 스크롤바 설정*/
+.chatLog::-webkit-scrollbar{
+  width: 5px;
+}
+
+/* 스크롤바 막대 설정*/
+.chatLog::-webkit-scrollbar-thumb{
+  background-color: rgba(255,255,255,1);
+  /* 스크롤바 둥글게 설정    */
+  border-radius: 10px; 
+  border: 7px solid rgba(0,0,0,0.3);
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.chatLog::-webkit-scrollbar-track{
+  background-color: rgba(0,0,0,0);
 }
 
 .chatInput {
@@ -19,12 +48,16 @@
 .chatText {
   position: relative;
   width: 80%;
-  border: black 1px solid;
+  border: gainsboro 1px solid;
+  border-radius: 6px;
+  padding-left: 10px;
 }
 
 .chatBtn {
   position: relative;
   width: 15%;
   left: 5%;
-  border: black 2px solid;
+  background-color: white;
+  border: gainsboro 1px solid;
+  border-radius: 6px;
 }

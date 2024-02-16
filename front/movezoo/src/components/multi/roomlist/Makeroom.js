@@ -2,6 +2,10 @@ import Modal from "react-modal";
 import axios from 'axios';
 import { useRef, useState, useEffect } from "react";
 import "./Makeroom.css";
+import { IoCloseSharp } from "react-icons/io5";
+import { AiFillCaretLeft } from "react-icons/ai";
+import { AiFillCaretRight } from "react-icons/ai";
+import { toast } from 'react-toastify';
 
 function Makeroom(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,29 +24,50 @@ function Makeroom(props) {
     setMaxUserCount((current) => current + 1);}};
   const onClickMinus = (current) => { if (maxUserCount > 2) {
     setMaxUserCount((current) => current - 1);}};
+  const [mapSelect, setMapSelect] = useState(0);
+  const onClickNext = (current) => { 
+    mapSelect === 1 ? setMapSelect(0) : setMapSelect(1) 
+    console.log("next")
+  }
+  const onClickPrevious = (current) => { mapSelect === 0 ? setMapSelect(1) : setMapSelect(0) 
+    console.log("previous") }
+
+  const images = [
+    { id: 1, name: 'map1', image: '/images/minimap/map1.png' },
+    { id: 2, name: 'map2', image: '/images/minimap/map2.png' }
+  ];
 
   const roomTitleRef = useRef(null);
   const secretRoomPasswordRef = useRef(null);
 
   const onClickConfirm = async () => {
+
+    let storage = JSON.parse(localStorage.getItem('userData'));
+    storage.selectedMapName = images[mapSelect].name;
+    localStorage.setItem('userData', JSON.stringify(storage))
+
     const roomTitle = roomTitleRef.current.value;
     const secretRoomPassword = secretRoomPasswordRef.current.value;
-    const secretRoom = secretRoomPassword ? true : false;
 
     if (!roomTitle ) {
-      alert('방 제목을 입력해주세요.');
+      toast.error('방 제목을 입력해주세요.');
       return;
     }
 
     try{
-      const response = await axios.post('https://i10e204.p.ssafy.io/api/room', {
+      var roomInfo = {
         roomMode: roomMode,
         roomTitle: roomTitle,
         roomPassword: secretRoomPassword,
         maxRange: maxUserCount,
-      });
-      console.log(response.data);
-      props.func(response.data.roomSessionId);
+        trackId: mapSelect,
+      }
+      // console.log(roomInfo)
+
+      await props.createRoom(roomInfo)
+
+      // console.log(props.session);
+      // props.func(props.session);
       props.setPage(2);
     } catch (error) {
       console.error('Error creating room:', error);
@@ -51,81 +76,77 @@ function Makeroom(props) {
 
   return (
     <div>
-      <div onClick={openModal}>방 만들기</div>
+      <div className="roomlist-make" onClick={openModal}>방 만들기</div>
 
       <Modal
         isOpen={isOpen}
         // onRequestClose={closeModal}
         style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.75)', // 투명도를 0.75로 설정한 검은색 배경
+          },
           content: {
-            width: "500px",
-            height: "550px",
+            width: "400px",
+            height: "460px",
             margin: "auto",
-            border: "2px solid black",
+            borderRadius: '30px',
           },
         }}
       >
         <div className="makeroom-container">
-          <div className="makeroom-close" onClick={closeModal}>
-            X
+          <div className='makeroom-header'>
+            <IoCloseSharp className='exit-button' onClick={closeModal} />
           </div>
-          <div className="makeroom-title">방 만들기</div>
-          <div className="makeroom-name">
-            <p>방 제목</p>
-            <input
-              ref={roomTitleRef}
-              style={{ width: "70%", border: "solid black 1px" }}
-            />
-          </div>
-          <div className="makeroom-password">
-            <p>비밀번호</p>
-            <input
-              ref={secretRoomPasswordRef}
-              style={{ width: "70%", border: "solid black 1px" }}
-            />
-          </div>
-          <div className="makeroom-people">인원수
-            <div className="makeroom-people-btn">
-              <div className="makeroom-people-minus" onClick={onClickMinus}>-</div>
-              <div className="makeroom-people-num">{maxUserCount}</div>
-              <div className="makeroom-people-plus" onClick={onClickPlus}>+</div>
+
+          <div className="makeroom-body">
+            <div className="makeroom-title">
+              <p>방 만들기</p>
             </div>
-          </div>
-          <div className="makeroom-type">
-            <div className="makeroom-option">
-              <div
-                className={isTeam ? "makeroom-option-not" : "makeroom-option-selected"}
-                onClick={onClickSolo}
-              >
-                개인전
+
+            <div className="makeroom-name">
+              <div>
+                <p>방 제목</p>
               </div>
-              <div
-                className={isTeam ? "makeroom-option-selected" : "makeroom-option-not"}
-                onClick={onClickTeam}
-              >
-                팀전
+              <div>
+                <input className="makeroom-name-input" ref={roomTitleRef}/>
               </div>
             </div>
-            <div className="makeroom-option">
-              <div
-                className={isItem ? "makeroom-option-not" : "makeroom-option-selected"}
-                onClick={onClickSpeed}
-              >
-                스피드
+
+            <div className="makeroom-password">
+              <p>비밀번호</p>
+              <input className="makeroom-password-input" ref={secretRoomPasswordRef}/>
+            </div>
+
+            
+          
+            <div className="makeroom-people">
+              <div>
+                <p>인원수</p>
               </div>
-              <div
-                className={isItem ? "makeroom-option-selected" : "makeroom-option-not"}
-                onClick={onClickItem}
-              >
-                아이템
+              <div className="makeroom-people-btn">
+                <div className="makeroom-people-minus" onClick={onClickMinus}>-</div>
+                <div className="makeroom-people-num">{maxUserCount}</div>
+                <div className="makeroom-people-plus" onClick={onClickPlus}>+</div>
               </div>
             </div>
-          </div>
-          <div className="makeroom-check">
-            <div className="makeroom-confirm" onClick={onClickConfirm}>
-              확인
+
+              
+            <div className="makeroom-map">
+              <AiFillCaretLeft className="makeroom-map-prev" onClick={onClickPrevious} />
+                <img src={images[mapSelect].image} className="makeroom-map-img"/>
+              <AiFillCaretRight className="makeroom-map-next" onClick={onClickNext}/>
             </div>
+
+            
+            
+            <div className="makeroom-check">
+              <div className="makeroom-confirm" onClick={onClickConfirm}>
+                <p>확인</p>
+              </div>
+            </div>
+
           </div>
+
         </div>
       </Modal>
     </div>

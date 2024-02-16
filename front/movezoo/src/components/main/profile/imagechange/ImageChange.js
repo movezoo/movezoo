@@ -5,6 +5,7 @@ import './ImageChange.css';
 import { useRecoilState } from 'recoil';
 import { profileImgUrl as profileImgUrlState } from '../../../state/state';
 import { IoCloseSharp } from "react-icons/io5";
+import { toast } from 'react-toastify';
 
 
 const profileImages = [
@@ -48,23 +49,23 @@ const ImageChangeModal = () => {
       // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
       const userData = JSON.parse(storedUserData);
 
-      console.log(userData)
+      // console.log(userData)
 
       // 사용자 이메일을 변수에 저장
       const userEmail = userData.userData.userEmail;
 
-      console.log(userEmail)
+      // console.log(userEmail)
 
       const profileImgUrl = selectedImage.image;
-      console.log('====================================')
-      console.log(profileImgUrl);
+      // console.log('====================================')
+      // console.log(profileImgUrl);
       
       const response = await axios.patch(`https://i10e204.p.ssafy.io/api/user/profile`, 
         {userEmail, profileImgUrl},
         { withCredentials: true}
         );
 
-      console.log('이미지 변경 성공:', response);
+      // console.log('이미지 변경 성공:', response);
 
       // recoil 상태 업데이트
       setProfileImgUrl(profileImgUrl);
@@ -74,12 +75,12 @@ const ImageChangeModal = () => {
       updatedUserData.userData.profileImgUrl = profileImgUrl;
       localStorage.setItem('userData', JSON.stringify(updatedUserData));
 
-      alert('이미지가 변경되었습니다.');
+      toast.success('프로필 이미지가 변경되었습니다.');
       closeModal();
 
       } catch (error) {
         console.error('이미지 변경 실패:', error);
-        alert('이미지 변경에 실패하였습니다.');
+        toast.error('프로필 이미지 변경에 실패하였습니다.');
       }
   };
 

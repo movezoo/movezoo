@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.Character-container {
+  @apply w-[900px] h-[500px] flex flex-row items-center;
+}
+
+.Character-list {
+  @apply w-[600px] h-[500px] flex flex-row flex-wrap justify-center items-center ml-2
+  /* bg-green-200  rounded-2xl; */
+}
+
+.character-images-wrapper {
+  @apply w-[172px] h-[100px] ml-2 mr-2 flex justify-center object-center rounded-lg transition duration-200
+  bg-white 
+  hover:opacity-100 hover:scale-110;
+}
+
+.character-images-wrapper.selected {
+  @apply border-4 border-green-500
+}
+
+.character-image {
+  @apply h-full
+}
+
+.Character-select {
+  @apply w-[600px] h-[500px] flex items-center flex-row justify-center;
+}
+
+.select-body {
+  @apply h-[500px] flex flex-col ml-16;
+}
+
+.body-select-image {
+
+}
+
+.body-select-name {
+  @apply mt-2;
+}
+
+.body-select-chooseButton {
+  @apply flex justify-center mt-2
+}
+
+.character-choose-button {
+  @apply w-40 h-10 m-4 items-center justify-center p-2 text-white bg-green-400 rounded-md
+  hover:bg-green-600 hover:scale-125 transition duration-200;
+}
+
+.body-select-buyButton {
+  @apply flex justify-center
+}
+
+.select-image {
+  @apply object-cover rounded-lg transition duration-200;
+}
+
+.image-name {
+  @apply flex justify-center items-center text-3xl font-semibold;
+}
+
+.character-buy-button {
+  @apply w-40  h-10 m-4 items-center justify-center p-2 text-white bg-red-500 rounded-md
+  hover:bg-red-700 hover:scale-125 transition duration-200;
+}
+
+/* 모달창 ====================== */
+
+.buy-modal {
+  @apply flex flex-col items-center justify-center
+}

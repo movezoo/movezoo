@@ -19,7 +19,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 460px;
-  
 }
 
 .signup_title {
@@ -40,7 +39,7 @@ h3 {
   display: block;
   width: 100%;
   height: 51px;
-  border: solid 1px #dadada;
+  border: solid 1px #22C55E;
   padding: 10px 14px 10px 14px;
   box-sizing: border-box;
   background: #fff;
@@ -64,21 +63,25 @@ input {
 .box.int_id {
   padding-right: 70px;
   border-radius: 15px;
+  margin-bottom: 10px;
 }
 
 .box.int_pass {
   padding-right: 100px;
   border-radius: 15px;
+  margin-bottom: 10px;
 }
 
 .box.int_pass_check {
   padding-right: 100px;
   border-radius: 15px;
+  margin-bottom: 10px;
 }
 
 .box.int_name {
   padding-right: 40px;
   border-radius: 15px;
+  margin-bottom: 10px;
 }
 
 .step_url {
@@ -120,7 +123,7 @@ input {
 /* 버튼 */
 
 .btn_area {
-  margin: 10px 0 10px;
+  margin: 25px 0 30px;
 }
 
 #btnJoin {
@@ -130,16 +133,16 @@ input {
   border: 0;
   cursor: pointer;
   color: #fff;
-  background-color: rgb(95, 214, 91);
+  background-color: rgb(34, 197, 94);
   font-size: 20px;
-  font-weight: 400;
-  font-family: Dotum,'돋움',Helvetica,sans-serif;
+  /* font-weight: 400;
+  font-family: Dotum,'돋움',Helvetica,sans-serif; */
   border-radius: 20px;
 }
 
 #btnJoin:hover {
   background-color: green;
-  border: black solid 1.5px;
+  /* border: black solid 1.5px; */
 }
 
 #btnClose {
@@ -148,15 +151,15 @@ input {
   border: 0;
   cursor: pointer;
   color: #fff;
-  background-color: rgb(232, 88, 88, 0.7);
+  background-color: rgb(239, 68, 68, 1);
   font-size: 20px;
-  font-weight: 400;
-  font-family: Dotum,'돋움',Helvetica,sans-serif;
+  /* font-weight: 400;
+  font-family: Dotum,'돋움',Helvetica,sans-serif; */
   align-content: end;
   border-radius: 20px;
 }
 
 #btnClose:hover {
   background-color: crimson;
-  border: 1.5px solid red;
+  /* border: 1.5px solid red; */
 }
