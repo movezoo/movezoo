@@ -15,7 +15,7 @@
 |:--:|:--:|:--:|:--:|:--:|:--:|
 |<a href="">위재원</a>|<a href="">김창희</a>|<a href="">이현민</a>|<a href="">신현기</a>|<a href="">정세진</a>|<a href="">최용훈</a>
 |Backend|Backend CI/CD|Frontend|Frontend|Frontend|Frontend|
-|UI/UX 기획 및 설계<br>Unity Asset 제작<br>애니메이션 구현|UI/UX 기획 및 설계<br>Unity Asset 제작<br>애니메이션 구현<br>디버깅 및 리팩토링|UI/UX 기획 및 설계<br>Unity Asset 제작<br>DB 및 API 설계<br>디버깅 및 리팩토링|UI/UX 기획 및 설계<br>Unity Asset 제작<br>DB 설계 및 API 개발<br>CI/CD 구축|AR 강아지 이동 구현<br>AR 돌발 이벤트 구현<br>GPS 활용 기능 구현<br>가속도계 활용 기능 <br>구현|AR 애니메이션 구현<br>AR 유지보수성 향상<br>3D Asset<br>커스터마이징<br>UCC 총괄제작|
+|UI/UX 기획 및 설계<br>Unity Asset 제작<br>애니메이션 구현|UI/UX 기획 및 설계<br>Unity Asset 제작<br>애니메이션 구현<br>디버깅 및 리팩토링|UI/UX 기획 및 설계<br>Unity Asset 제작<br>DB 및 API 설계<br>디버깅 및 리팩토링|UI/UX 기획 및 설계<br>Unity Asset 제작<br>DB 설계 및 API 개발<br>CI/CD 구축|AR 강아지 이동 구현<br>AR 돌발 이벤트 구현<br>GPS 활용 기능 구현<br>가속도계 활용 기능 <br>구현|AR 애니메이션 구현<br>AR 유지보수성 향상<br>3D Asset<br>커스터마이징|
 
 <br/>
 
