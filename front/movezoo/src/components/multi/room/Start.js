@@ -17,7 +17,7 @@ function Start(props) {
       }
     );
   
-    console.log("roomGameStart result : ",response.data)
+    // console.log("roomGameStart result : ",response.data)
   }
 
   const onClick = () =>{
@@ -33,9 +33,9 @@ function Start(props) {
           type: "game-start",
         })
         .then(() => {
-          console.log("game start done")
+          // console.log("game start done")
           roomGameStart(mySessionId);
-          console.log(`mySessionId: ${mySessionId}`);
+          // console.log(`mySessionId: ${mySessionId}`);
         })
         .catch((error) => {
           console.error(error);

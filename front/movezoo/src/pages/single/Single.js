@@ -28,7 +28,7 @@ function Single() {
     // 스토리지 저장
     let storages = JSON.parse(localStorage.getItem('userData'));
     if(!storages.selectMap) storages.selectMap = 'map1';
-    console.log(storages)
+    
     localStorage.setItem('userData', JSON.stringify(storages));
 
     gameStartData.selectMap = storages.selectMap;
