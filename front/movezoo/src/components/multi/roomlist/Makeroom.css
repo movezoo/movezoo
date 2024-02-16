@@ -50,7 +50,7 @@
 
 .makeroom-people {
   user-select : none;
-  @apply w-full flex items-center justify-start mb-2
+  @apply w-full flex items-center justify-between mb-2
 }
 
 .makeroom-people-btn {
@@ -90,7 +90,7 @@
 }
 
 .makeroom-map {
-  @apply flex rounded-lg items-center
+  @apply flex rounded-lg items-center justify-center
 }
 
 .makeroom-map-img {
