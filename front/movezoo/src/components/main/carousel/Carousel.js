@@ -97,12 +97,12 @@ function Carousel() {
         
         const userId = userData.userData.userId;
         
-        console.log(userId);
+        // console.log(userId);
         
         const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${userId}`, {})
 
-        console.log('===========')
-        console.log(response.data);
+        // console.log('===========')
+        // console.log(response.data);
         const userCharacterIds = response.data.map(character => character.racerId);
         const userImages = initialImages.filter(image => userCharacterIds.includes(image.id));
         setImages(userImages);

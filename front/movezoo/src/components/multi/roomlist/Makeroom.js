@@ -62,7 +62,7 @@ function Makeroom(props) {
         maxRange: maxUserCount,
         trackId: mapSelect,
       }
-      console.log(roomInfo)
+      // console.log(roomInfo)
 
       await props.createRoom(roomInfo)
 

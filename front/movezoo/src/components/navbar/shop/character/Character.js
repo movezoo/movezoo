@@ -53,12 +53,12 @@ function Character ({ closeModal }) {
       // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
       const userData = JSON.parse(storedUserData);
 
-      console.log(userData)
+      // console.log(userData)
 
       // 사용자 이메일을 변수에 저장
       const userId = userData.userData.userId;
 
-      console.log(userId)
+      // console.log(userId)
 
       const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${userId}`, {})
 
@@ -104,13 +104,13 @@ function Character ({ closeModal }) {
       // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
       const userData = JSON.parse(storedUserData);
 
-      console.log(userData)
+      // console.log(userData)
 
       const userId = userData.userData.userId;
 
-      console.log(selectedCharacter.id)
+      // console.log(selectedCharacter.id)
 
-      console.log(userId)
+      // console.log(userId)
 
       // 캐릭터 구매 요청
       const response = await axios.post(`https://i10e204.p.ssafy.io/api/racer`, {
@@ -172,7 +172,7 @@ function Character ({ closeModal }) {
         const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer`);
         const characterData = response.data.find((character) => character.racerId === selectedCharacter.id);
         setCharacterPrice(characterData.racerPrice);
-        console.log(characterData.racerPrice);
+        // console.log(characterData.racerPrice);
     } catch (error) {
         console.error('캐릭터 가격 정보 요청 실패:', error);
     }
