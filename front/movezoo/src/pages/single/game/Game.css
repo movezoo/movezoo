@@ -169,7 +169,23 @@
   }
 }
 
+.game-exit {
+  z-index: 999;
+  top: 50px;
+  left:160px;
+  color:crimson;
+  @apply w-[300] h-[150] absolute text-lg rounded-xl 
+  hover:text-red-100 hover:bg-red-500 active:text-red-900 hover:cursor-pointer 
+}
 
+.game-exit:hover .game-exitbtn {
+  @apply scale-150;
+}
+
+.game-exitbtn {
+  font-size: xx-large;
+  @apply transition 
+}
 
 
 
