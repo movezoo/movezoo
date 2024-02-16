@@ -27,10 +27,21 @@
 
 <br/>
 
-## 🎇 서비스 소개
+## 🎇 주요 서비스
 
+|||
+|---|---|
+|<img src="./Docs/readme_gif/main-login.gif">|<img src="./Docs/readme_gif/main-racer-list.gif">|
+|`메인화면` 회원가입 / 로그인 |`로비화면` 사용자 보유 캐릭터 열람|
+|<img src="./Docs/readme_gif/main-racer-buy.gif">|<img src="./Docs/readme_gif/main-profile.gif">|
+|`상점` 재화로 미보유 캐릭터 구매|`프로필` 프로필이미지, 닉네임, 비밀번호 변경|
+|<img src="./Docs/readme_gif/single-single-start.gif">|<img src="./Docs/readme_gif/main-rank.gif">|
+|`싱글 플레이` 혼자서 플레이|`랭킹` 싱글 플레이 최단기록 랭킹|
+|<img src="./Docs/readme_gif/single-multi.gif">|<img src="./Docs/readme_gif/single-single-play3.gif">|
+|`멀티 플레이` 다른 사용자와 함께 플레이|`리워드 시스템` 결과에 따른 재화 제공|
 
-<br/>
+<br>
+
 
 ## 💞 기능 상세
 
@@ -46,25 +57,26 @@
 
 #### **FE**
 
-<img src="https://img.shields.io/badge/vs code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
 <img src="https://img.shields.io/badge/WebRTC-333333?style=for-the-badge&logo=webrtc&logoColor=white">
 <img src="https://img.shields.io/badge/TensorFlow.js-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white">
 <img src="https://img.shields.io/badge/java script-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+<img src="https://img.shields.io/badge/tailwind css-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
 <img src="https://img.shields.io/badge/recoil-3578E5?style=for-the-badge&logo=recoil&logoColor=white">
 <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
-<img src="https://img.shields.io/badge/tailwind css-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
 <img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white">
+<img src="https://img.shields.io/badge/vs code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
 
 #### **BE**
 
-<img src="https://img.shields.io/badge/Intellij Idea-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
-<img src="https://img.shields.io/badge/spring security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
 <img src="https://img.shields.io/badge/Spring boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
-<img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+<img src="https://img.shields.io/badge/spring security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
+<img src="https://img.shields.io/badge/jpa-6DB33F?style=for-the-badge&logo=jpa&logoColor=white">
 <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
 <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
+<img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+<img src="https://img.shields.io/badge/Intellij Idea-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
 
 #### **CI/CD**
 
@@ -72,6 +84,7 @@
 <img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white"/> 
 <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white"/>
 <img src="https://img.shields.io/badge/openssl-721412?style=for-the-badge&logo=openssl&logoColor=white"> 
+
 
 #### **협업**
 
@@ -95,7 +108,6 @@
 <details><summary>펼치기 / 접기</summary>
 
 ```
-
 backend
 ├─main
 │  ├─java
@@ -299,10 +311,9 @@ movezoo
 
 ## 💬 API 명세서
 
-<!-- ![API명세서](README_assets/19_API명세서.pdf) -->
+![API명세서](./Docs/API명세서.pdf)
 
 <br/>
 
-## 🖼️ 와이어프레임
-
+<!-- ## 🖼️ 와이어프레임 -->
 <!-- ![와이어프레임](README_assets/20_와이어프레임.png) -->
