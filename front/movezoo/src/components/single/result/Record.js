@@ -24,8 +24,8 @@ function Record() {
         const userId = userData.userData.userId;
         const mapNumber = userData.selectedMapId;
 
-        console.log(userId)
-        console.log(mapNumber)
+        // console.log(userId)
+        // console.log(mapNumber)
         
         const { data: userLaptime } = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${userId}/${mapNumber}`);
         
@@ -33,14 +33,14 @@ function Record() {
         // 이번 게임 랩타임 db에 보내기
         if (userLaptime.record > singleResult.time ) {
           try {
-            console.log(userId)
-            console.log(mapNumber)
-            console.log(userLaptime.record)
-            console.log(singleResult.time)
+            // console.log(userId)
+            // console.log(mapNumber)
+            // console.log(userLaptime.record)
+            // console.log(singleResult.time)
             const updateLaptime = await axios.patch('https://i10e204.p.ssafy.io/api/laptime', 
             { userId, trackId: mapNumber, record: singleResult.time });
             
-            console.log('랩타임 업데이트 성공:', updateLaptime);
+            // console.log('랩타임 업데이트 성공:', updateLaptime);
           } catch (error) {
             console.error('랩타임 업데이트 실패:', error);
           }
@@ -52,7 +52,7 @@ function Record() {
             const updateLaptime = await axios.patch('https://i10e204.p.ssafy.io/api/laptime', 
             { userId, trackId: mapNumber, record: singleResult.time });
     
-            console.log('랩타임 업데이트 성공:', updateLaptime);
+            // console.log('랩타임 업데이트 성공:', updateLaptime);
           } catch (error) {
             console.error('랩타임 업데이트 실패:', error);
           }

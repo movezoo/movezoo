@@ -41,7 +41,7 @@ const ChangeNicknameModal = () => {
       const userData = JSON.parse(storedUserData);
       const userEmail = userData.userData.userEmail;
 
-      console.log(userEmail, newNickName);
+      // console.log(userEmail, newNickName);
 
       if (nickname === newNickName) {
         toast.error('현재 닉네임과 같은 닉네임입니다. 다른 닉네임을 입력해주세요.');
@@ -53,7 +53,7 @@ const ChangeNicknameModal = () => {
       });
 
       setNickName(newNickName);
-      console.log(newNickName)
+      // console.log(newNickName)
       toast.success('닉네임 변경에 성공했습니다.');
       closeModal();
     } catch (error) {
