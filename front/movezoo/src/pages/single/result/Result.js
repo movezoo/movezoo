@@ -150,7 +150,7 @@ function Result() {
 
             <div className="single-result-back-button">
               <div className="resultBackbtn">
-                <button className="back-name" onClick={() => navigate('/main')}>나가기</button>
+                <button className="back-name" onClick={() => navigate("/redirect", { state: { url: "/main" } })}>나가기</button>
               </div>
             </div>
           </div>
