@@ -14,6 +14,7 @@ import {
   sessionState as userDataState,
   profileImgUrl as profileImgUrlState
 } from '../../components/state/state';
+import { useNavigate } from "react-router-dom";
 
 Modal.setAppElement('#root');
 
@@ -25,6 +26,7 @@ function Main() {
 
   const [volume, setVolume] = React.useState(80);
   const [isProfileOpen, setIsProfileOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const openProfileModal = () => {
     setIsProfileOpen(true);
@@ -34,38 +36,72 @@ function Main() {
     setIsProfileOpen(false);
   };
 
+  // useEffect(() => {
+  //   if (userData.userData === null) {
+  //     axios.get('/api/current-user')
+  //       .then(response => {
+  //         // const userDataFromServer = response.data;
+  //         // console.log(userDataFromServer)
+  //         const newSession = {
+  //           loggedIn: true,
+  //           sessionId: response.data.sessionId,
+  //           userData: response.data, // 받아온 사용자 정보를 userData에 저장
+  //         };
+  //         setUserData(newSession);
+  //         navigate("/redirect", { state: { url: "/main" } });
+  //       })
+  //       .catch(error => {
+  //         console.error('Error fetching user data:', error);
+  //       })
+  //   }
+  // }, [userData.userData, setUserData]);
+
+  // // 페이지 로드 시 localStorage에서 userData 상태 로드
+  // useEffect(() => {
+  //   // console.log(userData)
+  //   const storedUserData = localStorage.getItem('userData');
+  //   // console.log(storedUserData)
+  //   if (storedUserData) {
+  //     // console.log(storedUserData)
+
+  //     const data = (JSON.parse(storedUserData));
+
+  //     // console.log(data)
+
+  //     if (data && data.userData) {
+  //       setUserData({ ...data });
+  //       setCoin(data.userData.coin);
+  //       setNickName(data.userData.nickname);
+  //       setProfileImgUrl(data.userData.profileImgUrl);
+
+  //       // console.log(data.userData);
+  //       // console.log(data.userData.coin);
+  //       // console.log(data.userData.nickname);
+  //       // console.log(data.userData.userEmail);
+  //     }
+
+  //   }
+  // }, [setCoin, setNickName, setUserData, setProfileImgUrl]);
+
   useEffect(() => {
-    if (userData.userData === null) {
-      axios.get('/api/current-user')
-        .then(response => {
-          // const userDataFromServer = response.data;
-          // console.log(userDataFromServer)
-          const newSession = {
-            loggedIn: true,
-            sessionId: response.data.sessionId,
-            userData: response.data, // 받아온 사용자 정보를 userData에 저장
-          };
-          setUserData(newSession);
-        })
-        .catch(error => {
-          console.error('Error fetching user data:', error);
-        })
-    }
-  }, [userData.userData, setUserData]);
-  
-  // 페이지 로드 시 localStorage에서 userData 상태 로드
-  useEffect(() => {
-    // console.log(userData)
     const storedUserData = localStorage.getItem('userData');
-    // console.log(storedUserData)
     if (storedUserData) {
-      // console.log(storedUserData)
-      
-      const data = (JSON.parse(storedUserData));
-      
-      console.log(data)
-      
-      if (data && data.userData) {
+      const data = JSON.parse(storedUserData);
+      if (data && data.userData && data.userData === null) {
+        axios.get('/api/current-user')
+          .then(response => {
+            const newSession = {
+              loggedIn: true,
+              sessionId: response.data.sessionId,
+              userData: response.data,
+            };
+            setUserData(newSession);
+            navigate("/redirect", { state: { url: "/main" } });
+          })
+          .catch(error => {
+            console.error('사용자 데이터를 가져오는 중 오류 발생:', error);
+          });
+      } else if (data && data.userData) {
         setUserData({ ...data });
         setCoin(data.userData.coin);
         setNickName(data.userData.nickname);
@@ -76,7 +112,6 @@ function Main() {
         // console.log(data.userData.nickname);
         // console.log(data.userData.userEmail);
       }
-      
     }
   }, [setCoin, setNickName, setUserData, setProfileImgUrl]);
   
@@ -90,14 +125,14 @@ function Main() {
     const storedData = localStorage.getItem('userData');
     // console.log('Stored userData in localStorage:', storedData);
   }, [userData]);
-  
+
   return (
     <div className="main-container">
 
       <div className="main-header">
 
         <div className="main-headerName">
-        <img src='/images/mainLogo/mainlogo.svg' alt='mainlogo'/>
+          <img src='/images/mainLogo/mainlogo.svg' alt='mainlogo' />
         </div>
 
 
