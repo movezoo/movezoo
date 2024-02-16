@@ -49,23 +49,23 @@ const ImageChangeModal = () => {
       // 로컬 스토리지에서 조회한 데이터를 JSON 형태로 파싱
       const userData = JSON.parse(storedUserData);
 
-      console.log(userData)
+      // console.log(userData)
 
       // 사용자 이메일을 변수에 저장
       const userEmail = userData.userData.userEmail;
 
-      console.log(userEmail)
+      // console.log(userEmail)
 
       const profileImgUrl = selectedImage.image;
-      console.log('====================================')
-      console.log(profileImgUrl);
+      // console.log('====================================')
+      // console.log(profileImgUrl);
       
       const response = await axios.patch(`https://i10e204.p.ssafy.io/api/user/profile`, 
         {userEmail, profileImgUrl},
         { withCredentials: true}
         );
 
-      console.log('이미지 변경 성공:', response);
+      // console.log('이미지 변경 성공:', response);
 
       // recoil 상태 업데이트
       setProfileImgUrl(profileImgUrl);

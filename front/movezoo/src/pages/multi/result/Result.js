@@ -89,8 +89,8 @@ function Result(props) {
           
           const response = await axios.patch('https://i10e204.p.ssafy.io/api/coin', 
           { nickname, ranking: i + 1 });
-          console.log(userIds[i]);
-          console.log(response);
+          // console.log(userIds[i]);
+          // console.log(response);
         }
 
       } catch (error) {
@@ -116,7 +116,7 @@ function Result(props) {
           if (response.status === 200 && response.data) {
               // Recoil 상태 및 로컬 스토리지 업데이트
               const newCoinAmount = response.data.coin;
-              console.log(newCoinAmount)
+              // console.log(newCoinAmount)
               setCoin(newCoinAmount); // Recoil 상태 업데이트
              
               let updatedUserData = { ...userData };
@@ -155,7 +155,7 @@ function Result(props) {
         if (response.status === 200 && response.data) {
             // Recoil 상태 및 로컬 스토리지 업데이트
             const newCoinAmount = response.data.coin;
-            console.log(newCoinAmount)
+            // console.log(newCoinAmount)
             setCoin(newCoinAmount); // Recoil 상태 업데이트
             
             let updatedUserData = { ...userData };
