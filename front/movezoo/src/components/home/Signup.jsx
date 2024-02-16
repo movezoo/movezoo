@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import Modal from 'react-modal';
 import './Signup.css';
 import { signUpState } from '../state/state';
+import { data } from '../play/data';
 
 const Signup = ({ isOpen, onRequestClose }) => {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
@@ -80,9 +81,9 @@ const Signup = ({ isOpen, onRequestClose }) => {
         setSignUpData({ email: '', password: '', confirmPassword: '', nickname: '', signedUp: false });
       }
     } catch (error) {
-      setSignUpData({ email: '', password: '', confirmPassword: '', nickname: '', signedUp: false });
       console.error('회원가입 요청 중 에러 발생:', error);
-      alert('회원가입에 실패했습니다.');
+      console.log(data)
+      alert(error.response.data.msg);
     }
   };
 
@@ -101,10 +102,10 @@ const Signup = ({ isOpen, onRequestClose }) => {
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
         },
         content: {
-          width: '750px', // 원하는 크기로 조절
+          width: '550px', // 원하는 크기로 조절
           height: '80%', // 원하는 크기로 조절
           margin: 'auto',
-          borderRadius: '30px'
+          borderRadius: '30px' 
         },
       }}
     >
@@ -120,7 +121,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
                 type="email"
                 id="id"
                 className="int"
-                maxLength="20"
+                maxLength="30"
                 value={signUpData.email}
                 onChange={handleEmailChange}
                 placeholder='ex)MoveZoo@gmail.com'

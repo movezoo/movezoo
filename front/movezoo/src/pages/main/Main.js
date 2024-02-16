@@ -9,9 +9,12 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { AiFillCopyrightCircle } from "react-icons/ai";
 import { useRecoilState } from 'recoil';
-import { userCoin, nickName as nickNameState, 
-        sessionState as userDataState,
-        profileImgUrl as profileImgUrlState } from '../../components/state/state';
+import {
+  userCoin, nickName as nickNameState,
+  sessionState as userDataState,
+  profileImgUrl as profileImgUrlState
+} from '../../components/state/state';
+import { useNavigate } from "react-router-dom";
 
 Modal.setAppElement('#root');
 
@@ -23,6 +26,7 @@ function Main() {
 
   const [volume, setVolume] = React.useState(80);
   const [isProfileOpen, setIsProfileOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const openProfileModal = () => {
     setIsProfileOpen(true);
@@ -32,47 +36,95 @@ function Main() {
     setIsProfileOpen(false);
   };
 
-  
-  // 페이지 로드 시 localStorage에서 userData 상태 로드
+  // useEffect(() => {
+  //   if (userData.userData === null) {
+  //     axios.get('/api/current-user')
+  //       .then(response => {
+  //         // const userDataFromServer = response.data;
+  //         // console.log(userDataFromServer)
+  //         const newSession = {
+  //           loggedIn: true,
+  //           sessionId: response.data.sessionId,
+  //           userData: response.data, // 받아온 사용자 정보를 userData에 저장
+  //         };
+  //         setUserData(newSession);
+  //         navigate("/redirect", { state: { url: "/main" } });
+  //       })
+  //       .catch(error => {
+  //         console.error('Error fetching user data:', error);
+  //       })
+  //   }
+  // }, [userData.userData, setUserData]);
+
+  // // 페이지 로드 시 localStorage에서 userData 상태 로드
+  // useEffect(() => {
+  //   // console.log(userData)
+  //   const storedUserData = localStorage.getItem('userData');
+  //   // console.log(storedUserData)
+  //   if (storedUserData) {
+  //     // console.log(storedUserData)
+
+  //     const data = (JSON.parse(storedUserData));
+
+  //     // console.log(data)
+
+  //     if (data && data.userData) {
+  //       setUserData({ ...data });
+  //       setCoin(data.userData.coin);
+  //       setNickName(data.userData.nickname);
+  //       setProfileImgUrl(data.userData.profileImgUrl);
+
+  //       // console.log(data.userData);
+  //       // console.log(data.userData.coin);
+  //       // console.log(data.userData.nickname);
+  //       // console.log(data.userData.userEmail);
+  //     }
+
+  //   }
+  // }, [setCoin, setNickName, setUserData, setProfileImgUrl]);
+
   useEffect(() => {
-    console.log(userData)
     const storedUserData = localStorage.getItem('userData');
-    console.log(storedUserData)
     if (storedUserData) {
-      console.log(storedUserData)
-
-      const data = (JSON.parse(storedUserData));
-      
-      console.log(data)
-
-      if (data && data.userData) {
+      const data = JSON.parse(storedUserData);
+      if (data && data.userData === null) {
+        axios.get('/api/current-user')
+          .then(response => {
+            const newSession = {
+              loggedIn: true,
+              sessionId: response.data.sessionId,
+              userData: response.data,
+            };
+            setUserData(newSession);
+            navigate("/redirect", { state: { url: "/main" } });
+          })
+          .catch(error => {
+            console.error('사용자 데이터를 가져오는 중 오류 발생:', error);
+          });
+      } else if (data && data.userData) {
         setUserData({ ...data });
         setCoin(data.userData.coin);
         setNickName(data.userData.nickname);
         setProfileImgUrl(data.userData.profileImgUrl);
-  
-        console.log(data.userData);
-        console.log(data.userData.coin);
-        console.log(data.userData.nickname);
-        console.log(data.userData.userEmail);
+        
+        // console.log(data.userData);
+        // console.log(data.userData.coin);
+        // console.log(data.userData.nickname);
+        // console.log(data.userData.userEmail);
       }
-      
     }
-  }, [setCoin, setNickName, setUserData, setProfileImgUrl]);
-
+  }, [setCoin, setNickName, setUserData, setProfileImgUrl, navigate]);
+  
   useEffect(() => {
-    console.log('현재 coin 상태:', coin);
+    // console.log('현재 coin 상태:', coin);
   }, [coin]);
-
-
 
   // userData 상태가 변경될 때마다 localStorage에 저장
   useEffect(() => {
     localStorage.setItem('userData', JSON.stringify(userData));
     const storedData = localStorage.getItem('userData');
-    console.log('Stored userData in localStorage:', storedData);
+    // console.log('Stored userData in localStorage:', storedData);
   }, [userData]);
-  
 
   return (
     <div className="main-container">
@@ -80,21 +132,21 @@ function Main() {
       <div className="main-header">
 
         <div className="main-headerName">
-          <h1>MoveZoo</h1>
+          <img src='/images/mainLogo/mainlogo.svg' alt='mainlogo' />
         </div>
 
 
         <div className="main-header-info">
 
           <div className="main-header-navbar">
-              <Navbar setCoin={setCoin}/>
+            <Navbar setCoin={setCoin} />
           </div>
 
           <div className="main-header-profile">
 
             <div className="main-header-userProfile" >
               <img className="profile-image" src={profileImgUrl} alt="프로필 이미지" onClick={openProfileModal} />
-              <Profile isProfileOpen={isProfileOpen} isProfileClose={closeProfileModal}/>
+              <Profile isProfileOpen={isProfileOpen} isProfileClose={closeProfileModal} />
             </div>
 
             <div className="main-header-userInfo">
@@ -121,7 +173,7 @@ function Main() {
         <div className="main-left-section">
 
           <div className="main-left-carousel">
-            <Carousel/>
+            <Carousel />
           </div>
 
         </div>
@@ -133,7 +185,7 @@ function Main() {
               <h1>Single</h1>
             </Link>
           </div>
-          
+
           <div className='main-right-multi'>
             <Link to="/multi">
               <h1>Multi</h1>
@@ -145,9 +197,9 @@ function Main() {
       </div>
 
 
-    {/* 백그라운드 음악 */}
-    <audio id="background-audio" src="/music/background.mp3" autoPlay loop volume={volume / 100} />
-  </div>
+      {/* 백그라운드 음악 */}
+      <audio id="background-audio" src="/music/background.mp3" autoPlay loop volume={volume / 100} />
+    </div>
 
   );
 }

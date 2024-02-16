@@ -42,13 +42,14 @@ public class RedisController {
     @PostMapping("/room")
     public ResponseEntity<RoomResponseDto> createRoom(Authentication authentication, @RequestBody CreateRoomRequestDto dto) throws OpenViduJavaClientException, OpenViduHttpException {
         log.info("make room {}", dto);
+        log.info("make room master {}", dto);
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
         simpleResponseDto.setSuccess(true);
+        log.info("room make {}", authentication);
+        if(authentication==null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
         System.out.println(authentication);
-        int userId = 1;
-
-//        int userId = Integer.parseInt(authentication.getName());
+        int userId = Integer.parseInt(authentication.getName());
 
         //랜덤아이디 생성
         String randomSessionId = makeRandomSessionId();
@@ -76,10 +77,9 @@ public class RedisController {
         }
 
         try {
-            dto.setMaxRange(4);
             if (dto.getRoomPassword() != null && !dto.getRoomPassword().isEmpty()) {     // 비밀방일 경우
                 Room room = redisService.createSecretRoom(userId, dto);
-                log.info("make s room {}", room);
+                log.info("make secret room {}", room);
                 simpleResponseDto.setMsg("비밀방 생성 성공");
 
                 RoomResponseDto roomResponseDto = RoomResponseDto.builder()
@@ -92,7 +92,9 @@ public class RedisController {
                         .roomTitle(room.getRoomTitle())
                         .roomMode(room.getRoomMode())
                         .currentUserCount(room.getCurrentUserCount())
+                        .maxUserCount(room.getMaxUserCount())
                         .roomMasterId(room.getRoomMasterId())
+                        .trackId(room.getTrackId())
                         .build();
                 return ResponseEntity.status(HttpStatus.OK).body(roomResponseDto);
             } else {
@@ -107,7 +109,9 @@ public class RedisController {
                         .roomTitle(room.getRoomTitle())
                         .roomMode(room.getRoomMode())
                         .currentUserCount(room.getCurrentUserCount())
+                        .maxUserCount(room.getMaxUserCount())
                         .roomMasterId(room.getRoomMasterId())
+                        .trackId(room.getTrackId())
                         .build();
                 log.info("make room {}", room);
                 return ResponseEntity.status(HttpStatus.OK).body(roomResponseDto);
@@ -160,6 +164,7 @@ public class RedisController {
                 .roomMasterId(room.getRoomMasterId())
                 .currentUserCount(room.getCurrentUserCount())
                 .trackId(room.getTrackId())
+                .maxUserCount(room.getMaxUserCount())
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(roomResponseDto);
     }
@@ -178,10 +183,10 @@ public class RedisController {
         });
 
         for(Room room : roomList){
-            if(!room.isRoomStatus() && room.getMaxUserCount()>room.getCurrentUserCount()){
+            if(!room.isRoomStatus() && room.getMaxUserCount()>room.getCurrentUserCount() && room.getSecretRoomPassword()==null){
 
                 Session session = openvidu.getActiveSession(room.getRoomSessionId());
-                if(session==null) continue;
+                if(session==null || session.getConnections().isEmpty()) continue;
 
                 RoomResponseDto roomResponseDto = RoomResponseDto.builder()
                         .roomSessionId(room.getRoomSessionId())
@@ -264,19 +269,23 @@ public class RedisController {
 
     // 방 나가기 (방장 -> 방 폭파 / 방장 X -> 방 퇴장)
     @PatchMapping("/room/exit")
-    public ResponseEntity<String> exitRoom(Authentication authentication, @RequestBody(required = true) Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException {
+    public ResponseEntity<Map<String,Integer>> exitRoom(Authentication authentication, @RequestBody(required = true) Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException {
         String sessionId = (String) params.get("roomSessionId");
         String connectionId = (String) params.get("connectionId");
+        String resultKey = "userCount";
+
+        Map<String ,Integer> result = new HashMap<>();
+        result.put(resultKey,-1);
 
         log.info("room exit {} {}", sessionId, connectionId);
         if(sessionId == null || connectionId == null){
-            return ResponseEntity.status(HttpStatus.OK).body("already out user");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }
         SimpleResponseDto simpleResponseDto = new SimpleResponseDto();
 
         Optional<Room> findRoom = redisService.findByRoomSessionId(sessionId);
         if (findRoom.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body("not exist room");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }
 
         Room room = findRoom.get();
@@ -285,7 +294,7 @@ public class RedisController {
         // 나가려는 사용자가 방장 X -> 퇴장, 세션에서도 제외한다.(프론트에서 보이지 않아도 백엔드쪽에는 정보가 남아있다, connectionId 제거)
         redisService.exitRoom(room.getId());
         Session session = openvidu.getActiveSession(sessionId);
-        if (session == null) return ResponseEntity.status(HttpStatus.OK).body("not exist session " + sessionId);
+        if (session == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         List<Connection> connections = session.getConnections();
 
 //        String result = "";
@@ -297,8 +306,13 @@ public class RedisController {
             }
         }
 
+        Optional<Room> updateRoom = redisService.findByRoomSessionId(sessionId);
+        if(updateRoom.isPresent()){
+            result.put(resultKey,updateRoom.get().getCurrentUserCount());
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }
         //세션에 연결된 connection이 0명이면 session close해야한다 -> 방장이 나가는 경우 세션을 close한다
-        return ResponseEntity.status(HttpStatus.OK).body(connectionId + " out");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
 
 

@@ -34,31 +34,31 @@ public class Room {
     private LocalDateTime creationDateTime; // 객체 생성 날짜와 시간
 
     // 비밀방
-    public Room(int userId, String roomSessionId, String roomTitle, int roomMode, int maxUserCount, String secretRoomPassword){
+    public Room(int userId, String roomSessionId, String roomTitle, int roomMode, int maxUserCount, String secretRoomPassword, int trackId){
         this.roomSessionId = roomSessionId;
         this.secretRoom = true;
         this.secretRoomPassword = secretRoomPassword;
         this.roomStatus = false;    // 시작 x
-        this.trackId = 0;           // 1번 맵
+        this.trackId = trackId;           // 1번 맵
         this.roomMode = roomMode;
         this.roomMasterId = userId;
         this.roomTitle = roomTitle;
-        this.currentUserCount = 1;
+        this.currentUserCount = 0;
         this.maxUserCount = maxUserCount;
         this.creationDateTime = LocalDateTime.now(); // 현재 날짜와 시간 저장
     }
 
     // 일반방
-    public Room(int userId, String roomSessionId, String roomTitle, int roomMode, int maxUserCount){
+    public Room(int userId, String roomSessionId, String roomTitle, int roomMode, int maxUserCount, int trackId){
         this.roomSessionId = roomSessionId;
         this.secretRoom = false;
         this.secretRoomPassword = null;
         this.roomStatus = false;    // 시작 x
-        this.trackId = 1;           // 1번 맵
+        this.trackId = trackId;           // 1번 맵
         this.roomMode = roomMode;
         this.roomMasterId = userId;
         this.roomTitle = roomTitle;
-        this.currentUserCount = 1;
+        this.currentUserCount = 0;
         this.maxUserCount = maxUserCount;
         this.creationDateTime = LocalDateTime.now(); // 현재 날짜와 시간 저장
     }

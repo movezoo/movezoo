@@ -28,13 +28,14 @@ function Shop () {
       onRequestClose={closeModal}
       style={{
         overlay: {
-          backgroundColor: 'rgba(0, 0, 0, 0.75)', // 투명도를 0.75로 설정한 검은색 배경
+          backgroundColor: 'rgba(0, 0, 0, 0.5)', // 투명도를 0.75로 설정한 검은색 배경
         },
         content: {
           width: '1000px',
           height: '550px',
           margin: 'auto',
           borderRadius: '30px',
+          backgroundColor: 'rgba(247, 254, 231, 0.8)', 
         }
       }}
       >

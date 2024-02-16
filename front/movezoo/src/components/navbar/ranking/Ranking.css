@@ -18,35 +18,65 @@
   @apply w-10 h-10 transition
 }
 
-.map-button{
-  @apply w-40 h-8 flex flex-1 items-center justify-center p-2 text-white bg-blue-500 rounded-md
-  hover:bg-blue-700 m-1;
-}
 
-.ranking-topTen {
-  @apply flex flex-wrap;
-}
-
-.ranking-user {
-  @apply grid grid-cols-3;
-}
 
 .ranking-container {
-  @apply flex flex-col;
+  @apply w-full h-full flex flex-col justify-between;
 }
 
 .ranking-header {
-  @apply flex flex-col;
+  @apply flex flex-col justify-center items-center;
+}
+
+.ranking-header-map {
+  @apply w-[400px] flex justify-between m-3;
 }
 
 .ranking-header-exit {
   @apply flex justify-end
 }
 
-.ranking-header-map {
-  @apply flex justify-center mb-10;
+.ranking-map-button{
+  @apply w-48 h-10 flex items-center justify-center p-2 text-white
+  bg-green-500 rounded-xl
+  hover:bg-green-700 hover:scale-110 transition;
 }
 
 .ranking-body {
-  @apply flex flex-col justify-center items-center;
+  @apply flex flex-col mb-16 items-center justify-center;
+}
+
+.ranking-topTen {
+  @apply w-[400px] h-[268px] bg-white rounded-xl
+}
+
+.ranking-user {
+  @apply h-[44px] m-2 flex items-center justify-between
+  /* bg-white rounded-lg; */
+}
+
+.ranking-user-rank {
+  @apply w-20 flex justify-center
+}
+
+.ranking-user-nickname {
+  @apply w-40 flex justify-center
+
+}
+
+.ranking-user-record {
+  @apply w-20 flex justify-center
+}
+
+/* .ranking-line {
+  @apply w-[380px] h-1 bg-white
+} */
+
+.ranking-my {
+  @apply w-[400px]
+}
+
+.ranking-user-my {
+  @apply h-[44px] mt-3 flex items-center justify-between
+  bg-white border-2 border-green-400 rounded-xl;
 }

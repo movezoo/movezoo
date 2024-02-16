@@ -1,4 +1,4 @@
-import { log } from "@tensorflow/tfjs-core/dist/log";
+import { useEffect, useRef } from "react";
 import styles from "./Chat.module.css";
 
 function Chat(props) {
@@ -12,12 +12,16 @@ function Chat(props) {
   } = props;
 
   const handleChangeChatMessage = (event) => {
-    setChatMessage(event.target.value);
+    const inputText = event.target.value;
+    // 입력된 텍스트가 30자를 초과하지 않으면 state 업데이트
+    if (inputText.length <= 30) {
+      setChatMessage(inputText);
+    }
   };
 
   // 채팅 메시지 함수
   const sendChatMessage = () => {
-    console.log(session);
+    // console.log(session);
 
     if (session && chatMessage.trim() !== "") {
       session
@@ -27,7 +31,7 @@ function Chat(props) {
           type: "my-chat",
         })
         .then(() => {
-          console.log("Message successfully sent");
+          // console.log("Message successfully sent");
 
           // 채팅 메시지를 보낸 후 텍스트 상자 비우기
           setChatMessage("");
@@ -45,9 +49,18 @@ function Chat(props) {
     }
   };
 
+  const chatLogRef = useRef(null);
+
+  // 채팅 로그가 업데이트될 때마다 스크롤을 아래로 이동
+  useEffect(() => {
+    if (chatLogRef.current) {
+      chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
+    }
+  }, [chatMessages]);
+
   return (
     <div className={styles.container}>
-      <div className={styles.chatLog}>
+      <div className={styles.chatLog} ref={chatLogRef}>
         <ul className="chat-container">
           {chatMessages.map((message, index) => (
             <li key={index}>
@@ -65,7 +78,7 @@ function Chat(props) {
           onKeyDown={handleKeyDown}
         />
         <button className={styles.chatBtn} onClick={sendChatMessage}>
-          enter
+          ⏎
         </button>
       </div>
 

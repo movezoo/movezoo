@@ -8,17 +8,17 @@
 
 .Character-list {
   @apply w-[600px] h-[500px] flex flex-row flex-wrap justify-center items-center ml-2
-  bg-blue-400  rounded-2xl;
+  /* bg-green-200  rounded-2xl; */
 }
 
 .character-images-wrapper {
   @apply w-[172px] h-[100px] ml-2 mr-2 flex justify-center object-center rounded-lg transition duration-200
-  bg-white border-2 border-gray-400
+  bg-white 
   hover:opacity-100 hover:scale-110;
 }
 
 .character-images-wrapper.selected {
-  @apply border-2 border-black
+  @apply border-2 border-green-500
 }
 
 .character-image {
@@ -34,7 +34,7 @@
 }
 
 .body-select-image {
-  @apply mt-10
+
 }
 
 .body-select-name {
@@ -51,7 +51,7 @@
 }
 
 .body-select-buyButton {
-  @apply flex justify-end mt-2
+  @apply flex justify-center
 }
 
 .select-image {
@@ -63,8 +63,8 @@
 }
 
 .character-buy-button {
-  @apply w-20 h-10 m-2 items-center justify-center p-2 text-white bg-blue-500 rounded-md
-  hover:bg-blue-700 hover:scale-125 transition duration-200;
+  @apply w-40  h-10 m-4 items-center justify-center p-2 text-white bg-red-500 rounded-md
+  hover:bg-red-700 hover:scale-125 transition duration-200;
 }
 
 /* 모달창 ====================== */

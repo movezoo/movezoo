@@ -13,9 +13,7 @@ const GoogleLoginButton = () => {
         <div>
             <a className="googlelogin" href="/oauth2/authorization/google">
                 <img alt="Google로고" className="googleLogo"/>
-                Google 계정으로 가입</a>
-
-
+                Google 계정으로 로그인</a>
         </div>
 
         // <div className="googlelogin">

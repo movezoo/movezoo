@@ -1,17 +1,28 @@
+
+
+
+
 const data = {
+  centerDistance: 0,
+  sensitivity: 0,
   isLeftKeyPressed: false,
   isRightKeyPressed: false,
   isBreak : false,
-  isRun: true // Test중... false로 바꿔야됨
+  isRun: false, // Test중... false로 바꿔야됨
+  isLeftItemUse: false,
+  isRightItemUse: false,
+  isGameStart: false,
+  isGameEnd: false
 };
+// console.log(JSON.parse(localStorage.getItem('userData')).selectedMapName);
 const gameStartData = {
-  mode: 'multi',
-  selectMap: 'map1',
-  selectCharacter: 'husky',
+  mode: 'single',
+  selectMap: '',
+  selectCharacter: 'fox',
 }
 
 const playerCount = { value: 1 };
-const myGameData = { playerId: '', playerCharacter: gameStartData.selectCharacter, userX: 0, userZ: 0, speed: 0 }
+const myGameData = { playerId: '', playerCharacter: gameStartData.selectCharacter, userX: 0, userZ: 0, speed: 0, loadSuccess: false, lapTime: '' }
 const playerGameDataList = [];  // myGameData이 모인 리스트
 
 

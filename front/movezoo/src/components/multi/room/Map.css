@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.room-map-container {
+  @apply w-[225px] h-[200px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
+  cursor-default;
+}
+
+.room-map-header {
+  @apply  w-[200px] flex flex-row items-center justify-center mt-5
+  mb-5 cursor-default
+}
+
+.room-map-image {
+  @apply w-[190px] h-[190px] flex items-center border-4 rounded-3xl
+border-white;
+}
+
+.room-map-change-button {
+  @apply w-10 h-10 text-black hover:text-gray-500 hover:scale-125 transition duration-300 ease-in-out
+  hover:cursor-pointer ml-3 mr-3 cursor-default
+}
+
+.room-map-body {
+  @apply flex flex-col items-center justify-center mb-5
+  cursor-default;
+}
+
+.room-map-record-name {
+  @apply text-4xl cursor-default
+}
+

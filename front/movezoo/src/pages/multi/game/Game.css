@@ -1,0 +1,270 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .singlegame-container {
+  background-image:url('/public/images/singlebg/Summer6.png');
+  background-size: cover;
+  opacity: 0.7; /* 투명도 조절 
+  z-index: -1;
+}
+
+.singlegame-body {
+  @apply flex flex-col justify-center items-center
+}
+
+.singlegame-select {
+  @apply flex bg-white
+} */
+
+/* .game {
+  width: 100%;
+  height: 100%;
+}
+
+
+.goBack {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  z-index: 999;
+}
+
+.webCam {
+  position: absolute;
+  bottom: 0%;
+  height: 20%;
+} */
+
+
+/* 현민 CSS!! */
+.singlegame-container {
+  /* display: flex;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: flex-start; */
+  height: 100vh;
+}
+
+.game {
+  position: absolute;
+}
+
+.over-contents {
+  z-index: 999;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* max-width: 400px; Limit width to 400px */
+}
+
+.current-time {
+  z-index: 999;
+  width: auto;
+  /* background-color: white; */
+  font-size: 64px;
+  @apply
+  absolute
+  top-[100px]
+  left-[160px];
+  user-select: none;
+}
+
+.my-item-list {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  user-select: none;
+}
+.my-item {
+  color: rgba(255, 255, 255, 255);
+  font-size: 40px;
+  margin: 50px;
+  padding: 15px;
+  height: 130px;
+  width: 130px;
+  background-color: rgba(0, 0, 0, 70%);
+  border-radius: 30px;
+}
+
+.webcam-box {
+  z-index: 998;
+  margin-top: 50px;
+  width: 300px;
+  height: 230px;
+  background-color: white;
+  position: flex;
+  justify-content: center;
+  border-radius: 20px;
+  opacity: 80%;
+  user-select: none;
+}
+
+.single-webCam {
+  width: 100%;
+  max-width: 280px; /* Limit width to 400px */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 20px;
+  overflow: hidden;
+  @apply
+  opacity-80
+}
+
+.multi-webCam-box {
+  width: 100%;
+  max-width: 200px; /* Limit width to 400px */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 20px;
+  overflow: hidden;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  @apply
+  opacity-80
+}
+
+.multi-webCam {
+  width: 100%;
+  max-width: 160px; /* Limit width to 400px */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  @apply
+  opacity-80
+}
+
+.start-time {
+  z-index: 999;
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 300px;
+  color: white;
+  user-select: none;
+}
+
+.end-time {
+  z-index: 999;
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 300px;
+  color: white;
+  user-select: none;
+}
+/* Game */
+
+/****************************************/
+/* common styles used for v1 through v4 */
+/****************************************/
+/* #stats {
+  border: 2px solid black;
+}
+#controls {
+  width: 28em;
+  float: left;
+  padding: 1em;
+  font-size: 0.7em;
+}
+#controls th {
+  text-align: right;
+  vertical-align: middle;
+}
+#instructions {
+  clear: left;
+  float: left;
+  width: 17em;
+  padding: 1em;
+  border: 1px solid black;
+  box-shadow: 0 0 5px black;
+}
+#racer {
+  position: relative;
+  z-index: 0;
+  width: 640px;
+  height: 480px;
+  margin-left: 20em;
+  border: 2px solid black;
+}
+#canvas {
+  position: absolute;
+  z-index: 0;
+  width: auto;
+  height: 70%;
+  z-index: 0;
+  background-color: #72d7ee;
+}
+#mute {
+  background-position: 0px 0px;
+  width: 32px;
+  height: 32px;
+  background: url(../../../components/play/images/mute.png);
+  display: inline-block;
+  cursor: pointer;
+  position: absolute;
+  margin-left: 20em;
+}
+#mute.on {
+  background-position: -32px 0px;
+} */
+
+/**************************************************/
+/* rudimentary heads up display (only used in v4) */
+/**************************************************/
+/* #hud {
+  position: absolute;
+  z-index: 1;
+  width: 640px;
+  padding: 5px 0;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 0.8em;
+  background-color: rgba(255, 0, 0, 0.4);
+  color: black;
+  border-bottom: 2px solid black;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+#hud .hud {
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 5px;
+  border: 1px solid black;
+  margin: 0 5px;
+  transition-property: background-color;
+  transition-duration: 2s;
+  -webkit-transition-property: background-color;
+  -webkit-transition-duration: 2s;
+}
+#hud #speed {
+  float: right;
+}
+#hud #current_lap_time {
+  float: left;
+}
+#hud #last_lap_time {
+  float: left;
+  display: none;
+}
+#hud #fast_lap_time {
+  display: block;
+  width: 12em;
+  margin: 0 auto;
+  text-align: center;
+  transition-property: background-color;
+  transition-duration: 2s;
+  -webkit-transition-property: background-color;
+  -webkit-transition-duration: 2s;
+}
+#hud .value {
+  color: black;
+  font-weight: bold;
+}
+#hud .fastest {
+  background-color: rgba(255, 215, 0, 0.5);
+} */

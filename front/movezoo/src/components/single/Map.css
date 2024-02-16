@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.map-container {
+  @apply w-[228px] h-[200px] flex flex-col items-center justify-center bg-lime-50 rounded-2xl
+  cursor-default;
+}
+
+.map-header {
+  @apply  w-[228px] flex flex-row items-center justify-center mt-5
+  mb-2 cursor-default
+}
+
+.map-image {
+  @apply w-[100px] h-[100px] flex items-center border-4 rounded-3xl
+border-white;
+}
+
+.map-inner-image {
+  @apply w-[95px] h-[95px] flex items-center rounded-3xl
+border-black;
+}
+
+.map-change-button {
+  @apply w-10 h-10 text-black hover:text-gray-500 hover:scale-125 transition duration-300 ease-in-out
+  hover:cursor-pointer ml-3 mr-3 cursor-default
+}
+
+.map-body {
+  @apply flex flex-col items-center justify-center mb-5
+  cursor-default;
+}
+
+.map-record-name {
+  @apply text-3xl cursor-default
+}
+
+.best-map-record {
+  @apply text-xl cursor-default
+}
+

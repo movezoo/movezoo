@@ -2,23 +2,91 @@
 // import io from "socket.io-client";
 import { useRef, useEffect, useState } from 'react'
 import { Util, Game, Render, KEY, COLORS, BACKGROUND, SPRITES } from './common.js';
-import { MAX_FRAME_COUNT, PLAYER_SPRITE, MAP_SPRITE, ITEM_SPRITE, EFFECT } from './gameConstants.js';
+import { MAX_FRAME_COUNT, PLAYER_SPRITE, MAP_SPRITE, ITEM_SPRITE, EFFECT, ITEM } from './gameConstants.js';
 import { data, myGameData, playerGameDataList, playerCount, gameStartData } from './data.js';
+import { useRecoilState } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+
+import {
+  gameCurrentTimeState, 
+  gameMyItemLeftState, 
+  gameMyItemRightState, 
+  gameStartCountState, 
+  gameEndCountState, 
+  singleResultState,
+  isLoadGameState,
+  isLoadDetectState,
+  isGameEndState,
+  isMultiGameStartState,
+  playGameModeState
+} from '../state/gameState.js'
+import { selectCharacterState } from '../state/state.js'
 
 const localStorage = window.localStorage || {};
 
 const Main = (props) => {
-
-  // 게임 플레이 정보
+  const { setPage } = props;
+  // useState
   const [testSpeed, setTestSpeed] = useState(0);
-  const [testCurrentLapTime, setTestCurrentLapTime] = useState(0);
   const [testLastLapTime, setTestLastLapTime] = useState(0);
-  
+
+
+  // useRecoilState
+  const [testCurrentLapTime, setTestCurrentLapTime] = useRecoilState(gameCurrentTimeState);
+  const [gameMyItemLeft, setGameMyItemLeft] = useRecoilState(gameMyItemLeftState);
+  const [gameMyItemRight, setGameMyItemRight] = useRecoilState(gameMyItemRightState);
+  const [gameStartCount, setGameStartCount] = useRecoilState(gameStartCountState);
+  const [gameEndCount, setGameEndCount] = useRecoilState(gameEndCountState);
+  const [singleResult, setSingleResult] = useRecoilState(singleResultState);
+  const [selectCharacter] = useRecoilState(selectCharacterState);
+  const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
+  const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
+  const [isGameEnd, setIsGameEnd] = useRecoilState(isGameEndState);
+  const [isMultiGameStart, setIsMultiGameStart] = useRecoilState(isMultiGameStartState);
+  const [playGameMode, setPlayGameMode] = useRecoilState(playGameModeState);
+
+  const navigate = useNavigate();
   const canvasRef = useRef(null)
 
 
+  // 멀티에서 나의 게임 로딩 여부 전달하기 위한 데이터 저장
+  useEffect(() => {
+    if(isLoadGame && isLoadDetect) myGameData.loadSuccess = true;
+  }, [isLoadGame, isLoadDetect])
+
+
+
+  // 게임 시작신호
+  useEffect(() => {
+    if(playGameMode === 'single' && isLoadGame && isLoadDetect) {
+      let count = 4; // 실제로 3초부터 출력함
+      const playCount = setInterval(() => {
+        count-=1;
+        setGameStartCount(count);
+        if(count === 0) {
+          clearInterval(playCount)
+          data.isGameStart = true;    
+        }
+      }, 1000);
+    } else if(playGameMode === 'multi' && isMultiGameStart) {
+      let count = 4; // 실제로 3초부터 출력함
+      setTimeout(() => {
+        const playCount = setInterval(() => {
+          count-=1;
+          setGameStartCount(count);
+          if(count === 0) {
+            clearInterval(playCount)
+            data.isGameStart = true;    
+          }
+        }, 1000);
+      }, 2000); // 3초 뒤에 시작
+    }
+  },[isLoadGame, isLoadDetect, isMultiGameStart])
 
   useEffect(() => {
+    // 선택된 캐릭터
+    
+    console.log(`loading 초기화`)
     const selectMap = gameStartData.selectMap;
 
     const canvas = canvasRef.current;
@@ -39,6 +107,10 @@ const Main = (props) => {
     }
 
     
+    let itemLeft = '';
+    let itemRight = '';
+    let isStopControl = false;
+
     // View 관련 설정 변수
     let roadWidth      = 2000;                    // 사실상 도로의 반폭, 도로가 -roadWidth에서 +roadWidth로 이어지면 수학이 더 간단해짐
     let cameraHeight   = 1000;                    // 카메라의 z 높이
@@ -68,7 +140,6 @@ const Main = (props) => {
     let effect = {};
     let sprites        = null;                    // 스프라이트 시트 loadImages 객체
     let playerSprites  = {};
-    let playerEnterDataList = [];
 
     let resolution     = null;                    // 해상도 독립성을 제공하기 위한 스케일링 팩터 (계산됨)
     let segmentLength  = 200;                     // 단일 세그먼트의 길이
@@ -102,21 +173,45 @@ const Main = (props) => {
       last_lap_time: null,
       fast_lap_time: null
     }
-    // const hud = {
-    //   speed:            { value: null, dom: Dom.get('speed_value')            },
-    //   current_lap_time: { value: null, dom: Dom.get('current_lap_time_value') },
-    //   last_lap_time:    { value: null, dom: Dom.get('last_lap_time_value')    },
-    //   fast_lap_time:    { value: null, dom: Dom.get('fast_lap_time_value')    }
-    // }
-    
 
 
-
-
+    let isMultiGameEndCountStart = false;
     // =========================================================================
     // UPDATE THE GAME WORLD
     // =========================================================================
     const update = (dt) => {
+
+      // gameStartData.mode = playGameMode; // 게임모드 세팅
+      // gameStartData.selectMap = JSON.parse(localStorage.getItem('userData'))?.selectedMapName;
+      // gameStartData.selectCharacter = JSON.parse(localStorage.getItem('userData'))?.selectedCharacterName;
+
+      // 멀티 게임이 시작되지 않았다면?
+      if(!isMultiGameStart && gameStartData.mode === 'multi' ) {
+        let readyAll = true;
+        playerGameDataList.forEach(userData => {
+          readyAll = readyAll && userData.loadSuccess;
+        });
+        if(readyAll) setIsMultiGameStart(true);
+      }
+      
+
+      // 카운트를 시작한적이 없고, 멀티게임 누군가 통과했다면(계속확인함)
+      if(!isMultiGameEndCountStart) {
+        if(playerGameDataList.length !== 0) {
+          playerGameDataList.forEach(userData => {
+            if(userData.lapTime !== '') {
+              multiGameEndCount();
+              isMultiGameEndCountStart = true;
+              return false;
+            }
+          })
+        }
+      }
+
+
+
+
+      // dt === step(1/60)
       keyLeft        = data.isLeftKeyPressed;
       keyRight       = data.isRightKeyPressed;
 
@@ -127,7 +222,7 @@ const Main = (props) => {
       updatePlayerFrame();
 
       
-      for (let i = 0; i < playerCount.value; i++) {
+      for (let i = 0; i < playerGameDataList.length; i++) {
         const playerGameData = playerGameDataList[i];
         // 나의 데이터는 정확한 데이터가 아니므로 receive 할 필요 없다.
         if(!playerGameData || myGameData.playerId === playerGameData.playerId) continue;
@@ -145,16 +240,21 @@ const Main = (props) => {
       let startPosition = position;
     
       updateCars(dt, playerSegment, playerW);
-    
       position = Util.increase(position, dt * speed, trackLength);
-    
+      
       // 키 조작에 따른 플레이어 위치 업데이트
-      if (keyLeft)
-        playerX = playerX - dx;
-      else if (keyRight)
-        playerX = playerX + dx;
+      // dx *= (data.centerDistance/5000 * data.sensitivity);
+      // dx = dx < 0.05 ? dx : 0.05;
     
-      playerX = playerX - (dx * speedPercent * playerSegment.curve * centrifugal);
+      // 게임이 끝나면 조향이 되지 않는다.
+      if (!isStopControl) {
+        if (keyLeft)
+          playerX = playerX - dx;
+        else if (keyRight)
+          playerX = playerX + dx; 
+
+        playerX = playerX - (dx * speedPercent * playerSegment.curve * centrifugal);
+      }
       
       // 가속, 감속 및 정지 등 속도 관리
       // if (keyFaster) {
@@ -223,7 +323,18 @@ const Main = (props) => {
           // 아이템 제거
           let z = playerSegment.index;
           segments[z].items.splice(n, 1); // n번째 아이템 제거
-          console.log(`getItem!!!!!!!!!!!!!!!!!!!`);
+          
+          // 아이템칸이 비어있을 때 랜덤 아이템 획득
+          if(itemLeft === '') {
+            itemLeft = Util.randomChoice(Object.keys(ITEM));
+            setGameMyItemLeft(itemLeft)
+          } else {
+            if(itemRight === '') {
+              itemRight = Util.randomChoice(Object.keys(ITEM));
+              setGameMyItemRight(itemRight)
+            }
+          }
+
           break;
         }
       }
@@ -245,6 +356,7 @@ const Main = (props) => {
       hillOffset = Util.increase(hillOffset, hillSpeed * playerSegment.curve * (position-startPosition)/segmentLength, 1);
       treeOffset = Util.increase(treeOffset, treeSpeed * playerSegment.curve * (position-startPosition)/segmentLength, 1);
     
+      // 게임 종료
       // 현재 랩 타임 업데이트 및 최고 랩 타임 확인
       if (position > playerZ) {
         if (currentLapTime && (startPosition < playerZ)) {
@@ -253,16 +365,13 @@ const Main = (props) => {
           setTestCurrentLapTime(0);
           lastLapTime    = currentLapTime;
           currentLapTime = 0;
+          gameEnd(); // 게임종료 로직실행
 
           if (lastLapTime <= Util.toFloat(localStorage.fast_lap_time)) {
             localStorage.fast_lap_time = lastLapTime;
             updateHud('fast_lap_time', formatTime(lastLapTime));
-            // Dom.addClassName('fast_lap_time', 'fastest');
-            // Dom.addClassName('last_lap_time', 'fastest');
           }
           else {
-            // Dom.removeClassName('fast_lap_time', 'fastest');
-            // Dom.removeClassName('last_lap_time', 'fastest');
           }
           updateHud('last_lap_time', formatTime(lastLapTime));
           // Dom.show('last_lap_time');
@@ -278,12 +387,122 @@ const Main = (props) => {
       updateHud('current_lap_time', formatTime(currentLapTime));
       // Test
 
-      
+
+      updateUseItem();
+    }
+
+    const gameEnd = () => {
+      isStopControl = true; // 일단 통과하면 컨트롤은 중지된다.
+
+      if(gameStartData.mode === 'single') {
+        let count = 10; // 실제로 3초부터 출력함
+        const playCount = setInterval(() => {
+          count-=1;
+          setGameEndCount(count);
+          if(count === 0) {
+            // 여기서 게임을 완전 종료 시켜줘야 함
+            clearInterval(playCount)
+            data.isGameEnd = true;
+            setIsGameEnd(true); // 재렌더링을 위한 state 변경
+            goResult();
+          }
+        }, 1000);
+      } else if(gameStartData.mode === 'multi') {
+        // 해당 로직은 유저가 골라인을 통과했을 때 실행된다.
+        // 따라서 아래와 같이 조건에 따라 다르게 처리해줘야 한다.
+
+        // 1. 가장먼저 골인한 사람인지? -> 카운트를 실행시킨다.
+        // 2. 카운트다운 중에 들어갔는지? -> 카운트를 실행시키지 않는다. 
+
+        // 일단 골인했으니 기록을 저장한다. (계속 공유함)
+        myGameData.lapTime = formatTime(lastLapTime);
+
+        // playerGameDataList.forEach(gameData => {
+        //   // 나를 제외한 사람이 랩타임이 없는지 확인
+        //   if(myGameData.playerId !== gameData.playerId && gameData.lapTime === '') {
+        //     isFirstGoal = true;
+        //   }
+        // })
+        // if(isFirstGoal) {
+
+        // } 
+      }
+
+    }
+
+
+    // 멀티게임은 동시에 카운트를 위해 조건부 호출로 따로 실행한다.
+    const multiGameEndCount = () => {
+      let count = 10; // 실제로 3초부터 출력함
+      const playCount = setInterval(() => {
+        count-=1;
+        setGameEndCount(count);
+        // console.log(count);
+        if(count === 0) {
+          // 여기서 게임을 완전 종료 시켜줘야 함
+          clearInterval(playCount)
+          data.isGameEnd = true;
+          setIsGameEnd(true);
+          goResult();
+        }
+      }, 1000);
+    }
+
+    const goResult = () => {
+      setSingleResult({
+        time: formatTime(lastLapTime)
+      })
+      if (gameStartData.mode === 'single') {
+        navigate('/single/result');
+      } else if(gameStartData.mode === 'multi') {
+        setPage(4); // multi result 화면으로 이동
+      }
     }
     
 
 
+    const updateUseItem = () => {
+      // 왼쪽 아이템 사용
+      if (data.isLeftItemUse) {
+        // console.log(`useItem Left`);
+        useItem(itemLeft);
+        itemLeft = ''
+        setGameMyItemLeft(itemLeft);
+      // 오른쪽 아이템 사용
+      } else if(data.isRightItemUse) {
+        // console.log(`useItem Right`);
+        useItem(itemRight);
+        itemRight = ''
+        setGameMyItemRight(itemRight);
+      }
+    }
 
+    const useItem = item => {
+
+      // 아이템1. 속도 증가 아이템!!
+      if(item === 'speedup') {
+        // maxSpeed를 12000으로 증가 후
+        maxSpeed = 12000;
+        // console.log(`maxSpeed : ${maxSpeed}`)
+        // 5초 뒤에 서서히 8000으로 줄어 들게 한다.
+        setTimeout(() => {
+          const returnSpeed = setInterval(() => {
+            maxSpeed -= 500;
+            // console.log(`maxSpeed : ${maxSpeed}`)
+            if(maxSpeed <= 8000) {
+              maxSpeed = 8000; // 혹시몰라서 8000으로 다시 설정
+              clearInterval(returnSpeed);
+            }
+          }, 500);
+        }, 5000);
+      }
+
+      // 아이템2. 
+      else {
+
+      }
+
+    }
 
 
 
@@ -312,8 +531,8 @@ const Main = (props) => {
         
 
         // if(playerGameData.playerId === undefined) console.log(`playerGameData.playerId : ${playerGameData.playerId}`)
-        car.playerId = playerEnterDataList[n].playerId
-        car.playerCharacter = playerEnterDataList[n].playerCharacter;
+        car.playerId = playerGameDataList[n].playerId
+        car.playerCharacter = playerGameDataList[n].playerCharacter;
 
 
         // console.log(car);
@@ -408,7 +627,7 @@ const Main = (props) => {
 
 
     const updatePlayerFrame = () => {
-      playerEnterDataList.forEach((data) => {
+      playerGameDataList.forEach((data) => {
         // console.log(`${data.playerCharacter}'s frame : ${data.frameIndex}`)
         const maxFrame = MAX_FRAME_COUNT[data.playerCharacter]['run'] // 프레임 개수
         // index는 항상 프레임 개수보다 작아야 함(최대 maxFrame-1)
@@ -520,7 +739,7 @@ const Main = (props) => {
           car         = segment.cars[i];
           // sprite      = car.sprite;
           if(car.playerId === '') continue; // playerId가 아직 갱신이 되지 않았다면 continue
-          console.log(sprites);
+          // console.log(sprites);
           let playerFrameIndex = getPlayerFrameIndex(car.playerId);
           // console.log(`${car.playerCharacter}'s Frame : ${playerFrameIndex}`)
           // try {
@@ -724,6 +943,7 @@ const Main = (props) => {
      * 지정된 길이 및 높이의 저 롤링 언덕 시퀀스를 추가합니다.
      * @param {number} num - 언덕 시퀀스의 길이.
      * @param {number} height - 언덕의 높이.
+     * 450
      */
     const addLowRollingHills = (num, height) => {
       num    = num    || ROAD.LENGTH.SHORT;
@@ -791,6 +1011,7 @@ const Main = (props) => {
 
 
     const MapData = {
+      // *************************************** map 1 *************************************** 
       map1: () => {
         // 길 세팅 Start ******************************************************************
         addStraight(ROAD.LENGTH.LONG);
@@ -798,19 +1019,17 @@ const Main = (props) => {
         addSCurves();
         addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
         addBumps();
-        addLowRollingHills();
-        addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
-        addStraight();
-        addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
+        
+        addStraight(ROAD.LENGTH.LONG);
         addSCurves();
-        addCurve(ROAD.LENGTH.LONG, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
-        addHill(ROAD.LENGTH.LONG, ROAD.HILL.HIGH);
         addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
         addBumps();
+        
+        addStraight(ROAD.LENGTH.LONG);
         addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
-        addStraight();
-        addSCurves();
         addDownhillToEnd();
+
+        console.log("map1 총 길이: ",segments.length);
         // 길 세팅 End ******************************************************************
 
 
@@ -818,68 +1037,251 @@ const Main = (props) => {
         // func: addSprite(z축위치, 스프라이트그룹, 스프라이트이름, x축위치)
         
         // 고정된 위치에 각종 스프라이트 추가
-        addSprite(20, 'BILLBOARD', 'billboard_ssafy', -1);
-        // addSprite(40, 'BILLBOARD', 'billboard_ssafy', -1);
-        addSprite(60, 'BILLBOARD', 'billboard', -1);
-        // addSprite(80, 'BILLBOARD', 'billboard_ssafy', -1);
-        addSprite(100, 'BILLBOARD', 'billboard_ssafy', -1);
-        // addSprite(120, 'BILLBOARD', 'billboard_ssafy', -1);
-        addSprite(140, 'BILLBOARD', 'billboard', -1);
-        addSprite(160, 'BILLBOARD', 'billboard_ssafy', -1);
+        // addSprite(20, 'BILLBOARD', 'billboard_ssafy', -1);
+        // // addSprite(40, 'BILLBOARD', 'billboard_ssafy', -1);
+        // addSprite(60, 'BILLBOARD', 'billboard', -1);
+        // // addSprite(80, 'BILLBOARD', 'billboard_ssafy', -1);
+        // addSprite(100, 'BILLBOARD', 'billboard_ssafy', -1);
+        // // addSprite(120, 'BILLBOARD', 'billboard_ssafy', -1);
+        // addSprite(140, 'BILLBOARD', 'billboard', -1);
+        // addSprite(160, 'BILLBOARD', 'billboard_ssafy', -1);
 
         // 반복문으로 생성
-        for(let n = 10; n < 200; n += 4 + Math.floor(n/100)) {
-          addSprite(n, 'TREE', 'tree1', 0.8 + Math.random()*0.5);
-          addSprite(n, 'TREE', 'tree1',   1.3 + Math.random()*2);
-        }
-        for(let n = 250; n < 1000; n += 5) {
-          addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
-          addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
-        }
+        // for(let n = 10; n < 200; n += 4 + Math.floor(n/100)) {
+        //   addSprite(n, 'TREE', 'tree1', 0.8 + Math.random()*0.5);
+        //   addSprite(n, 'TREE', 'tree1',   1.3 + Math.random()*2);
+        // }
+        // for(let n = 250; n < 1000; n += 5) {
+        //   addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
+        //   addSprite(n + Util.randomInt(0,5), 'TREE', 'tree2', -1 - (Math.random() * 2));
+        // }
 
         // 다양한 위치에 랜덤하게 식물 스프라이트 추가
-        for(let n = 200; n < segments.length; n += 3) {
-          addSprite(
-            n,
-            'TREE',
-            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
-            Util.randomChoice([1,-1]) * (2 + Math.random() * 5)
-          );
-        }
+        // for(let n = 200; n < segments.length; n += 3) {
+        //   addSprite(
+        //     n,
+        //     'TREE',
+        //     Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+        //     Util.randomChoice([1,-1]) * (2 + Math.random() * 5)
+        //   );
+        // }
       
         // 일정한 간격으로 랜덤한 방향으로 빌보드 및 식물 스프라이트 추가
-        let side, sprite, offset;
-        for(let n = 1000; n < (segments.length-50); n += 100) {
-          side = Util.randomChoice([1, -1]);
-          addSprite(
-            n + Util.randomInt(0, 50),
-            'BILLBOARD',
-            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].BILLBOARD)),
-            -side
+        // let side, sprite, offset;
+        // for(let n = 1000; n < (segments.length-50); n += 100) {
+        //   side = Util.randomChoice([1, -1]);
+        //   addSprite(
+        //     n + Util.randomInt(0, 50),
+        //     'BILLBOARD',
+        //     Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].BILLBOARD)),
+        //     -side
+        //   );
+        //   for(let i = 0; i < 20; i++) {
+        //     sprite = Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE));
+        //     offset = side * (1.5 + Math.random());
+        //     addSprite(n + Util.randomInt(0, 50), 'TREE', sprite, offset);
+        //   }
+        // }
+
+        // ===============================================================================
+        
+        // 나무 랜덤 추가
+        for(let n = 10; n < (segments.length-50); n += 2) {
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
           );
-          for(let i = 0; i < 20; i++) {
-            sprite = Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE));
-            offset = side * (1.5 + Math.random());
-            addSprite(n + Util.randomInt(0, 50), 'TREE', sprite, offset);
-          }
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
+          );
         }
+
+        // 빌보드, 집&우물 추가
+        for(let n = 10; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
+          addSprite(n + Util.randomInt(0,5), 'BILLBOARD',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].BILLBOARD)),
+            Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'BILLBOARD',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].BILLBOARD)),
+            Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'STUFF',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)),
+            Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'STUFF',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)),
+            Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
+          );
+        }
+
+
         // 스프라이트 세팅 End ********************************************************************************************************
 
 
         // 아이템 세팅 Start *******************************************************************************
-        addItem(20, 0.75);
-        addItem(20, 0.25);
-        addItem(20, -0.25);
-        addItem(20, -0.75);
+        addItem(50, 0.75);
+        addItem(50, 0.25);
+        addItem(50, -0.25);
+        addItem(50, -0.75);
 
-        addItem(80, 0.75);
-        addItem(100, 0.25);
-        addItem(60, -0.25);
-        addItem(200, -0.75);
-        addItem(300, 0.75);
-        addItem(800, 0.25);
-        addItem(250, -0.25);
-        addItem(400, -0.75);
+        for(let n = 500; n < (segments.length-450); n += 300) {
+          addItem(n, 0.25 + Util.randomInt(0, 1) * 0.5);
+          addItem(n, -0.25 - Util.randomInt(0, 1) * 0.5);
+        }
+
+        // 아이템 세팅 End *******************************************************************************
+      },
+
+
+
+      
+
+
+      // *************************************** map 2 *************************************** 
+      map2: () => {
+        // 길 세팅 Start ******************************************************************
+        addLowRollingHills();
+        addStraight(ROAD.LENGTH.SHORT);
+        addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
+        addSCurves();
+        // addSCurves();
+        // addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.HARD, ROAD.HILL.LOW);
+        // addBumps();
+        // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
+        // addStraight();
+        // addSCurves();
+        // addHill(ROAD.LENGTH.SHORT, ROAD.HILL.MEDIUM);
+        // addStraight();
+        // addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
+        // addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
+        // addStraight();
+        // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
+        // addBumps();
+        // addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
+        addDownhillToEnd();
+
+        console.log("map2 총 길이: ",segments.length);
+        // 길 세팅 End ******************************************************************
+
+
+        // 스프라이트 세팅 Start ********************************************************************
+        // func: addSprite(z축위치, 스프라이트그룹, 스프라이트이름, x축위치)
+        
+        // 랜덤 캐릭터 추가
+
+        for(let n = 10; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(1, 5) + Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'ghost', Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'vampire', Util.randomInt(1, 5) + Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'vampire', Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'zombie', Util.randomInt(1, 5) + Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'CHARACTER', 'zombie', Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1]));
+        }
+
+        // 랜덤 나무 추가
+        for(let n = 10; n < (segments.length-50); n ++) {
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
+          );
+        }
+
+        // 사이드 먼 곳 나무 추가
+        for(let n = 10; n < (segments.length-50); n += 3) {
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(-5, -10) - Util.randomChoice([0, 1])
+          );
+          addSprite(n + Util.randomInt(0,5), 'TREE',
+            Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].TREE)),
+            Util.randomInt(5, 10) - Util.randomChoice([0, 1])
+          );
+        }
+
+        // 다양한 위치에 랜덤하게 스프라이트(무덤, 전등, 호박등) 추가
+        for(let n = 0; n < (segments.length-50); n += 5) {
+          addSprite(n + Util.randomInt(0, 50), 'GRAVE', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].GRAVE)), Util.randomInt(-1, -7) - Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'GRAVE', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].GRAVE)), Util.randomInt(1, 7) + Util.randomChoice([0.2, 1]));
+        }
+
+        for(let n = 0; n < (segments.length-50); n += 10) {
+          addSprite(n + Util.randomInt(0, 50), 'LIGHTPOST', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].LIGHTPOST)), Util.randomInt(-1, -7) - Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'LIGHTPOST', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].LIGHTPOST)), Util.randomInt(1, 7) + Util.randomChoice([0.2, 1]));
+        }
+
+        for(let n = 0; n < (segments.length-50); n += 3) {  
+          addSprite(n + Util.randomInt(0, 50), 'STUFF', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)), Util.randomInt(-1, -7) -Util.randomChoice([0.2, 1]));
+          addSprite(n + Util.randomInt(0, 50), 'STUFF', Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)), Util.randomInt(1, 7) + Util.randomChoice([0.2, 1]));
+        }
+      
+        // 일정한 간격으로 랜덤한 방향으로 물건 및 전등 스프라이트 추가
+        // let side, sprite, offset;
+        // for(let n = 10; n < (segments.length-50); n += 20) {
+        //   side = Util.randomChoice([1, -1]);
+        //   addSprite(
+        //     n + Util.randomInt(0, 50),
+        //     'STUFF',
+        //     Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)),
+        //     -side
+        //   );
+        //   for(let i = 0; i < 20; i++) {
+        //     sprite = Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].LIGHTPOST));
+        //     offset = side * (1.5 + Math.random());
+        //     addSprite(n + Util.randomInt(0, 50), 'LIGHTPOST', sprite, offset);
+        //   }
+        // }
+        // 스프라이트 세팅 End ********************************************************************************************************
+
+
+        // 아이템 세팅 Start *******************************************************************************
+        addItem(50, 0.75);
+        addItem(50, 0.25);
+        addItem(50, -0.25);
+        addItem(50, -0.75);
+
+        for(let n = 50; n < (segments.length-450); n += 300) {
+          addItem(n, 0.75);
+          addItem(n, 0.25);
+          addItem(n, -0.25);
+          addItem(n, -0.75);
+        }
+
+        // addItem(20, 0.75);
+        // addItem(20, 0.25);
+        // addItem(20, -0.25);
+        // addItem(20, -0.75);
+
+        // addItem(80, 0.75);
+        // addItem(100, 0.25);
+        // addItem(60, -0.25);
+        // addItem(200, -0.75);
+        // addItem(300, 0.75);
+        // addItem(800, 0.25);
+        // addItem(250, -0.25);
+        // addItem(400, -0.75);
         // 아이템 세팅 End *******************************************************************************
       }
     }
@@ -939,28 +1341,9 @@ const Main = (props) => {
 
     
     
-      
-    
-
-    // 게임 시작전 필요한 플레이어 데이터 초기화
-    const resetPlayerData = () => {
-      // 대기방에서 게임으로 넘어올 때 객체 데이터를 받아온다.
-
-      // 2. 각 플레이어의 ID와 캐릭터이름
-      playerEnterDataList = [
-        { playerId: 'Participant86', playerCharacter: 'pug', frameIndex: 0, }, 
-        { playerId: 'Participant87', playerCharacter: 'pug', frameIndex: 0 }
-        // { playerId: 'Participant88', playerCharacter: 'zebra', frameIndex: 0 },
-        // { playerId: 'Participant89', playerCharacter: 'pig', frameIndex: 0 }
-      ]
-      // 1. 플레이어의 수 setting
-      playerCount.value = playerEnterDataList.length
-
-      console.log(playerEnterDataList);
-    }
 
     const getPlayerFrameIndex = (playerId) => {
-      for (let data of playerEnterDataList) {
+      for (let data of playerGameDataList) {
         // console.log(`playerId : ${playerId}`)
         // console.log(`data.playerId : ${data.playerId}`)
         if (data.playerId === playerId) {
@@ -972,10 +1355,9 @@ const Main = (props) => {
 
 
     const resetCars = () => {
-      resetPlayerData();
       cars = []; // 빈 배열로 초기화
       let car, segment, offset, z, sprite, speed;
-      for (let n = 0 ; n < playerCount.value ; n++) {
+      for (let n = 0 ; n < playerGameDataList.length ; n++) {
         offset = Math.random() * Util.randomChoice([-0.8, 0.8]);
         // z      = Math.floor(Math.random() * segments.length) * segmentLength;
         z      = 0;
@@ -989,14 +1371,14 @@ const Main = (props) => {
         // sprite = Util.randomChoice(SPRITES.CARS); 
         speed  = maxSpeed/4 + Math.random() * maxSpeed/(sprite === SPRITES.SEMI ? 4 : 2);
         // speed  = maxSpeed;
-        // playerEnterDataList 배열인데 지금까지 playerEnterDataList.playerId, 이렇게 참조하고 있었다..
+        // playerGameDataList 배열인데 지금까지 playerGameDataList.playerId, 이렇게 참조하고 있었다..
         car = {
           offset: offset, z: z, 
           sprite: sprite, speed: speed, 
-          playerId: playerEnterDataList[n].playerId, 
-          playerCharacter: playerEnterDataList[n].playerCharacter
+          playerId: playerGameDataList[n].playerId, 
+          playerCharacter: playerGameDataList[n].playerCharacter
         };
-        // if( playerEnterDataList.playerId === undefined ) console.log(playerEnterDataList); // 출력됨!! 
+        // if( playerGameDataList.playerId === undefined ) console.log(playerGameDataList); // 출력됨!! 
         segment = findSegment(car.z);
         segment.cars.push(car);
         cars.push(car); // cars 배열에 담기
@@ -1051,6 +1433,8 @@ const Main = (props) => {
         reset();
         localStorage.fast_lap_time = localStorage.fast_lap_time || 180;
         updateHud('fast_lap_time', formatTime(Util.toFloat(localStorage.fast_lap_time)));
+        setIsLoadGame(true);
+        console.log(`게임로딩완료`);
       }
     });
     
@@ -1123,7 +1507,9 @@ const Main = (props) => {
     //=========================================================================
     
     //=========================================================================
-  }, [])
+    
+    console.log(`loading 완료`)
+  }, [isGameEnd])
 
 
 
@@ -1146,27 +1532,18 @@ const Main = (props) => {
   
   return (
     <div>
-      <div id="racer">
-        {/* <div id="hud">
-          <span id="speed"            className="hud"><span id="speed_value" className="value">0</span> mph</span>
-          <span id="current_lap_time" className="hud">Time: <span id="current_lap_time_value" className="value">0.0</span></span> 
-          <span id="last_lap_time"    className="hud">Last Lap: <span id="last_lap_time_value" className="value">0.0</span></span>
-          <span id="fast_lap_time"    className="hud">Fastest Lap: <span id="fast_lap_time_value" className="value"></span></span>
-        </div> */}
-        {/* <canvas id="canvas">
-          Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
-        </canvas> */}
 
+      <div id="racer">
         <canvas id="canvas" ref={canvasRef} {...props}>Loading...</canvas>
-        
       </div>
+
       <div>
-        속도 : {5 * Math.round(testSpeed/500)} <br/>
+        {/* 속도 : {5 * Math.round(testSpeed/500)} <br/>
         시간 : {Util.formatTime(testCurrentLapTime)} <br/>
-        {/* 현재랩타임 : {testTime} <br/> */}
         방금기록 : { Util.formatTime(testLastLapTime) } { } <br/>
-        최고기록 : { Util.formatTime(Util.toFloat(localStorage.fast_lap_time)) } <br/>
+        최고기록 : { Util.formatTime(Util.toFloat(localStorage.fast_lap_time)) } <br/> */}
       </div>
+
     </div>
   )
 }

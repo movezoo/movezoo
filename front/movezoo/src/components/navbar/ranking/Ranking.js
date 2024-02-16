@@ -8,7 +8,7 @@ import { IoCloseSharp } from "react-icons/io5";
 const Ranking = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [rankings, setRankings] = useState([]);
-  const [selectedMap, setSelectedMap] = useState(null);
+  const [selectedMap, setSelectedMap] = useState(1);
   const [userLaptime, setUserLaptime] = useState(null);
   const [userRank, setUserRank] = useState(null);
 
@@ -17,7 +17,7 @@ const Ranking = () => {
       try {
         const response = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${mapNumber}`);
         const sortedRankings = response.data.sort((a, b) => a.record - b.record);
-        const topTenRankings = sortedRankings.slice(0, 10);
+        const topTenRankings = sortedRankings.slice(0, 5);
         setRankings(topTenRankings);
 
         
@@ -31,8 +31,8 @@ const Ranking = () => {
 
         const userId = userData.userData.userId;
 
-        console.log(userId);
-        console.log(mapNumber);
+        // console.log(userId);
+        // console.log(mapNumber);
 
         const userLaptime = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${userId}/${mapNumber}`);
         setUserLaptime(userLaptime.data);
@@ -74,27 +74,29 @@ const Ranking = () => {
         onRequestClose={closeModal}
         style={{
           overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.75)', // 투명도를 0.75로 설정한 검은색 배경
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // 투명도를 0.75로 설정한 검은색 배경
           },
           content: {
             width: '500px',
             height: '500px',
             margin: 'auto',
             borderRadius: '30px',
+            backgroundColor: 'rgba(247, 254, 231, 0.8)',
           }
         }}
       >
+
         <div className='ranking-container'>
+
+          <div className='ranking-header-exit'>
+            <IoCloseSharp className='exit-button' onClick={closeModal} />
+          </div>
 
           <div className='ranking-header'>
             
-            <div className='ranking-header-exit'>
-              <IoCloseSharp className='exit-button' onClick={closeModal} />
-            </div>
-
             <div className='ranking-header-map'>
-              <button className='map-button' onClick={() => handleMapButtonClick(1)}>1번 맵</button>
-              <button className='map-button' onClick={() => handleMapButtonClick(2)}>2번 맵</button>
+              <button className='ranking-map-button' onClick={() => handleMapButtonClick(1)}>1번 맵</button>
+              <button className='ranking-map-button' onClick={() => handleMapButtonClick(2)}>2번 맵</button>
             </div>
 
           </div>
@@ -105,23 +107,25 @@ const Ranking = () => {
                 <div>
                   {rankings.map((ranking, index) => (
                     <div className='ranking-user' key={index}>
-                      <p>{index + 1}위</p>
-                      <p>{ranking.nickName}</p>
-                      <p>{ranking.record}</p>
-                      <hr />
+                      <p className='ranking-user-rank'>{index + 1}위</p>
+                      <p className='ranking-user-nickname'>{ranking.nickName}</p>
+                      <p className='ranking-user-record'>{ranking.record}</p>
+                      
                     </div>
                   ))}
-
+          
                 </div>
               )}
             </div>
 
+            <hr className='ranking-line'/>
+            
             <div className='ranking-my'>
             {userLaptime && (
-              <div className='ranking-user'>
-                <p>{userRank}위</p>
-                <p>{userLaptime.nickName}</p>
-                <p>{userLaptime.record}</p>
+              <div className='ranking-user-my'>
+                <p className='ranking-user-rank'>{userRank}위</p>
+                <p className='ranking-user-nickname'>{userLaptime.nickName}</p>
+                <p className='ranking-user-record'>{userLaptime.record}</p>
                 <hr />
               </div>
             )}

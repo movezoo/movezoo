@@ -76,12 +76,11 @@ public class User {
         this.password = password;
         this.nickname = nickname;
         this.coin = 0;
-        this.profileImgUrl = profileImgUrl;
         this.volume = 50;
         this.mic = 50;
         this.cameraSensitivity = 50;
         this.role = UserRole.USER;
-        this.profileImgUrl = "./profileImg/profile1.png";
+        this.profileImgUrl = "/images/profileImg/profile1.png";
     }
 
     // 친구 추가 메서드
@@ -116,7 +115,7 @@ public class User {
         this.mic = 50;
         this.cameraSensitivity = 50;
         this.role = UserRole.USER;
-        this.profileImgUrl = "./profileImg/profile1.png";
+        this.profileImgUrl = "/images/profileImg/profile1.png";
     }
 
     // 소셜 회원인 경우 update만 하자
