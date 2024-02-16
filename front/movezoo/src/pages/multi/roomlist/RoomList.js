@@ -47,7 +47,7 @@ function RoomList(props) {
     fetchRoomList();
   }, [searchRooms]);
 
-  console.log(rooms);
+ 
 
   
   async function fastEnterRoom() {

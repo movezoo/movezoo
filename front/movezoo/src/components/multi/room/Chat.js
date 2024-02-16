@@ -21,7 +21,7 @@ function Chat(props) {
 
   // 채팅 메시지 함수
   const sendChatMessage = () => {
-    console.log(session);
+    // console.log(session);
 
     if (session && chatMessage.trim() !== "") {
       session
@@ -31,7 +31,7 @@ function Chat(props) {
           type: "my-chat",
         })
         .then(() => {
-          console.log("Message successfully sent");
+          // console.log("Message successfully sent");
 
           // 채팅 메시지를 보낸 후 텍스트 상자 비우기
           setChatMessage("");

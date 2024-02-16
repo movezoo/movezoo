@@ -71,24 +71,24 @@ function Main() {
         setNickName(data.userData.nickname);
         setProfileImgUrl(data.userData.profileImgUrl);
         
-        console.log(data.userData);
-        console.log(data.userData.coin);
-        console.log(data.userData.nickname);
-        console.log(data.userData.userEmail);
+        // console.log(data.userData);
+        // console.log(data.userData.coin);
+        // console.log(data.userData.nickname);
+        // console.log(data.userData.userEmail);
       }
       
     }
   }, [setCoin, setNickName, setUserData, setProfileImgUrl]);
   
   useEffect(() => {
-    console.log('현재 coin 상태:', coin);
+    // console.log('현재 coin 상태:', coin);
   }, [coin]);
 
   // userData 상태가 변경될 때마다 localStorage에 저장
   useEffect(() => {
     localStorage.setItem('userData', JSON.stringify(userData));
     const storedData = localStorage.getItem('userData');
-    console.log('Stored userData in localStorage:', storedData);
+    // console.log('Stored userData in localStorage:', storedData);
   }, [userData]);
   
   return (
