@@ -113,7 +113,7 @@ function Main() {
         // console.log(data.userData.userEmail);
       }
     }
-  }, [setCoin, setNickName, setUserData, setProfileImgUrl]);
+  }, [setCoin, setNickName, setUserData, setProfileImgUrl, navigate]);
   
   useEffect(() => {
     // console.log('현재 coin 상태:', coin);
