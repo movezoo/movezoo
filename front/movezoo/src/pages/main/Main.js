@@ -87,7 +87,7 @@ function Main() {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
       const data = JSON.parse(storedUserData);
-      if (data && data.userData && data.userData === null) {
+      if (data && data.userData === null) {
         axios.get('/api/current-user')
           .then(response => {
             const newSession = {
