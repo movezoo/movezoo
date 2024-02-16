@@ -162,11 +162,11 @@ function Carousel() {
       const userData = JSON.parse(storedUserData);
 
       const userId = userData.userData.userId;
-      console.log(userId) 
+      // console.log(userId) 
 
       const userLaptime = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${userId}/${mapNumber}`);
 
-      console.log(userLaptime.data)
+      // console.log(userLaptime.data)
       setUserLaptime(userLaptime.data.record);
       
     } catch (error) {
