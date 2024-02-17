@@ -6,7 +6,7 @@ function Back(props) {
   const handleLeaveGame = () => {
     props.leaveSession()
     // window.location.reload();
-    navigate("/main");
+    navigate("/redirect", { state: { url: "/main" } })
   }
   return (
     <div className="back-button">
