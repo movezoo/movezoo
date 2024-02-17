@@ -12,6 +12,7 @@ function Back(props) {
 
   const handleLeaveGame = () => {
     props.leaveSession()
+    navigate("/redirect", { state: { url: "/main" } })
     // navigate("/main");
   }
 
