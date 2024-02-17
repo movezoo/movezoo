@@ -24,8 +24,8 @@ import {
 } from '../../../components/state/gameState.js'
 import { useNavigate } from "react-router-dom";
 
-
 function Game() {
+
   const [testCurrentLapTime] = useRecoilState(gameCurrentTimeState);
   const [gameMyItemLeft] = useRecoilState(gameMyItemLeftState);
   const [gameMyItemRight] = useRecoilState(gameMyItemRightState);
@@ -260,9 +260,9 @@ function Game() {
         <Main className='game-main' width={1536} height={864} />
       </div>
 
-      <div className="game-exit">
+      <div className="single-game-exit">
         {/* <button className="game-exitbtn" onClick={() => navigate('/single/result')}>나가기</button> */}
-        <button className="game-exitbtn" onClick={() => navigate("/redirect", { state: { url: "/main" } })}>나가기</button>
+        <button className="single-game-exitbtn" onClick={() => navigate("/redirect", { state: { url: "/main" } })}>나가기</button>
       </div>
 
       <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
@@ -280,6 +280,7 @@ function Game() {
             className="single-webCam"
             mirrored={true}
             ref={videoRef}
+            onUserMediaError=""
             videoConstraints={{ //비디오 품질 해상도
               width: 640,
               height: 480
