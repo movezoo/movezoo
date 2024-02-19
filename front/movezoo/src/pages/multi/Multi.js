@@ -2,7 +2,7 @@ import RoomList from "./roomlist/RoomList";
 import Room from "./room/Room";
 import Game from "./game/Game";
 import Result from "./result/Result";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
@@ -13,6 +13,7 @@ import { myGameData, gameStartData, playerGameDataList } from "../../components/
 import { isMultiGameStartState, playGameModeState } from '../../components/state/gameState.js'
 
 function Multi() {
+  
   const APPLICATION_SERVER_URL =
     process.env.NODE_ENV === "production" ? "" : "https://i10e204.p.ssafy.io/";
 
