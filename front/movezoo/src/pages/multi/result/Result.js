@@ -45,11 +45,6 @@ function Result(props) {
 
     console.log(`[게임결과]`)
     console.log(playerGameDataList);
-    console.log("subscribers:", subscribers);
-    console.log("mainStreamManager:", mainStreamManager);
-    console.log("session:", session);
-    console.log("nickname:", JSON.parse(mainStreamManager.stream.connection.data).clientData)
-    console.log("username:", JSON.parse(mainStreamManager.stream.connection.data).clientData)
 
     let newIds = [];
 
@@ -209,7 +204,7 @@ function Result(props) {
                 ))} */}
                 {/* {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
                   : null } */}
-                <div className={ rankList.length > 0 && rankList[0].userId === JSON.parse(mainStreamManager.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam"}>
+                <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(mainStreamManager.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam"}>
                   {mainStreamManager !== undefined ? (
                       <MyVideoComponent
                         streamManager={mainStreamManager}
@@ -219,7 +214,7 @@ function Result(props) {
                   }
                 </div>
                 {subscribers.map((sub, i) => (
-                  <div className="multi-result-webCam">
+                  <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(sub.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam"}>
                     {sub !== undefined ? (
                       <UserVideoComponent className="room-webCam" streamManager={sub} />
                       ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' style={{backgroundColor: "black", width: "100%", height: "100%"}}/>
