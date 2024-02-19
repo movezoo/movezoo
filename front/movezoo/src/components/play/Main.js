@@ -1020,12 +1020,12 @@ const Main = (props) => {
         addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
         addBumps();
         
-        addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
-        addStraight();
-        addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
+        addStraight(ROAD.LENGTH.LONG);
         addSCurves();
         addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
         addBumps();
+        
+        addStraight(ROAD.LENGTH.LONG);
         addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
         addDownhillToEnd();
 
@@ -1135,7 +1135,7 @@ const Main = (props) => {
         addItem(50, -0.25);
         addItem(50, -0.75);
 
-        for(let n = 50; n < (segments.length-450); n += 300) {
+        for(let n = 500; n < (segments.length-450); n += 300) {
           addItem(n, 0.25 + Util.randomInt(0, 1) * 0.5);
           addItem(n, -0.25 - Util.randomInt(0, 1) * 0.5);
         }
@@ -1153,6 +1153,8 @@ const Main = (props) => {
         // 길 세팅 Start ******************************************************************
         addLowRollingHills();
         addStraight(ROAD.LENGTH.SHORT);
+        addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
+        addSCurves();
         // addSCurves();
         // addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.HARD, ROAD.HILL.LOW);
         // addBumps();
@@ -1524,7 +1526,6 @@ const Main = (props) => {
     else
       return seconds + "." + tenths;
   }
-
 
   
   
