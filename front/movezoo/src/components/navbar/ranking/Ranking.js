@@ -164,7 +164,7 @@ const Ranking = () => {
 
     const minutesStr = minutes.toString().padStart(2, '0');
     const secondsStr = seconds.toString().padStart(2, '0');
-    const millisecondsStr = milliseconds.toString().padStart(3, '0');
+    const millisecondsStr = milliseconds.toString().padStart(2, '0');
 
     return `${minutesStr}:${secondsStr}:${millisecondsStr}`;
   };
