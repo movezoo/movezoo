@@ -1515,14 +1515,16 @@ const Main = (props) => {
 
 
   const formatTime = (dt) => {
-    let minutes = Math.floor(dt / 60);
+    let minutes = Math.floor(dt/60);
     let seconds = Math.floor(dt - (minutes * 60));
-    let tenths = Math.floor(10 * (dt - Math.floor(dt)));
-
-    // 분, 초, 십분의 일초를 두 자리 숫자로 표시하여 문자열로 반환
-    return (minutes < 10 ? "0" + minutes : minutes) + ":" +
-      (seconds < 10 ? "0" + seconds : seconds) + ":" +
-      (tenths < 10 ? "0" + tenths : tenths);
+    let tenths  = Math.floor(10 * (dt - Math.floor(dt)));
+  
+    // 분이 0보다 크면 분, 초 및 십분의 일초를 반환
+    if (minutes > 0)
+      return minutes + "." + (seconds < 10 ? "0" : "") + seconds + "." + tenths;
+    // 그렇지 않으면 초 및 십분의 일초만 반환
+    else
+      return seconds + "." + tenths;
   }
 
   
