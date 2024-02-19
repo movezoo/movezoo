@@ -252,8 +252,8 @@ const Ranking = () => {
           <div className='ranking-header'>
             
             <div className='ranking-header-map'>
-              <button className='ranking-map-button' onClick={() => handleMapButtonClick(1)}>1번 맵</button>
-              <button className='ranking-map-button' onClick={() => handleMapButtonClick(2)}>2번 맵</button>
+              <button className='ranking-map-button1' onClick={() => handleMapButtonClick(1)}>1번 맵</button>
+              <button className='ranking-map-button2' onClick={() => handleMapButtonClick(2)}>2번 맵</button>
             </div>
 
           </div>
