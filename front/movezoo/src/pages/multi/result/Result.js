@@ -204,7 +204,7 @@ function Result(props) {
                 ))} */}
                 {/* {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
                   : null } */}
-                <div className={ newIds && newIds[0].userId ? "multi-result-webCam-1st" : "multi-result-webCam"}>
+                <div className={ newIds ? "multi-result-webCam-1st" : "multi-result-webCam"}>
                   {mainStreamManager !== undefined ? (
                       <MyVideoComponent
                         streamManager={mainStreamManager}
