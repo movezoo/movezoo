@@ -194,32 +194,34 @@ function Result(props) {
             <div className="multi-result-leftSection">
               <div className="multi-result-CamSection">
                 <div className="multi-result-bodyWebCam">
-                  {/* {mainStreamManager !== undefined ? (
-                    <div className="multi-result-webCam-1st">
-                      <MyVideoComponent
-                        streamManager={mainStreamManager}
-                        mySession={session}
-                        />
-                    </div>
-                    ) : <h1 className="txtLoading">Loading...</h1>
-                  }
-                  {subscribers.map((sub, i) => (
+                  {/* {subscribers.map((sub, i) => (
                     <div className="multi-result-webCam">
-                      <UserVideoComponent className="room-webCam" streamManager={sub} />
+                    <UserVideoComponent className="room-webCam" streamManager={sub} />
                     </div>
                   ))} */}
                   <div className="multi-result-webCam-1st">
-                    {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
-                      : null }
+                    {mainStreamManager !== undefined ? (
+                      <div className="multi-result-webCam-1st">
+                        <MyVideoComponent
+                          streamManager={mainStreamManager}
+                          mySession={session}
+                          />
+                      </div>
+                      ) : <h1 className="txtLoading">Loading...</h1>
+                    }
+                    {/* {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
+                      : null } */}
                     {/* {subscribers.map((sub, i) => (
                       <UserVideoComponent className="room-webCam" streamManager={sub} />
                   ))} */}
                   </div>
 
                   <div className="multi-result-webCam-else">
-                    <div className="multi-result-webCam">
+                    {/* <div className="multi-result-webCam">
                       {newIds[0].userId !== JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
-                      : <div className="multi-result-webCam">Loading...</div> }</div>
+                      : <div className="multi-result-webCam">Loading...</div> }
+                    </div> */}
+                    <div className="multi-result-webCam">Loading...</div>
                     <div className="multi-result-webCam">Loading...</div>
                     <div className="multi-result-webCam">Loading...</div>
                   </div>
