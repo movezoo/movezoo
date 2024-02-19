@@ -15,7 +15,7 @@
 
 /* 룸 리스트 헤더 */
 .roomlist-header {
-  @apply w-[1000px] flex justify-start items-start mb-5 mt-3
+  @apply w-[1000px] flex justify-start items-start p-5
 }
 
 .roomlist-header-name {
