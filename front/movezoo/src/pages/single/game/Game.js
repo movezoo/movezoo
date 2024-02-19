@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import Main from "../../../components/play/Main";
 import "./Game.css";
@@ -19,7 +19,6 @@ import {
   gameEndCountState,
   isLoadGameState,
   isLoadDetectState,
-  playGameModeState
 } from '../../../components/state/gameState.js'
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +31,6 @@ function Game() {
   const [gameEndCount] = useRecoilState(gameEndCountState);
   const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
   const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
-  const [playGameMode] = useRecoilState(playGameModeState);
 
   const videoRef = useRef(null);
   const detector = useRef(null);
@@ -221,7 +219,6 @@ function Game() {
     gameStart();
 
 
-
     const handleMouseMove = () => {
       document.body.style.cursor = 'auto'; // 마우스 포인터 보이기
       clearTimeout(cursorTimeout); // 이전에 설정한 숨기기 타이머 제거
@@ -272,6 +269,7 @@ function Game() {
             </div>
           </div>
       }
+      
       <div className="game">
         <Main className='game-main' width={1536} height={864} />
       </div>
