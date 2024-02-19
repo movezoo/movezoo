@@ -1151,24 +1151,11 @@ const Main = (props) => {
       // *************************************** map 2 *************************************** 
       map2: () => {
         // 길 세팅 Start ******************************************************************
-        addLowRollingHills();
-        addStraight(ROAD.LENGTH.SHORT);
-        addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
-        addSCurves();
+        // addLowRollingHills();
+        addStraight(ROAD.LENGTH.LONG);
+        // addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
         // addSCurves();
-        // addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.HARD, ROAD.HILL.LOW);
-        // addBumps();
-        // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
-        // addStraight();
-        // addSCurves();
-        // addHill(ROAD.LENGTH.SHORT, ROAD.HILL.MEDIUM);
-        // addStraight();
-        // addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
-        // addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
-        // addStraight();
-        // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
-        // addBumps();
-        // addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
+        // 이까지 대충 1분
         addDownhillToEnd();
 
         console.log("map2 총 길이: ",segments.length);
@@ -1269,19 +1256,6 @@ const Main = (props) => {
           addItem(n, -0.75);
         }
 
-        // addItem(20, 0.75);
-        // addItem(20, 0.25);
-        // addItem(20, -0.25);
-        // addItem(20, -0.75);
-
-        // addItem(80, 0.75);
-        // addItem(100, 0.25);
-        // addItem(60, -0.25);
-        // addItem(200, -0.75);
-        // addItem(300, 0.75);
-        // addItem(800, 0.25);
-        // addItem(250, -0.25);
-        // addItem(400, -0.75);
         // 아이템 세팅 End *******************************************************************************
       }
     }
