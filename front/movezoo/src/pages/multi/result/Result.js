@@ -93,10 +93,8 @@ function Result(props) {
       return a.userLapTime - b.userLapTime;
     });
 
-    setUserIds(...newIds)
+    setUserIds(newIds)
     console.log(newIds)
-    console.log(userIds)
-    console.log(userIds[0].userId)
     setRankList(newIds)
     console.log(rankList)
   }, []);
