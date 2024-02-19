@@ -234,18 +234,29 @@ function Game(props) {
     }
     gameStart();
 
+
+    const handleMouseMove = () => {
+      document.body.style.cursor = 'auto'; // 마우스 포인터 보이기
+      clearTimeout(cursorTimeout); // 이전에 설정한 숨기기 타이머 제거
+      cursorTimeout = setTimeout(() => { // 일정 시간이 지난 후에 다시 숨기기
+        document.body.style.cursor = 'none';
+      }, 3000);
+    };
+
+    // 마우스 이동 이벤트에 핸들러 연결
+    document.addEventListener('mousemove', handleMouseMove);
+
+    let cursorTimeout; // 마우스 커서 숨기기를 위한 타이머
+
+    // 컴포넌트가 unmount될 때 이벤트 핸들러 제거
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      clearTimeout(cursorTimeout);
+    };
+    
   }, [videoRef]);
 
-  // 로딩 중일 때 보여줄 뷰
-  if (isLoading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-body">
-          로딩 중...
-        </div>
-      </div>
-    );
-  }
+
 
   let itemImage = null;
   if (gameMyItemLeft === "speedup") {
