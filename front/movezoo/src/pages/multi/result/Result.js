@@ -204,19 +204,19 @@ function Result(props) {
                 ))} */}
                 {/* {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
                   : null } */}
-                <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(mainStreamManager.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam"}>
+                <div className={rankList.length > 0 && rankList[0].userId === 
+                  JSON.parse(mainStreamManager.stream.connection.data).clientData ? 
+                  "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                   {mainStreamManager !== undefined ? (
-                      <MyVideoComponent
-                        streamManager={mainStreamManager}
-                        mySession={session}
-                        />
-                    ) : <h1 className="txtLoading">Loading...</h1>
+                      <MyVideoComponent streamManager={mainStreamManager} mySession={session}
+                      className="room-webCam-box" />
+                    ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' style={{backgroundColor: "black", width: "100%", height: "100%"}}/>
                   }
                 </div>
                 {subscribers.map((sub, i) => (
-                  <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(sub.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam"}>
+                  <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(sub.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                     {sub !== undefined ? (
-                      <UserVideoComponent className="room-webCam" streamManager={sub} />
+                      <UserVideoComponent className="room-webCam-box" streamManager={sub} />
                       ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' style={{backgroundColor: "black", width: "100%", height: "100%"}}/>
                     }
                   </div>
