@@ -19,7 +19,6 @@ import {
   gameEndCountState,
   isLoadGameState,
   isLoadDetectState,
-  playGameModeState
 } from '../../../components/state/gameState.js'
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +31,6 @@ function Game() {
   const [gameEndCount] = useRecoilState(gameEndCountState);
   const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
   const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
-  const [playGameMode] = useRecoilState(playGameModeState);
 
   const videoRef = useRef(null);
   const detector = useRef(null);
@@ -272,6 +270,7 @@ function Game() {
             </div>
           </div>
       }
+      
       <div className="game">
         <Main className='game-main' width={1536} height={864} />
       </div>
