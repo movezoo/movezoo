@@ -25,15 +25,15 @@
 }
 
 .multi-result-body {
-  @apply flex flex-row m-5
+  @apply flex flex-row justify-between m-5
 }
 
 .multi-result-leftSection {
-  @apply w-4/6 flex flex-col items-center justify-center  ;
+  @apply w-full flex flex-col items-center justify-center  ;
 }
 
 .multi-result-CamSection {
-  @apply w-full flex flex-wrap items-center justify-start ;
+  @apply w-full h-[420px] flex flex-wrap items-center justify-start ;
 }
 
 .multi-result-bodyWebCam {
@@ -41,7 +41,16 @@
 }
 
 .multi-result-webCam {
-  @apply w-60 h-[200px] flex flex-col items-center justify-between
+  @apply w-full h-[140px] flex flex-col items-center justify-between
+  rounded-3xl bg-white overflow-hidden;
+}
+
+.multi-result-webCam-else {
+  @apply w-1/4 flex flex-col
+}
+
+.multi-result-webCam-1st {
+  @apply w-3/4 h-[420px] flex flex-col items-center justify-between
   rounded-3xl bg-white overflow-hidden;
 }
 
@@ -50,7 +59,7 @@
 }
 
 .multi-result-rightSection {
-  @apply w-2/6 h-[400px] flex flex-col items-center justify-between
+  @apply w-1/4 h-[420px] flex flex-col items-end justify-between ml-10
 }
 
 .multi-result-reward {
