@@ -11,7 +11,6 @@ import { useState, useRef, useEffect } from "react";
 import { useRecoilState } from "recoil";
 
 import { Util } from '../../../components/play/common.js';
-import { isLoadGameState, isLoadDetectState } from '../../../components/state/gameState.js'
 import { data } from "../../../components/play/data.js";
 
 import {
@@ -33,13 +32,13 @@ function Game(props) {
   const [gameEndCount] = useRecoilState(gameEndCountState);
   const [isMultiGameStart] = useRecoilState(isMultiGameStartState);
   const [playGameMode] = useRecoilState(playGameModeState);
-  
+
 
   // **************************************************
   // if(playGameMode === 'multi' && isMultiGameStart) 
   //     위 조건이 참이되면 카운트다운이 시작된다.
   // **************************************************
-  
+
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const videoRef = useRef(null);
   const detector = useRef(null);
@@ -261,10 +260,28 @@ function Game(props) {
   return (
     <div className="singlegame-container">
 
-    
+
       <div className="game">
         <Main width={1536} height={864} setPage={setPage} />
       </div>
+
+      {
+        (playGameMode === 'multi' && isMultiGameStart) ? null :
+          <div className="body-waviy">
+            <div className="waviy">
+              <span style={{ '--i': 4 }}>l</span>
+              <span style={{ '--i': 5 }}>o</span>
+              <span style={{ '--i': 6 }}>a</span>
+              <span style={{ '--i': 7 }}>d</span>
+              <span style={{ '--i': 8 }}>i</span>
+              <span style={{ '--i': 9 }}>n</span>
+              <span style={{ '--i': 10 }}>g</span>
+              <span style={{ '--i': 11 }}>.</span>
+              <span style={{ '--i': 12 }}>.</span>
+              <span style={{ '--i': 13 }}>.</span>
+            </div>
+          </div>
+      }
 
       <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
         {gameStartCount}
@@ -279,14 +296,14 @@ function Game(props) {
         <div className="webcam-box">
           <div className="single-webCam">
             {mainStreamManager !== undefined ? (
-            <div id="main-video">
-              <MyVideoComponent
-                streamManager={mainStreamManager}
-                mySession={session}
-                isPlayingGame={isPlayingGame}
-              />
-            </div>
-          ) : "asdf"}
+              <div id="main-video">
+                <MyVideoComponent
+                  streamManager={mainStreamManager}
+                  mySession={session}
+                  isPlayingGame={isPlayingGame}
+                />
+              </div>
+            ) : "asdf"}
           </div>
         </div>
         <div className="multi-webCam-box">
