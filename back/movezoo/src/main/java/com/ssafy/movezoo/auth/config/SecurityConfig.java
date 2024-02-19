@@ -61,7 +61,7 @@ public class SecurityConfig{
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setExposedHeaders(Arrays.asList("Custom-Header"));
         configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600000L);
+//        configuration.setMaxAge(3600000L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -155,8 +155,7 @@ public class SecurityConfig{
                         session
                                 .maximumSessions(1) // 최대 허용 가능 세션 수 (-1: 무제한 세션 허용)
                                 .maxSessionsPreventsLogin(true) // 동시 로그인 차단 (false: 기존 세션 만료, default)
-                                .expiredUrl("/") // 세션이 만료된 경우 이동할 페이지
-
+                                .expiredUrl("/expired") // 세션이 만료된 경우 이동할 페이지
 
                 );
         // 인증 및 인가(권한) 오류에 대한 예외 처리
