@@ -89,6 +89,10 @@ function Character ({ closeModal }) {
 
       const userCharacterIds = response.data.map(character => character.racerId);
 
+      let updateCharacterId = { ...userData };
+      updateCharacterId.characterIds = userCharacterIds;
+      localStorage.setItem('userData', JSON.stringify(updateCharacterId));
+
       const userImages = characterImages.map((image) => {
         if (userCharacterIds.includes(image.id)) {
           return image;
@@ -290,7 +294,7 @@ function Character ({ closeModal }) {
             <p>정말 이 캐릭터를 구매하시겠습니까?</p>
           </div>
           <div className='buy-text'>
-            <p>coin : {coin} - {characterPrice} </p>
+            <p>coin : {characterPrice} </p>
           </div>
           <div className='buy-yes-button'>
             <button className='profile-button' onClick={handleBuyConfirm}>예</button>
