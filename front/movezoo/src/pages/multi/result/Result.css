@@ -41,7 +41,7 @@
   rounded-3xl bg-white overflow-hidden;
 }
 
-.multi-result-webCam {
+.multi-result-webCam-else {
   @apply w-1/4 h-[140px] relative flex flex-col items-center justify-between
   rounded-3xl bg-white overflow-hidden;
 }
@@ -50,8 +50,8 @@
   @apply absolute w-1/3 top-0 left-[45%] z-10
 }
 
-.multi-result-webCam-else {
-  @apply w-1/4 flex flex-col
+.multi-result-webCam-box {
+  @apply relative w-full h-full
 }
 
 .multi-result-bottomCamSection {
