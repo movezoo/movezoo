@@ -64,6 +64,9 @@ dependencies {
 	//jackson
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+	// spring session jdbc
+	implementation 'org.springframework.session:spring-session-jdbc'
+
 }
 
 tasks.named('test') {

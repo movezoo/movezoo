@@ -18,6 +18,7 @@
   max-height: 85%;
   border: gainsboro 1px solid;
   border-radius: 6px;
+  padding: 10px;
 }
 
 /* 스크롤바 설정*/
