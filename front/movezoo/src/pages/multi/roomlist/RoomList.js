@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../../components/navbar/Navbar";
 import Makeroom from "../../../components/multi/roomlist/Makeroom";
 import Inforoom from "../../../components/multi/roomlist/Inforoom";
@@ -15,6 +15,7 @@ import { FaAnglesLeft } from "react-icons/fa6";
 Modal.setAppElement("#root");
 
 function RoomList(props) {
+  const navigate = useNavigate();
   const [volume, setVolume] = useState(80);
   const [rooms, setRooms] = useState([]);
   const [searchRooms, setSearchRooms] = useState("");
@@ -72,9 +73,9 @@ function RoomList(props) {
   return (
     <div className="roomlist-container">
 
-      <Link className="Back" to="/main">
-        <FaAnglesLeft className='mr-2'/><p>뒤로가기</p>
-      </Link>
+      <div className="Back" onClick={() => navigate("/redirect", { state: { url: "/main" } })}>
+        <FaAnglesLeft className='mr-2' /><p>뒤로가기</p>
+      </div>
 
       {/* 홈으로, 프로필 */}
       <div className="roomlist-header">
