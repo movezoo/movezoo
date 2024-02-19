@@ -60,7 +60,7 @@
 }
 
 .current-time {
-  z-index: 999;
+  z-index: 997;
   width: auto;
   /* background-color: white; */
   font-size: 64px;
@@ -138,7 +138,7 @@
 }
 
 .start-time {
-  z-index: 999;
+  z-index: 997;
   position: absolute;
   top:50%;
   left: 50%;
@@ -149,7 +149,7 @@
 }
 
 .end-time {
-  z-index: 999;
+  z-index: 997;
   position: absolute;
   top:50%;
   left: 50%;
