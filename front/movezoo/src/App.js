@@ -35,6 +35,8 @@ function App() {
 
           <Route path="/multi" element={<Multi />} />
           <Route path="/redirect" element={<Redirect />} />
+
+          <Route path="/googlemain" element={<Main />} />
         </Routes>
       </Router>
     </RecoilRoot>
