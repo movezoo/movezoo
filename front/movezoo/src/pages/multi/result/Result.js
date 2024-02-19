@@ -13,8 +13,9 @@ import { userCoin } from '../../../components/state/state';
 
 function Result(props) {
   const [loading, setLoading] = useState(true);
-  const [userIds, setUserIds] = useState([])
+  const [userIds, setUserIds] = useState([]);
   const [coin, setCoin] = useRecoilState(userCoin);
+  const [rankList, setRankList] = useState([]);
   const leaveSession = props.leaveSession;
   const {
     setPage,
@@ -32,12 +33,6 @@ function Result(props) {
     setChatMessages
   } = props
   
-  let newIds = [];
-  
-  useEffect(() => {
-    console.log("newIds:", newIds)
-  }, [newIds])
-  
   useEffect(() => {
     // 컴포넌트가 마운트될 때 전체 화면 모드 종료
     if (document.fullscreenElement) {
@@ -53,6 +48,8 @@ function Result(props) {
     console.log("subscribers:", subscribers);
     console.log("mainStreamManager:", mainStreamManager);
     console.log("session:", session);
+
+    let newIds = [];
 
     // user 개개인의 ID와 LapTime
     for (let i = 0; i < playerGameDataList.length; i++) {
@@ -87,6 +84,8 @@ function Result(props) {
 
     setUserIds(newIds)
     console.log(newIds)
+    setRankList(newIds)
+    console.log(rankList)
   }, []);
 
   // 등수에 따라 코인 업데이트
@@ -208,7 +207,7 @@ function Result(props) {
                 ))} */}
                 {/* {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
                   : null } */}
-                <div className={ newIds.length > 0 && newIds[0].userId ? "multi-result-webCam-1st" : "multi-result-webCam"}>
+                <div className={ rankList.length > 0 && rankList[0].userId ? "multi-result-webCam-1st" : "multi-result-webCam"}>
                   {mainStreamManager !== undefined ? (
                       <MyVideoComponent
                         streamManager={mainStreamManager}
