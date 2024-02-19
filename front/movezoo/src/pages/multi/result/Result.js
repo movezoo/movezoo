@@ -45,6 +45,8 @@ function Result(props) {
     return `${minutesStr}:${secondsStr}:${millisecondsStr}`;
   };
   
+  let newIds = [];
+
   useEffect(() => {
     // 컴포넌트가 마운트될 때 전체 화면 모드 종료
     if (document.fullscreenElement) {
@@ -58,7 +60,7 @@ function Result(props) {
     console.log(`[게임결과]`)
     console.log(playerGameDataList);
 
-    let newIds = [];
+    // let newIds = [];
 
     // user 개개인의 ID와 LapTime
     for (let i = 0; i < playerGameDataList.length; i++) {
@@ -222,16 +224,17 @@ function Result(props) {
                   JSON.parse(mainStreamManager.stream.connection.data).clientData ? 
                   "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                   {mainStreamManager !== undefined ? (
-                      <MyVideoComponent streamManager={mainStreamManager} mySession={session}
-                      className="room-webCam-box" />
-                    ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' style={{backgroundColor: "black", width: "100%", height: "100%"}}/>
+                    <MyVideoComponent streamManager={mainStreamManager} mySession={session}
+                    className="multi-result-webCam-box" />
+                    ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
                   }
                 </div>
                 {subscribers.map((sub, i) => (
                   <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(sub.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                     {sub !== undefined ? (
-                      <UserVideoComponent className="room-webCam-box" streamManager={sub} />
-                      ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' style={{backgroundColor: "black", width: "100%", height: "100%"}}/>
+                      <UserVideoComponent streamManager={sub}
+                      className="multi-result-webCam-box" />
+                      ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
                     }
                   </div>
                 ))}
