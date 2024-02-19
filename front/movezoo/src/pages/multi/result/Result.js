@@ -31,10 +31,14 @@ function Result(props) {
     chatMessages,
     setChatMessages
   } = props
+  
+  let newIds = [];
 
   useEffect(() => {
     // 컴포넌트가 마운트될 때 전체 화면 모드 종료
-    document.exitFullscreen();
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
 
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
       setLoading(false);
@@ -42,8 +46,6 @@ function Result(props) {
 
     console.log(`[게임결과]`)
     console.log(playerGameDataList);
-
-    let newIds = [];
 
     // user 개개인의 ID와 LapTime
     for (let i = 0; i < playerGameDataList.length; i++) {
@@ -190,12 +192,10 @@ function Result(props) {
 
             {/*왼쪽 화면, 웹캠 화면*/}
             <div className="multi-result-leftSection">
-
               <div className="multi-result-CamSection">
-
                 <div className="multi-result-bodyWebCam">
-                  {mainStreamManager !== undefined ? (
-                    <div className="multi-result-webCam">
+                  {/* {mainStreamManager !== undefined ? (
+                    <div className="multi-result-webCam-1st">
                       <MyVideoComponent
                         streamManager={mainStreamManager}
                         mySession={session}
@@ -207,7 +207,22 @@ function Result(props) {
                     <div className="multi-result-webCam">
                       <UserVideoComponent className="room-webCam" streamManager={sub} />
                     </div>
-                  ))}
+                  ))} */}
+                  <div className="multi-result-webCam-1st">
+                    {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
+                      : null }
+                    {/* {subscribers.map((sub, i) => (
+                      <UserVideoComponent className="room-webCam" streamManager={sub} />
+                  ))} */}
+                  </div>
+
+                  <div className="multi-result-webCam-else">
+                    <div className="multi-result-webCam">
+                      {newIds[0].userId !== JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
+                      : <div className="multi-result-webCam">Loading...</div> }</div>
+                    <div className="multi-result-webCam">Loading...</div>
+                    <div className="multi-result-webCam">Loading...</div>
+                  </div>
                 </div>
 
               </div>
@@ -218,7 +233,6 @@ function Result(props) {
             <div className="multi-result-rightSection">
 
               {/*보상 및 돌아가기 버튼*/}
-              
               <div className="multi-result-reward">
                 <table className="multi-result-reward-table">
                   <thead className="multi-result-reward-thead">
@@ -256,16 +270,12 @@ function Result(props) {
               <div className="multi-result-backbutton">
                 <Back leaveSession={leaveSession}/>
               </div>
-              
 
             </div>
-
 
           </div>
 
         </div>
-
-
 
       </div>
     </div>
