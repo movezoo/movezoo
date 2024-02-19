@@ -222,16 +222,17 @@ function Result(props) {
                   JSON.parse(mainStreamManager.stream.connection.data).clientData ? 
                   "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                   {mainStreamManager !== undefined ? (
-                      <MyVideoComponent streamManager={mainStreamManager} mySession={session}
-                      className="room-webCam-box" />
-                    ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' style={{backgroundColor: "black", width: "100%", height: "100%"}}/>
+                    <MyVideoComponent streamManager={mainStreamManager} mySession={session}
+                    className="multi-result-webCam-box" />
+                    ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
                   }
                 </div>
                 {subscribers.map((sub, i) => (
                   <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(sub.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                     {sub !== undefined ? (
-                      <UserVideoComponent className="room-webCam-box" streamManager={sub} />
-                      ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' style={{backgroundColor: "black", width: "100%", height: "100%"}}/>
+                      <UserVideoComponent streamManager={sub}
+                      className="multi-result-webCam-box" />
+                      ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
                     }
                   </div>
                 ))}
