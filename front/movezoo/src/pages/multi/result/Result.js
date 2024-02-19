@@ -48,6 +48,8 @@ function Result(props) {
     console.log("subscribers:", subscribers);
     console.log("mainStreamManager:", mainStreamManager);
     console.log("session:", session);
+    console.log("nickname:", JSON.parse(mainStreamManager.stream.connection.data).clientData)
+    console.log("username:", JSON.parse(mainStreamManager.stream.connection.data).clientData)
 
     let newIds = [];
 
@@ -207,7 +209,7 @@ function Result(props) {
                 ))} */}
                 {/* {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
                   : null } */}
-                <div className={ rankList.length > 0 && rankList[0].userId ? "multi-result-webCam-1st" : "multi-result-webCam"}>
+                <div className={ rankList.length > 0 && rankList[0].userId === JSON.parse(mainStreamManager.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam"}>
                   {mainStreamManager !== undefined ? (
                       <MyVideoComponent
                         streamManager={mainStreamManager}
