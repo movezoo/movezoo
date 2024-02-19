@@ -253,7 +253,7 @@ function Game(props) {
       document.removeEventListener('mousemove', handleMouseMove);
       clearTimeout(cursorTimeout);
     };
-    
+
   }, [videoRef]);
 
 
@@ -295,10 +295,10 @@ function Game(props) {
       }
 
       <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
-        {gameStartCount}
+        {gameStartCount === 4 ? "READY" : gameStartCount}
       </div>
       {/* <div className="start-time">시작카운트다운 : {gameStartCount}</div> */}
-      <div className={gameEndCount !== 10 ? "end-time" : "end-time hidden"}>
+      <div className={gameEndCount !== 11 ? "end-time" : "end-time hidden"}>
         {gameEndCount}
       </div>
       {/* <div className="end-time">{gameEndCount}</div> */}
