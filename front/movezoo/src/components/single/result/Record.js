@@ -22,7 +22,7 @@ function Record() {
         }
         const userData = JSON.parse(storedUserData);    
         const userId = userData.userData.userId;
-        const mapNumber = userData.selectMap;
+        const mapNumber = userData.selectedMapId;
 
         console.log(userId)
         console.log(mapNumber)
