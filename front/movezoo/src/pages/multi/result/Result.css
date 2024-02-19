@@ -54,6 +54,10 @@
   @apply relative w-full h-full
 }
 
+.multi-result-webCam-img {
+  @apply relative w-full h-full bg-black
+}
+
 .multi-result-bottomCamSection {
   @apply flex flex-row
 }
