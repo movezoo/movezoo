@@ -94,7 +94,7 @@ function Home() {
   return (
     <div className='home-container'>
       <div className='home-title'>
-        <h1 className='titlename'>MoveZoo</h1>
+        <img src='/images/mainLogo/mainlogo-art.svg' className='mainlogo' alt='mainlogo'/>
       </div>
       <div className='home-logincontainer'>
         <div className='home-loginbox'>

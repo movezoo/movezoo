@@ -21,13 +21,13 @@ const Login = () => {
         withCredentials: true,
       });
 
-      console.log(response);
-      console.log("------------------------");
-      console.log(response.data);
-      console.log("------------------------");
-      console.log(response.data.success);
-      console.log("------------------------");
-      console.log(response.status);
+      // console.log(response);
+      // console.log("------------------------");
+      // console.log(response.data);
+      // console.log("------------------------");
+      // console.log(response.data.success);
+      // console.log("------------------------");
+      // console.log(response.status);
 
       if (response.status === 200) {
         const newSession = {
@@ -37,12 +37,12 @@ const Login = () => {
         };
         setSession(newSession);
 
-        console.log(newSession)
+        // console.log(newSession)
         
         // 로그인 성공 시 localStorage에 userData 저장
         localStorage.setItem('userData', JSON.stringify(newSession));
 
-        console.log(localStorage.getItem('userData'));
+        // console.log(localStorage.getItem('userData'));
 
         await new Promise((resolve) => setTimeout(resolve, 1000));
 

@@ -50,11 +50,12 @@
 
 .makeroom-people {
   user-select : none;
-  @apply w-full flex items-center justify-start mb-2
+  @apply w-full flex items-center justify-between mb-2
 }
 
 .makeroom-people-btn {
-  @apply ml-12 flex flex-row justify-center items-center rounded-lg border-2 border-black
+  @apply ml-8 flex flex-row justify-center items-center 
+  rounded-lg border-2 border-green-300
 }
 
 .makeroom-people-minus {
@@ -89,7 +90,7 @@
 }
 
 .makeroom-map {
-  @apply flex rounded-lg items-center
+  @apply flex rounded-lg items-center justify-center
 }
 
 .makeroom-map-img {

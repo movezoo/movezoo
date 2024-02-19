@@ -10,14 +10,20 @@ import Signup from "./components/home/Signup.jsx";
 import Multi from "./pages/multi/Multi.js";
 import "./index.css";
 import { RecoilRoot } from "recoil";
+import Redirect from "./components/main/Redirect.js";
+import { enablePageLeaveWarning } from "./components/main/pageLeaveWarning.js";
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    enablePageLeaveWarning() // 모든 페이지 함부로 못나감
+  }, [])
   return (
     <RecoilRoot>
       <ToastContainer />
       <Router>
         <Routes>
-          {/* <Route path="/hello" element={<h1>Hello</h1>} /> */}
+          
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/main" element={<Main />} />
@@ -28,6 +34,7 @@ function App() {
           <Route path="/single/result" element={<Result />} />
 
           <Route path="/multi" element={<Multi />} />
+          <Route path="/redirect" element={<Redirect />} />
         </Routes>
       </Router>
     </RecoilRoot>

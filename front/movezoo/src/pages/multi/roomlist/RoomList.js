@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../../components/navbar/Navbar";
 import Makeroom from "../../../components/multi/roomlist/Makeroom";
 import Inforoom from "../../../components/multi/roomlist/Inforoom";
@@ -10,10 +10,12 @@ import { useState, useEffect } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { search } from "@tensorflow/tfjs-core/dist/io/composite_array_buffer";
 import { toast } from 'react-toastify';
+import { FaAnglesLeft } from "react-icons/fa6";
 
 Modal.setAppElement("#root");
 
 function RoomList(props) {
+  const navigate = useNavigate();
   const [volume, setVolume] = useState(80);
   const [rooms, setRooms] = useState([]);
   const [searchRooms, setSearchRooms] = useState("");
@@ -46,7 +48,7 @@ function RoomList(props) {
     fetchRoomList();
   }, [searchRooms]);
 
-  console.log(rooms);
+ 
 
   
   async function fastEnterRoom() {
@@ -70,6 +72,11 @@ function RoomList(props) {
 
   return (
     <div className="roomlist-container">
+
+      <div className="Back" onClick={() => navigate("/redirect", { state: { url: "/main" } })}>
+        <FaAnglesLeft className='mr-2' /><p>뒤로가기</p>
+      </div>
+
       {/* 홈으로, 프로필 */}
       <div className="roomlist-header">
         <div>
@@ -106,9 +113,7 @@ function RoomList(props) {
               
           </div>
 
-          <Link to="/main">
-            <IoCloseSharp className='exit-button'/>
-          </Link>
+
 
         </div>
 

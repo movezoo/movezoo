@@ -66,11 +66,11 @@
 }
 
 .roomlist-reload-button {
-  @apply w-10 transition duration-300 transform hover:rotate-180;
+  @apply w-7 transition duration-300 transform hover:rotate-180;
 }
 
 .roomlist-match{
-  @apply w-[120px] h-12 flex items-center justify-center rounded-lg ml-10 mr-4 bg-green-500 text-white
+  @apply w-[120px] h-12 flex items-center justify-center rounded-lg ml-24 mr-4 bg-green-500 text-white
   text-xl
   hover:scale-110 transition duration-300 hover:bg-green-600 cursor-pointer
 }

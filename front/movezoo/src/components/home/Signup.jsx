@@ -121,7 +121,7 @@ const Signup = ({ isOpen, onRequestClose }) => {
                 type="email"
                 id="id"
                 className="int"
-                maxLength="20"
+                maxLength="30"
                 value={signUpData.email}
                 onChange={handleEmailChange}
                 placeholder='ex)MoveZoo@gmail.com'
