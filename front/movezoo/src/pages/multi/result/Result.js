@@ -93,6 +93,8 @@ function Result(props) {
 
     setUserIds(newIds)
     console.log(newIds)
+    console.log(userIds)
+    console.log(userIds[0].userId)
     setRankList(newIds)
     console.log(rankList)
   }, []);
@@ -106,8 +108,8 @@ function Result(props) {
           
           const response = await axios.patch('https://i10e204.p.ssafy.io/api/coin', 
           { nickname, ranking: i + 1 });
-          // console.log(userIds[i]);
-          // console.log(response);
+          console.log(userIds[i]);
+          console.log(response);
         }
 
       } catch (error) {
