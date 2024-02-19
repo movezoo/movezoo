@@ -45,6 +45,8 @@ function Result(props) {
     return `${minutesStr}:${secondsStr}:${millisecondsStr}`;
   };
   
+  let newIds = [];
+
   useEffect(() => {
     // 컴포넌트가 마운트될 때 전체 화면 모드 종료
     if (document.fullscreenElement) {
@@ -58,7 +60,7 @@ function Result(props) {
     console.log(`[게임결과]`)
     console.log(playerGameDataList);
 
-    let newIds = [];
+    // let newIds = [];
 
     // user 개개인의 ID와 LapTime
     for (let i = 0; i < playerGameDataList.length; i++) {
@@ -91,13 +93,16 @@ function Result(props) {
       return a.userLapTime - b.userLapTime;
     });
 
-    setUserIds(...newIds)
+    // setUserIds(...newIds)
     console.log(newIds)
     console.log(userIds)
     console.log(userIds[0].userId)
-    setRankList(newIds)
+    // setRankList(newIds)
     console.log(rankList)
   }, []);
+
+  setUserIds(newIds)
+  setRankList(newIds)
 
   // 등수에 따라 코인 업데이트
   useEffect(() => {
