@@ -117,8 +117,14 @@
   top:50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 300px;
+  font-size: 200px;
   color: white;
+  font-style: italic;
+  text-shadow: 
+    -3px -3px 0 black,  
+    3px -3px 0 black,
+    -3px 3px 0 black,
+    3px 3px 0 black;
 }
 
 .end-time {
@@ -127,8 +133,14 @@
   top:50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 300px;
+  font-size: 200px;
   color: white;
+  font-style: italic;
+  text-shadow: 
+    -3px -3px 0 black,  
+    3px -3px 0 black,
+    -3px 3px 0 black,
+    3px 3px 0 black;
 }
 
 .body-waviy {
