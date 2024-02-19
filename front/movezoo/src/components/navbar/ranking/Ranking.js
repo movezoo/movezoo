@@ -31,8 +31,8 @@ const Ranking = () => {
 
         const userId = userData.userData.userId;
 
-        console.log(userId);
-        console.log(mapNumber);
+        // console.log(userId);
+        // console.log(mapNumber);
 
         const userLaptime = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${userId}/${mapNumber}`);
         setUserLaptime(userLaptime.data);

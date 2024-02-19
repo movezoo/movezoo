@@ -169,7 +169,23 @@
   }
 }
 
+.single-game-exit {
+  z-index: 999;
+  top: 50px;
+  left:50px;
+  color:crimson;
+  @apply w-[300] h-[150] absolute text-lg rounded-xl 
+  active:text-red-900 hover:cursor-pointer 
+}
 
+.single-game-exit:hover .game-exitbtn {
+  /* @apply scale-150; */
+}
+
+.single-game-exitbtn {
+  font-size: xx-large;
+  @apply transition 
+}
 
 
 

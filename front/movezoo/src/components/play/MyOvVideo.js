@@ -270,42 +270,7 @@ const MyOvVideo = (props) => {
 
 
 
-  return (
-    <div className="PoseNet">
-      <header className="App-header">
-        <video autoPlay={true} ref={videoRef}
-          style={{
-            position: "relative",
-            display: "flex",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            // zIndex: 8,
-            // width: 640,
-            // height: 480,
-            transform: "scale(-1,1)",
-          }}
-        />
-
-        {/* <canvas
-          ref={motionRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zIndex: 9,
-            width: 640,
-            height: 480,
-          }}
-        /> */}
-      </header>
-    </div>
-  );
+  return <video autoPlay={true} ref={videoRef} style={{ transform: 'scaleX(-1)' }}/>;
 };
 
 

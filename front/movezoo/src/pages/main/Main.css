@@ -16,7 +16,11 @@
 }
 
 .main-headerName {
-  @apply flex justify-start items-start text-8xl text-white
+  @apply w-[436px] h-[120px];
+}
+
+.main-headerName > img {
+  @apply w-[300px] h-[110px] ml-[70px];
 }
 
 .main-header-info {
@@ -46,7 +50,7 @@
 }
 
 .main-header-userNickname {
-  @apply text-xl
+  @apply text-xl;
 }
 
 .main-header-userCoin {
@@ -54,14 +58,14 @@
 }
 
 .coinIcon {
-  @apply text-yellow-300 w-6 h-6 mr-1
+  @apply text-yellow-300 w-6 h-6 mr-1;
 }
 
 
 
 /* 메인 바디 */
 .main-body {
-  @apply flex flex-row
+  @apply flex flex-row;
 }
 
 /* 왼쪽 섹션 */

@@ -89,8 +89,8 @@ function Result(props) {
           
           const response = await axios.patch('https://i10e204.p.ssafy.io/api/coin', 
           { nickname, ranking: i + 1 });
-          console.log(userIds[i]);
-          console.log(response);
+          // console.log(userIds[i]);
+          // console.log(response);
         }
 
       } catch (error) {
@@ -116,7 +116,7 @@ function Result(props) {
           if (response.status === 200 && response.data) {
               // Recoil 상태 및 로컬 스토리지 업데이트
               const newCoinAmount = response.data.coin;
-              console.log(newCoinAmount)
+              // console.log(newCoinAmount)
               setCoin(newCoinAmount); // Recoil 상태 업데이트
              
               let updatedUserData = { ...userData };
@@ -155,7 +155,7 @@ function Result(props) {
         if (response.status === 200 && response.data) {
             // Recoil 상태 및 로컬 스토리지 업데이트
             const newCoinAmount = response.data.coin;
-            console.log(newCoinAmount)
+            // console.log(newCoinAmount)
             setCoin(newCoinAmount); // Recoil 상태 업데이트
             
             let updatedUserData = { ...userData };
@@ -220,14 +220,36 @@ function Result(props) {
               {/*보상 및 돌아가기 버튼*/}
               
               <div className="multi-result-reward">
-                <p>순위</p>
-                {
-                  userIds.map((user, index) => (
-                    <div key={user.userId}>
-                      <p>{index + 1}등: {user.userId} - {user.userLapTime}초</p>
-                    </div>
-                  ))
-                }
+                <table className="multi-result-reward-table">
+                  <thead className="multi-result-reward-thead">
+                    <tr className="multi-result-reward-theadTr">
+                      <th className="multi-result-reward-theadTh">순위</th>
+                      <th className="multi-result-reward-theadThName">닉네임</th>
+                      <th>랩타임</th>
+                    </tr>
+                  </thead>
+                  <tbody className="multi-result-reward-tbody">
+                    {/* <tr className="multi-result-reward-tbodyTr">
+                      <td>1</td>
+                      <td>ssss</td>
+                      <td>00:00:00</td>
+                    </tr>
+                    <tr className="multi-result-reward-tbodyTr">
+                      <td>2</td>
+                      <td>wwww</td>
+                      <td>00:00:00</td>
+                    </tr> */}
+                    {
+                      userIds.map((user, index) => (
+                        <tr className="multi-result-reward-tbodyTr" key={user.userId}>
+                          <td>{index + 1}</td>
+                          <td>{user.userId}</td>
+                          <td>{user.userLapTime}초</td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                </table>
               </div>
               
               {/* 돌아가기 버튼*/}

@@ -1020,12 +1020,12 @@ const Main = (props) => {
         addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
         addBumps();
         
-        addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
-        addStraight();
-        addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
+        addStraight(ROAD.LENGTH.LONG);
         addSCurves();
         addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
         addBumps();
+        
+        addStraight(ROAD.LENGTH.LONG);
         addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
         addDownhillToEnd();
 
@@ -1135,11 +1135,9 @@ const Main = (props) => {
         addItem(50, -0.25);
         addItem(50, -0.75);
 
-        for(let n = 50; n < (segments.length-450); n += 300) {
-          let itemPos1 = 0.25 + Util.randomInt(0, 1) * 0.5;
-          let itemPos2 = -0.25 - Util.randomInt(0, 1) * 0.5;
-          addItem(50, itemPos1);
-          addItem(50, itemPos2);
+        for(let n = 500; n < (segments.length-450); n += 300) {
+          addItem(n, 0.25 + Util.randomInt(0, 1) * 0.5);
+          addItem(n, -0.25 - Util.randomInt(0, 1) * 0.5);
         }
 
         // 아이템 세팅 End *******************************************************************************
@@ -1155,6 +1153,8 @@ const Main = (props) => {
         // 길 세팅 Start ******************************************************************
         addLowRollingHills();
         addStraight(ROAD.LENGTH.SHORT);
+        addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
+        addSCurves();
         // addSCurves();
         // addCurve(ROAD.LENGTH.SHORT, -ROAD.CURVE.HARD, ROAD.HILL.LOW);
         // addBumps();
@@ -1515,18 +1515,15 @@ const Main = (props) => {
 
 
   const formatTime = (dt) => {
-    let minutes = Math.floor(dt/60);
+    let minutes = Math.floor(dt / 60);
     let seconds = Math.floor(dt - (minutes * 60));
-    let tenths  = Math.floor(10 * (dt - Math.floor(dt)));
-  
-    // 분이 0보다 크면 분, 초 및 십분의 일초를 반환
-    if (minutes > 0)
-      return minutes + "." + (seconds < 10 ? "0" : "") + seconds + "." + tenths;
-    // 그렇지 않으면 초 및 십분의 일초만 반환
-    else
-      return seconds + "." + tenths;
-  }
+    let tenths = Math.floor(10 * (dt - Math.floor(dt)));
 
+    // 분, 초, 십분의 일초를 두 자리 숫자로 표시하여 문자열로 반환
+    return (minutes < 10 ? "0" + minutes : minutes) + ":" +
+      (seconds < 10 ? "0" + seconds : seconds) + ":" +
+      (tenths < 10 ? "0" + tenths : tenths);
+  }
 
   
   

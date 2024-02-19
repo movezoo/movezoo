@@ -6,7 +6,7 @@
   background-image: url('/public/images/mainbg/mainbg.png');
   background-size: cover;
   @apply min-w-[1200px] min-h-screen flex flex-col justify-center items-center
-  bg-green-400 cursor-default;
+  bg-green-400 cursor-default select-none;
 }
 
 .room-header {
@@ -32,12 +32,14 @@
 }
 
 .room-body-cam {
-  @apply w-full flex flex-wrap items-center justify-center ;
+  @apply w-full h-[420px] flex flex-wrap;
+  justify-content: space-between;
+  align-content: space-between;
 }
 
 .room-webCam {
-  @apply w-[225px] flex items-center justify-center
-  rounded-3xl overflow-hidden m-[10px];
+  @apply w-60 h-[200px] flex flex-col items-center justify-between
+  rounded-3xl bg-white overflow-hidden;
 }
 
 .room-option {
@@ -45,7 +47,7 @@
 }
 
 .room-chat {
-  @apply w-[225px] h-[450px] flex justify-center items-center
+  @apply w-[225px] h-[420px] flex justify-center items-center
   bg-lime-50 rounded-2xl
 }
 
