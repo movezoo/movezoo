@@ -41,7 +41,7 @@ function Record() {
             const updateLaptime = await axios.patch('https://i10e204.p.ssafy.io/api/laptime', 
             { userId, trackId: mapNumber, record: singleResult.time });
             
-            // console.log('랩타임 업데이트 성공:', updateLaptime);
+            console.log('랩타임 업데이트 성공:', updateLaptime);
           } catch (error) {
             console.error('랩타임 업데이트 실패:', error);
           }
@@ -53,7 +53,7 @@ function Record() {
             const updateLaptime = await axios.patch('https://i10e204.p.ssafy.io/api/laptime', 
             { userId, trackId: mapNumber, record: singleResult.time });
     
-            // console.log('랩타임 업데이트 성공:', updateLaptime);
+            console.log('랩타임 업데이트 성공:', updateLaptime);
           } catch (error) {
             console.error('랩타임 업데이트 실패:', error);
           }
