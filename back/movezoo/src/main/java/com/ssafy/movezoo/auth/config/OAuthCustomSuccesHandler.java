@@ -39,7 +39,7 @@ public class OAuthCustomSuccesHandler extends SimpleUrlAuthenticationSuccessHand
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        setDefaultTargetUrl("/googlemain");
+        setDefaultTargetUrl("/main");
 
         log.info(authentication.getPrincipal().toString());
         log.info(authentication.getName());
