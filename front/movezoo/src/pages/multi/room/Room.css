@@ -10,7 +10,7 @@
 }
 
 .room-header {
-  @apply w-[1000px] relative flex justify-start items-start mb-5 mt-3
+  @apply w-[1000px] relative flex justify-start items-start p-5
 }
 
 .room-name {
