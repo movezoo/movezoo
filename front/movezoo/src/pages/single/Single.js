@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Webcam from "react-webcam";
 import Map from "../../components/single/Map";
@@ -8,7 +8,7 @@ import { gameStartData, myGameData } from "../../components/play/data.js";
 import { FaAnglesLeft } from "react-icons/fa6";
 import "./Single.css";
 import { playGameModeState } from '../../components/state/gameState.js'
-import { useRecoilState } from 'recoil';
+import { useRecoilRefresher_UNSTABLE, useRecoilState } from 'recoil';
 import { useNavigate } from "react-router-dom";
 
 
@@ -16,8 +16,7 @@ function Single() {
   const [loading, setLoading] = useState(true);
   const [playGameMode, setPlayGameMode] = useRecoilState(playGameModeState);
   const navigate = useNavigate();
-
-
+  
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
       setLoading(false);
@@ -58,7 +57,11 @@ function Single() {
 
           <div className="single-body-cam"> {
             loading ? (<h1 className="txtLoading">Loading...</h1>)
-                    : (<Webcam className="single-body-webCam" mirrored={true} />) 
+                    : (<Webcam
+                        className="single-body-webCam"
+                        mirrored={true}
+                        onUserMediaError=""
+                      />) 
           } </div>
           
           <div className="body-selects">
@@ -71,7 +74,7 @@ function Single() {
             </div>
             {/* 시작 버튼*/}
             <div className="start-select">
-              <Start />
+              <Start/>
             </div>
           </div>
 

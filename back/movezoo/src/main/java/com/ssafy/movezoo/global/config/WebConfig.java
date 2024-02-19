@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
 //        registry.addRedirectViewController("/api/login","/");
 //        registry.addRedirectViewController("/success","/main");
-//        registry.addRedirectViewController("/main","/main");
+//        registry.addRedirectViewController("/googlemain","/main");
     }
 
 }

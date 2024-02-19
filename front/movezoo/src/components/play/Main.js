@@ -1527,7 +1527,6 @@ const Main = (props) => {
       return seconds + "." + tenths;
   }
 
-
   
   
   return (
