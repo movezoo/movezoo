@@ -450,7 +450,8 @@ const Main = (props) => {
 
     const goResult = () => {
       setSingleResult({
-        time: formatTime(lastLapTime)
+        // time: formatTime(lastLapTime)
+        time: lastLapTime
       })
       if (gameStartData.mode === 'single') {
         navigate('/single/result');
