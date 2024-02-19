@@ -395,7 +395,7 @@ const Main = (props) => {
       isStopControl = true; // 일단 통과하면 컨트롤은 중지된다.
 
       if(gameStartData.mode === 'single') {
-        let count = 10; // 실제로 3초부터 출력함
+        let count = 4; // 실제로 3초부터 출력함
         const playCount = setInterval(() => {
           count-=1;
           setGameEndCount(count);
