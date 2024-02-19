@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import Main from "../../../components/play/Main";
 import "./Game.css";
@@ -217,7 +217,6 @@ function Game() {
       runFaceDetection();
     }
     gameStart();
-
 
 
     const handleMouseMove = () => {
