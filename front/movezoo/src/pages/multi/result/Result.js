@@ -32,6 +32,18 @@ function Result(props) {
     chatMessages,
     setChatMessages
   } = props
+
+  const convertToTimeFormat = (laptime) => {
+    const minutes = Math.floor(laptime / 60);
+    const seconds = Math.floor(laptime % 60);
+    const milliseconds = Math.floor((laptime % 1) * 100);
+
+    const minutesStr = minutes.toString().padStart(2, '0');
+    const secondsStr = seconds.toString().padStart(2, '0');
+    const millisecondsStr = milliseconds.toString().padStart(2, '0');
+
+    return `${minutesStr}:${secondsStr}:${millisecondsStr}`;
+  };
   
   useEffect(() => {
     // 컴포넌트가 마운트될 때 전체 화면 모드 종료
@@ -262,7 +274,7 @@ function Result(props) {
                         <tr className="multi-result-reward-tbodyTr" key={user.userId}>
                           <td>{index + 1}</td>
                           <td>{user.userId}</td>
-                          <td>{user.userLapTime}초</td>
+                          <td>{convertToTimeFormat(user.userLapTime)}초</td>
                         </tr>
                       ))
                     }
