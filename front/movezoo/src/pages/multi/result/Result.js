@@ -227,8 +227,7 @@ function Result(props) {
                   "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                   {mainStreamManager !== undefined ? (
                     <MyVideoComponent streamManager={mainStreamManager} mySession={session}
-                    className={isWinner(mainStreamManager) ? 
-                      "multi-result-webCam-box-1st" : "multi-result-webCam-box-else"} />
+                    className="multi-result-webCam-box" />
                     ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
                   }
                 </div>
@@ -237,8 +236,7 @@ function Result(props) {
                   "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                     {sub !== undefined ? (
                       <UserVideoComponent streamManager={sub} 
-                      className={isWinner(sub) ? 
-                        "multi-result-webCam-1st" : "multi-result-webCam-else"} />
+                      className="multi-result-webCam-box" />
                       ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
                     }
                   </div>
