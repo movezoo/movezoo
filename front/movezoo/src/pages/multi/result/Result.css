@@ -37,12 +37,12 @@
 }
 
 .multi-result-webCam-1st {
-  @apply w-3/4 h-[420px] absolute top-0 left-0 flex flex-col items-center
+  @apply w-[510px] h-[420px] absolute top-0 left-0 flex flex-col items-center
   rounded-3xl bg-white overflow-hidden;
 }
 
 .multi-result-webCam-else {
-  @apply w-1/4 h-[140px] relative flex flex-col items-center justify-between
+  @apply w-[170px] h-[140px] relative flex flex-col items-center justify-between
   rounded-3xl bg-white overflow-hidden;
 }
 

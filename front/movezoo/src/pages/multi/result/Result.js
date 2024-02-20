@@ -219,7 +219,7 @@ function Result(props) {
                 ))} */}
                 {/* {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
                   : null } */}
-                <div className="multi-result-webCam-1st">
+                <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(mainStreamManager.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                   {mainStreamManager !== undefined ? (
                     <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
                     ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
