@@ -270,7 +270,7 @@ const MyOvVideo = (props) => {
 
 
 
-  return <video autoPlay={true} ref={videoRef} style={{ transform: 'scaleX(-1)', width: "100%", height: "auto" }}/>;
+  return <video autoPlay={true} ref={videoRef} style={{ transform: 'scaleX(-1)' }}/>;
 };
 
 
