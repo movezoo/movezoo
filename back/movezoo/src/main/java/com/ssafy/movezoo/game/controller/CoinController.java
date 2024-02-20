@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,7 +19,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/coin")
 @RequiredArgsConstructor
-@Slf4j
 public class CoinController {
     private final UserService userService;
     private static int[] reward = { 0, 10, 7, 5, 3 };
@@ -48,21 +46,14 @@ public class CoinController {
         String nickname = dto.getNickname();
         int ranking= dto.getRanking();
 
-        log.info("api-coint-patch");
-        log.info("dto {}", dto.toString());
-        log.info("reward {}",reward[dto.getRanking()]);
-
         Optional<User> findUser = userService.findByNickname(nickname); // 닉네임으로 사용자 찾기
 
         // 사용자 검증
-        if (findUser.isEmpty()) {
+        if (findUser.isEmpty() || Integer.parseInt(authentication.getName())!= findUser.get().getUserId()) {
             simpleResponseDto.setSuccess(false);
-            simpleResponseDto.setMsg("사용자를 찾을 수 없습니다.");
+            simpleResponseDto.setMsg("사용자를 찯을 수 없습니다.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(simpleResponseDto);
         }
-
-        User user = findUser.get();
-        log.info("coin target user {} {}",user.getUserId(), user.getUserEmail());
 
         userService.addCoin(findUser.get().getUserId(), reward[ranking]);   // 순위에 따른 재화 지급
 

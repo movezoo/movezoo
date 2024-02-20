@@ -5,10 +5,7 @@ import Modal from 'react-modal';
 import './Character.css';
 import { useRecoilState } from 'recoil';
 import { userCoin } from '../../../../components/state/state';
-import { userCharacterImages } from '../../../state/state';
 import { toast } from 'react-toastify';
-import { AiFillCopyrightCircle } from "react-icons/ai";
-
 
 function Character ({ closeModal }) {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
@@ -16,7 +13,6 @@ function Character ({ closeModal }) {
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [coin, setCoin] = useRecoilState(userCoin);
   const [characterPrice, setCharacterPrice] = useState(0);
-  const [userCharacterImagesState, setUserCharacterImagesState] = useRecoilState(userCharacterImages);
 
 
   const chracterImages = [
@@ -68,12 +64,6 @@ function Character ({ closeModal }) {
 
       const userCharacterIds = response.data.map(character => character.racerId);
 
-      console.log(userCharacterIds);
-
-      let updateCharacterId = { ...userData };
-      updateCharacterId.characterIds = userCharacterIds;
-      localStorage.setItem('userData', JSON.stringify(updateCharacterId));
-
       const userImages = chracterImages.map((image) => {
         if (userCharacterIds.includes(image.id)) {
           return image;
@@ -82,17 +72,12 @@ function Character ({ closeModal }) {
           return noCharacterImage || image; // 캐릭터가 없는 경우 noCharacterImage로 대체
         }
       });
-
-      console.log(userImages);
       setImages(userImages);
-
-      console.log(userCharacterImagesState);
       
       if (selectedCharacter) {
         const updatedSelectedCharacter = userImages.find(image => image.id === selectedCharacter.id);
         setSelectedCharacter(updatedSelectedCharacter);
       }
-
 
       // 코인
 
@@ -143,8 +128,6 @@ function Character ({ closeModal }) {
         // 로컬 스토리지의 사용자 데이터 업데이트
         const updatedUserData = { ...userData, coin: coin };
         localStorage.setItem('userData', JSON.stringify(updatedUserData));
-
-        
       }
       
     } catch (error) {
@@ -237,7 +220,6 @@ function Character ({ closeModal }) {
         ))}
       </div>
 
-
       <div className='Character-select'>
         {selectedCharacter && (
             <div className='select-body'>
@@ -254,7 +236,7 @@ function Character ({ closeModal }) {
               </div> */}
               <div className='body-select-buyButton'>
                 {noCharacterImages.some(image => image.id === selectedCharacter.id && image.image === selectedCharacter.image) && 
-                <button className='character-buy-button' onClick={handleBuyClick}><AiFillCopyrightCircle className="coinIcon" />{characterPrice}</button>}
+                <button className='character-buy-button' onClick={handleBuyClick}>구매하기</button>}
               </div>
             </div>
         )}
@@ -279,9 +261,9 @@ function Character ({ closeModal }) {
           <div className='buy-modal-name'>
             <p>정말 이 캐릭터를 구매하시겠습니까?</p>
           </div>
-          {/* <div className='buy-text'>
-            <p>coin : {characterPrice} </p>
-          </div> */}
+          <div className='buy-text'>
+            <p>coin : {coin} - {characterPrice} </p>
+          </div>
           <div className='buy-yes-button'>
             <button className='profile-button' onClick={handleBuyConfirm}>예</button>
           </div>
