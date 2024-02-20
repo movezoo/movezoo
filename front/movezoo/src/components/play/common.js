@@ -375,7 +375,7 @@ const Game = {
       // 아이템 스프라이트 로딩
       result['item'] = document.createElement('img');
       Dom.on(result['item'], 'load', onload);
-      result['item'].src = `/images/sheets/itemBox.png`
+      result['item'].src = `/images/itemImg/itemBox.png`
 
       // effect Imgae 로딩
       result['effect'] = [];
