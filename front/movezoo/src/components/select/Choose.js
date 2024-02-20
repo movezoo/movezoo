@@ -7,6 +7,7 @@ import { useRecoilState } from 'recoil';
 import { userCoin, selectCharacterState } from '../state/state';
 import { data, gameStartData, myGameData } from '../play/data.js';
 import { toast } from 'react-toastify';
+import { AiFillCopyrightCircle } from "react-icons/ai";
 
 function Character ({ closeModal }) {
   const [coin, setCoin] = useRecoilState(userCoin);
@@ -88,6 +89,10 @@ function Character ({ closeModal }) {
       const response = await axios.get(`https://i10e204.p.ssafy.io/api/racer/${userId}`, {})
 
       const userCharacterIds = response.data.map(character => character.racerId);
+
+      let updateCharacterId = { ...userData };
+      updateCharacterId.characterIds = userCharacterIds;
+      localStorage.setItem('userData', JSON.stringify(updateCharacterId));
 
       const userImages = characterImages.map((image) => {
         if (userCharacterIds.includes(image.id)) {
@@ -264,7 +269,7 @@ function Character ({ closeModal }) {
               </div>
               <div className='body-select-buyButton'>
                 {lockCharacterImages.some(image => image.id === selectedCharacter.id && image.image === selectedCharacter.image) && 
-                <button className='character-buy-button' onClick={handleBuyClick}>구매하기</button>}
+                <button className='character-buy-button' onClick={handleBuyClick}><AiFillCopyrightCircle className="coinIcon" />{characterPrice}</button>}
               </div>
             </div>
         )}
@@ -289,9 +294,9 @@ function Character ({ closeModal }) {
           <div className='buy-modal-name'>
             <p>정말 이 캐릭터를 구매하시겠습니까?</p>
           </div>
-          <div className='buy-text'>
-            <p>coin : {coin} - {characterPrice} </p>
-          </div>
+          {/* <div className='buy-text'>
+            <p>coin : {characterPrice} </p>
+          </div> */}
           <div className='buy-yes-button'>
             <button className='profile-button' onClick={handleBuyConfirm}>예</button>
           </div>

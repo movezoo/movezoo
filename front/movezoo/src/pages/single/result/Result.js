@@ -77,6 +77,7 @@ function Result() {
     updateCoin();
     fetchUserCoin();
   }, []);
+  // }, [setCoin]);
 
   useEffect(() => {
 
@@ -114,6 +115,7 @@ function Result() {
 
     fetchUserCoin();
   }, []);
+  // }, [setCoin]);
 
 
   return (
