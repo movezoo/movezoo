@@ -1018,14 +1018,11 @@ const Main = (props) => {
       // *************************************** map 1 *************************************** 
       map1: () => {
         // 길 세팅 Start ******************************************************************
-        addStraight(ROAD.LENGTH.LONG);
+        addStraight(ROAD.LENGTH.MEDIUM);
         addSCurves();
         addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
-        // addBumps();
-        
-        addStraight(ROAD.LENGTH.MEDIUM);
-        addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
         addBumps();
+        addCurve(ROAD.LENGTH.SHORT, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
         addStraight(ROAD.LENGTH.SHORT);
 
         // addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
@@ -1186,12 +1183,6 @@ const Main = (props) => {
         // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
         // addStraight(ROAD.LENGTH.SHORT);
 
-        addStraight(ROAD.LENGTH.LONG);
-        addStraight(ROAD.LENGTH.LONG);
-        addStraight(ROAD.LENGTH.LONG);
-        addStraight(ROAD.LENGTH.LONG);
-        addStraight(ROAD.LENGTH.LONG);
-        addStraight(ROAD.LENGTH.LONG);
         addStraight(ROAD.LENGTH.LONG);
         addStraight(ROAD.LENGTH.LONG);
         addStraight(ROAD.LENGTH.LONG);

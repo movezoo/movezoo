@@ -51,7 +51,7 @@
 }
 
 .multi-result-webCam-box {
-  @apply w-full h-[140px] flex flex-col items-center
+  @apply w-full flex flex-col items-center justify-center
 }
 
 .multi-result-webCam-img {
