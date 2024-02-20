@@ -258,7 +258,8 @@ function Result(props) {
                         <tr className="multi-result-reward-tbodyTr" key={user.userId}>
                           <td>{index + 1}</td>
                           <td>{user.userId}</td>
-                          <td>{user.userLapTime}초</td>
+                          <td>{convertToTimeFormat(user.userLapTime)}</td>
+                          <td>+{coinRewards[index]}G</td>
                         </tr>
                       ))
                     }
