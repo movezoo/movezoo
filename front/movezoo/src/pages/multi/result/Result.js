@@ -34,6 +34,10 @@ function Result(props) {
     setChatMessages
   } = props
 
+  function isWinner(manager) {
+    return rankList.length > 0 && rankList[0].userId === JSON.parse(manager.stream.connection.data).clientData
+  }
+
   const convertToTimeFormat = (laptime) => {
     const minutes = Math.floor(laptime / 60);
     const seconds = Math.floor(laptime % 60);
@@ -219,18 +223,22 @@ function Result(props) {
                 ))} */}
                 {/* {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
                   : null } */}
-                <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(mainStreamManager.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam-else"}>
+                <div className={isWinner(mainStreamManager) ? 
+                  "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                   {mainStreamManager !== undefined ? (
                     <MyVideoComponent streamManager={mainStreamManager} mySession={session}
-                    className="multi-result-webCam-box" />
+                    className={isWinner(mainStreamManager) ? 
+                      "multi-result-webCam-box-1st" : "multi-result-webCam-box-else"} />
                     ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
                   }
                 </div>
                 {subscribers.map((sub, i) => (
-                  <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(sub.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam-else"}>
+                  <div className={isWinner(sub) ? 
+                  "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                     {sub !== undefined ? (
                       <UserVideoComponent streamManager={sub} 
-                      className="multi-result-webCam-box" />
+                      className={isWinner(sub) ? 
+                        "multi-result-webCam-1st" : "multi-result-webCam-else"} />
                       ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
                     }
                   </div>
