@@ -24,11 +24,20 @@
 }
 
 .main-header-info {
-  @apply w-2/6 flex flex-row justify-end ;
+  @apply w-2/6 flex flex-row justify-end items-center;
 }
 
 .main-header-navbar {
   @apply w-2/6 flex justify-center items-center;
+}
+
+.main-setting-button-container {
+  @apply ml-10 text-white
+  hover:text-gray-200 hover:cursor-pointer  hover:scale-150 transition
+}
+
+.settingButton {
+  /* @apply hover:text-gray-200 hover:cursor-pointer  */
 }
 
 .main-header-profile {
