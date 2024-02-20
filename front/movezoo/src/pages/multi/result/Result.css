@@ -38,7 +38,7 @@
 
 .multi-result-webCam-1st {
   @apply w-[170px] h-auto absolute top-0 left-0 flex flex-col items-center justify-center
-  rounded-3xl bg-white scale-[1.75];
+  rounded-3xl bg-white scale-[3];
 }
 
 .multi-result-webCam-else {
