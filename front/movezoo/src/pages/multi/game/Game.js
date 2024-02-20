@@ -32,7 +32,7 @@ function Game(props) {
   const [gameEndCount] = useRecoilState(gameEndCountState);
   const [isMultiGameStart] = useRecoilState(isMultiGameStartState);
   const [playGameMode] = useRecoilState(playGameModeState);
-
+  const [isTimeVisible, setIsTimeVisible] = useState(true);
 
   // **************************************************
   // if(playGameMode === 'multi' && isMultiGameStart) 
@@ -48,6 +48,13 @@ function Game(props) {
     // 전체 화면으로 전환
     document.documentElement.requestFullscreen();
   }), [])
+
+  useEffect(() => {
+    // 게임 종료 시 current-time 숨기기
+    if (gameEndCount === 10) {
+      setIsTimeVisible(false);
+    }
+  }, [gameEndCount])
 
   useEffect(() => {
     setIsLoading(true); // 로딩 시작
@@ -302,7 +309,10 @@ function Game(props) {
         {gameEndCount}
       </div>
       {/* <div className="end-time">{gameEndCount}</div> */}
-      <div className="current-time">{Util.formatTime(testCurrentLapTime)}</div>
+      {/* <div className="current-time">{Util.formatTime(testCurrentLapTime)}</div> */}
+      <div className={isTimeVisible ? "current-time" : "current-time hidden"}>
+        {Util.formatTime(testCurrentLapTime)}
+      </div>
       <div className="over-contents">
         <div className="webcam-box">
           <div className="single-webCam">
