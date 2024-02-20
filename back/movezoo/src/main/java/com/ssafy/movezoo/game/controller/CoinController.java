@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/coin")
 @RequiredArgsConstructor
+@Slf4j
 public class CoinController {
     private final UserService userService;
     private static int[] reward = { 0, 10, 7, 5, 3 };
@@ -45,6 +47,10 @@ public class CoinController {
 //        String roomSessionId = dto.getRoomSessionId();    // roomSessionId: String
         String nickname = dto.getNickname();
         int ranking= dto.getRanking();
+
+        log.info("api-coint-patch");
+        log.info("dto {}", dto.toString());
+        log.info("reward {}",reward[dto.getRanking()]);
 
         Optional<User> findUser = userService.findByNickname(nickname); // 닉네임으로 사용자 찾기
 
