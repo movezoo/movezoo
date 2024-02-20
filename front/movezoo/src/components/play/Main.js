@@ -1018,19 +1018,13 @@ const Main = (props) => {
       // *************************************** map 1 *************************************** 
       map1: () => {
         // 길 세팅 Start ******************************************************************
-        addStraight(ROAD.LENGTH.LONG);
-        addLowRollingHills();
+        addStraight(ROAD.LENGTH.SHORT);
         addSCurves();
         addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
         addBumps();
         
-        addStraight(ROAD.LENGTH.LONG);
-        addSCurves();
-        addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
-        addBumps();
-        
-        addStraight(ROAD.LENGTH.LONG);
-        addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
+        addStraight(ROAD.LENGTH.MEDIUM);
+        addHill(ROAD.LENGTH.SHORT, -ROAD.HILL.MEDIUM);
         addDownhillToEnd();
 
         console.log("map1 총 길이: ",segments.length);
@@ -1109,8 +1103,19 @@ const Main = (props) => {
           );
         }
 
-        // 빌보드, 집&우물 추가
-        for(let n = 10; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
+
+        for(let n = 10; n < 200; n += 20) {
+          addSprite(n, 'BILLBOARD', 'billboard_ssafy10', -1.2);
+          addSprite(n, 'BILLBOARD', 'billboard_ssafy10', 1.2);
+        }
+
+        for(let n = 20; n < 200; n += 20) {
+          addSprite(n, 'BILLBOARD', 'billboard_ssafy11', -1.2);
+          addSprite(n, 'BILLBOARD', 'billboard_ssafy11', 1.2);
+        }
+
+
+        for(let n = 230; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
           addSprite(n + Util.randomInt(0,5), 'BILLBOARD',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].BILLBOARD)),
             Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
@@ -1119,6 +1124,10 @@ const Main = (props) => {
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].BILLBOARD)),
             Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
           );
+        }
+
+        // 집&우물 추가
+        for(let n = 10; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
           addSprite(n + Util.randomInt(0,5), 'STUFF',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)),
             Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
@@ -1139,7 +1148,7 @@ const Main = (props) => {
         addItem(50, -0.25);
         addItem(50, -0.75);
 
-        for(let n = 500; n < (segments.length-450); n += 300) {
+        for(let n = 250; n < (segments.length-450); n += 300) {
           addItem(n, 0.25 + Util.randomInt(0, 1) * 0.5);
           addItem(n, -0.25 - Util.randomInt(0, 1) * 0.5);
         }
@@ -1156,6 +1165,8 @@ const Main = (props) => {
       map2: () => {
         // 길 세팅 Start ******************************************************************
         // addLowRollingHills();
+        addStraight(ROAD.LENGTH.LONG);
+        addStraight(ROAD.LENGTH.LONG);
         addStraight(ROAD.LENGTH.LONG);
         // addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
         // addSCurves();
@@ -1248,12 +1259,8 @@ const Main = (props) => {
 
 
         // 아이템 세팅 Start *******************************************************************************
-        addItem(50, 0.75);
-        addItem(50, 0.25);
-        addItem(50, -0.25);
-        addItem(50, -0.75);
 
-        for(let n = 50; n < (segments.length-450); n += 300) {
+        for(let n = 800; n < (segments.length-300); n += 200) {
           addItem(n, 0.75);
           addItem(n, 0.25);
           addItem(n, -0.25);
