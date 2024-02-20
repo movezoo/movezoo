@@ -46,7 +46,11 @@ function Result(props) {
     return `${minutesStr}:${secondsStr}:${millisecondsStr}`;
   };
   
-  let newIds = [];
+  // let newIds = [];
+
+  function isWinner(manager) {
+    return rankList.length > 0 && rankList[0].userId === JSON.parse(manager.stream.connection.data).clientData
+  }
   
   useEffect(() => {
     // let newIds = [];
@@ -222,8 +226,7 @@ function Result(props) {
                 ))} */}
                 {/* {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
                   : null } */}
-                <div className={rankList.length > 0 && rankList[0].userId === 
-                  JSON.parse(mainStreamManager.stream.connection.data).clientData ? 
+                <div className={isWinner(mainStreamManager) ? 
                   "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                   {mainStreamManager !== undefined ? (
                     <MyVideoComponent streamManager={mainStreamManager} mySession={session}
@@ -232,7 +235,7 @@ function Result(props) {
                   }
                 </div>
                 {subscribers.map((sub, i) => (
-                  <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(sub.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam-else"}>
+                  <div className={isWinner(sub) ? "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                     {sub !== undefined ? (
                       <UserVideoComponent streamManager={sub}
                       className="multi-result-webCam-box" />
