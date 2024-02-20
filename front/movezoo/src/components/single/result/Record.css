@@ -13,3 +13,7 @@
 .time {
   @apply text-xl
 }
+
+.lap-body {
+  border-bottom: 1px solid;
+}

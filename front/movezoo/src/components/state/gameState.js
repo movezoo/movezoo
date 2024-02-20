@@ -23,13 +23,13 @@ export const gameMyItemRightState = atom({
 // 게임 시작할 때 3초 count
 export const gameStartCountState = atom({
   key: 'gameStartCountState',
-  default: 3
+  default: 4
 })
 
 // 게임 끝날 때 10초 count
 export const gameEndCountState = atom({
   key: 'gameEndCountState',
-  default: 10
+  default: 11
 })
 
 // 10초가 지나 게임이 모두 종료되었음을 알림
