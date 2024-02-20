@@ -17,9 +17,9 @@ function Navbar() {
         <Ranking/>
       </div>
 
-      <div className='navbar-setting'>
+      {/* <div className='navbar-setting'>
         <Setting/>
-      </div>
+      </div> */}
 
     </div>
   );
