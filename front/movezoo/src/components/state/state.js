@@ -58,3 +58,9 @@ export const userCharacterImages = atom({
   key: 'userCharacterImages', 
   default: [], 
 });
+
+
+export const mutedState = atom({
+  key: 'mutedState',
+  default: false,
+});

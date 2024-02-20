@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
 import './Setting.css';
 
@@ -7,11 +7,32 @@ const Setting = () => {
   const [volume, setVolume] = React.useState(20);
   const [isMuted, setIsMuted] = React.useState(false);
 
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      setIsMuted(userData.isMuted); 
+    }
+  }, []);
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      userData.isMuted = isMuted; 
+      localStorage.setItem('userData', JSON.stringify(userData));
+    }
+  }, [isMuted]);
+
   const handleMute = () => {
-    setIsMuted(!isMuted);
+    const newMuteStatus = !isMuted;
+    setIsMuted(newMuteStatus);
+
     const audioElement = document.getElementById("background-audio");
-    audioElement.volume = isMuted ? 1 : 0; // 음소거 상태에 따라 볼륨을 조절합니다.
+    audioElement.muted = newMuteStatus; 
   };
+
 
   return (
     <div className='setting'>
