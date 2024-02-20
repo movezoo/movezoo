@@ -17,6 +17,7 @@ function Result(props) {
   const [coin, setCoin] = useRecoilState(userCoin);
   const [rankList, setRankList] = useState([]);
   const leaveSession = props.leaveSession;
+  const coinRewards = [10, 7, 5, 3];
   const {
     setPage,
     session,
@@ -52,7 +53,7 @@ function Result(props) {
   }
   
   useEffect(() => {
-    let newIds = [];
+    // let newIds = [];
     // 컴포넌트가 마운트될 때 전체 화면 모드 종료
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -102,7 +103,7 @@ function Result(props) {
     console.log(newIds)
     setRankList(newIds)
     console.log(rankList)
-  }, [rankList]);
+  }, []);
 
   // 등수에 따라 코인 업데이트
   useEffect(() => {
@@ -156,8 +157,8 @@ function Result(props) {
   
     updateCoin();
     fetchUserCoin();
-  // }, [userIds]);
-  }, [userIds, setCoin]);
+  }, [userIds]);
+  // }, [userIds, setCoin]);
 
   // 유저 코인 정보 업데이트
   useEffect(() => {
@@ -195,8 +196,8 @@ function Result(props) {
     }
   
     fetchUserCoin();
-  // }, []);
-  }, [setCoin]);
+  }, []);
+  // }, [setCoin]);
 
   return (
     <div>
@@ -279,11 +280,13 @@ function Result(props) {
                       <td>00:00:00</td>
                     </tr> */}
                     {
+
                       userIds.map((user, index) => (
                         <tr className="multi-result-reward-tbodyTr" key={user.userId}>
                           <td>{index + 1}</td>
                           <td>{user.userId}</td>
                           <td>{convertToTimeFormat(user.userLapTime)}초</td>
+                          <td>+{coinRewards[index]}G</td>
                         </tr>
                       ))
                     }
