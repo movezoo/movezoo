@@ -17,6 +17,7 @@ function Result(props) {
   const [coin, setCoin] = useRecoilState(userCoin);
   const [rankList, setRankList] = useState([]);
   const leaveSession = props.leaveSession;
+  const coinRewards = [10, 7, 5, 3];
   const {
     setPage,
     session,
@@ -276,11 +277,13 @@ function Result(props) {
                       <td>00:00:00</td>
                     </tr> */}
                     {
+
                       userIds.map((user, index) => (
                         <tr className="multi-result-reward-tbodyTr" key={user.userId}>
                           <td>{index + 1}</td>
                           <td>{user.userId}</td>
                           <td>{convertToTimeFormat(user.userLapTime)}초</td>
+                          <td>+{coinRewards[index]}G</td>
                         </tr>
                       ))
                     }
