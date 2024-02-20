@@ -45,9 +45,10 @@ function Result(props) {
     return `${minutesStr}:${secondsStr}:${millisecondsStr}`;
   };
   
-  let newIds = [];
-
+  // let newIds = [];
+  
   useEffect(() => {
+    let newIds = [];
     // 컴포넌트가 마운트될 때 전체 화면 모드 종료
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -97,7 +98,7 @@ function Result(props) {
     console.log(newIds)
     setRankList(newIds)
     console.log(rankList)
-  }, []);
+  }, [rankList]);
 
   // 등수에 따라 코인 업데이트
   useEffect(() => {
@@ -151,7 +152,8 @@ function Result(props) {
   
     updateCoin();
     fetchUserCoin();
-  }, [userIds]);
+  // }, [userIds]);
+  }, [userIds, setCoin]);
 
   // 유저 코인 정보 업데이트
   useEffect(() => {
@@ -189,7 +191,8 @@ function Result(props) {
     }
   
     fetchUserCoin();
-  }, []);
+  // }, []);
+  }, [setCoin]);
 
   return (
     <div>
