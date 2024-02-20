@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import Main from "../../../components/play/Main";
 import "./Game.css";
@@ -31,6 +31,7 @@ function Game() {
   const [gameEndCount] = useRecoilState(gameEndCountState);
   const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
   const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
+  const [isTimeVisible, setIsTimeVisible] = useState(true);
 
   const videoRef = useRef(null);
   const detector = useRef(null);
@@ -41,6 +42,13 @@ function Game() {
     // 전체 화면으로 전환
     document.documentElement.requestFullscreen();
   }), [])
+
+  useEffect(() => {
+    // 게임 종료 시 current-time 숨기기
+    if (gameEndCount === 4) {
+      setIsTimeVisible(false);
+    }
+  }, [gameEndCount])
 
   useEffect(() => {
     // 로딩 초기화
@@ -269,7 +277,7 @@ function Game() {
             </div>
           </div>
       }
-      
+
       <div className="game">
         <Main className='game-main' width={1536} height={864} />
       </div>
@@ -288,7 +296,10 @@ function Game() {
         {gameEndCount === 4 ? "Finish" : gameEndCount}
       </div>
       {/* <div className="end-time">{gameEndCount}</div> */}
-      <div className="current-time">{Util.formatTime(testCurrentLapTime)}</div>
+      <div className={isTimeVisible ? "current-time" : "current-time hidden"}>
+        {Util.formatTime(testCurrentLapTime)}
+      </div>
+      {/* <div className="current-time">{Util.formatTime(testCurrentLapTime)}</div> */}
       <div className="over-contents">
         <div className="webcam-box">
           <Webcam
