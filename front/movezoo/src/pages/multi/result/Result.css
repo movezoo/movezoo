@@ -42,8 +42,8 @@
 }
 
 .multi-result-webCam-else {
-  @apply w-[170px] h-[140px] relative flex flex-col items-center justify-between
-  rounded-3xl bg-white overflow-hidden;
+  @apply w-[170px] h-auto min-h-[140px] relative flex flex-col items-center justify-between
+  rounded-3xl bg-white;
 }
 
 .multi-result-winner-img {
@@ -51,11 +51,11 @@
 }
 
 .multi-result-webCam-box {
-  @apply relative w-full h-full
+  @apply relative w-full h-auto rounded-3xl
 }
 
 .multi-result-webCam-img {
-  @apply relative w-full h-full bg-black
+  @apply relative w-full h-full rounded-3xl bg-black
 }
 
 .multi-result-bottomCamSection {
