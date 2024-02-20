@@ -13,11 +13,9 @@ import { userCoin } from '../../../components/state/state';
 
 function Result(props) {
   const [loading, setLoading] = useState(true);
-  const [userIds, setUserIds] = useState([]);
+  const [userIds, setUserIds] = useState([])
   const [coin, setCoin] = useRecoilState(userCoin);
-  const [rankList, setRankList] = useState([]);
   const leaveSession = props.leaveSession;
-  const coinRewards = [10, 7, 5, 3];
   const {
     setPage,
     session,
@@ -33,27 +31,10 @@ function Result(props) {
     chatMessages,
     setChatMessages
   } = props
-
-  const convertToTimeFormat = (laptime) => {
-    const minutes = Math.floor(laptime / 60);
-    const seconds = Math.floor(laptime % 60);
-    const milliseconds = Math.floor((laptime % 1) * 100);
-
-    const minutesStr = minutes.toString().padStart(2, '0');
-    const secondsStr = seconds.toString().padStart(2, '0');
-    const millisecondsStr = milliseconds.toString().padStart(2, '0');
-
-    return `${minutesStr}:${secondsStr}:${millisecondsStr}`;
-  };
   
-  // let newIds = [];
+  let newIds = [];
 
-  function isWinner(manager) {
-    return rankList.length > 0 && rankList[0].userId === JSON.parse(manager.stream.connection.data).clientData
-  }
-  
   useEffect(() => {
-    let newIds = [];
     // 컴포넌트가 마운트될 때 전체 화면 모드 종료
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -65,8 +46,6 @@ function Result(props) {
 
     console.log(`[게임결과]`)
     console.log(playerGameDataList);
-
-    // let newIds = [];
 
     // user 개개인의 ID와 LapTime
     for (let i = 0; i < playerGameDataList.length; i++) {
@@ -100,9 +79,7 @@ function Result(props) {
     });
 
     setUserIds(newIds)
-    console.log(newIds)
-    setRankList(newIds)
-    console.log(rankList)
+
   }, []);
 
   // 등수에 따라 코인 업데이트
@@ -114,8 +91,8 @@ function Result(props) {
           
           const response = await axios.patch('https://i10e204.p.ssafy.io/api/coin', 
           { nickname, ranking: i + 1 });
-          console.log(userIds[i]);
-          console.log(response);
+          // console.log(userIds[i]);
+          // console.log(response);
         }
 
       } catch (error) {
@@ -143,7 +120,7 @@ function Result(props) {
               const newCoinAmount = response.data.coin;
               // console.log(newCoinAmount)
               setCoin(newCoinAmount); // Recoil 상태 업데이트
-
+             
               let updatedUserData = { ...userData };
               updatedUserData.userData.coin = newCoinAmount;
               localStorage.setItem('userData', JSON.stringify(updatedUserData));
@@ -158,7 +135,6 @@ function Result(props) {
     updateCoin();
     fetchUserCoin();
   }, [userIds]);
-  // }, [userIds, setCoin]);
 
   // 유저 코인 정보 업데이트
   useEffect(() => {
@@ -197,7 +173,6 @@ function Result(props) {
   
     fetchUserCoin();
   }, []);
-  // }, [setCoin]);
 
   return (
     <div>
@@ -218,38 +193,37 @@ function Result(props) {
             {/*왼쪽 화면, 웹캠 화면*/}
             <div className="multi-result-leftSection">
               <div className="multi-result-CamSection">
-                <img className="multi-result-winner-img" src="/images/multibg/winner.png"/>
-                {/* {subscribers.map((sub, i) => (
-                  <div className="multi-result-webCam">
-                  <UserVideoComponent className="room-webCam" streamManager={sub} />
-                  </div>
-                ))} */}
-                {/* {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
-                  : null } */}
-                <div className={isWinner(mainStreamManager) ? 
-                  "multi-result-webCam-1st" : "multi-result-webCam-else"}>
-                  {mainStreamManager !== undefined ? (
-                    <MyVideoComponent streamManager={mainStreamManager} mySession={session}
-                    className="multi-result-webCam-box" />
-                    ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
+                <div className="multi-result-bodyWebCam">
+                  {/* {mainStreamManager !== undefined ? (
+                    <div className="multi-result-webCam-1st">
+                      <MyVideoComponent
+                        streamManager={mainStreamManager}
+                        mySession={session}
+                        />
+                    </div>
+                    ) : <h1 className="txtLoading">Loading...</h1>
                   }
-                </div>
-                {subscribers.map((sub, i) => (
-                  <div className={isWinner(sub) ? "multi-result-webCam-1st" : "multi-result-webCam-else"}>
-                    {sub !== undefined ? (
-                      <UserVideoComponent streamManager={sub}
-                      className="multi-result-webCam-box" />
-                      ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
-                    }
+                  {subscribers.map((sub, i) => (
+                    <div className="multi-result-webCam">
+                      <UserVideoComponent className="room-webCam" streamManager={sub} />
+                    </div>
+                  ))} */}
+                  <div className="multi-result-webCam-1st">
+                    {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
+                      : null }
+                    {/* {subscribers.map((sub, i) => (
+                      <UserVideoComponent className="room-webCam" streamManager={sub} />
+                  ))} */}
                   </div>
-                ))}
-                {/* <div className="multi-result-webCam">
-                  {newIds[0].userId !== JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
-                  : <div className="multi-result-webCam">Loading...</div> }
-                </div> */}
-                {/* <div className="multi-result-webCam">
-                  <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' style={{backgroundColor: "black", width: "100%", height: "100%"}}/>
-                </div> */}
+
+                  <div className="multi-result-webCam-else">
+                    <div className="multi-result-webCam">
+                      {newIds[0].userId !== JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
+                      : <div className="multi-result-webCam">Loading...</div> }</div>
+                    <div className="multi-result-webCam">Loading...</div>
+                    <div className="multi-result-webCam">Loading...</div>
+                  </div>
+                </div>
 
               </div>
 
@@ -280,7 +254,6 @@ function Result(props) {
                       <td>00:00:00</td>
                     </tr> */}
                     {
-
                       userIds.map((user, index) => (
                         <tr className="multi-result-reward-tbodyTr" key={user.userId}>
                           <td>{index + 1}</td>

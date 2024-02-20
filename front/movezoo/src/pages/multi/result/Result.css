@@ -33,16 +33,24 @@
 }
 
 .multi-result-CamSection {
-  @apply w-full h-[420px] relative flex flex-col items-end;
+  @apply w-full h-[420px] flex flex-wrap items-center justify-start ;
 }
 
-.multi-result-webCam-1st {
-  @apply w-3/4 h-[420px] absolute top-0 left-0 flex flex-col items-center
+.multi-result-bodyWebCam {
+  @apply w-full flex flex-wrap items-center justify-between ;
+}
+
+.multi-result-webCam {
+  @apply w-full h-[140px] flex flex-col items-center justify-between
   rounded-3xl bg-white overflow-hidden;
 }
 
 .multi-result-webCam-else {
-  @apply w-1/4 h-[140px] relative flex flex-col items-center justify-between
+  @apply w-1/4 flex flex-col
+}
+
+.multi-result-webCam-1st {
+  @apply w-3/4 h-[420px] flex flex-col items-center justify-between
   rounded-3xl bg-white overflow-hidden;
 }
 
@@ -67,8 +75,8 @@
 }
 
 .multi-result-reward {
-  @apply w-[250px] h-[300px] p-5 flex flex-col items-center justify-center 
-  bg-white rounded-3xl
+  @apply w-[250px] h-[300px] p-5 flex flex-col items-center justify-center
+   bg-white rounded-3xl
 }
 
 .multi-result-backbutton {
