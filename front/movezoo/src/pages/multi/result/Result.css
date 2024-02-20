@@ -33,17 +33,17 @@
 }
 
 .multi-result-CamSection {
-  @apply w-full h-[420px] relative flex flex-col items-end;
+  @apply w-full h-[450px] relative flex flex-col items-end;
 }
 
 .multi-result-webCam-1st {
-  @apply w-[170px] h-auto absolute top-0 left-0 flex flex-col items-center justify-center
-  rounded-3xl bg-white scale-[3];
+  @apply w-[170px] h-auto absolute top-1/2 right-1/2 flex flex-col items-center justify-center
+  rounded-3xl bg-white overflow-hidden scale-[3] transform -translate-y-1/2;
 }
 
 .multi-result-webCam-else {
   @apply w-[170px] h-auto min-h-[140px] relative flex flex-col items-center justify-between
-  rounded-3xl bg-white;
+  rounded-3xl bg-white overflow-hidden;
 }
 
 .multi-result-winner-img {
@@ -67,7 +67,7 @@
 }
 
 .multi-result-rightSection {
-  @apply w-1/4 h-[420px] flex flex-col items-end justify-between ml-10
+  @apply w-1/4 h-[450px] flex flex-col items-end justify-between ml-10
 }
 
 .multi-result-reward {
