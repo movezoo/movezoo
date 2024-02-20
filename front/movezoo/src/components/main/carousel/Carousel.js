@@ -6,9 +6,6 @@ import { AiFillCaretLeft } from "react-icons/ai";
 import { AiFillCaretRight } from "react-icons/ai";
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { userCharacterImages } from '../../state/state';
-
 
 function Carousel() {
   const initialImages  = [
@@ -25,9 +22,7 @@ function Carousel() {
   const [images, setImages] = useState([]);
   const [nextIndex, setNextIndex] = useState(null);
   const [animationDirection, setAnimationDirection] = useState('right');
-  const [userCharacterImagesState, setUserCharacterImagesState] = useRecoilState(userCharacterImages);
 
-  console.log(userCharacterImagesState);
   const navigate = useNavigate();
 
   const openStoreModal = () => {
@@ -119,27 +114,6 @@ function Carousel() {
     fetchUserCharacters();
   }, []);
 
-  useEffect(() => {
-    const fetchUserCharacters = async () => {
-      try {
-        const storedUserData = localStorage.getItem('userData');
-        if (!storedUserData) {
-          throw new Error('사용자 정보를 찾을 수 없습니다.');
-        }
-        
-        const userData = JSON.parse(storedUserData);
-        const userCharacterIds = userData.characterIds; // 로컬 스토리지에서 캐릭터 ID 배열 가져오기
-        
-        const userImages = initialImages.filter(image => userCharacterIds.includes(image.id));
-        setImages(userImages);
-      } catch (error) {
-        console.error('캐릭터 정보 요청 실패:', error);
-      }
-    };
-  
-    fetchUserCharacters();
-  }, [localStorage.getItem('userData')]);
-
   return (
     <div className='carousel-container'>
       <div className='carousel-prev'>
@@ -167,3 +141,4 @@ function Carousel() {
 }
 
 export default Carousel;
+
