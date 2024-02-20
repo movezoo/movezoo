@@ -4,20 +4,20 @@
 
 // 캐릭터 이름, 행동, 방향    (캐릭터파일명 : 이름_행동_방향)
 const PLAYER_SPRITE = {
-  NAMES:      [ "pug", "sheep", "pig", "cow", "llama", "horse", "zebra", "deer", "donkey", "fox", "husky", "shiba", "stag", "wolf", "whitehorse" ],
+  NAMES:      [ "deer", "donkey", "fox", "husky", "shiba", "stag", "wolf", "whitehorse" ],
   ACTIONS:    [ { name: "run" } ],
   DIRECTIONS: [ "uphill_left", "uphill_straight", "uphill_right", "left", "straight", "right" ]
 }
 
 // 캐릭터 애니메이션 프레임 개수
 const MAX_FRAME_COUNT = {
-  pug:      { run: 21 },
-  sheep:    { run: 21 },
-  pig:      { run: 23 },
-  cow:      { run: 35 },
-  llama:    { run: 21 },
-  horse:    { run: 21 },
-  zebra:    { run: 21 },
+  // pug:      { run: 21 },
+  // sheep:    { run: 21 },
+  // pig:      { run: 23 },
+  // cow:      { run: 35 },
+  // llama:    { run: 21 },
+  // horse:    { run: 21 },
+  // zebra:    { run: 21 },
   deer:     { run: 18 },
   donkey:   { run: 17 },
   fox:      { run: 18 },
