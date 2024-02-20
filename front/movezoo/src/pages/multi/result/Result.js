@@ -16,6 +16,7 @@ function Result(props) {
   const [userIds, setUserIds] = useState([])
   const [coin, setCoin] = useRecoilState(userCoin);
   const leaveSession = props.leaveSession;
+  const coinRewards = [10, 7, 5, 3];
   const {
     setPage,
     session,
@@ -31,6 +32,18 @@ function Result(props) {
     chatMessages,
     setChatMessages
   } = props
+
+  const convertToTimeFormat = (laptime) => {
+    const minutes = Math.floor(laptime / 60);
+    const seconds = Math.floor(laptime % 60);
+    const milliseconds = Math.floor((laptime % 1) * 100);
+
+    const minutesStr = minutes.toString().padStart(2, '0');
+    const secondsStr = seconds.toString().padStart(2, '0');
+    const millisecondsStr = milliseconds.toString().padStart(2, '0');
+
+    return `${minutesStr}:${secondsStr}:${millisecondsStr}`;
+  };
   
   let newIds = [];
 
