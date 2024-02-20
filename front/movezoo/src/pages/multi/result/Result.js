@@ -98,7 +98,7 @@ function Result(props) {
     console.log(newIds)
     setRankList(newIds)
     console.log(rankList)
-  }, [newIds, rankList]);
+  }, []);
 
   // 등수에 따라 코인 업데이트
   useEffect(() => {
