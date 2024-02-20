@@ -416,7 +416,8 @@ const Main = (props) => {
         // 2. 카운트다운 중에 들어갔는지? -> 카운트를 실행시키지 않는다. 
 
         // 일단 골인했으니 기록을 저장한다. (계속 공유함)
-        myGameData.lapTime = formatTime(lastLapTime);
+        // myGameData.lapTime = formatTime(lastLapTime);
+        myGameData.lapTime = lastLapTime;
 
         // playerGameDataList.forEach(gameData => {
         //   // 나를 제외한 사람이 랩타임이 없는지 확인
