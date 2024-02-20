@@ -54,6 +54,18 @@
   rounded-3xl bg-white overflow-hidden;
 }
 
+.multi-result-winner-img {
+  @apply absolute w-1/3 top-0 left-[45%] z-10
+}
+
+.multi-result-webCam-box {
+  @apply w-full flex flex-col items-center justify-center
+}
+
+.multi-result-webCam-img {
+  @apply relative w-full h-full bg-black
+}
+
 .multi-result-bottomCamSection {
   @apply flex flex-row
 }

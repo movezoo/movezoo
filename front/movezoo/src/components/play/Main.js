@@ -1107,7 +1107,17 @@ const Main = (props) => {
         }
 
         // 빌보드, 집&우물 추가
-        for(let n = 10; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
+        for(let n = 0; n < 300; n += 20) {
+          addSprite(n, 'BILLBOARD', 'billboard_ssafy10', -1.2);
+          addSprite(n, 'BILLBOARD', 'billboard_ssafy10', 1.2);
+        }
+        for(let n = 10; n < 300; n += 20) {
+          addSprite(n, 'BILLBOARD', 'billboard_ssafy11', -1.2);
+          addSprite(n, 'BILLBOARD', 'billboard_ssafy11', 1.2);
+        }
+
+        // 빌보드, 집&우물 추가
+        for(let n = 500; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
           addSprite(n + Util.randomInt(0,5), 'BILLBOARD',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].BILLBOARD)),
             Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
@@ -1157,6 +1167,19 @@ const Main = (props) => {
         // addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
         // addSCurves();
         // 이까지 대충 1분
+
+        // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
+        // addStraight(ROAD.LENGTH.SHORT);
+
+        addStraight(ROAD.LENGTH.LONG);
+        addStraight(ROAD.LENGTH.LONG);
+        addStraight(ROAD.LENGTH.LONG);
+        addStraight(ROAD.LENGTH.LONG);
+        addStraight(ROAD.LENGTH.LONG);
+        addStraight(ROAD.LENGTH.LONG);
+        addStraight(ROAD.LENGTH.LONG);
+        addStraight(ROAD.LENGTH.LONG);
+        
         addDownhillToEnd();
 
         console.log("map2 총 길이: ",segments.length);
