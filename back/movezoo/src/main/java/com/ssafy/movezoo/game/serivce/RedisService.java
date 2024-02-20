@@ -15,7 +15,6 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +58,7 @@ public class RedisService {
             // 해당 세션ID로 유효한 세션이 없으면 방 제거
             Session session = openvidu.getActiveSession(sessionId);
 
-            if (session == null) {
+            if (session == null || session.getConnections().isEmpty()) {
 //                log.info("starvation session close {}",sessionId);
                 deleteRoom(room.getId());
             }
@@ -110,15 +109,7 @@ public class RedisService {
     // 방 입장 (현재 방 참가 인원 +1)
     public boolean enterRoom(String roomSessionId) {
 
-        Optional<Room> roomByRoomSessionId = redisRepository.findRoomByRoomSessionId(roomSessionId);
-
-        if(roomByRoomSessionId.isEmpty()){
-            return false;
-        }
-
-        Room room = roomByRoomSessionId.get();
-
-
+        Room room = redisRepository.findRoomByRoomSessionId(roomSessionId).get();
         log.info("enter room {}", room.toString());
 
 
@@ -141,12 +132,7 @@ public class RedisService {
     // 방 나가기
     public boolean exitRoom(Long roomId) {
         // id로 방 정보 가져오기
-        Optional<Room> roomById = redisRepository.findById(roomId);
-
-        if(roomById.isEmpty()){
-            return false;
-        }
-        Room room = roomById.get();
+        Room room= redisRepository.findById(roomId).get();
         try {
             int currUser = room.getCurrentUserCount();
             room.setCurrentUserCount(currUser - 1);
