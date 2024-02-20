@@ -140,6 +140,18 @@ function Carousel() {
     { id: 2, name: 'map2', image: '/images/minimap/map2.png' }
   ];
 
+  const convertToTimeFormat = (laptime) => {
+    const minutes = Math.floor(laptime / 60);
+    const seconds = Math.floor(laptime % 60);
+    const milliseconds = Math.floor((laptime % 1) * 100);
+
+    const minutesStr = minutes.toString().padStart(2, '0');
+    const secondsStr = seconds.toString().padStart(2, '0');
+    const millisecondsStr = milliseconds.toString().padStart(2, '0');
+
+    return `${minutesStr}:${secondsStr}:${millisecondsStr}`;
+  };
+
   useEffect(() => {
     // 로컬 스토리지에서 userData를 가져옴
     const storedUserData = localStorage.getItem('userData');
@@ -259,7 +271,7 @@ function Carousel() {
           BEST LAP
         </p>
         <p className="best-map-record">
-          {userLaptime ? userLaptime : 'Loading...'}
+          {userLaptime ? convertToTimeFormat(userLaptime) : 'Loading...'}
         </p>
         
       </div>
