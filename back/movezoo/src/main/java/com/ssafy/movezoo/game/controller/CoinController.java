@@ -55,11 +55,14 @@ public class CoinController {
         Optional<User> findUser = userService.findByNickname(nickname); // 닉네임으로 사용자 찾기
 
         // 사용자 검증
-        if (findUser.isEmpty() || Integer.parseInt(authentication.getName())!= findUser.get().getUserId()) {
+        if (findUser.isEmpty()) {
             simpleResponseDto.setSuccess(false);
-            simpleResponseDto.setMsg("사용자를 찯을 수 없습니다.");
+            simpleResponseDto.setMsg("사용자를 찾을 수 없습니다.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(simpleResponseDto);
         }
+
+        User user = findUser.get();
+        log.info("coin target user {} {}",user.getUserId(), user.getUserEmail());
 
         userService.addCoin(findUser.get().getUserId(), reward[ranking]);   // 순위에 따른 재화 지급
 
