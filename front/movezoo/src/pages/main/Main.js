@@ -6,15 +6,17 @@ import * as React from 'react';
 import Modal from 'react-modal';
 import './Main.css';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { AiFillCopyrightCircle } from "react-icons/ai";
 import { useRecoilState } from 'recoil';
 import {
   userCoin, nickName as nickNameState,
   sessionState as userDataState,
-  profileImgUrl as profileImgUrlState
+  profileImgUrl as profileImgUrlState,
+  mutedState
 } from '../../components/state/state';
 import { useNavigate } from "react-router-dom";
+import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
 
 Modal.setAppElement('#root');
 
@@ -23,10 +25,10 @@ function Main() {
   const [nickName, setNickName] = useRecoilState(nickNameState);
   const [profileImgUrl, setProfileImgUrl] = useRecoilState(profileImgUrlState)
   const [coin, setCoin] = useRecoilState(userCoin);
-
-  const [volume, setVolume] = React.useState(80);
   const [isProfileOpen, setIsProfileOpen] = React.useState(false);
   const navigate = useNavigate();
+  const audioRef = useRef(null);
+  const [isMuted, setIsMuted] = React.useState(false);
 
   const openProfileModal = () => {
     setIsProfileOpen(true);
@@ -36,52 +38,37 @@ function Main() {
     setIsProfileOpen(false);
   };
 
-  // useEffect(() => {
-  //   if (userData.userData === null) {
-  //     axios.get('/api/current-user')
-  //       .then(response => {
-  //         // const userDataFromServer = response.data;
-  //         // console.log(userDataFromServer)
-  //         const newSession = {
-  //           loggedIn: true,
-  //           sessionId: response.data.sessionId,
-  //           userData: response.data, // 받아온 사용자 정보를 userData에 저장
-  //         };
-  //         setUserData(newSession);
-  //         navigate("/redirect", { state: { url: "/main" } });
-  //       })
-  //       .catch(error => {
-  //         console.error('Error fetching user data:', error);
-  //       })
-  //   }
-  // }, [userData.userData, setUserData]);
+  const handleMute = () => {
+    const newMuteStatus = !isMuted;
+    setIsMuted(newMuteStatus);
 
-  // // 페이지 로드 시 localStorage에서 userData 상태 로드
-  // useEffect(() => {
-  //   // console.log(userData)
-  //   const storedUserData = localStorage.getItem('userData');
-  //   // console.log(storedUserData)
-  //   if (storedUserData) {
-  //     // console.log(storedUserData)
+    const audioElement = document.getElementById("background-audio");
+    audioElement.muted = newMuteStatus; 
 
-  //     const data = (JSON.parse(storedUserData));
+    // 음소거 상태를 로컬 스토리지에 저장합니다.
+    localStorage.setItem('isMuted', JSON.stringify(newMuteStatus));
+  };
 
-  //     // console.log(data)
+  useEffect(() => {
+    const audio = audioRef.current;
 
-  //     if (data && data.userData) {
-  //       setUserData({ ...data });
-  //       setCoin(data.userData.coin);
-  //       setNickName(data.userData.nickname);
-  //       setProfileImgUrl(data.userData.profileImgUrl);
+    const storedMuteStatus = JSON.parse(localStorage.getItem('isMuted'));
+    if (storedMuteStatus !== null) {
+      setIsMuted(storedMuteStatus);
+      audio.muted = storedMuteStatus;
+    }
 
-  //       // console.log(data.userData);
-  //       // console.log(data.userData.coin);
-  //       // console.log(data.userData.nickname);
-  //       // console.log(data.userData.userEmail);
-  //     }
+    audio.play();
+    return () => {
+      audio.pause();
+    };
+  }, []);
 
-  //   }
-  // }, [setCoin, setNickName, setUserData, setProfileImgUrl]);
+  useEffect(() => {
+    const audio = audioRef.current;
+    audio.muted = isMuted;
+  }, [isMuted]);
+
 
   useEffect(() => {
     const storedUserData = localStorage.getItem('userData');
@@ -142,6 +129,16 @@ function Main() {
             <Navbar setCoin={setCoin} />
           </div>
 
+
+          <div className='setting-button-container' onClick={handleMute}> {/* onClick 이벤트를 handleMute로 변경했습니다. */}
+            {
+              isMuted ? 
+                <FaVolumeMute className='settingButton' /> : // 음소거 아이콘이 보입니다.
+                <FaVolumeUp className='settingButton' /> // 소리 아이콘이 보입니다.
+            }
+            <audio ref={audioRef} id="background-audio" src="../music/background.mp3" loop />
+          </div>
+
           <div className="main-header-profile">
 
             <div className="main-header-userProfile" >
@@ -196,9 +193,6 @@ function Main() {
 
       </div>
 
-
-      {/* 백그라운드 음악 */}
-      <audio id="background-audio" src="/music/background.mp3" autoPlay loop volume={volume / 100} />
     </div>
 
   );
