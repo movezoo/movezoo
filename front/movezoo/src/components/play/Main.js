@@ -1018,11 +1018,14 @@ const Main = (props) => {
       // *************************************** map 1 *************************************** 
       map1: () => {
         // 길 세팅 Start ******************************************************************
-        addStraight(ROAD.LENGTH.MEDIUM);
+        addStraight(ROAD.LENGTH.LONG);
         addSCurves();
         addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
+        // addBumps();
+        
+        addStraight(ROAD.LENGTH.MEDIUM);
+        addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
         addBumps();
-        addCurve(ROAD.LENGTH.SHORT, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
         addStraight(ROAD.LENGTH.SHORT);
 
         // addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
@@ -1105,23 +1108,13 @@ const Main = (props) => {
         }
 
         // 빌보드, 집&우물 추가
-        for(let n = 50; n < 500; n += 10 + Math.floor(n/100)) {
-          addSprite(n + Util.randomInt(0,5), 'BILLBOARD',
-            MAP_SPRITE[selectMap].BILLBOARD.billboard_ssafy10,
-            -1.2
-          );
-          addSprite(n + Util.randomInt(0,5), 'BILLBOARD',
-            MAP_SPRITE[selectMap].BILLBOARD.billboard_ssafy10,
-            1.2
-          );
-          addSprite(n + Util.randomInt(0,5), 'BILLBOARD',
-          MAP_SPRITE[selectMap].BILLBOARD.billboard_ssafy11,
-            -1.2
-          );
-          addSprite(n + Util.randomInt(0,5), 'BILLBOARD',
-            MAP_SPRITE[selectMap].BILLBOARD.billboard_ssafy11,
-            1.2
-          );
+        for(let n = 0; n < 300; n += 20) {
+          addSprite(n, 'BILLBOARD', 'billboard_ssafy10', -1.2);
+          addSprite(n, 'BILLBOARD', 'billboard_ssafy10', 1.2);
+        }
+        for(let n = 10; n < 300; n += 20) {
+          addSprite(n, 'BILLBOARD', 'billboard_ssafy11', -1.2);
+          addSprite(n, 'BILLBOARD', 'billboard_ssafy11', 1.2);
         }
 
         // 빌보드, 집&우물 추가
