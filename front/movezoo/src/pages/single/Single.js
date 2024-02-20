@@ -60,7 +60,7 @@ function Single() {
                     : (<Webcam
                         className="single-body-webCam"
                         mirrored={true}
-                        // onUserMediaError=""
+                        onUserMediaError=""
                       />) 
           } </div>
           

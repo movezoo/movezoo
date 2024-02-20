@@ -52,9 +52,3 @@ export const selectCharacterState = atom({
   key: 'selectCharacterState',
   default: 'shiba'
 })
-
-
-export const userCharacterImages = atom({
-  key: 'userCharacterImages', 
-  default: [], 
-});
