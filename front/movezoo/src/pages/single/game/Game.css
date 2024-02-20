@@ -61,7 +61,7 @@
 }
 
 .current-time {
-  z-index: 997;
+  z-index: 999;
   width: auto;
   /* background-color: white; */
   font-size: 64px;
@@ -112,52 +112,36 @@
 }
 
 .start-time {
-  z-index: 997;
+  z-index: 999;
   position: absolute;
   top:50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 200px;
+  font-size: 300px;
   color: white;
-  font-style: italic;
-  text-shadow: 
-    -3px -3px 0 black,  
-    3px -3px 0 black,
-    -3px 3px 0 black,
-    3px 3px 0 black;
 }
 
 .end-time {
-  z-index: 997;
+  z-index: 999;
   position: absolute;
   top:50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 200px;
+  font-size: 300px;
   color: white;
-  font-style: italic;
-  text-shadow: 
-    -3px -3px 0 black,  
-    3px -3px 0 black,
-    -3px 3px 0 black,
-    3px 3px 0 black;
 }
 
 .body-waviy {
   background-color:  #151719;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index:998;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 500px;
+  height: 500px; */
   min-height: 100vh;
 }
 .waviy {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
   font-size: 60px;
 }
@@ -170,7 +154,6 @@
   animation: waviy 1s infinite;
   animation-delay: calc(.1s * var(--i));
 }
-
 @keyframes waviy {
   0%,40%,100% {
     transform: translateY(0)
@@ -181,15 +164,15 @@
 }
 
 .single-game-exit {
-  z-index: 997;
+  z-index: 999;
   top: 50px;
-  left: 160px;
+  left:50px;
   color:crimson;
-  @apply w-[300] h-[150] absolute text-lg rounded-xl
-  hover:text-red-100 hover:bg-red-500 active:text-red-900 hover:cursor-pointer 
+  @apply w-[300] h-[150] absolute text-lg rounded-xl 
+  active:text-red-900 hover:cursor-pointer 
 }
 
-.single-game-exit:hover .single-game-exitbtn {
+.game-exit:hover .game-exitbtn {
   @apply scale-100;
 }
 
@@ -198,11 +181,7 @@
   @apply transition 
 }
 
-.setting-music {
-  z-index: 999;
-  position: absolute;
 
-}
 
 /* Game */
 
