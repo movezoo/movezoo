@@ -141,14 +141,6 @@ function RoomList(props) {
         </div>
       </div>
 
-      {/* 백그라운드 음악 */}
-      <audio
-        id="background-audio"
-        src="/music/background.mp3"
-        autoPlay
-        loop
-        volume={volume / 100}
-      />
     </div>
   );
 }
