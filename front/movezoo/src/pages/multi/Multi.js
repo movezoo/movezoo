@@ -34,7 +34,7 @@ function Multi() {
   const [publisher, setPublisher] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
   
-  const [page, setPage] = useState(1);  
+  const [page, setPage] = useState(4);  
   
   //창희 추가 start  
   const [connectionId, setConnectionId] = useState(null);

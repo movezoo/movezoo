@@ -10,6 +10,7 @@ import UserVideoComponent from "../../../components/play/UserVideoComponent.js";
 import axios from "axios";
 import { useRecoilState } from 'recoil';
 import { userCoin } from '../../../components/state/state';
+import { AiFillCopyrightCircle } from "react-icons/ai";
 
 function Result(props) {
   const [loading, setLoading] = useState(true);
@@ -45,7 +46,7 @@ function Result(props) {
     return `${minutesStr}:${secondsStr}:${millisecondsStr}`;
   };
   
-  let newIds = [];
+  let newIds = [{ userId: "LikeBear", userLapTime: "01" }, { userId: "AAA", userLapTime: "03" }, { userId: "BBB", userLapTime: null }, { userId: "CCC", userLapTime: "02" }];
 
   useEffect(() => {
     // 컴포넌트가 마운트될 때 전체 화면 모드 종료
@@ -218,20 +219,16 @@ function Result(props) {
                 ))} */}
                 {/* {newIds[0].userId === JSON.parse(localStorage.getItem('userData')).userData.userId ? <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
                   : null } */}
-                <div className={rankList.length > 0 && rankList[0].userId === 
-                  JSON.parse(mainStreamManager.stream.connection.data).clientData ? 
-                  "multi-result-webCam-1st" : "multi-result-webCam-else"}>
+                <div className="multi-result-webCam-1st">
                   {mainStreamManager !== undefined ? (
-                    <MyVideoComponent streamManager={mainStreamManager} mySession={session}
-                    className="multi-result-webCam-box" />
+                    <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
                     ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
                   }
                 </div>
                 {subscribers.map((sub, i) => (
                   <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(sub.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                     {sub !== undefined ? (
-                      <UserVideoComponent streamManager={sub}
-                      className="multi-result-webCam-box" />
+                      <UserVideoComponent streamManager={sub} />
                       ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
                     }
                   </div>
@@ -253,36 +250,31 @@ function Result(props) {
 
               {/*보상 및 돌아가기 버튼*/}
               <div className="multi-result-reward">
-                <table className="multi-result-reward-table">
-                  <thead className="multi-result-reward-thead">
-                    <tr className="multi-result-reward-theadTr">
-                      <th className="multi-result-reward-theadTh">순위</th>
-                      <th className="multi-result-reward-theadThName">닉네임</th>
-                      <th>랩타임</th>
-                    </tr>
-                  </thead>
-                  <tbody className="multi-result-reward-tbody">
-                    {/* <tr className="multi-result-reward-tbodyTr">
-                      <td>1</td>
-                      <td>ssss</td>
-                      <td>00:00:00</td>
-                    </tr>
-                    <tr className="multi-result-reward-tbodyTr">
-                      <td>2</td>
-                      <td>wwww</td>
-                      <td>00:00:00</td>
-                    </tr> */}
-                    {
-                      userIds.map((user, index) => (
-                        <tr className="multi-result-reward-tbodyTr" key={user.userId}>
-                          <td>{index + 1}</td>
-                          <td>{user.userId}</td>
-                          <td>{convertToTimeFormat(user.userLapTime)}</td>
-                        </tr>
-                      ))
-                    }
-                  </tbody>
-                </table>
+                <div className="multi-result-reward-info">
+                  <div className="multi-result-reward-rank">순위</div>
+                  <div className="multi-result-reward-section">닉네임(기록)</div>
+                  <div className="multi-result-reward-coin">
+                    <AiFillCopyrightCircle className="coinIcon" /></div>
+                </div>
+                <div className="multi-result-reward-recode">
+                  {
+                    userIds.map((user, index) => (
+                      <div className="multi-result-reward-user">
+                        <div className="multi-result-reward-rank">{index + 1}</div>
+                        <div className="multi-result-reward-section">
+                          <div>{user.userId}</div>
+                          <div>{user.userLapTime?convertToTimeFormat(user.userLapTime):"RETIRE"}</div>
+                        </div>
+                        <div className="multi-result-reward-coin">
+                          {index === 0 && "+10"}
+                          {index === 1 && "+7"}
+                          {index === 2 && "+5"}
+                          {index === 3 && "+3"}
+                        </div>
+                      </div>
+                    ))
+                  }
+                </div>
               </div>
               
               {/* 돌아가기 버튼*/}
