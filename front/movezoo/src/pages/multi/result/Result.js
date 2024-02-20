@@ -53,7 +53,7 @@ function Result(props) {
   }
   
   useEffect(() => {
-    // let newIds = [];
+    let newIds = [];
     // 컴포넌트가 마운트될 때 전체 화면 모드 종료
     if (document.fullscreenElement) {
       document.exitFullscreen();
