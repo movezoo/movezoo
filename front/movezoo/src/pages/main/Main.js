@@ -144,7 +144,7 @@ function Main() {
           </div>
 
 
-          <div className='setting-button-container' onClick={handleMute}> {/* onClick 이벤트를 handleMute로 변경했습니다. */}
+          <div className='main-setting-button-container' onClick={handleMute}> {/* onClick 이벤트를 handleMute로 변경했습니다. */}
             {
               isMuted ? 
                 <FaVolumeMute className='settingButton' /> : // 음소거 아이콘이 보입니다.
