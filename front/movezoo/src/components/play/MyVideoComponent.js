@@ -46,7 +46,7 @@ const MyVideoComponent = (props) => {
             streamManager={streamManager}
             mySession={mySession}
             isPlayingGame={isPlayingGame}
-           />
+          />
           <div>
             <p style={{ textAlign: "center" }}>{getNicknameTag()}</p>
           </div>
