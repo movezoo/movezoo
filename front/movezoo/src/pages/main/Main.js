@@ -38,15 +38,29 @@ function Main() {
     setIsProfileOpen(false);
   };
 
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      setIsMuted(userData.isMuted); 
+    }
+  }, []);
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      userData.isMuted = isMuted; 
+      localStorage.setItem('userData', JSON.stringify(userData));
+    }
+  }, [isMuted]);
+
   const handleMute = () => {
     const newMuteStatus = !isMuted;
     setIsMuted(newMuteStatus);
 
     const audioElement = document.getElementById("background-audio");
     audioElement.muted = newMuteStatus; 
-
-    // 음소거 상태를 로컬 스토리지에 저장합니다.
-    localStorage.setItem('isMuted', JSON.stringify(newMuteStatus));
   };
 
   useEffect(() => {
