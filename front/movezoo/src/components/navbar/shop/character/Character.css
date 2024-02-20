@@ -63,16 +63,12 @@
 }
 
 .character-buy-button {
-  @apply w-40  h-10 m-4 flex flex-row items-center justify-center p-2 text-black bg-white rounded-md
-  hover:bg-green-500 hover:scale-125 transition duration-200;
+  @apply w-40  h-10 m-4 items-center justify-center p-2 text-white bg-red-500 rounded-md
+  hover:bg-red-700 hover:scale-125 transition duration-200;
 }
 
 /* 모달창 ====================== */
 
 .buy-modal {
   @apply flex flex-col items-center justify-center
-}
-
-.buy-modal-name {
-  @apply mb-5 mt-3
 }

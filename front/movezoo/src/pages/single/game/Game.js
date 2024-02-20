@@ -1,8 +1,9 @@
-import { useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import Main from "../../../components/play/Main";
 import "./Game.css";
 import { data } from "../../../components/play/data.js";
+
 
 import '@mediapipe/face_detection';
 import '@tensorflow/tfjs-backend-webgl';
@@ -19,6 +20,7 @@ import {
   gameEndCountState,
   isLoadGameState,
   isLoadDetectState,
+  playGameModeState
 } from '../../../components/state/gameState.js'
 import { useNavigate } from "react-router-dom";
 
@@ -31,6 +33,7 @@ function Game() {
   const [gameEndCount] = useRecoilState(gameEndCountState);
   const [isLoadGame, setIsLoadGame] = useRecoilState(isLoadGameState);
   const [isLoadDetect, setIsLoadDetect] = useRecoilState(isLoadDetectState);
+  const [playGameMode] = useRecoilState(playGameModeState);
 
   const videoRef = useRef(null);
   const detector = useRef(null);
@@ -219,6 +222,7 @@ function Game() {
     gameStart();
 
 
+
     const handleMouseMove = () => {
       document.body.style.cursor = 'auto'; // 마우스 포인터 보이기
       clearTimeout(cursorTimeout); // 이전에 설정한 숨기기 타이머 제거
@@ -252,24 +256,6 @@ function Game() {
   return (
     <div className="singlegame-container">
 
-      {
-        (isLoadGame && isLoadDetect) ? null :
-          <div className="body-waviy">
-            <div className="waviy">
-              <span style={{ '--i': 4 }}>l</span>
-              <span style={{ '--i': 5 }}>o</span>
-              <span style={{ '--i': 6 }}>a</span>
-              <span style={{ '--i': 7 }}>d</span>
-              <span style={{ '--i': 8 }}>i</span>
-              <span style={{ '--i': 9 }}>n</span>
-              <span style={{ '--i': 10 }}>g</span>
-              <span style={{ '--i': 11 }}>.</span>
-              <span style={{ '--i': 12 }}>.</span>
-              <span style={{ '--i': 13 }}>.</span>
-            </div>
-          </div>
-      }
-      
       <div className="game">
         <Main className='game-main' width={1536} height={864} />
       </div>
@@ -280,12 +266,11 @@ function Game() {
       </div>
 
       <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
-        {gameStartCount === 4 ? "READY" : gameStartCount}
+        {gameStartCount}
       </div>
       {/* <div className="start-time">시작카운트다운 : {gameStartCount}</div> */}
-      <div className={gameEndCount !== 11 ? "end-time" : "end-time hidden"}>
-        {/* {gameEndCount} */}
-        {gameEndCount === 4 ? "Finish" : gameEndCount}
+      <div className={gameEndCount !== 10 ? "end-time" : "end-time hidden"}>
+        {gameEndCount}
       </div>
       {/* <div className="end-time">{gameEndCount}</div> */}
       <div className="current-time">{Util.formatTime(testCurrentLapTime)}</div>
@@ -416,170 +401,3 @@ function Game() {
 // }
 
 export default Game;
-
-
-
-//   return (
-//     <div className="singlegame-container">
-//       {
-//         (isLoadGame && isLoadDetect) ? null :
-//        <div className="body-waviy">
-//           <div className="waviy">
-//             <span style={{ '--i': 4 }}>l</span>
-//             <span style={{ '--i': 5 }}>o</span>
-//             <span style={{ '--i': 6 }}>a</span>
-//             <span style={{ '--i': 7 }}>d</span>
-//             <span style={{ '--i': 8 }}>i</span>
-//             <span style={{ '--i': 9 }}>n</span>
-//             <span style={{ '--i': 10 }}>g</span>
-//             <span style={{ '--i': 11 }}>.</span>
-//             <span style={{ '--i': 12 }}>.</span>
-//             <span style={{ '--i': 13 }}>.</span>
-//           </div>
-//         </div>
-//       }
-//       <div className="game">
-//         <Main className='game-main' width={1536} height={864} />
-//       </div>
-
-//       <div className="single-game-exit">
-//         {/* <button className="game-exitbtn" onClick={() => navigate('/single/result')}>나가기</button> */}
-//         <button className="single-game-exitbtn" onClick={() => navigate("/redirect", { state: { url: "/main" } })}>나가기</button>
-//       </div>
-
-//       <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
-//         {gameStartCount}
-//       </div>
-//       {/* <div className="start-time">시작카운트다운 : {gameStartCount}</div> */}
-//       <div className={gameEndCount !== 10 ? "end-time" : "end-time hidden"}>
-//         {gameEndCount}
-//       </div>
-//       {/* <div className="end-time">{gameEndCount}</div> */}
-//       <div className="current-time">{Util.formatTime(testCurrentLapTime)}</div>
-//       <div className="over-contents">
-//         <div className="webcam-box" style={{zIndex:999}}>
-//           <Webcam
-//             className="single-webCam"
-//             mirrored={true}
-//             ref={videoRef}
-//             // onUserMediaError=""
-//             videoConstraints={{ //비디오 품질 해상도
-//               width: 640,
-//               height: 480
-//             }}
-//           />
-//         </div>
-//         <div className="my-item-list">
-//           <div className="my-item">{itemImage}</div>
-//           <div className="my-item">{itemImage2}</div>
-//         </div>
-//       </div>
-//     </div >
-//   );
-// }
-
-// //     <div className="singlegame-container">
-// //       {(!isLoadGame || !isLoadDetect) && (
-// //         <div className="body-waviy">
-// //           <div className="waviy">
-// //             <span style={{ '--i': 1 }}>l</span>
-// //             <span style={{ '--i': 2 }}>o</span>
-// //             <span style={{ '--i': 3 }}>a</span>
-// //             <span style={{ '--i': 4 }}>d</span>
-// //             <span style={{ '--i': 5 }}>i</span>
-// //             <span style={{ '--i': 6 }}>n</span>
-// //             <span style={{ '--i': 7 }}>g</span>
-// //             <span style={{ '--i': 8 }}>.</span>
-// //             <span style={{ '--i': 9 }}>.</span>
-// //             <span style={{ '--i': 10 }}>.</span>
-// //           </div>
-// //         </div>
-// //       )}
-// //       {isLoadGame && isLoadDetect && (
-// //         <>
-// //           <div className="game">
-// //             <Main className='game-main' width={1536} height={864} />
-// //           </div>
-
-// //           <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
-// //             {gameStartCount}
-// //           </div>
-// //           {/* <div className="start-time">시작카운트다운 : {gameStartCount}</div> */}
-// //           <div className={gameEndCount !== 10 ? "end-time" : "end-time hidden"}>
-// //             {gameEndCount}
-// //           </div>
-// //           {/* <div className="end-time">{gameEndCount}</div> */}
-// //           <div className="current-time">{Util.formatTime(testCurrentLapTime)}</div>
-// //           <div className="over-contents">
-// //             <div className="webcam-box">
-// //               <Webcam
-// //                 className="single-webCam"
-// //                 mirrored={true}
-// //                 ref={videoRef}
-// //                 videoConstraints={{ //비디오 품질 해상도
-// //                   width: 640,
-// //                   height: 480
-// //                 }}
-// //               />
-// //             </div>
-// //             <div className="my-item-list">
-// //               <div className="my-item">{itemImage}</div>
-// //               <div className="my-item">{itemImage2}</div>
-// //             </div>
-// //           </div>
-// //         </>
-// //       )}
-// //     </div >
-// //   );
-// // }
-
-// //     <div className="singlegame-container">
-// //       {!waviyVisible ? (
-// //         <div className="body-waviy">
-// //           <div className="waviy">
-// //             <span style={{ '--i': 4 }}>l</span>
-// //             <span style={{ '--i': 5 }}>o</span>
-// //             <span style={{ '--i': 6 }}>a</span>
-// //             <span style={{ '--i': 7 }}>d</span>
-// //             <span style={{ '--i': 8 }}>i</span>
-// //             <span style={{ '--i': 9 }}>n</span>
-// //             <span style={{ '--i': 10 }}>g</span>
-// //             <span style={{ '--i': 11 }}>.</span>
-// //             <span style={{ '--i': 12 }}>.</span>
-// //             <span style={{ '--i': 13 }}>.</span>
-// //           </div>
-// //         </div>
-// //       ) : (
-// //         <>
-// //           <div className="game">
-// //             <Main className='game-main' width={1536} height={864} />
-// //           </div>
-// //           <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
-// //             {gameStartCount}
-// //           </div>
-// //           <div className={gameEndCount !== 10 ? "end-time" : "end-time hidden"}>
-// //             {gameEndCount}
-// //           </div>
-// //           <div className="current-time">{Util.formatTime(testCurrentLapTime)}</div>
-// //           <div className="over-contents">
-// //             <div className="webcam-box">
-// //               <Webcam
-// //                 className="single-webCam"
-// //                 mirrored={true}
-// //                 ref={videoRef}
-// //                 videoConstraints={{ width: 640, height: 480 }}
-// //               />
-// //             </div>
-// //             <div className="my-item-list">
-// //               <div className="my-item">{itemImage}</div>
-// //               <div className="my-item">{itemImage2}</div>
-// //             </div>
-// //           </div>
-// //         </>
-// //       )}
-// //     </div>
-
-// //   );
-// // }
-
-// export default Game;
