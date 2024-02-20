@@ -11,7 +11,6 @@ import { useState, useRef, useEffect } from "react";
 import { useRecoilState } from "recoil";
 
 import { Util } from '../../../components/play/common.js';
-import { isLoadGameState, isLoadDetectState } from '../../../components/state/gameState.js'
 import { data } from "../../../components/play/data.js";
 
 import {
@@ -33,13 +32,13 @@ function Game(props) {
   const [gameEndCount] = useRecoilState(gameEndCountState);
   const [isMultiGameStart] = useRecoilState(isMultiGameStartState);
   const [playGameMode] = useRecoilState(playGameModeState);
-  
+
 
   // **************************************************
   // if(playGameMode === 'multi' && isMultiGameStart) 
   //     위 조건이 참이되면 카운트다운이 시작된다.
   // **************************************************
-  
+
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const videoRef = useRef(null);
   const detector = useRef(null);
@@ -235,18 +234,29 @@ function Game(props) {
     }
     gameStart();
 
+
+    const handleMouseMove = () => {
+      document.body.style.cursor = 'auto'; // 마우스 포인터 보이기
+      clearTimeout(cursorTimeout); // 이전에 설정한 숨기기 타이머 제거
+      cursorTimeout = setTimeout(() => { // 일정 시간이 지난 후에 다시 숨기기
+        document.body.style.cursor = 'none';
+      }, 3000);
+    };
+
+    // 마우스 이동 이벤트에 핸들러 연결
+    document.addEventListener('mousemove', handleMouseMove);
+
+    let cursorTimeout; // 마우스 커서 숨기기를 위한 타이머
+
+    // 컴포넌트가 unmount될 때 이벤트 핸들러 제거
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      clearTimeout(cursorTimeout);
+    };
+
   }, [videoRef]);
 
-  // 로딩 중일 때 보여줄 뷰
-  if (isLoading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-body">
-          로딩 중...
-        </div>
-      </div>
-    );
-  }
+
 
   let itemImage = null;
   if (gameMyItemLeft === "speedup") {
@@ -261,16 +271,34 @@ function Game(props) {
   return (
     <div className="singlegame-container">
 
-    
+
       <div className="game">
         <Main width={1536} height={864} setPage={setPage} />
       </div>
 
+      {
+        (playGameMode === 'multi' && isMultiGameStart) ? null :
+          <div className="body-waviy">
+            <div className="waviy">
+              <span style={{ '--i': 4 }}>l</span>
+              <span style={{ '--i': 5 }}>o</span>
+              <span style={{ '--i': 6 }}>a</span>
+              <span style={{ '--i': 7 }}>d</span>
+              <span style={{ '--i': 8 }}>i</span>
+              <span style={{ '--i': 9 }}>n</span>
+              <span style={{ '--i': 10 }}>g</span>
+              <span style={{ '--i': 11 }}>.</span>
+              <span style={{ '--i': 12 }}>.</span>
+              <span style={{ '--i': 13 }}>.</span>
+            </div>
+          </div>
+      }
+
       <div className={gameStartCount !== 0 ? "start-time" : "start-time hidden"}>
-        {gameStartCount}
+        {gameStartCount === 4 ? "READY" : gameStartCount}
       </div>
       {/* <div className="start-time">시작카운트다운 : {gameStartCount}</div> */}
-      <div className={gameEndCount !== 10 ? "end-time" : "end-time hidden"}>
+      <div className={gameEndCount !== 11 ? "end-time" : "end-time hidden"}>
         {gameEndCount}
       </div>
       {/* <div className="end-time">{gameEndCount}</div> */}
@@ -279,14 +307,14 @@ function Game(props) {
         <div className="webcam-box">
           <div className="single-webCam">
             {mainStreamManager !== undefined ? (
-            <div id="main-video">
-              <MyVideoComponent
-                streamManager={mainStreamManager}
-                mySession={session}
-                isPlayingGame={isPlayingGame}
-              />
-            </div>
-          ) : "asdf"}
+              <div id="main-video">
+                <MyVideoComponent
+                  streamManager={mainStreamManager}
+                  mySession={session}
+                  isPlayingGame={isPlayingGame}
+                />
+              </div>
+            ) : "asdf"}
           </div>
         </div>
         <div className="multi-webCam-box">
