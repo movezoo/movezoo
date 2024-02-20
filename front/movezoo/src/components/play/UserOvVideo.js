@@ -44,7 +44,7 @@ const UserOvVideo = (props) => {
 
   }, [streamManager]); // Dependency array ensures useEffect runs when streamManager changes
 
-  return <video autoPlay={true} ref={videoRef} style={{ transform: 'scaleX(-1)' }}/>;
+  return <video autoPlay={true} ref={videoRef} style={{ transform: 'scaleX(-1)', width: "100%", height: "auto" }}/>;
 };
 
 export default UserOvVideo;
