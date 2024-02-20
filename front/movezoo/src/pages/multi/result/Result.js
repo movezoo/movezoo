@@ -46,7 +46,7 @@ function Result(props) {
     return `${minutesStr}:${secondsStr}:${millisecondsStr}`;
   };
   
-  let newIds = [{ userId: "LikeBear", userLapTime: "01" }, { userId: "AAA", userLapTime: "03" }, { userId: "BBB", userLapTime: null }, { userId: "CCC", userLapTime: "02" }];
+  let newIds = [];
 
   useEffect(() => {
     // 컴포넌트가 마운트될 때 전체 화면 모드 종료
