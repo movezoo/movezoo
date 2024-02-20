@@ -75,7 +75,32 @@
 }
 
 .multi-result-reward {
-  @apply flex justify-center items-center
+  @apply flex flex-col items-center
+}
+
+.multi-result-reward-info {
+  border-bottom: solid black 1px;
+  @apply w-full h-[50px] flex
+}
+
+.multi-result-reward-recode {
+  @apply w-full h-[250px] flex flex-col justify-center items-center
+}
+
+.multi-result-reward-user {
+  @apply w-full h-[50px] flex justify-center items-center mt-1 mb-1
+}
+
+.multi-result-reward-rank {
+  @apply w-1/4 flex justify-center items-center
+}
+
+.multi-result-reward-section {
+  @apply w-1/2 flex flex-col justify-center items-center
+}
+
+.multi-result-reward-coin {
+  @apply w-1/4 flex justify-center items-center
 }
 
 .multi-result-reward-table {
