@@ -221,14 +221,16 @@ function Result(props) {
                   : null } */}
                 <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(mainStreamManager.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                   {mainStreamManager !== undefined ? (
-                    <MyVideoComponent streamManager={mainStreamManager} mySession={session} />
+                    <MyVideoComponent streamManager={mainStreamManager} mySession={session}
+                    className="multi-result-webCam-box" />
                     ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
                   }
                 </div>
                 {subscribers.map((sub, i) => (
                   <div className={rankList.length > 0 && rankList[0].userId === JSON.parse(sub.stream.connection.data).clientData ? "multi-result-webCam-1st" : "multi-result-webCam-else"}>
                     {sub !== undefined ? (
-                      <UserVideoComponent streamManager={sub} />
+                      <UserVideoComponent streamManager={sub} 
+                      className="multi-result-webCam-box" />
                       ) : <img src='/images/mainLogo/mainlogo-art.svg' alt='logo' className="multi-result-webCam-img"/>
                     }
                   </div>

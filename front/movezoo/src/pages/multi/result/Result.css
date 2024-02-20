@@ -37,8 +37,8 @@
 }
 
 .multi-result-webCam-1st {
-  @apply w-[510px] h-[420px] absolute top-0 left-0 flex flex-col items-center
-  rounded-3xl bg-white overflow-hidden;
+  @apply w-[510px] h-[420px] absolute top-0 left-0 flex flex-col items-center justify-center
+  rounded-3xl bg-white overflow-hidden scale-150;
 }
 
 .multi-result-webCam-else {
