@@ -11,6 +11,7 @@ import "./Record.css";
 function Record() {
   const [userLaptime, setUserLaptime] = useState(null);
   const [ singleResult ] = useRecoilState(singleResultState);
+
   const convertToTimeFormat = (laptime) => {
     const minutes = Math.floor(laptime / 60);
     const seconds = Math.floor(laptime % 60);
@@ -22,6 +23,7 @@ function Record() {
 
     return `${minutesStr}:${secondsStr}:${millisecondsStr}`;
   };
+
   
   useEffect(() => {
     const fetchUserLaptime = async () => {
@@ -39,10 +41,10 @@ function Record() {
         
         const userLaptime = await axios.get(`https://i10e204.p.ssafy.io/api/laptime/${userId}/${mapNumber}`);
         
-        console.log(userLaptime);
+        console.log(userLaptime.data.record);
         
         // 이번 게임 랩타임 db에 보내기
-        if (userLaptime.record > singleResult.time && singleResult.time !== 0) {
+        if (userLaptime.data.record > singleResult.time && singleResult.time !== 0) {
           try {
             // console.log(userId)
             // console.log(mapNumber)
@@ -58,7 +60,7 @@ function Record() {
         }
         
         // db에 랩타임이 없으면 이번 게임 랩타임을 db에 보내기
-        if (!userLaptime.record && singleResult.time !== 0) {
+        if (!userLaptime.data.record && singleResult.time !== 0) {
           try {
             const updateLaptime = await axios.patch('https://i10e204.p.ssafy.io/api/laptime', 
             { userId, trackId: mapNumber, record: singleResult.time });
@@ -88,7 +90,7 @@ function Record() {
       <div className="title">LAP TIME</div>
       <div className="time">{convertToTimeFormat(singleResult.time)}</div>
       <div className="title">BEST</div>
-      <div className="time">{userLaptime ? convertToTimeFormat(userLaptime.record) : 'No Record'}</div>
+      <div className="time">{userLaptime ? convertToTimeFormat(userLaptime.data.record) : 'No Record'}</div>
     </div>
   );
 }
