@@ -18,6 +18,10 @@ function Inforoom( props ) {
   // 비밀번호 체크
   const checkPassword = () => {
     if (props.secretRoomPassword === password) {
+      let storages = JSON.parse(localStorage.getItem('userData'));  
+      storages.selectedMapName = images[props.track].name; // 맵이름 저장
+      localStorage.setItem('userData', JSON.stringify(storages));
+      
       props.enterRoom(props.session) 
     } else { 
       setPassword("");
