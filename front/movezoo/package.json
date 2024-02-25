@@ -21,6 +21,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "embla-carousel-react": "^8.0.0-rc22",
+    "eventemitter3": "^5.0.1",
     "lucide-react": "^0.320.0",
     "openvidu-browser": "2.29.0",
     "react": "^18.2.0",
