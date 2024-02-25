@@ -9,15 +9,18 @@ import Result from "./pages/single/result/Result.js";
 import Signup from "./components/home/Signup.jsx";
 import Multi from "./pages/multi/Multi.js";
 import "./index.css";
-import { RecoilRoot } from "recoil";
 import Redirect from "./components/main/Redirect.js";
 import { enablePageLeaveWarning } from "./components/main/pageLeaveWarning.js";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { RecoilRoot } from "recoil";
+
 
 function App() {
   useEffect(() => {
     enablePageLeaveWarning() // 모든 페이지 함부로 못나감
   }, [])
+
+  
   return (
     <RecoilRoot>
       <ToastContainer />
