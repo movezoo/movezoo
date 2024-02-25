@@ -33,24 +33,16 @@
 }
 
 .multi-result-CamSection {
-  @apply w-full h-[420px] flex flex-wrap items-center justify-start ;
-}
-
-.multi-result-bodyWebCam {
-  @apply w-full flex flex-wrap items-center justify-between ;
-}
-
-.multi-result-webCam {
-  @apply w-full h-[140px] flex flex-col items-center justify-between
-  rounded-3xl bg-white overflow-hidden;
-}
-
-.multi-result-webCam-else {
-  @apply w-1/4 flex flex-col
+  @apply w-full h-[450px] relative flex flex-col items-end;
 }
 
 .multi-result-webCam-1st {
-  @apply w-3/4 h-[420px] flex flex-col items-center justify-between
+  @apply w-[170px] h-auto absolute top-1/2 right-1/2 flex flex-col items-center justify-center
+  rounded-lg bg-white overflow-hidden scale-[3] transform -translate-y-1/2 border-4 border-yellow-400;
+}
+
+.multi-result-webCam-else {
+  @apply w-[170px] h-auto min-h-[140px] relative flex flex-col items-center justify-between
   rounded-3xl bg-white overflow-hidden;
 }
 
@@ -58,12 +50,16 @@
   @apply absolute w-1/3 top-0 left-[45%] z-10
 }
 
-.multi-result-webCam-box {
-  @apply w-full flex flex-col items-center justify-center
+.multi-result-webCam-box-1st {
+  @apply relative w-full h-auto scale-150 rounded-3xl
+}
+
+.multi-result-webCam-box-else {
+  @apply relative w-full h-auto rounded-3xl
 }
 
 .multi-result-webCam-img {
-  @apply relative w-full h-full bg-black
+  @apply relative w-full h-full rounded-3xl bg-black
 }
 
 .multi-result-bottomCamSection {
@@ -71,19 +67,44 @@
 }
 
 .multi-result-rightSection {
-  @apply w-1/4 h-[420px] flex flex-col items-end justify-between ml-10
+  @apply w-1/4 h-[450px] flex flex-col items-end justify-between ml-10
 }
 
 .multi-result-reward {
-  @apply w-[250px] h-[300px] p-5 flex flex-col items-center justify-center
-   bg-white rounded-3xl
+  @apply w-[250px] h-[300px] p-5 flex flex-col items-center justify-center 
+  bg-white rounded-3xl
 }
 
 .multi-result-backbutton {
 }
 
 .multi-result-reward {
-  @apply flex justify-center items-center
+  @apply flex flex-col items-center
+}
+
+.multi-result-reward-info {
+  border-bottom: solid black 1px;
+  @apply w-full h-[50px] flex
+}
+
+.multi-result-reward-recode {
+  @apply w-full h-[250px] flex flex-col justify-center items-center
+}
+
+.multi-result-reward-user {
+  @apply w-full h-[50px] flex justify-center items-center mt-1 mb-1
+}
+
+.multi-result-reward-rank {
+  @apply w-1/4 flex justify-center items-center
+}
+
+.multi-result-reward-section {
+  @apply w-1/2 flex flex-col justify-center items-center
+}
+
+.multi-result-reward-coin {
+  @apply w-1/4 flex justify-center items-center
 }
 
 .multi-result-reward-table {

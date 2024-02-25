@@ -395,7 +395,8 @@ const Main = (props) => {
       isStopControl = true; // 일단 통과하면 컨트롤은 중지된다.
 
       if(gameStartData.mode === 'single') {
-        let count = 10; // 실제로 3초부터 출력함
+        let count = 4; // 실제로 3초부터 출력함
+        setGameEndCount(count);
         const playCount = setInterval(() => {
           count-=1;
           setGameEndCount(count);
@@ -415,7 +416,8 @@ const Main = (props) => {
         // 2. 카운트다운 중에 들어갔는지? -> 카운트를 실행시키지 않는다. 
 
         // 일단 골인했으니 기록을 저장한다. (계속 공유함)
-        myGameData.lapTime = formatTime(lastLapTime);
+        // myGameData.lapTime = formatTime(lastLapTime);
+        myGameData.lapTime = lastLapTime;
 
         // playerGameDataList.forEach(gameData => {
         //   // 나를 제외한 사람이 랩타임이 없는지 확인
@@ -434,6 +436,7 @@ const Main = (props) => {
     // 멀티게임은 동시에 카운트를 위해 조건부 호출로 따로 실행한다.
     const multiGameEndCount = () => {
       let count = 10; // 실제로 3초부터 출력함
+      setGameEndCount(count);
       const playCount = setInterval(() => {
         count-=1;
         setGameEndCount(count);
@@ -1015,19 +1018,13 @@ const Main = (props) => {
       // *************************************** map 1 *************************************** 
       map1: () => {
         // 길 세팅 Start ******************************************************************
-        addStraight(ROAD.LENGTH.LONG);
-        addLowRollingHills();
+        addStraight(ROAD.LENGTH.SHORT);
         addSCurves();
         addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
         addBumps();
         
-        addStraight(ROAD.LENGTH.LONG);
-        addSCurves();
-        addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
-        addBumps();
-        
-        addStraight(ROAD.LENGTH.LONG);
-        addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
+        addStraight(ROAD.LENGTH.MEDIUM);
+        addHill(ROAD.LENGTH.SHORT, -ROAD.HILL.MEDIUM);
         addDownhillToEnd();
 
         console.log("map1 총 길이: ",segments.length);
@@ -1106,18 +1103,19 @@ const Main = (props) => {
           );
         }
 
-        // 빌보드, 집&우물 추가
-        for(let n = 0; n < 300; n += 20) {
+
+        for(let n = 10; n < 200; n += 20) {
           addSprite(n, 'BILLBOARD', 'billboard_ssafy10', -1.2);
           addSprite(n, 'BILLBOARD', 'billboard_ssafy10', 1.2);
         }
-        for(let n = 10; n < 300; n += 20) {
+
+        for(let n = 20; n < 200; n += 20) {
           addSprite(n, 'BILLBOARD', 'billboard_ssafy11', -1.2);
           addSprite(n, 'BILLBOARD', 'billboard_ssafy11', 1.2);
         }
 
-        // 빌보드, 집&우물 추가
-        for(let n = 500; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
+
+        for(let n = 230; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
           addSprite(n + Util.randomInt(0,5), 'BILLBOARD',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].BILLBOARD)),
             Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
@@ -1126,6 +1124,10 @@ const Main = (props) => {
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].BILLBOARD)),
             Util.randomInt(1, 5) + Util.randomChoice([0.2, 1])
           );
+        }
+
+        // 집&우물 추가
+        for(let n = 10; n < (segments.length-50); n += 10 + Math.floor(n/100)) {
           addSprite(n + Util.randomInt(0,5), 'STUFF',
             Util.randomChoice(Object.keys(MAP_SPRITE[selectMap].STUFF)),
             Util.randomInt(-1, -5) - Util.randomChoice([0.2, 1])
@@ -1146,7 +1148,7 @@ const Main = (props) => {
         addItem(50, -0.25);
         addItem(50, -0.75);
 
-        for(let n = 500; n < (segments.length-450); n += 300) {
+        for(let n = 250; n < (segments.length-450); n += 300) {
           addItem(n, 0.25 + Util.randomInt(0, 1) * 0.5);
           addItem(n, -0.25 - Util.randomInt(0, 1) * 0.5);
         }
@@ -1164,22 +1166,11 @@ const Main = (props) => {
         // 길 세팅 Start ******************************************************************
         // addLowRollingHills();
         addStraight(ROAD.LENGTH.LONG);
+        addStraight(ROAD.LENGTH.LONG);
+        addStraight(ROAD.LENGTH.LONG);
         // addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
         // addSCurves();
         // 이까지 대충 1분
-
-        // addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
-        // addStraight(ROAD.LENGTH.SHORT);
-
-        addStraight(ROAD.LENGTH.LONG);
-        addStraight(ROAD.LENGTH.LONG);
-        addStraight(ROAD.LENGTH.LONG);
-        addStraight(ROAD.LENGTH.LONG);
-        addStraight(ROAD.LENGTH.LONG);
-        addStraight(ROAD.LENGTH.LONG);
-        addStraight(ROAD.LENGTH.LONG);
-        addStraight(ROAD.LENGTH.LONG);
-        
         addDownhillToEnd();
 
         console.log("map2 총 길이: ",segments.length);
@@ -1268,12 +1259,8 @@ const Main = (props) => {
 
 
         // 아이템 세팅 Start *******************************************************************************
-        addItem(50, 0.75);
-        addItem(50, 0.25);
-        addItem(50, -0.25);
-        addItem(50, -0.75);
 
-        for(let n = 50; n < (segments.length-450); n += 300) {
+        for(let n = 800; n < (segments.length-300); n += 200) {
           addItem(n, 0.75);
           addItem(n, 0.25);
           addItem(n, -0.25);
