@@ -5,7 +5,6 @@ import './GoogleLogin.css'
 
 
 const GoogleLoginButton = () => {
-    // const clientId = '646007525436-ice4fd79vbt6e0vv0m80lkfihehsfpgn.apps.googleusercontent.com'; // Google Developers Console에서 발급받은 클라이언트 ID
     const navigate = useNavigate();
 
 
