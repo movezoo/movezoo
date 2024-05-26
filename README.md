@@ -309,7 +309,7 @@ movezoo
 <br/>
 
 ## 프로젝트 기록
-![Notion 협업링크](https://www.notion.so/E204-9057af01d3f54955a998ceb8c429ce0a?pvs=4)
+![Notion 협업링크](https://scrawny-boater-2ec.notion.site/E204-Move-Zoo-9057af01d3f54955a998ceb8c429ce0a?pvs=4)
 
 
 <!-- ## 🖼️ 와이어프레임 -->
